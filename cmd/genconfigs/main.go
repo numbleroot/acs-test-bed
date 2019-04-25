@@ -2,48 +2,37 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/json"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"math/big"
 	"os"
 	"path/filepath"
-	"strings"
 )
+
+// Configs bundles all instance-individual
+// configurations into one slice.
+type Configs struct {
+	Configs []Config `json:"Configs"`
+}
 
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
-	Name               string
-	Zone               string
-	MachineType        string
-	Image              string
-	ImageProject       string
-	Subnet             string
-	NetworkTier        string
-	Scopes             []string
-	MinCPUPlatform     string
-	BootDiskSize       string
-	BootDiskType       string
-	BootDiskDeviceName string
-	MaintenancePolicy  string
-	Flags              []string
-}
-
-// Header returns the field descriptions
-// for a configuration line.
-func (cfg *Config) Header() string {
-	return fmt.Sprintf("Name ; Zone ; MachineType ; Image ; ImageProject ; Subnet ; NetworkTier ; Scopes ; MinCPUPlatform ; BootDiskSize ; BootDiskType ; BootDiskDeviceName ; MaintenancePolicy ; Flags\n")
-}
-
-// Data returns the actual string that
-// contains all properly formatted data
-// from one configuration line.
-func (cfg *Config) Data() string {
-
-	scopes := strings.Join(cfg.Scopes, ",")
-	flags := strings.Join(cfg.Flags, " ")
-
-	return fmt.Sprintf("%s ; %s ; %s ; %s ; %s ; %s ; %s ; %s ; %s ; %s ; %s ; %s ; %s ; %s\n", cfg.Name, cfg.Zone, cfg.MachineType, cfg.Image, cfg.ImageProject, cfg.Subnet, cfg.NetworkTier, scopes, cfg.MinCPUPlatform, cfg.BootDiskSize, cfg.BootDiskType, cfg.BootDiskDeviceName, cfg.MaintenancePolicy, flags)
+	Name              string   `json:"Name"`
+	Zone              string   `json:"Zone"`
+	MachineType       string   `json:"MachineType"`
+	Subnet            string   `json:"Subnet"`
+	NetworkTier       string   `json:"NetworkTier"`
+	MinCPUPlatform    string   `json:"MinCPUPlatform"`
+	Scopes            []string `json:"Scopes"`
+	SourceSnapshot    string   `json:"SourceSnapshot"`
+	BootDiskSize      string   `json:"BootDiskSize"`
+	BootDiskType      string   `json:"BootDiskType"`
+	Disk              string   `json:"Disk"`
+	MaintenancePolicy string   `json:"MaintenancePolicy"`
+	Flags             []string `json:"Flags"`
 }
 
 func main() {
@@ -100,7 +89,9 @@ func main() {
 
 	// Prepare slice of configuration lines
 	// of desired size.
-	configs := make([]*Config, 100)
+	configs := Configs{
+		Configs: make([]Config, 100),
+	}
 
 	for i := 0; i < 100; i++ {
 
@@ -123,13 +114,12 @@ func main() {
 		}
 
 		// Prefill all configuration lines.
-		configs[i] = &Config{
-			Name:         fmt.Sprintf("mixnet.%04d", (i + 1)),
-			MachineType:  machineType,
-			Image:        "ubuntu-1804-bionic-v20190404",
-			ImageProject: "ubuntu-os-cloud",
-			Subnet:       "default",
-			NetworkTier:  "STANDARD",
+		configs.Configs[i] = Config{
+			Name:           fmt.Sprintf("mixnet.%04d", (i + 1)),
+			MachineType:    machineType,
+			Subnet:         "default",
+			NetworkTier:    "STANDARD",
+			MinCPUPlatform: "Intel Skylake",
 			Scopes: []string{
 				"https://www.googleapis.com/auth/servicecontrol",
 				"https://www.googleapis.com/auth/service.management.readonly",
@@ -138,11 +128,11 @@ func main() {
 				"https://www.googleapis.com/auth/trace.append",
 				"https://www.googleapis.com/auth/devstorage.full_control",
 			},
-			MinCPUPlatform:     "Intel Skylake",
-			BootDiskSize:       "10GB",
-			BootDiskType:       "pd-ssd",
-			BootDiskDeviceName: fmt.Sprintf("mixnet-%04d", (i + 1)),
-			MaintenancePolicy:  "TERMINATE",
+			SourceSnapshot:    "mixnet-base",
+			BootDiskSize:      "10GB",
+			BootDiskType:      "pd-ssd",
+			Disk:              "name=mixnet,device-name=mixnet,mode=rw,boot=yes,auto-delete=yes",
+			MaintenancePolicy: "TERMINATE",
 			Flags: []string{
 				"--no-restart-on-failure",
 			},
@@ -153,44 +143,21 @@ func main() {
 
 		// Assign 5 configs to each zone.
 		for j := 0; j < len(zones); j++ {
-			configs[((i * len(zones)) + j)].Zone = zones[j]
+			configs.Configs[((i * len(zones)) + j)].Zone = zones[j]
 		}
 	}
 
-	// Open new file in append-only mode.
-	configFile, err := os.OpenFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10.cfg"), os.O_APPEND|os.O_CREATE|os.O_TRUNC|os.O_WRONLY, 0644)
+	// Marshal slice of configs to JSON.
+	configsJSON, err := json.MarshalIndent(configs, "", "\t")
 	if err != nil {
-		fmt.Printf("Failed to create new configuration file: %v\n", err)
+		fmt.Printf("Failed to marshal configurations to JSON: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Prepend with header.
-	_, err = configFile.WriteString(configs[0].Header())
+	// Write to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10.json"), configsJSON, 0644)
 	if err != nil {
-		fmt.Printf("Error while writing header to new configuration file: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Write created configuration slice to file.
-	for i := 0; i < len(configs); i++ {
-
-		_, err := configFile.WriteString(configs[i].Data())
-		if err != nil {
-			fmt.Printf("Error while writing data to new configuration file: %v\n", err)
-			os.Exit(1)
-		}
-	}
-
-	// Sync to stable storage.
-	err = configFile.Sync()
-	if err != nil {
-		fmt.Printf("Error while syncing new configuration to stable storage: %v\n", err)
-		os.Exit(1)
-	}
-
-	err = configFile.Close()
-	if err != nil {
-		fmt.Printf("Failed to close new configuration file: %v\n", err)
+		fmt.Printf("Error writing configurations in JSON format to file: %v\n", err)
 		os.Exit(1)
 	}
 }
