@@ -1,12 +1,16 @@
 package main
 
 import (
+	"bufio"
+	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -26,6 +30,76 @@ type Config struct {
 	Disk              string   `json:"Disk"`
 	MaintenancePolicy string   `json:"MaintenancePolicy"`
 	Flags             []string `json:"Flags"`
+}
+
+func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, serviceAcc string, bucket string) {
+
+	for config := range confChan {
+
+		// Prepare valid boot disk name.
+		diskName := strings.Replace(config.Name, ".", "-", -1)
+
+		// Prepare command to create boot disk from
+		// snapshot we created.
+		cmdDisk := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "disks", "create", diskName,
+			fmt.Sprintf("--size=%s", config.BootDiskSize), fmt.Sprintf("--zone=%s", config.Zone),
+			fmt.Sprintf("--source-snapshot=%s", config.SourceSnapshot), fmt.Sprintf("--type=%s", config.BootDiskType))
+
+		// Execute command and wait for completion.
+		out, err := cmdDisk.CombinedOutput()
+		if err != nil {
+			errChan <- fmt.Errorf("creating boot disk failed (code: '%v'): '%s'", err, out)
+			return
+		}
+
+		// Verify successful boot disk creation.
+		if bytes.Contains(out, []byte("Created")) && bytes.Contains(out, []byte("READY")) {
+			fmt.Printf("Successfully created disk %s for instance %s\n", diskName, config.Name)
+		} else {
+			errChan <- fmt.Errorf("creating boot disk returned failure message: '%s'", out)
+			return
+		}
+
+		// Prepare command to create a compute
+		// instance configured according to Config.
+
+		// Execute command and wait for completion.
+	}
+
+	errChan <- nil
+}
+
+func shutdownInstance(confChan <-chan Config, errChan chan<- error, proj string, serviceAcc string, bucket string) {
+
+	for config := range confChan {
+
+		// Prepare valid boot disk name.
+		diskName := strings.Replace(config.Name, ".", "-", -1)
+
+		// Prepare command to delete boot disk that
+		// we spawned earlier.
+		cmdDisk := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj),
+			"disks", "delete", diskName, fmt.Sprintf("--zone=%s", config.Zone))
+
+		// Execute command and wait for completion.
+		out, err := cmdDisk.CombinedOutput()
+		if err != nil {
+			errChan <- fmt.Errorf("deleting boot disk failed (code: '%v'): '%s'", err, out)
+			return
+		}
+
+		// Verify successful boot disk deletion.
+		if bytes.Contains(out, []byte("Deleted")) {
+			fmt.Printf("Successfully deleted disk %s for instance %s\n", diskName, config.Name)
+		} else {
+			errChan <- fmt.Errorf("deleting boot disk returned failure message: '%s'", out)
+			return
+		}
+
+		// Shut down compute instance.
+	}
+
+	errChan <- nil
 }
 
 func main() {
@@ -99,20 +173,35 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("gcloudProject: '%s', gcloudServiceAcc: '%s', gcloudBucket: '%s'\n\n", gcloudProject, gcloudServiceAcc, gcloudBucket)
+	configs = configs[:5]
 
-	// Iterate over configuration slice and execute
-	// two gcloud util commands for each line.
-	for _, config := range configs {
-		fmt.Printf("\n--- CONFIG: ---\n%v\n", config)
+	// Prepare channels to send configurations
+	// to individual workers and expect responses.
+	confChan := make(chan Config, len(configs))
+	errChan := make(chan error)
+
+	// Spawn 5 creation workers.
+	for i := 0; i < 5; i++ {
+		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket)
 	}
 
-	// First: create boot drives from our snapshot
-	// for each instance.
+	// Iterate over configuration slice, create
+	// boot disks and spawn instances.
+	for _, config := range configs {
+		confChan <- config
+	}
+	close(confChan)
 
-	// Second: start compute instances.
+	for range configs {
 
-	// Verify all instances are running.
+		// If any worker threw an error, abort.
+		err := <-errChan
+		if err != nil {
+			fmt.Printf("Subroutine creating boot disk and spawning a machine failed: %v\n", err)
+			os.Exit(1)
+		}
+	}
+	close(errChan)
 
 	// Wait for all instances to signal that
 	// they have fetched all evaluation artifacts
@@ -125,4 +214,35 @@ func main() {
 
 	// Download all files from GCloud bucket
 	// to prepared local experiment folder.
+
+	// Wait until enter key is pressed.
+	fmt.Printf("\nPress ENTER to shutdown and delete all resources...")
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
+
+	// Prepare channels to send configurations
+	// to individual workers and expect responses.
+	confChan = make(chan Config, len(configs))
+	errChan = make(chan error)
+
+	// Spawn 5 deletion workers.
+	for i := 0; i < 5; i++ {
+		go shutdownInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket)
+	}
+
+	// Shutdown and destroy disks and instances.
+	for _, config := range configs {
+		confChan <- config
+	}
+	close(confChan)
+
+	for range configs {
+
+		// If any worker threw an error, abort.
+		err := <-errChan
+		if err != nil {
+			fmt.Printf("Subroutine deleting boot disk and shutting down a machine failed: %v\n", err)
+			os.Exit(1)
+		}
+	}
+	close(errChan)
 }
