@@ -118,3 +118,4 @@ venv.bak/
 
 # Project-specific.
 gcloud-configs/
+results/
