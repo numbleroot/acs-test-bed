@@ -107,10 +107,10 @@ func main() {
 
 		// Prefill all configuration lines.
 		configs[i] = Config{
-			Name:           fmt.Sprintf("mixnet.%04d", (i + 1)),
+			Name:           fmt.Sprintf("mixnet-%04d", (i + 1)),
 			MachineType:    machineType,
 			Subnet:         "default",
-			NetworkTier:    "STANDARD",
+			NetworkTier:    "PREMIUM",
 			MinCPUPlatform: "Intel Skylake",
 			Scopes: []string{
 				"https://www.googleapis.com/auth/servicecontrol",
@@ -123,7 +123,7 @@ func main() {
 			SourceSnapshot:    "mixnet-base",
 			BootDiskSize:      "10GB",
 			BootDiskType:      "pd-ssd",
-			Disk:              "name=mixnet,device-name=mixnet,mode=rw,boot=yes,auto-delete=yes",
+			Disk:              fmt.Sprintf("name=mixnet-%04d,device-name=mixnet,mode=rw,boot=yes,auto-delete=yes", (i + 1)),
 			MaintenancePolicy: "TERMINATE",
 			Flags: []string{
 				"--no-restart-on-failure",

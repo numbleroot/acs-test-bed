@@ -14,6 +14,9 @@ import (
 	"time"
 )
 
+// This has to be properly escaped.
+const startupScript = `/usr/bin/env bash -c 'curl -o ~/github.html https://github.com'`
+
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
@@ -36,17 +39,14 @@ func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, se
 
 	for config := range confChan {
 
-		// Prepare valid boot disk name.
-		diskName := strings.Replace(config.Name, ".", "-", -1)
-
 		// Prepare command to create boot disk from
 		// snapshot we created.
-		cmdDisk := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "disks", "create", diskName,
+		cmd := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "disks", "create", config.Name,
 			fmt.Sprintf("--size=%s", config.BootDiskSize), fmt.Sprintf("--zone=%s", config.Zone),
 			fmt.Sprintf("--source-snapshot=%s", config.SourceSnapshot), fmt.Sprintf("--type=%s", config.BootDiskType))
 
 		// Execute command and wait for completion.
-		out, err := cmdDisk.CombinedOutput()
+		out, err := cmd.CombinedOutput()
 		if err != nil {
 			errChan <- fmt.Errorf("creating boot disk failed (code: '%v'): '%s'", err, out)
 			return
@@ -54,16 +54,38 @@ func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, se
 
 		// Verify successful boot disk creation.
 		if bytes.Contains(out, []byte("Created")) && bytes.Contains(out, []byte("READY")) {
-			fmt.Printf("Successfully created disk %s for instance %s\n", diskName, config.Name)
+			fmt.Printf("Successfully created disk for instance %s\n", config.Name)
 		} else {
 			errChan <- fmt.Errorf("creating boot disk returned failure message: '%s'", out)
 			return
 		}
 
+		scopes := strings.Join(config.Scopes, ",")
+		flags := strings.Join(config.Flags, " ")
+
 		// Prepare command to create a compute
 		// instance configured according to Config.
+		cmd = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "instances", "create", config.Name,
+			fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone),
+			fmt.Sprintf("--machine-type=%s", config.MachineType), fmt.Sprintf("--min-cpu-platform=%s", config.MinCPUPlatform),
+			fmt.Sprintf("--subnet=%s", config.Subnet), fmt.Sprintf("--network-tier=%s", config.NetworkTier),
+			fmt.Sprintf("--disk=%s", config.Disk), fmt.Sprintf("--metadata=startup-script=\"%s\"", startupScript),
+			fmt.Sprintf("--scopes=%s", scopes), fmt.Sprintf("--maintenance-policy=%s", config.MaintenancePolicy), flags)
 
 		// Execute command and wait for completion.
+		out, err = cmd.CombinedOutput()
+		if err != nil {
+			errChan <- fmt.Errorf("spawning compute instance failed (code: '%v'): '%s'", err, out)
+			return
+		}
+
+		// Verify successful machine creation.
+		if bytes.Contains(out, []byte("Created")) && bytes.Contains(out, []byte("RUNNING")) {
+			fmt.Printf("Successfully spawned instance %s\n", config.Name)
+		} else {
+			errChan <- fmt.Errorf("spawning compute instance returned failure message: '%s'", out)
+			return
+		}
 	}
 
 	errChan <- nil
@@ -73,30 +95,24 @@ func shutdownInstance(confChan <-chan Config, errChan chan<- error, proj string,
 
 	for config := range confChan {
 
-		// Prepare valid boot disk name.
-		diskName := strings.Replace(config.Name, ".", "-", -1)
-
-		// Prepare command to delete boot disk that
-		// we spawned earlier.
-		cmdDisk := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj),
-			"disks", "delete", diskName, fmt.Sprintf("--zone=%s", config.Zone))
+		// Shut down compute instance.
+		cmd := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj),
+			"instances", "delete", config.Name, fmt.Sprintf("--zone=%s", config.Zone))
 
 		// Execute command and wait for completion.
-		out, err := cmdDisk.CombinedOutput()
+		out, err := cmd.CombinedOutput()
 		if err != nil {
-			errChan <- fmt.Errorf("deleting boot disk failed (code: '%v'): '%s'", err, out)
+			errChan <- fmt.Errorf("deleting compute instance failed (code: '%v'): '%s'", err, out)
 			return
 		}
 
-		// Verify successful boot disk deletion.
+		// Verify successful instance deletion.
 		if bytes.Contains(out, []byte("Deleted")) {
-			fmt.Printf("Successfully deleted disk %s for instance %s\n", diskName, config.Name)
+			fmt.Printf("Successfully deleted compute instance %s\n", config.Name)
 		} else {
-			errChan <- fmt.Errorf("deleting boot disk returned failure message: '%s'", out)
+			errChan <- fmt.Errorf("deleting compute instance returned failure message: '%s'", out)
 			return
 		}
-
-		// Shut down compute instance.
 	}
 
 	errChan <- nil
@@ -119,10 +135,16 @@ func main() {
 		os.Exit(1)
 	}
 
-	system := *systemFlag
+	system := strings.ToLower(*systemFlag)
 	gcloudProject := *gcloudProjectFlag
 	gcloudServiceAcc := *gcloudServiceAccFlag
 	gcloudBucket := *gcloudBucketFlag
+
+	// System flag has to be one of three values.
+	if system != "zeno" && system != "vuvuzela" && system != "pung" {
+		fmt.Printf("Flag '-system' requires one of the three values: 'zeno', 'vuvuzela', or 'pung'.")
+		os.Exit(1)
+	}
 
 	// Prepare configurations file for ingestion.
 	configsFile, err := filepath.Abs(*configsFileFlag)
@@ -143,7 +165,7 @@ func main() {
 
 	// If results folder does not exist yet, create it.
 	// Also, add run-specific subfolder.
-	_, err = os.Stat(allResultsPath)
+	_, err = os.Stat(resultsPath)
 	if os.IsNotExist(err) {
 
 		err := os.MkdirAll(resultsPath, 0755)
@@ -185,6 +207,8 @@ func main() {
 		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket)
 	}
 
+	fmt.Printf("Creating boot disks and spawning machines now...\n")
+
 	// Iterate over configuration slice, create
 	// boot disks and spawn instances.
 	for _, config := range configs {
@@ -202,6 +226,8 @@ func main() {
 		}
 	}
 	close(errChan)
+
+	fmt.Printf("All disks created, all machines spawned!\n\n")
 
 	// Wait for all instances to signal that
 	// they have fetched all evaluation artifacts
@@ -229,6 +255,8 @@ func main() {
 		go shutdownInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket)
 	}
 
+	fmt.Printf("Deleting boot disks and machines now...\n")
+
 	// Shutdown and destroy disks and instances.
 	for _, config := range configs {
 		confChan <- config
@@ -245,4 +273,6 @@ func main() {
 		}
 	}
 	close(errChan)
+
+	fmt.Printf("All disks and machines deleted!\n\n")
 }
