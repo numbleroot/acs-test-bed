@@ -11,12 +11,6 @@ import (
 	"path/filepath"
 )
 
-// Configs bundles all instance-individual
-// configurations into one slice.
-type Configs struct {
-	Configs []Config `json:"Configs"`
-}
-
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
@@ -38,13 +32,13 @@ type Config struct {
 func main() {
 
 	// Allow for control via command-line flags.
-	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify location where GCloud Compute configurations are supposed to be saved.")
+	configsFileFlag := flag.String("configsFile", "./gcloud-configs/", "Specify file system location where GCloud Compute configurations are supposed to be saved.")
 	flag.Parse()
 
 	// Extract parsed flag values.
-	configsPath, err := filepath.Abs(*configsPathFlag)
+	configsFile, err := filepath.Abs(*configsFileFlag)
 	if err != nil {
-		fmt.Printf("Provided configs path '%s' could not be converted to absolute path: %v\n", *configsPathFlag, err)
+		fmt.Printf("Provided configs file '%s' could not be converted to absolute path: %v\n", *configsFileFlag, err)
 		os.Exit(1)
 	}
 
@@ -89,9 +83,7 @@ func main() {
 
 	// Prepare slice of configuration lines
 	// of desired size.
-	configs := Configs{
-		Configs: make([]Config, 100),
-	}
+	configs := make([]Config, 100)
 
 	for i := 0; i < 100; i++ {
 
@@ -114,7 +106,7 @@ func main() {
 		}
 
 		// Prefill all configuration lines.
-		configs.Configs[i] = Config{
+		configs[i] = Config{
 			Name:           fmt.Sprintf("mixnet.%04d", (i + 1)),
 			MachineType:    machineType,
 			Subnet:         "default",
@@ -143,7 +135,7 @@ func main() {
 
 		// Assign 5 configs to each zone.
 		for j := 0; j < len(zones); j++ {
-			configs.Configs[((i * len(zones)) + j)].Zone = zones[j]
+			configs[((i * len(zones)) + j)].Zone = zones[j]
 		}
 	}
 
@@ -155,7 +147,7 @@ func main() {
 	}
 
 	// Write to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10.json"), configsJSON, 0644)
+	err = ioutil.WriteFile(filepath.Join(configsFile, "gcloud-mixnet-20-40-30-10.json"), configsJSON, 0644)
 	if err != nil {
 		fmt.Printf("Error writing configurations in JSON format to file: %v\n", err)
 		os.Exit(1)
