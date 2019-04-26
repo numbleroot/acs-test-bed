@@ -14,66 +14,49 @@ import (
 	"time"
 )
 
-// This has to be properly escaped.
-const startupScript = `/usr/bin/env bash -c 'curl -o ~/github.html https://github.com'`
-
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
-	Name              string   `json:"Name"`
-	Zone              string   `json:"Zone"`
-	MachineType       string   `json:"MachineType"`
-	Subnet            string   `json:"Subnet"`
-	NetworkTier       string   `json:"NetworkTier"`
-	MinCPUPlatform    string   `json:"MinCPUPlatform"`
-	Scopes            []string `json:"Scopes"`
-	SourceSnapshot    string   `json:"SourceSnapshot"`
-	BootDiskSize      string   `json:"BootDiskSize"`
-	BootDiskType      string   `json:"BootDiskType"`
-	Disk              string   `json:"Disk"`
-	MaintenancePolicy string   `json:"MaintenancePolicy"`
-	Flags             []string `json:"Flags"`
+	Name               string   `json:"Name"`
+	Zone               string   `json:"Zone"`
+	MachineType        string   `json:"MachineType"`
+	Subnet             string   `json:"Subnet"`
+	NetworkTier        string   `json:"NetworkTier"`
+	MinCPUPlatform     string   `json:"MinCPUPlatform"`
+	Scopes             []string `json:"Scopes"`
+	Image              string   `json:"Image"`
+	ImageProject       string   `json:"ImageProject"`
+	BootDiskSize       string   `json:"BootDiskSize"`
+	BootDiskType       string   `json:"BootDiskType"`
+	BootDiskDeviceName string   `json:"BootDiskDeviceName"`
+	MaintenancePolicy  string   `json:"MaintenancePolicy"`
+	Flags              []string `json:"Flags"`
+	TypeOfNode         string
+	EvaluationScript   string
+	BinaryName         string
+	ParamsTC           string
 }
 
 func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, serviceAcc string, bucket string) {
 
 	for config := range confChan {
 
-		// Prepare command to create boot disk from
-		// snapshot we created.
-		cmd := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "disks", "create", config.Name,
-			fmt.Sprintf("--size=%s", config.BootDiskSize), fmt.Sprintf("--zone=%s", config.Zone),
-			fmt.Sprintf("--source-snapshot=%s", config.SourceSnapshot), fmt.Sprintf("--type=%s", config.BootDiskType))
-
-		// Execute command and wait for completion.
-		out, err := cmd.CombinedOutput()
-		if err != nil {
-			errChan <- fmt.Errorf("creating boot disk failed (code: '%v'): '%s'", err, out)
-			return
-		}
-
-		// Verify successful boot disk creation.
-		if bytes.Contains(out, []byte("Created")) && bytes.Contains(out, []byte("READY")) {
-			fmt.Printf("Successfully created disk for instance %s\n", config.Name)
-		} else {
-			errChan <- fmt.Errorf("creating boot disk returned failure message: '%s'", out)
-			return
-		}
-
 		scopes := strings.Join(config.Scopes, ",")
 		flags := strings.Join(config.Flags, " ")
 
 		// Prepare command to create a compute
 		// instance configured according to Config.
-		cmd = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "instances", "create", config.Name,
+		cmd := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "instances", "create", config.Name,
 			fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone),
 			fmt.Sprintf("--machine-type=%s", config.MachineType), fmt.Sprintf("--min-cpu-platform=%s", config.MinCPUPlatform),
 			fmt.Sprintf("--subnet=%s", config.Subnet), fmt.Sprintf("--network-tier=%s", config.NetworkTier),
-			fmt.Sprintf("--disk=%s", config.Disk), fmt.Sprintf("--metadata=startup-script=\"%s\"", startupScript),
+			fmt.Sprintf("--image=%s", config.Image), fmt.Sprintf("--image-project=%s", config.ImageProject), fmt.Sprintf("--boot-disk-size=%s", config.BootDiskSize),
+			fmt.Sprintf("--boot-disk-type=%s", config.BootDiskType), fmt.Sprintf("--boot-disk-device-name=%s", config.BootDiskDeviceName),
+			fmt.Sprintf("--metadata=typeOfNode=%s,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,startup-script-url=gs://%s/startup.sh", config.TypeOfNode, config.EvaluationScript, config.BinaryName, config.ParamsTC, bucket),
 			fmt.Sprintf("--scopes=%s", scopes), fmt.Sprintf("--maintenance-policy=%s", config.MaintenancePolicy), flags)
 
 		// Execute command and wait for completion.
-		out, err = cmd.CombinedOutput()
+		out, err := cmd.CombinedOutput()
 		if err != nil {
 			errChan <- fmt.Errorf("spawning compute instance failed (code: '%v'): '%s'", err, out)
 			return
@@ -180,6 +163,9 @@ func main() {
 
 	// Verify it is running.
 
+	// Create a new results subfolder within the
+	// supplied GCloud Storage bucket.
+
 	// Ingest GCloud configuration file.
 	configsJSON, err := ioutil.ReadFile(configsFile)
 	if err != nil {
@@ -195,23 +181,28 @@ func main() {
 		os.Exit(1)
 	}
 
-	configs = configs[:5]
+	configs = configs[:1]
 
 	// Prepare channels to send configurations
 	// to individual workers and expect responses.
 	confChan := make(chan Config, len(configs))
 	errChan := make(chan error)
 
-	// Spawn 5 creation workers.
-	for i := 0; i < 5; i++ {
+	// Spawn 1 creation workers.
+	for i := 0; i < 1; i++ {
 		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket)
 	}
 
-	fmt.Printf("Creating boot disks and spawning machines now...\n")
+	fmt.Printf("Spawning machines now...\n")
 
-	// Iterate over configuration slice, create
-	// boot disks and spawn instances.
+	// Iterate over configuration slice and spawn instances.
 	for _, config := range configs {
+
+		config.TypeOfNode = "client"
+		config.EvaluationScript = "zeno-pki_eval.sh"
+		config.BinaryName = "zeno-pki"
+		config.ParamsTC = "none so far"
+
 		confChan <- config
 	}
 	close(confChan)
@@ -227,7 +218,7 @@ func main() {
 	}
 	close(errChan)
 
-	fmt.Printf("All disks created, all machines spawned!\n\n")
+	fmt.Printf("All machines spawned!\n\n")
 
 	// Wait for all instances to signal that
 	// they have fetched all evaluation artifacts
@@ -250,8 +241,8 @@ func main() {
 	confChan = make(chan Config, len(configs))
 	errChan = make(chan error)
 
-	// Spawn 5 deletion workers.
-	for i := 0; i < 5; i++ {
+	// Spawn 1 deletion workers.
+	for i := 0; i < 1; i++ {
 		go shutdownInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket)
 	}
 

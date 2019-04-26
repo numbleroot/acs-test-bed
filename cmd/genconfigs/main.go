@@ -14,19 +14,20 @@ import (
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
-	Name              string   `json:"Name"`
-	Zone              string   `json:"Zone"`
-	MachineType       string   `json:"MachineType"`
-	Subnet            string   `json:"Subnet"`
-	NetworkTier       string   `json:"NetworkTier"`
-	MinCPUPlatform    string   `json:"MinCPUPlatform"`
-	Scopes            []string `json:"Scopes"`
-	SourceSnapshot    string   `json:"SourceSnapshot"`
-	BootDiskSize      string   `json:"BootDiskSize"`
-	BootDiskType      string   `json:"BootDiskType"`
-	Disk              string   `json:"Disk"`
-	MaintenancePolicy string   `json:"MaintenancePolicy"`
-	Flags             []string `json:"Flags"`
+	Name               string   `json:"Name"`
+	Zone               string   `json:"Zone"`
+	MachineType        string   `json:"MachineType"`
+	Subnet             string   `json:"Subnet"`
+	NetworkTier        string   `json:"NetworkTier"`
+	MinCPUPlatform     string   `json:"MinCPUPlatform"`
+	Scopes             []string `json:"Scopes"`
+	Image              string   `json:"Image"`
+	ImageProject       string   `json:"ImageProject"`
+	BootDiskSize       string   `json:"BootDiskSize"`
+	BootDiskType       string   `json:"BootDiskType"`
+	BootDiskDeviceName string   `json:"BootDiskDeviceName"`
+	MaintenancePolicy  string   `json:"MaintenancePolicy"`
+	Flags              []string `json:"Flags"`
 }
 
 func main() {
@@ -120,11 +121,12 @@ func main() {
 				"https://www.googleapis.com/auth/trace.append",
 				"https://www.googleapis.com/auth/devstorage.full_control",
 			},
-			SourceSnapshot:    "mixnet-base",
-			BootDiskSize:      "10GB",
-			BootDiskType:      "pd-ssd",
-			Disk:              fmt.Sprintf("name=mixnet-%04d,device-name=mixnet,mode=rw,boot=yes,auto-delete=yes", (i + 1)),
-			MaintenancePolicy: "TERMINATE",
+			Image:              "ubuntu-1804-bionic-v20190404",
+			ImageProject:       "ubuntu-os-cloud",
+			BootDiskSize:       "10GB",
+			BootDiskType:       "pd-ssd",
+			BootDiskDeviceName: "mixnet",
+			MaintenancePolicy:  "TERMINATE",
 			Flags: []string{
 				"--no-restart-on-failure",
 			},
