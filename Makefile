@@ -18,3 +18,6 @@ syncscripts:
 	gsutil cp scripts/startup.sh gs://acs-eval/
 	gsutil cp scripts/zeno-pki_eval.sh gs://acs-eval/
 	gsutil cp scripts/zeno_client_eval.sh gs://acs-eval/
+
+cleanresults:
+	rm -rf results/*

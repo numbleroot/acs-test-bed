@@ -37,36 +37,63 @@ type Config struct {
 	ParamsTC           string
 }
 
-func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, serviceAcc string, bucket string) {
+func spawnInstanceCmd(config Config, proj string, serviceAcc string, bucket string, resultFolder string, pkiIP string) *exec.Cmd {
+
+	scopes := strings.Join(config.Scopes, ",")
+	flags := strings.Join(config.Flags, " ")
+
+	// Prepare command to create a compute
+	// instance configured according to Config.
+	return exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "instances", "create", config.Name,
+		fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone),
+		fmt.Sprintf("--machine-type=%s", config.MachineType), fmt.Sprintf("--min-cpu-platform=%s", config.MinCPUPlatform),
+		fmt.Sprintf("--subnet=%s", config.Subnet), fmt.Sprintf("--network-tier=%s", config.NetworkTier),
+		fmt.Sprintf("--image=%s", config.Image), fmt.Sprintf("--image-project=%s", config.ImageProject), fmt.Sprintf("--boot-disk-size=%s", config.BootDiskSize),
+		fmt.Sprintf("--boot-disk-type=%s", config.BootDiskType), fmt.Sprintf("--boot-disk-device-name=%s", config.BootDiskDeviceName),
+		fmt.Sprintf("--metadata=typeOfNode=%s,resultFolder=%s,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=%s,startup-script-url=gs://%s/startup.sh", config.TypeOfNode, resultFolder, config.EvaluationScript, config.BinaryName, config.ParamsTC, pkiIP, bucket),
+		fmt.Sprintf("--scopes=%s", scopes), fmt.Sprintf("--maintenance-policy=%s", config.MaintenancePolicy), flags,
+		"--format='flattened[no-pad](status,networkInterfaces[0].accessConfigs[0].natIP)'",
+	)
+}
+
+func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, serviceAcc string, bucket string, resultFolder string, pkiIP string) {
 
 	for config := range confChan {
 
-		scopes := strings.Join(config.Scopes, ",")
-		flags := strings.Join(config.Flags, " ")
-
-		// Prepare command to create a compute
-		// instance configured according to Config.
-		cmd := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "instances", "create", config.Name,
-			fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone),
-			fmt.Sprintf("--machine-type=%s", config.MachineType), fmt.Sprintf("--min-cpu-platform=%s", config.MinCPUPlatform),
-			fmt.Sprintf("--subnet=%s", config.Subnet), fmt.Sprintf("--network-tier=%s", config.NetworkTier),
-			fmt.Sprintf("--image=%s", config.Image), fmt.Sprintf("--image-project=%s", config.ImageProject), fmt.Sprintf("--boot-disk-size=%s", config.BootDiskSize),
-			fmt.Sprintf("--boot-disk-type=%s", config.BootDiskType), fmt.Sprintf("--boot-disk-device-name=%s", config.BootDiskDeviceName),
-			fmt.Sprintf("--metadata=typeOfNode=%s,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,startup-script-url=gs://%s/startup.sh", config.TypeOfNode, config.EvaluationScript, config.BinaryName, config.ParamsTC, bucket),
-			fmt.Sprintf("--scopes=%s", scopes), fmt.Sprintf("--maintenance-policy=%s", config.MaintenancePolicy), flags)
+		// Prepare command with all corresponding arguments.
+		cmd := spawnInstanceCmd(config, proj, serviceAcc, bucket, resultFolder, pkiIP)
 
 		// Execute command and wait for completion.
 		out, err := cmd.CombinedOutput()
 		if err != nil {
-			errChan <- fmt.Errorf("spawning compute instance failed (code: '%v'): '%s'", err, out)
+			errChan <- fmt.Errorf("spawning compute instance failed (code: '%v'):\n'%s'", err, out)
 			return
 		}
 
+		var status string
+		var externalIP string
+
+		// Parse output for expected values.
+		outParts := strings.Split(string(out), "---")
+		resultDetails := strings.Split(strings.TrimSpace(outParts[0]), " ")
+		instanceDetails := strings.Split(strings.TrimSpace(outParts[1]), "\n")
+
+		for line := range instanceDetails {
+
+			parts := strings.Split(instanceDetails[line], ": ")
+
+			if parts[0] == "status" {
+				status = parts[1]
+			} else {
+				externalIP = parts[1]
+			}
+		}
+
 		// Verify successful machine creation.
-		if bytes.Contains(out, []byte("Created")) && bytes.Contains(out, []byte("RUNNING")) {
-			fmt.Printf("Successfully spawned instance %s\n", config.Name)
+		if (resultDetails[0] == "Created") && (status == "RUNNING") {
+			fmt.Printf("Successfully spawned instance %s with public IP %s\n", config.Name, externalIP)
 		} else {
-			errChan <- fmt.Errorf("spawning compute instance returned failure message: '%s'", out)
+			errChan <- fmt.Errorf("spawning compute instance returned failure message:\n'%s'", out)
 			return
 		}
 	}
@@ -74,7 +101,7 @@ func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, se
 	errChan <- nil
 }
 
-func shutdownInstance(confChan <-chan Config, errChan chan<- error, proj string, serviceAcc string, bucket string) {
+func shutdownInstance(confChan <-chan Config, errChan chan<- error, proj string) {
 
 	for config := range confChan {
 
@@ -85,7 +112,7 @@ func shutdownInstance(confChan <-chan Config, errChan chan<- error, proj string,
 		// Execute command and wait for completion.
 		out, err := cmd.CombinedOutput()
 		if err != nil {
-			errChan <- fmt.Errorf("deleting compute instance failed (code: '%v'): '%s'", err, out)
+			errChan <- fmt.Errorf("deleting compute instance failed (code: '%v'):\n'%s'", err, out)
 			return
 		}
 
@@ -93,7 +120,7 @@ func shutdownInstance(confChan <-chan Config, errChan chan<- error, proj string,
 		if bytes.Contains(out, []byte("Deleted")) {
 			fmt.Printf("Successfully deleted compute instance %s\n", config.Name)
 		} else {
-			errChan <- fmt.Errorf("deleting compute instance returned failure message: '%s'", out)
+			errChan <- fmt.Errorf("deleting compute instance returned failure message:\n'%s'", out)
 			return
 		}
 	}
@@ -129,6 +156,10 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Create name of results folder for this evaluation
+	// run based on current time and system name.
+	resultFolder := fmt.Sprintf("%s-%s", time.Now().Format("2006-01-02-15-04-05"), system)
+
 	// Prepare configurations file for ingestion.
 	configsFile, err := filepath.Abs(*configsFileFlag)
 	if err != nil {
@@ -144,7 +175,7 @@ func main() {
 	}
 
 	// Prepare path to run-specific results folder.
-	resultsPath := filepath.Join(allResultsPath, fmt.Sprintf("%s-%s", time.Now().Format("2006-01-02-15-04-05"), system))
+	resultsPath := filepath.Join(allResultsPath, resultFolder)
 
 	// If results folder does not exist yet, create it.
 	// Also, add run-specific subfolder.
@@ -158,13 +189,75 @@ func main() {
 		}
 	}
 
-	// If zeno: create PKI with PREMIUM network
-	// tier and decent hardware specs.
+	var pkiIP string
 
-	// Verify it is running.
+	// If zeno: create PKI with decent hardware specs.
+	if system == "zeno" {
 
-	// Create a new results subfolder within the
-	// supplied GCloud Storage bucket.
+		// Prepare command with all corresponding arguments.
+		cmd := spawnInstanceCmd(Config{
+			Name:           "zeno-pki",
+			Zone:           "europe-west3-a",
+			MachineType:    "f1-micro",
+			Subnet:         "default",
+			NetworkTier:    "PREMIUM",
+			MinCPUPlatform: "Intel Skylake",
+			Scopes: []string{
+				"https://www.googleapis.com/auth/servicecontrol",
+				"https://www.googleapis.com/auth/service.management.readonly",
+				"https://www.googleapis.com/auth/logging.write",
+				"https://www.googleapis.com/auth/monitoring.write",
+				"https://www.googleapis.com/auth/trace.append",
+				"https://www.googleapis.com/auth/devstorage.full_control",
+			},
+			Image:              "ubuntu-1804-bionic-v20190429",
+			ImageProject:       "ubuntu-os-cloud",
+			BootDiskSize:       "10GB",
+			BootDiskType:       "pd-ssd",
+			BootDiskDeviceName: "mixnet",
+			MaintenancePolicy:  "TERMINATE",
+			Flags: []string{
+				"--no-restart-on-failure",
+			},
+			TypeOfNode:       "zeno-pki",
+			EvaluationScript: "zeno-pki_eval.sh",
+			BinaryName:       "zeno-pki",
+			ParamsTC:         "irrelevant",
+		}, gcloudProject, gcloudServiceAcc, gcloudBucket, "irrelevant", "irrelevant")
+
+		// Execute command and wait for completion.
+		out, err := cmd.CombinedOutput()
+		if err != nil {
+			fmt.Printf("Spawning PKI for zeno mix-net failed (code: '%v'): '%s'", err, out)
+			os.Exit(1)
+		}
+
+		var status string
+
+		// Parse output for expected values.
+		outParts := strings.Split(string(out), "---")
+		resultDetails := strings.Split(strings.TrimSpace(outParts[0]), " ")
+		instanceDetails := strings.Split(strings.TrimSpace(outParts[1]), "\n")
+
+		for line := range instanceDetails {
+
+			parts := strings.Split(instanceDetails[line], ": ")
+
+			if parts[0] == "status" {
+				status = parts[1]
+			} else {
+				pkiIP = parts[1]
+			}
+		}
+
+		// Verify successful machine creation.
+		if (resultDetails[0] == "Created") && (status == "RUNNING") {
+			fmt.Printf("Successfully spawned PKI for zeno mix-net with public IP %s\n", pkiIP)
+		} else {
+			fmt.Printf("Spawning PKI for zeno mix-net returned failure message:\n'%s'\n", out)
+			os.Exit(1)
+		}
+	}
 
 	// Ingest GCloud configuration file.
 	configsJSON, err := ioutil.ReadFile(configsFile)
@@ -190,7 +283,7 @@ func main() {
 
 	// Spawn 1 creation workers.
 	for i := 0; i < 1; i++ {
-		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket)
+		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket, resultFolder, pkiIP)
 	}
 
 	fmt.Printf("Spawning machines now...\n")
@@ -243,7 +336,7 @@ func main() {
 
 	// Spawn 1 deletion workers.
 	for i := 0; i < 1; i++ {
-		go shutdownInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket)
+		go shutdownInstance(confChan, errChan, gcloudProject)
 	}
 
 	fmt.Printf("Deleting boot disks and machines now...\n")

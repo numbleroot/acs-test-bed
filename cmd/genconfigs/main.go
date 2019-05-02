@@ -121,7 +121,7 @@ func main() {
 				"https://www.googleapis.com/auth/trace.append",
 				"https://www.googleapis.com/auth/devstorage.full_control",
 			},
-			Image:              "ubuntu-1804-bionic-v20190404",
+			Image:              "ubuntu-1804-bionic-v20190429",
 			ImageProject:       "ubuntu-os-cloud",
 			BootDiskSize:       "10GB",
 			BootDiskType:       "pd-ssd",
