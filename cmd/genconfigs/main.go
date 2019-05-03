@@ -398,5 +398,47 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Additionally, create configuration for zeno's PKI node.
+	zenoPKIConfigsJSON, err := json.MarshalIndent(Config{
+		Name:           "zeno-pki",
+		Zone:           "europe-west3-a",
+		MachineType:    "f1-micro",
+		Subnet:         "default",
+		NetworkTier:    "PREMIUM",
+		MinCPUPlatform: "Intel Skylake",
+		Scopes: []string{
+			"https://www.googleapis.com/auth/servicecontrol",
+			"https://www.googleapis.com/auth/service.management.readonly",
+			"https://www.googleapis.com/auth/logging.write",
+			"https://www.googleapis.com/auth/monitoring.write",
+			"https://www.googleapis.com/auth/trace.append",
+			"https://www.googleapis.com/auth/devstorage.full_control",
+		},
+		Image:              "ubuntu-1804-bionic-v20190429",
+		ImageProject:       "ubuntu-os-cloud",
+		BootDiskSize:       "10GB",
+		BootDiskType:       "pd-ssd",
+		BootDiskDeviceName: "mixnet",
+		MaintenancePolicy:  "TERMINATE",
+		Flags: []string{
+			"--no-restart-on-failure",
+		},
+		TypeOfNode:       "zeno-pki",
+		EvaluationScript: "zeno-pki_eval.sh",
+		BinaryName:       "zeno-pki",
+		ParamsTC:         "irrelevant",
+	}, "", "\t")
+	if err != nil {
+		fmt.Printf("Failed to marshal configuration for zeno's PKI to JSON: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Write PKI configuration for zeno to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10_zeno-pki.json"), zenoPKIConfigsJSON, 0644)
+	if err != nil {
+		fmt.Printf("Error writing configuration for zeno's PKI in JSON format to file: %v\n", err)
+		os.Exit(1)
+	}
+
 	fmt.Printf("All done!\n")
 }

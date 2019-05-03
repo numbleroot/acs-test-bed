@@ -31,10 +31,10 @@ type Config struct {
 	BootDiskDeviceName string   `json:"BootDiskDeviceName"`
 	MaintenancePolicy  string   `json:"MaintenancePolicy"`
 	Flags              []string `json:"Flags"`
-	TypeOfNode         string
-	EvaluationScript   string
-	BinaryName         string
-	ParamsTC           string
+	TypeOfNode         string   `json:"TypeOfNode"`
+	EvaluationScript   string   `json:"EvaluationScript"`
+	BinaryName         string   `json:"BinaryName"`
+	ParamsTC           string   `json:"ParamsTC"`
 }
 
 func spawnInstanceCmd(config Config, proj string, serviceAcc string, bucket string, resultFolder string, pkiIP string) *exec.Cmd {
@@ -132,8 +132,8 @@ func main() {
 
 	// Expect a number of command-line arguments.
 	systemFlag := flag.String("system", "", "Specify which ACS to evaluate: 'zeno', 'vuvuzela', 'pung'.")
-	configsFileFlag := flag.String("configsFile", "./gcloud-configs/gcloud-mixnet-20-40-30-10.json", "Specify the file system location of the configuration file for the compute instances.")
-	resultsPathFlag := flag.String("resultsFile", "./results/", "Specify the file system location of the top-level results directory to create a new results folder under.")
+	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify the file system location of the configurations folder for the compute instances.")
+	resultsPathFlag := flag.String("resultsPath", "./results/", "Specify the file system location of the top-level results directory to create a new results folder under.")
 	gcloudProjectFlag := flag.String("gcloudProj", "", "Supply the GCloud project identifier.")
 	gcloudServiceAccFlag := flag.String("gcloudServiceAcc", "", "Supply the GCloud Service Account identifier.")
 	gcloudBucketFlag := flag.String("gcloudBucket", "", "Supply the GCloud Storage Bucket to use for the experiments.")
@@ -160,13 +160,6 @@ func main() {
 	// run based on current time and system name.
 	resultFolder := fmt.Sprintf("%s-%s", time.Now().Format("2006-01-02-15-04-05"), system)
 
-	// Prepare configurations file for ingestion.
-	configsFile, err := filepath.Abs(*configsFileFlag)
-	if err != nil {
-		fmt.Printf("Provided configs file '%s' could not be converted to absolute path: %v\n", *configsFileFlag, err)
-		os.Exit(1)
-	}
-
 	// Prepare local results folder.
 	allResultsPath, err := filepath.Abs(*resultsPathFlag)
 	if err != nil {
@@ -179,14 +172,58 @@ func main() {
 
 	// If results folder does not exist yet, create it.
 	// Also, add run-specific subfolder.
-	_, err = os.Stat(resultsPath)
-	if os.IsNotExist(err) {
+	err = os.MkdirAll(resultsPath, 0755)
+	if err != nil {
+		fmt.Printf("Failed to create results folder %s: %v\n", resultsPath, err)
+		os.Exit(1)
+	}
 
-		err := os.MkdirAll(resultsPath, 0755)
+	var configsFile string
+
+	if system == "zeno" {
+
+		// Prepare zeno configurations file for ingestion.
+		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-mixnet-20-40-30-10_zeno.json")
+		configsFile, err = filepath.Abs(configsFileRel)
 		if err != nil {
-			fmt.Printf("Failed to create results folder %s: %v\n", resultsPath, err)
+			fmt.Printf("Unable to obtain absolute path to zeno configurations file '%s': %v\n", configsFileRel, err)
 			os.Exit(1)
 		}
+
+	} else if system == "vuvuzela" {
+
+		// Prepare vuvuzela configurations file for ingestion.
+		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-mixnet-20-40-30-10_vuvuzela.json")
+		configsFile, err = filepath.Abs(configsFileRel)
+		if err != nil {
+			fmt.Printf("Unable to obtain absolute path to vuvuzela configurations file '%s': %v\n", configsFileRel, err)
+			os.Exit(1)
+		}
+
+	} else if system == "pung" {
+
+		// Prepare pung configurations file for ingestion.
+		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-mixnet-20-40-30-10_pung.json")
+		configsFile, err = filepath.Abs(configsFileRel)
+		if err != nil {
+			fmt.Printf("Unable to obtain absolute path to pung configurations file '%s': %v\n", configsFileRel, err)
+			os.Exit(1)
+		}
+	}
+
+	// Ingest GCloud configuration file.
+	configsJSON, err := ioutil.ReadFile(configsFile)
+	if err != nil {
+		fmt.Printf("Failed ingesting GCloud configuration file: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Unmarshal JSON.
+	var configs []Config
+	err = json.Unmarshal(configsJSON, &configs)
+	if err != nil {
+		fmt.Printf("Error while trying to unmarshal JSON-encoded GCloud configurations: %v\n", err)
+		os.Exit(1)
 	}
 
 	var pkiIP string
@@ -194,36 +231,31 @@ func main() {
 	// If zeno: create PKI with decent hardware specs.
 	if system == "zeno" {
 
+		// Retrieve file defining PKI configuration.
+		pkiConfigFileRel := filepath.Join(*configsPathFlag, "gcloud-mixnet-20-40-30-10_zeno-pki.json")
+		pkiConfigFile, err := filepath.Abs(pkiConfigFileRel)
+		if err != nil {
+			fmt.Printf("Unable to obtain absolute path to PKI configuration file for zeno '%s': %v\n", pkiConfigFileRel, err)
+			os.Exit(1)
+		}
+
+		// Ingest GCloud configuration file.
+		pkiConfigJSON, err := ioutil.ReadFile(pkiConfigFile)
+		if err != nil {
+			fmt.Printf("Failed ingesting GCloud configuration file for zeno PKI: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Unmarshal JSON.
+		var pkiConfig Config
+		err = json.Unmarshal(pkiConfigJSON, &pkiConfig)
+		if err != nil {
+			fmt.Printf("Error while trying to unmarshal JSON-encoded GCloud configuration for zeno PKI: %v\n", err)
+			os.Exit(1)
+		}
+
 		// Prepare command with all corresponding arguments.
-		cmd := spawnInstanceCmd(Config{
-			Name:           "zeno-pki",
-			Zone:           "europe-west3-a",
-			MachineType:    "f1-micro",
-			Subnet:         "default",
-			NetworkTier:    "PREMIUM",
-			MinCPUPlatform: "Intel Skylake",
-			Scopes: []string{
-				"https://www.googleapis.com/auth/servicecontrol",
-				"https://www.googleapis.com/auth/service.management.readonly",
-				"https://www.googleapis.com/auth/logging.write",
-				"https://www.googleapis.com/auth/monitoring.write",
-				"https://www.googleapis.com/auth/trace.append",
-				"https://www.googleapis.com/auth/devstorage.full_control",
-			},
-			Image:              "ubuntu-1804-bionic-v20190429",
-			ImageProject:       "ubuntu-os-cloud",
-			BootDiskSize:       "10GB",
-			BootDiskType:       "pd-ssd",
-			BootDiskDeviceName: "mixnet",
-			MaintenancePolicy:  "TERMINATE",
-			Flags: []string{
-				"--no-restart-on-failure",
-			},
-			TypeOfNode:       "zeno-pki",
-			EvaluationScript: "zeno-pki_eval.sh",
-			BinaryName:       "zeno-pki",
-			ParamsTC:         "irrelevant",
-		}, gcloudProject, gcloudServiceAcc, gcloudBucket, "irrelevant", "irrelevant")
+		cmd := spawnInstanceCmd(pkiConfig, gcloudProject, gcloudServiceAcc, gcloudBucket, "irrelevant", "irrelevant")
 
 		// Execute command and wait for completion.
 		out, err := cmd.CombinedOutput()
@@ -259,21 +291,6 @@ func main() {
 		}
 	}
 
-	// Ingest GCloud configuration file.
-	configsJSON, err := ioutil.ReadFile(configsFile)
-	if err != nil {
-		fmt.Printf("Failed ingesting GCloud configuration file: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Unmarshal JSON.
-	var configs []Config
-	err = json.Unmarshal(configsJSON, &configs)
-	if err != nil {
-		fmt.Printf("Error while trying to unmarshal JSON-encoded GCloud configurations: %v\n", err)
-		os.Exit(1)
-	}
-
 	configs = configs[:1]
 
 	// Prepare channels to send configurations
@@ -290,12 +307,6 @@ func main() {
 
 	// Iterate over configuration slice and spawn instances.
 	for _, config := range configs {
-
-		config.TypeOfNode = "client"
-		config.EvaluationScript = "zeno-pki_eval.sh"
-		config.BinaryName = "zeno-pki"
-		config.ParamsTC = "none so far"
-
 		confChan <- config
 	}
 	close(confChan)
