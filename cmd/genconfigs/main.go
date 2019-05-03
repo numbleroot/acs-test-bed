@@ -28,47 +28,41 @@ type Config struct {
 	BootDiskDeviceName string   `json:"BootDiskDeviceName"`
 	MaintenancePolicy  string   `json:"MaintenancePolicy"`
 	Flags              []string `json:"Flags"`
+	TypeOfNode         string   `json:"TypeOfNode"`
+	EvaluationScript   string   `json:"EvaluationScript"`
+	BinaryName         string   `json:"BinaryName"`
+	ParamsTC           string   `json:"ParamsTC"`
 }
 
-func main() {
+// GCloudZones contains all geographical
+// zones GCP has to offer for compute nodes.
+var GCloudZones = [20]string{
+	"asia-east1-b",
+	"asia-east2-b",
+	"asia-northeast1-b",
+	"asia-northeast2-b",
+	"asia-south1-b",
+	"asia-southeast1-b",
+	"australia-southeast1-b",
+	"europe-north1-b",
+	"europe-west1-b",
+	"europe-west2-b",
+	"europe-west3-b",
+	"europe-west4-b",
+	"europe-west6-b",
+	"northamerica-northeast1-b",
+	"southamerica-east1-b",
+	"us-central1-b",
+	"us-east1-b",
+	"us-east4-b",
+	"us-west1-b",
+	"us-west2-b",
+}
 
-	// Allow for control via command-line flags.
-	configsFileFlag := flag.String("configsFile", "./gcloud-configs/", "Specify file system location where GCloud Compute configurations are supposed to be saved.")
-	flag.Parse()
-
-	// Extract parsed flag values.
-	configsFile, err := filepath.Abs(*configsFileFlag)
-	if err != nil {
-		fmt.Printf("Provided configs file '%s' could not be converted to absolute path: %v\n", *configsFileFlag, err)
-		os.Exit(1)
-	}
-
-	// All GCloud zones.
-	zones := []string{
-		"asia-east1-b",
-		"asia-east2-b",
-		"asia-northeast1-b",
-		"asia-northeast2-b",
-		"asia-south1-b",
-		"asia-southeast1-b",
-		"australia-southeast1-b",
-		"europe-north1-b",
-		"europe-west1-b",
-		"europe-west2-b",
-		"europe-west3-b",
-		"europe-west4-b",
-		"europe-west6-b",
-		"northamerica-northeast1-b",
-		"southamerica-east1-b",
-		"us-central1-b",
-		"us-east1-b",
-		"us-east4-b",
-		"us-west1-b",
-		"us-west2-b",
-	}
+func shuffleZones() {
 
 	// Shuffle zones slice.
-	for i := (len(zones) - 1); i > 0; i-- {
+	for i := (len(GCloudZones) - 1); i > 0; i-- {
 
 		// Generate new CSPRNG number smaller than i.
 		jBig, err := rand.Int(rand.Reader, big.NewInt(int64(i)))
@@ -79,36 +73,85 @@ func main() {
 		j := int(jBig.Int64())
 
 		// Swap places i and j in zones slice.
-		zones[i], zones[j] = zones[j], zones[i]
+		GCloudZones[i], GCloudZones[j] = GCloudZones[j], GCloudZones[i]
+	}
+}
+
+func main() {
+
+	// Allow for control via command-line flags.
+	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify file system location where GCloud Compute configurations are supposed to be saved.")
+	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate according to the 20%%-40%%-30%%-10%% machine power classification. Must be a multiple of 100.")
+	numMixesToGenFlag := flag.Int("numMixesToGen", 7, "Specify the number of mix nodes to generate in addition to the number of clients specified.")
+	flag.Parse()
+
+	// Extract parsed flag values.
+	configsPath, err := filepath.Abs(*configsPathFlag)
+	if err != nil {
+		fmt.Printf("Provided path to configuration files '%s' could not be converted to absolute path: %v\n", *configsPathFlag, err)
+		os.Exit(1)
 	}
 
-	// Prepare slice of configuration lines
-	// of desired size.
-	configs := make([]Config, 100)
+	// Create configuration files folder
+	// if it does not exist.
+	err = os.MkdirAll(configsPath, 0755)
+	if err != nil {
+		fmt.Printf("Failed to create configurations folder %s: %v\n", configsPath, err)
+		os.Exit(1)
+	}
 
-	for i := 0; i < 100; i++ {
+	// Expect number of clients to generate
+	// to be a multiple of 100.
+	if (*numClientsToGenFlag % 100) != 0 {
+		fmt.Printf("Specified number of client nodes to generate (%d) is not a multiple of 100. Please correct.\n", *numClientsToGenFlag)
+		os.Exit(1)
+	}
+	numClientsToGen := *numClientsToGenFlag
+	numClientsFactor := numClientsToGen / 100
+	numMixesToGen := *numMixesToGenFlag
+
+	// Prepare slices for respective client
+	// compute node configurations.
+	zenoConfigs := make([]Config, 0, (numClientsToGen + numMixesToGen))
+	vuvuzelaConfigs := make([]Config, 0, (numClientsToGen + numMixesToGen))
+	pungConfigs := make([]Config, 0, (numClientsToGen + 1))
+
+	// Shuffle zones array.
+	shuffleZones()
+	zoneIdx := 0
+
+	for i := 0; i < numClientsToGen; i++ {
 
 		// Base machine specification on a distribution
 		// approximating real-life hardware availability.
-		var machineType string
+		machineType := "f1-micro"
 
 		switch {
-		case i >= 0 && i < 20:
+		case (i >= (numClientsFactor * 20)) && (i < (numClientsFactor * 60)):
 			machineType = "f1-micro"
 
-		case i >= 20 && i < 60:
+		case (i >= (numClientsFactor * 60)) && (i < (numClientsFactor * 90)):
 			machineType = "f1-micro"
 
-		case i >= 60 && i < 90:
-			machineType = "f1-micro"
-
-		case i >= 90 && i < 100:
+		case (i >= (numClientsFactor * 90)) && (i < (numClientsFactor * 100)):
 			machineType = "f1-micro"
 		}
 
+		// Pick next zone from randomized zones array.
+		zone := GCloudZones[zoneIdx]
+
+		// Increment counter. If we traversed zones array
+		// once, shuffle it again and reset index.
+		zoneIdx++
+		if zoneIdx == len(GCloudZones) {
+			shuffleZones()
+			zoneIdx = 0
+		}
+
 		// Prefill all configuration lines.
-		configs[i] = Config{
-			Name:           fmt.Sprintf("mixnet-%04d", (i + 1)),
+		zenoConfigs = append(zenoConfigs, Config{
+			Name:           fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:           zone,
 			MachineType:    machineType,
 			Subnet:         "default",
 			NetworkTier:    "PREMIUM",
@@ -130,28 +173,230 @@ func main() {
 			Flags: []string{
 				"--no-restart-on-failure",
 			},
+			TypeOfNode:       "client",
+			EvaluationScript: "zeno_client_eval.sh",
+			BinaryName:       "zeno",
+			ParamsTC:         "none so far",
+		})
+
+		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
+			Name:           fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:           zone,
+			MachineType:    machineType,
+			Subnet:         "default",
+			NetworkTier:    "PREMIUM",
+			MinCPUPlatform: "Intel Skylake",
+			Scopes: []string{
+				"https://www.googleapis.com/auth/servicecontrol",
+				"https://www.googleapis.com/auth/service.management.readonly",
+				"https://www.googleapis.com/auth/logging.write",
+				"https://www.googleapis.com/auth/monitoring.write",
+				"https://www.googleapis.com/auth/trace.append",
+				"https://www.googleapis.com/auth/devstorage.full_control",
+			},
+			Image:              "ubuntu-1804-bionic-v20190429",
+			ImageProject:       "ubuntu-os-cloud",
+			BootDiskSize:       "10GB",
+			BootDiskType:       "pd-ssd",
+			BootDiskDeviceName: "mixnet",
+			MaintenancePolicy:  "TERMINATE",
+			Flags: []string{
+				"--no-restart-on-failure",
+			},
+			TypeOfNode:       "client",
+			EvaluationScript: "vuvuzela-client_eval.sh",
+			BinaryName:       "vuvuzela-client",
+			ParamsTC:         "none so far",
+		})
+
+		pungConfigs = append(pungConfigs, Config{
+			Name:           fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:           zone,
+			MachineType:    machineType,
+			Subnet:         "default",
+			NetworkTier:    "PREMIUM",
+			MinCPUPlatform: "Intel Skylake",
+			Scopes: []string{
+				"https://www.googleapis.com/auth/servicecontrol",
+				"https://www.googleapis.com/auth/service.management.readonly",
+				"https://www.googleapis.com/auth/logging.write",
+				"https://www.googleapis.com/auth/monitoring.write",
+				"https://www.googleapis.com/auth/trace.append",
+				"https://www.googleapis.com/auth/devstorage.full_control",
+			},
+			Image:              "ubuntu-1804-bionic-v20190429",
+			ImageProject:       "ubuntu-os-cloud",
+			BootDiskSize:       "10GB",
+			BootDiskType:       "pd-ssd",
+			BootDiskDeviceName: "mixnet",
+			MaintenancePolicy:  "TERMINATE",
+			Flags: []string{
+				"--no-restart-on-failure",
+			},
+			TypeOfNode:       "client",
+			EvaluationScript: "pung_client_eval.sh",
+			BinaryName:       "pung",
+			ParamsTC:         "none so far",
+		})
+	}
+
+	// Reset zones array and counter.
+	shuffleZones()
+	zoneIdx = 0
+
+	// Also generate the specified number
+	// of mix or server nodes.
+	for i := numClientsToGen; i < (numClientsToGen + numMixesToGen); i++ {
+
+		// Pick next zone from randomized zones array.
+		zone := GCloudZones[zoneIdx]
+
+		// Increment counter. If we traversed zones array
+		// once, shuffle it again and reset index.
+		zoneIdx++
+		if zoneIdx == len(GCloudZones) {
+			shuffleZones()
+			zoneIdx = 0
+		}
+
+		zenoConfigs = append(zenoConfigs, Config{
+			Name:           fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:           zone,
+			MachineType:    "f1-micro",
+			Subnet:         "default",
+			NetworkTier:    "PREMIUM",
+			MinCPUPlatform: "Intel Skylake",
+			Scopes: []string{
+				"https://www.googleapis.com/auth/servicecontrol",
+				"https://www.googleapis.com/auth/service.management.readonly",
+				"https://www.googleapis.com/auth/logging.write",
+				"https://www.googleapis.com/auth/monitoring.write",
+				"https://www.googleapis.com/auth/trace.append",
+				"https://www.googleapis.com/auth/devstorage.full_control",
+			},
+			Image:              "ubuntu-1804-bionic-v20190429",
+			ImageProject:       "ubuntu-os-cloud",
+			BootDiskSize:       "10GB",
+			BootDiskType:       "pd-ssd",
+			BootDiskDeviceName: "mixnet",
+			MaintenancePolicy:  "TERMINATE",
+			Flags: []string{
+				"--no-restart-on-failure",
+			},
+			TypeOfNode:       "mix",
+			EvaluationScript: "zeno_mix_eval.sh",
+			BinaryName:       "zeno",
+			ParamsTC:         "none so far",
+		})
+
+		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
+			Name:           fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:           zone,
+			MachineType:    "f1-micro",
+			Subnet:         "default",
+			NetworkTier:    "PREMIUM",
+			MinCPUPlatform: "Intel Skylake",
+			Scopes: []string{
+				"https://www.googleapis.com/auth/servicecontrol",
+				"https://www.googleapis.com/auth/service.management.readonly",
+				"https://www.googleapis.com/auth/logging.write",
+				"https://www.googleapis.com/auth/monitoring.write",
+				"https://www.googleapis.com/auth/trace.append",
+				"https://www.googleapis.com/auth/devstorage.full_control",
+			},
+			Image:              "ubuntu-1804-bionic-v20190429",
+			ImageProject:       "ubuntu-os-cloud",
+			BootDiskSize:       "10GB",
+			BootDiskType:       "pd-ssd",
+			BootDiskDeviceName: "mixnet",
+			MaintenancePolicy:  "TERMINATE",
+			Flags: []string{
+				"--no-restart-on-failure",
+			},
+			TypeOfNode:       "vuvuzela-mixer",
+			EvaluationScript: "vuvuzela-mixer_eval.sh",
+			BinaryName:       "vuvuzela-mixer",
+			ParamsTC:         "none so far",
+		})
+
+		if i == numClientsToGen {
+			vuvuzelaConfigs[i].TypeOfNode = "vuvuzela-coordinator"
+			vuvuzelaConfigs[i].EvaluationScript = "vuvuzela-coordinator_eval.sh"
+			vuvuzelaConfigs[i].BinaryName = "vuvuzela-coordinator_eval.sh"
 		}
 	}
 
-	for i := 0; i < 5; i++ {
+	pungConfigs = append(pungConfigs, Config{
+		Name:           fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
+		Zone:           GCloudZones[0],
+		MachineType:    "f1-micro",
+		Subnet:         "default",
+		NetworkTier:    "PREMIUM",
+		MinCPUPlatform: "Intel Skylake",
+		Scopes: []string{
+			"https://www.googleapis.com/auth/servicecontrol",
+			"https://www.googleapis.com/auth/service.management.readonly",
+			"https://www.googleapis.com/auth/logging.write",
+			"https://www.googleapis.com/auth/monitoring.write",
+			"https://www.googleapis.com/auth/trace.append",
+			"https://www.googleapis.com/auth/devstorage.full_control",
+		},
+		Image:              "ubuntu-1804-bionic-v20190429",
+		ImageProject:       "ubuntu-os-cloud",
+		BootDiskSize:       "10GB",
+		BootDiskType:       "pd-ssd",
+		BootDiskDeviceName: "mixnet",
+		MaintenancePolicy:  "TERMINATE",
+		Flags: []string{
+			"--no-restart-on-failure",
+		},
+		TypeOfNode:       "server",
+		EvaluationScript: "pung_server_eval.sh",
+		BinaryName:       "pung",
+		ParamsTC:         "none so far",
+	})
 
-		// Assign 5 configs to each zone.
-		for j := 0; j < len(zones); j++ {
-			configs[((i * len(zones)) + j)].Zone = zones[j]
-		}
-	}
-
-	// Marshal slice of configs to JSON.
-	configsJSON, err := json.MarshalIndent(configs, "", "\t")
+	// Marshal slice of zeno configs to JSON.
+	zenoConfigsJSON, err := json.MarshalIndent(zenoConfigs, "", "\t")
 	if err != nil {
-		fmt.Printf("Failed to marshal configurations to JSON: %v\n", err)
+		fmt.Printf("Failed to marshal zeno configurations to JSON: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Write to file.
-	err = ioutil.WriteFile(filepath.Join(configsFile, "gcloud-mixnet-20-40-30-10.json"), configsJSON, 0644)
+	// Write zeno configs to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10_zeno.json"), zenoConfigsJSON, 0644)
 	if err != nil {
-		fmt.Printf("Error writing configurations in JSON format to file: %v\n", err)
+		fmt.Printf("Error writing zeno configurations in JSON format to file: %v\n", err)
 		os.Exit(1)
 	}
+
+	// Marshal slice of Vuvuzela configs to JSON.
+	vuvuzelaConfigsJSON, err := json.MarshalIndent(vuvuzelaConfigs, "", "\t")
+	if err != nil {
+		fmt.Printf("Failed to marshal vuvuzela configurations to JSON: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Write vuvuzela configs to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10_vuvuzela.json"), vuvuzelaConfigsJSON, 0644)
+	if err != nil {
+		fmt.Printf("Error writing vuvuzela configurations in JSON format to file: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Marshal slice of pung configs to JSON.
+	pungConfigsJSON, err := json.MarshalIndent(pungConfigs, "", "\t")
+	if err != nil {
+		fmt.Printf("Failed to marshal pung configurations to JSON: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Write pung configs to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10_pung.json"), pungConfigsJSON, 0644)
+	if err != nil {
+		fmt.Printf("Error writing pung configurations in JSON format to file: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("All done!\n")
 }
