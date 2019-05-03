@@ -1,4 +1,4 @@
-.PHONY: all clean genconfigs runexperiments build syncscripts
+.PHONY: all clean genconfigs runexperiments build syncbucket
 
 all: clean build
 
@@ -14,16 +14,10 @@ runexperiments:
 
 build: genconfigs runexperiments
 
-syncscripts:
-	gsutil cp scripts/startup.sh gs://acs-eval/
-	gsutil cp scripts/zeno-pki_eval.sh gs://acs-eval/
-	gsutil cp scripts/zeno_client_eval.sh gs://acs-eval/
-	gsutil cp scripts/zeno_mix_eval.sh gs://acs-eval/
-	gsutil cp scripts/vuvuzela-client_eval.sh gs://acs-eval/
-	gsutil cp scripts/vuvuzela-coordinator_eval.sh gs://acs-eval/
-	gsutil cp scripts/vuvuzela-mixer_eval.sh gs://acs-eval/
-	gsutil cp scripts/pung_client_eval.sh gs://acs-eval/
-	gsutil cp scripts/pung_server_eval.sh gs://acs-eval/
+syncbucket:
+	gsutil cp scripts/* gs://acs-eval/
+	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno/zeno gs://acs-eval/zeno
+	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno-pki/zeno-pki gs://acs-eval/zeno-pki
 
 cleanresults:
 	rm -rf results/*
