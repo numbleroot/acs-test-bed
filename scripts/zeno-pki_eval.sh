@@ -14,4 +14,4 @@ upload_cert() {
 upload_cert &
 
 # Run main PKI process.
-~/zeno-pki -publicAddr ${EXTERNAL_IP}:33000 -listenAddr 0.0.0.0:33000
+~/zeno-pki -publicAddr ${LISTEN_IP}:33000 -listenAddr 0.0.0.0:33000

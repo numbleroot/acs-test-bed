@@ -34,9 +34,9 @@ type Config struct {
 	ParamsTC           string `json:"ParamsTC"`
 }
 
-// GCloudZones contains all geographical
+// GCloudZones contains all but one geographical
 // zones GCP has to offer for compute nodes.
-var GCloudZones = [20]string{
+var GCloudZones = [19]string{
 	"asia-east1-b",
 	"asia-east2-b",
 	"asia-northeast1-b",
@@ -51,7 +51,6 @@ var GCloudZones = [20]string{
 	"europe-west4-b",
 	"europe-west6-b",
 	"northamerica-northeast1-b",
-	"southamerica-east1-b",
 	"us-central1-b",
 	"us-east1-b",
 	"us-east4-b",
