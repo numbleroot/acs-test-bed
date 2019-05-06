@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 )
@@ -44,45 +45,26 @@ func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, se
 
 		// Prepare command with all corresponding arguments.
 		cmd := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "instances", "create", config.Name,
-			fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone),
+			fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone), "--no-address",
 			fmt.Sprintf("--machine-type=%s", config.MachineType), fmt.Sprintf("--min-cpu-platform=%s", config.MinCPUPlatform),
 			fmt.Sprintf("--subnet=%s", config.Subnet), fmt.Sprintf("--network-tier=%s", config.NetworkTier),
 			fmt.Sprintf("--image=%s", config.Image), fmt.Sprintf("--image-project=%s", config.ImageProject), fmt.Sprintf("--boot-disk-size=%s", config.BootDiskSize),
 			fmt.Sprintf("--boot-disk-type=%s", config.BootDiskType), fmt.Sprintf("--boot-disk-device-name=%s", config.BootDiskDeviceName),
 			fmt.Sprintf("--metadata=typeOfNode=%s,resultFolder=%s,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=%s,startup-script-url=gs://%s/startup.sh", config.TypeOfNode, resultFolder, config.EvaluationScript, config.BinaryName, config.ParamsTC, pkiIP, bucket),
 			fmt.Sprintf("--scopes=%s", config.Scopes), fmt.Sprintf("--maintenance-policy=%s", config.MaintenancePolicy), config.Flags,
-			"--format='flattened[no-pad](status,networkInterfaces[0].accessConfigs[0].natIP)'",
 		)
 
 		// Execute command and wait for completion.
-		out, err := cmd.CombinedOutput()
+		outRaw, err := cmd.CombinedOutput()
 		if err != nil {
-			errChan <- fmt.Errorf("spawning compute instance failed (code: '%v'):\n'%s'", err, out)
+			errChan <- fmt.Errorf("spawning compute instance failed (code: '%v'):\n'%s'", err, outRaw)
 			return
 		}
-
-		var status string
-		var externalIP string
-
-		// Parse output for expected values.
-		outParts := strings.Split(string(out), "---")
-		resultDetails := strings.Split(strings.TrimSpace(outParts[0]), " ")
-		instanceDetails := strings.Split(strings.TrimSpace(outParts[1]), "\n")
-
-		for line := range instanceDetails {
-
-			parts := strings.Split(instanceDetails[line], ": ")
-
-			if parts[0] == "status" {
-				status = parts[1]
-			} else {
-				externalIP = parts[1]
-			}
-		}
+		out := string(outRaw)
 
 		// Verify successful machine creation.
-		if (resultDetails[0] == "Created") && (status == "RUNNING") {
-			fmt.Printf("Successfully spawned instance %s with public IP %s\n", config.Name, externalIP)
+		if strings.Contains(out, "RUNNING") {
+			fmt.Printf("Successfully spawned instance %s\n", config.Name)
 		} else {
 			errChan <- fmt.Errorf("spawning compute instance returned failure message:\n'%s'", out)
 			return
@@ -253,38 +235,30 @@ func main() {
 			fmt.Sprintf("--image=%s", pkiConfig.Image), fmt.Sprintf("--image-project=%s", pkiConfig.ImageProject), fmt.Sprintf("--boot-disk-size=%s", pkiConfig.BootDiskSize),
 			fmt.Sprintf("--boot-disk-type=%s", pkiConfig.BootDiskType), fmt.Sprintf("--boot-disk-device-name=%s", pkiConfig.BootDiskDeviceName),
 			fmt.Sprintf("--metadata=typeOfNode=%s,resultFolder=irrelevant,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=irrelevant,startup-script-url=gs://%s/startup.sh", pkiConfig.TypeOfNode, pkiConfig.EvaluationScript, pkiConfig.BinaryName, pkiConfig.ParamsTC, gcloudBucket),
-			fmt.Sprintf("--scopes=%s", pkiConfig.Scopes), fmt.Sprintf("--maintenance-policy=%s", pkiConfig.MaintenancePolicy), pkiConfig.Flags,
-			"--format='flattened[no-pad](status,networkInterfaces[0].accessConfigs[0].natIP)'",
-			"--tags=zeno-pki",
+			fmt.Sprintf("--scopes=%s", pkiConfig.Scopes), fmt.Sprintf("--maintenance-policy=%s", pkiConfig.MaintenancePolicy), pkiConfig.Flags, "--tags=zeno-pki",
 		)
 
 		// Execute command and wait for completion.
-		out, err := cmd.CombinedOutput()
+		outRaw, err := cmd.CombinedOutput()
 		if err != nil {
-			fmt.Printf("Spawning PKI for zeno mix-net failed (code: '%v'): '%s'", err, out)
+			fmt.Printf("Spawning PKI for zeno mix-net failed (code: '%v'): '%s'", err, outRaw)
+			os.Exit(1)
+		}
+		out := string(outRaw)
+
+		// Compile regular expression matching on
+		// GCP-internal assigned IP address.
+		regexpIP, err := regexp.Compile("10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}")
+		if err != nil {
+			fmt.Printf("Failed to match internal IP address of zeno PKI instance: %v\n", err)
 			os.Exit(1)
 		}
 
-		var status string
-
-		// Parse output for expected values.
-		outParts := strings.Split(string(out), "---")
-		resultDetails := strings.Split(strings.TrimSpace(outParts[0]), " ")
-		instanceDetails := strings.Split(strings.TrimSpace(outParts[1]), "\n")
-
-		for line := range instanceDetails {
-
-			parts := strings.Split(instanceDetails[line], ": ")
-
-			if parts[0] == "status" {
-				status = parts[1]
-			} else {
-				pkiIP = parts[1]
-			}
-		}
+		pkiIP := regexpIP.FindString(out)
+		fmt.Printf("MATCH: '%s'\n", pkiIP)
 
 		// Verify successful machine creation.
-		if (resultDetails[0] == "Created") && (status == "RUNNING") {
+		if strings.Contains(out, "RUNNING") {
 			fmt.Printf("Successfully spawned PKI for zeno mix-net with public IP %s\n", pkiIP)
 		} else {
 			fmt.Printf("Spawning PKI for zeno mix-net returned failure message:\n'%s'\n", out)
