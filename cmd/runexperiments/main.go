@@ -199,7 +199,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	var pkiIP string
+	var pkiInternalIP string
+	var pkiExternalIP string
 
 	// If zeno: create PKI with decent hardware specs.
 	if system == "zeno" {
@@ -247,19 +248,26 @@ func main() {
 		out := string(outRaw)
 
 		// Compile regular expression matching on
-		// GCP-internal assigned IP address.
-		regexpIP, err := regexp.Compile("10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}")
+		// the assigned IP addresses of the PKI.
+		regexpIP, err := regexp.Compile("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}")
 		if err != nil {
 			fmt.Printf("Failed to match internal IP address of zeno PKI instance: %v\n", err)
 			os.Exit(1)
 		}
 
-		pkiIP := regexpIP.FindString(out)
-		fmt.Printf("MATCH: '%s'\n", pkiIP)
+		pkiIPs := regexpIP.FindAllString(out, -1)
+		for i := range pkiIPs {
+
+			if strings.HasPrefix(pkiIPs[i], "10.") {
+				pkiInternalIP = pkiIPs[i]
+			} else {
+				pkiExternalIP = pkiIPs[i]
+			}
+		}
 
 		// Verify successful machine creation.
 		if strings.Contains(out, "RUNNING") {
-			fmt.Printf("Successfully spawned PKI for zeno mix-net with public IP %s\n", pkiIP)
+			fmt.Printf("Successfully spawned PKI for zeno mix-net with public IP %s and internal IP %s\n", pkiExternalIP, pkiInternalIP)
 		} else {
 			fmt.Printf("Spawning PKI for zeno mix-net returned failure message:\n'%s'\n", out)
 			os.Exit(1)
@@ -275,7 +283,7 @@ func main() {
 
 	// Spawn 1 creation workers.
 	for i := 0; i < 1; i++ {
-		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket, resultFolder, pkiIP)
+		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket, resultFolder, pkiInternalIP)
 	}
 
 	fmt.Printf("Spawning machines now...\n")
@@ -308,7 +316,7 @@ func main() {
 
 		// Connect to control plane address used
 		// only for evaluation purposes.
-		ctrlConn, err := net.Dial("tcp", fmt.Sprintf("%s:26345", pkiIP))
+		ctrlConn, err := net.Dial("tcp", fmt.Sprintf("%s:26345", pkiExternalIP))
 		if err != nil {
 			fmt.Printf("Failed to connect to zeno PKI's control address to send start signal: %v\n", err)
 			os.Exit(1)
