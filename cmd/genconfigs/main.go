@@ -80,7 +80,7 @@ func main() {
 
 	// Allow for control via command-line flags.
 	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify file system location where GCloud Compute configurations are supposed to be saved.")
-	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate according to the 20%%-40%%-30%%-10%% machine power classification. Must be a multiple of 100.")
+	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate according to the 20%%-40%%-30%%-10%% machine power classification. Should be a multiple of 100.")
 	numMixesToGenFlag := flag.Int("numMixesToGen", 7, "Specify the number of mix nodes to generate in addition to the number of clients specified.")
 	flag.Parse()
 
@@ -99,15 +99,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Expect number of clients to generate
-	// to be a multiple of 100.
-	if (*numClientsToGenFlag % 100) != 0 {
-		fmt.Printf("Specified number of client nodes to generate (%d) is not a multiple of 100. Please correct.\n", *numClientsToGenFlag)
-		os.Exit(1)
-	}
 	numClientsToGen := *numClientsToGenFlag
-	numClientsFactor := numClientsToGen / 100
 	numMixesToGen := *numMixesToGenFlag
+
+	numClientsFactor := numClientsToGen / 100.0
+	if numClientsFactor < 1 {
+		numClientsFactor = 1.0
+	}
 
 	// Prepare slices for respective client
 	// compute node configurations.
@@ -234,7 +232,7 @@ func main() {
 		zenoConfigs = append(zenoConfigs, Config{
 			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
 			Zone:               zone,
-			MachineType:        "f1-micro",
+			MachineType:        "n1-standard-4",
 			Subnet:             "default",
 			NetworkTier:        "PREMIUM",
 			MinCPUPlatform:     "Intel Skylake",
@@ -255,7 +253,7 @@ func main() {
 		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
 			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
 			Zone:               zone,
-			MachineType:        "f1-micro",
+			MachineType:        "n1-standard-4",
 			Subnet:             "default",
 			NetworkTier:        "PREMIUM",
 			MinCPUPlatform:     "Intel Skylake",
@@ -283,7 +281,7 @@ func main() {
 	pungConfigs = append(pungConfigs, Config{
 		Name:               fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
 		Zone:               GCloudZones[0],
-		MachineType:        "f1-micro",
+		MachineType:        "n1-standard-4",
 		Subnet:             "default",
 		NetworkTier:        "PREMIUM",
 		MinCPUPlatform:     "Intel Skylake",
@@ -347,7 +345,7 @@ func main() {
 	zenoPKIConfigsJSON, err := json.MarshalIndent(Config{
 		Name:               "zeno-pki",
 		Zone:               "europe-west3-a",
-		MachineType:        "f1-micro",
+		MachineType:        "n1-standard-4",
 		Subnet:             "default",
 		NetworkTier:        "PREMIUM",
 		MinCPUPlatform:     "Intel Skylake",

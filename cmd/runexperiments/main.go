@@ -274,15 +274,13 @@ func main() {
 		}
 	}
 
-	configs = configs[:1]
-
 	// Prepare channels to send configurations
 	// to individual workers and expect responses.
 	confChan := make(chan Config, len(configs))
 	errChan := make(chan error)
 
-	// Spawn 1 creation workers.
-	for i := 0; i < 1; i++ {
+	// Spawn 9 creation workers.
+	for i := 0; i < 9; i++ {
 		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket, resultFolder, pkiInternalIP)
 	}
 
@@ -310,9 +308,13 @@ func main() {
 	// Wait for all instances to signal that
 	// they have fetched all evaluation artifacts
 	// from resources server.
+	fmt.Printf("Waiting for machines to finish initialization...\n")
+	time.Sleep(45 * time.Second)
 
 	// If zeno: send PKI signal to start.
 	if system == "zeno" {
+
+		fmt.Printf("Signaling PKI to start epoch.\n")
 
 		// Connect to control plane address used
 		// only for evaluation purposes.
@@ -344,8 +346,8 @@ func main() {
 	confChan = make(chan Config, len(configs))
 	errChan = make(chan error)
 
-	// Spawn 1 deletion workers.
-	for i := 0; i < 1; i++ {
+	// Spawn 9 deletion workers.
+	for i := 0; i < 9; i++ {
 		go shutdownInstance(confChan, errChan, gcloudProject)
 	}
 
