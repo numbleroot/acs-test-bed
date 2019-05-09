@@ -22,8 +22,7 @@ type Config struct {
 	Name               string `json:"Name"`
 	Zone               string `json:"Zone"`
 	MachineType        string `json:"MachineType"`
-	Subnet             string `json:"Subnet"`
-	NetworkTier        string `json:"NetworkTier"`
+	Network            string `json:"Network"`
 	MinCPUPlatform     string `json:"MinCPUPlatform"`
 	Scopes             string `json:"Scopes"`
 	Image              string `json:"Image"`
@@ -45,12 +44,13 @@ func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, se
 
 		// Prepare command with all corresponding arguments.
 		cmd := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "instances", "create", config.Name,
-			fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone), "--no-address",
+			fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone),
 			fmt.Sprintf("--machine-type=%s", config.MachineType), fmt.Sprintf("--min-cpu-platform=%s", config.MinCPUPlatform),
-			fmt.Sprintf("--subnet=%s", config.Subnet), fmt.Sprintf("--network-tier=%s", config.NetworkTier),
-			fmt.Sprintf("--image=%s", config.Image), fmt.Sprintf("--image-project=%s", config.ImageProject), fmt.Sprintf("--boot-disk-size=%s", config.BootDiskSize),
+			fmt.Sprintf("--network-interface=%s", config.Network), fmt.Sprintf("--image=%s", config.Image),
+			fmt.Sprintf("--image-project=%s", config.ImageProject), fmt.Sprintf("--boot-disk-size=%s", config.BootDiskSize),
 			fmt.Sprintf("--boot-disk-type=%s", config.BootDiskType), fmt.Sprintf("--boot-disk-device-name=%s", config.BootDiskDeviceName),
-			fmt.Sprintf("--metadata=typeOfNode=%s,resultFolder=%s,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=%s,startup-script-url=gs://%s/startup.sh", config.TypeOfNode, resultFolder, config.EvaluationScript, config.BinaryName, config.ParamsTC, pkiIP, bucket),
+			fmt.Sprintf("--metadata=typeOfNode=%s,resultFolder=%s,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=%s,startup-script-url=gs://%s/startup.sh",
+				config.TypeOfNode, resultFolder, config.EvaluationScript, config.BinaryName, config.ParamsTC, pkiIP, bucket),
 			fmt.Sprintf("--scopes=%s", config.Scopes), fmt.Sprintf("--maintenance-policy=%s", config.MaintenancePolicy), config.Flags,
 		)
 
@@ -199,8 +199,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	var pkiInternalIP string
-	var pkiExternalIP string
+	var pkiConfig Config
+	pkiInternalIP := ""
+	pkiExternalIP := ""
 
 	// If zeno: create PKI with decent hardware specs.
 	if system == "zeno" {
@@ -221,7 +222,6 @@ func main() {
 		}
 
 		// Unmarshal JSON.
-		var pkiConfig Config
 		err = json.Unmarshal(pkiConfigJSON, &pkiConfig)
 		if err != nil {
 			fmt.Printf("Error while trying to unmarshal JSON-encoded GCloud configuration for zeno PKI: %v\n", err)
@@ -232,10 +232,11 @@ func main() {
 		cmd := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", gcloudProject), "instances", "create", pkiConfig.Name,
 			fmt.Sprintf("--service-account=%s", gcloudServiceAcc), fmt.Sprintf("--zone=%s", pkiConfig.Zone),
 			fmt.Sprintf("--machine-type=%s", pkiConfig.MachineType), fmt.Sprintf("--min-cpu-platform=%s", pkiConfig.MinCPUPlatform),
-			fmt.Sprintf("--subnet=%s", pkiConfig.Subnet), fmt.Sprintf("--network-tier=%s", pkiConfig.NetworkTier),
-			fmt.Sprintf("--image=%s", pkiConfig.Image), fmt.Sprintf("--image-project=%s", pkiConfig.ImageProject), fmt.Sprintf("--boot-disk-size=%s", pkiConfig.BootDiskSize),
+			fmt.Sprintf("--network-interface=%s", pkiConfig.Network), fmt.Sprintf("--image=%s", pkiConfig.Image),
+			fmt.Sprintf("--image-project=%s", pkiConfig.ImageProject), fmt.Sprintf("--boot-disk-size=%s", pkiConfig.BootDiskSize),
 			fmt.Sprintf("--boot-disk-type=%s", pkiConfig.BootDiskType), fmt.Sprintf("--boot-disk-device-name=%s", pkiConfig.BootDiskDeviceName),
-			fmt.Sprintf("--metadata=typeOfNode=%s,resultFolder=irrelevant,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=irrelevant,startup-script-url=gs://%s/startup.sh", pkiConfig.TypeOfNode, pkiConfig.EvaluationScript, pkiConfig.BinaryName, pkiConfig.ParamsTC, gcloudBucket),
+			fmt.Sprintf("--metadata=typeOfNode=%s,resultFolder=irrelevant,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=irrelevant,startup-script-url=gs://%s/startup.sh",
+				pkiConfig.TypeOfNode, pkiConfig.EvaluationScript, pkiConfig.BinaryName, pkiConfig.ParamsTC, gcloudBucket),
 			fmt.Sprintf("--scopes=%s", pkiConfig.Scopes), fmt.Sprintf("--maintenance-policy=%s", pkiConfig.MaintenancePolicy), pkiConfig.Flags, "--tags=zeno-pki",
 		)
 
@@ -272,6 +273,10 @@ func main() {
 			fmt.Printf("Spawning PKI for zeno mix-net returned failure message:\n'%s'\n", out)
 			os.Exit(1)
 		}
+
+		fmt.Printf("Waiting for zeno's PKI to finish initialization...")
+		time.Sleep(75 * time.Second)
+		fmt.Printf("done.\n\n")
 	}
 
 	// Prepare channels to send configurations
@@ -308,13 +313,14 @@ func main() {
 	// Wait for all instances to signal that
 	// they have fetched all evaluation artifacts
 	// from resources server.
-	fmt.Printf("Waiting for machines to finish initialization...\n")
-	time.Sleep(45 * time.Second)
+	fmt.Printf("Waiting for machines to finish initialization...")
+	time.Sleep(75 * time.Second)
+	fmt.Printf("done.\n\n")
 
 	// If zeno: send PKI signal to start.
 	if system == "zeno" {
 
-		fmt.Printf("Signaling PKI to start epoch.\n")
+		fmt.Printf("Signaling zeno's PKI to start epoch.\n")
 
 		// Connect to control plane address used
 		// only for evaluation purposes.
@@ -340,6 +346,10 @@ func main() {
 	// Wait until enter key is pressed.
 	fmt.Printf("\nPress ENTER to shutdown and delete all resources...")
 	bufio.NewReader(os.Stdin).ReadBytes('\n')
+
+	if system == "zeno" {
+		configs = append(configs, pkiConfig)
+	}
 
 	// Prepare channels to send configurations
 	// to individual workers and expect responses.

@@ -3,7 +3,7 @@
 upload_cert() {
 
     # Wait some time to allow PKI to bootstrap.
-    sleep 15
+    sleep 5
 
     # Upload TLS certificate to bucket.
     /snap/bin/gsutil cp ./cert.pem gs://acs-eval/cert_zeno-pki.pem
@@ -14,4 +14,4 @@ upload_cert() {
 upload_cert &
 
 # Run main PKI process.
-~/zeno-pki -publicAddr ${LISTEN_IP}:33000 -listenAddr 0.0.0.0:33000 -controlPlaneAddr 0.0.0.0:26345
+/root/zeno-pki -publicAddr ${LISTEN_IP}:33000 -listenAddr ${LISTEN_IP}:33000 -controlPlaneAddr 0.0.0.0:26345

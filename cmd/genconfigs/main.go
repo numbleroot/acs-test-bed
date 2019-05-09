@@ -17,8 +17,7 @@ type Config struct {
 	Name               string `json:"Name"`
 	Zone               string `json:"Zone"`
 	MachineType        string `json:"MachineType"`
-	Subnet             string `json:"Subnet"`
-	NetworkTier        string `json:"NetworkTier"`
+	Network            string `json:"Network"`
 	MinCPUPlatform     string `json:"MinCPUPlatform"`
 	Scopes             string `json:"Scopes"`
 	Image              string `json:"Image"`
@@ -81,7 +80,7 @@ func main() {
 	// Allow for control via command-line flags.
 	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify file system location where GCloud Compute configurations are supposed to be saved.")
 	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate according to the 20%%-40%%-30%%-10%% machine power classification. Should be a multiple of 100.")
-	numMixesToGenFlag := flag.Int("numMixesToGen", 7, "Specify the number of mix nodes to generate in addition to the number of clients specified.")
+	numVuvuzelaMixesToGenFlag := flag.Int("numVuvuzelaMixesToGen", 7, "Specify the number of vuvuzela mix nodes to generate (number of zeno mixes is twice this number minus 1).")
 	flag.Parse()
 
 	// Extract parsed flag values.
@@ -100,7 +99,7 @@ func main() {
 	}
 
 	numClientsToGen := *numClientsToGenFlag
-	numMixesToGen := *numMixesToGenFlag
+	numVuvuzelaMixesToGen := *numVuvuzelaMixesToGenFlag
 
 	numClientsFactor := numClientsToGen / 100.0
 	if numClientsFactor < 1 {
@@ -109,8 +108,8 @@ func main() {
 
 	// Prepare slices for respective client
 	// compute node configurations.
-	zenoConfigs := make([]Config, 0, (numClientsToGen + numMixesToGen))
-	vuvuzelaConfigs := make([]Config, 0, (numClientsToGen + numMixesToGen))
+	zenoConfigs := make([]Config, 0, (numClientsToGen + ((2 * numVuvuzelaMixesToGen) - 1)))
+	vuvuzelaConfigs := make([]Config, 0, (numClientsToGen + numVuvuzelaMixesToGen))
 	pungConfigs := make([]Config, 0, (numClientsToGen + 1))
 
 	// Shuffle zones array.
@@ -150,8 +149,7 @@ func main() {
 			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
 			Zone:               zone,
 			MachineType:        machineType,
-			Subnet:             "default",
-			NetworkTier:        "PREMIUM",
+			Network:            "subnet=default,network-tier=PREMIUM,no-address",
 			MinCPUPlatform:     "Intel Skylake",
 			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
 			Image:              "ubuntu-1804-bionic-v20190429",
@@ -171,8 +169,7 @@ func main() {
 			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
 			Zone:               zone,
 			MachineType:        machineType,
-			Subnet:             "default",
-			NetworkTier:        "PREMIUM",
+			Network:            "subnet=default,network-tier=PREMIUM,no-address",
 			MinCPUPlatform:     "Intel Skylake",
 			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
 			Image:              "ubuntu-1804-bionic-v20190429",
@@ -192,8 +189,7 @@ func main() {
 			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
 			Zone:               zone,
 			MachineType:        machineType,
-			Subnet:             "default",
-			NetworkTier:        "PREMIUM",
+			Network:            "subnet=default,network-tier=PREMIUM,no-address",
 			MinCPUPlatform:     "Intel Skylake",
 			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
 			Image:              "ubuntu-1804-bionic-v20190429",
@@ -216,7 +212,7 @@ func main() {
 
 	// Also generate the specified number
 	// of mix or server nodes.
-	for i := numClientsToGen; i < (numClientsToGen + numMixesToGen); i++ {
+	for i := numClientsToGen; i < (numClientsToGen + ((2 * numVuvuzelaMixesToGen) - 1)); i++ {
 
 		// Pick next zone from randomized zones array.
 		zone := GCloudZones[zoneIdx]
@@ -233,8 +229,7 @@ func main() {
 			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
 			Zone:               zone,
 			MachineType:        "n1-standard-4",
-			Subnet:             "default",
-			NetworkTier:        "PREMIUM",
+			Network:            "subnet=default,network-tier=PREMIUM,no-address",
 			MinCPUPlatform:     "Intel Skylake",
 			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
 			Image:              "ubuntu-1804-bionic-v20190429",
@@ -249,13 +244,26 @@ func main() {
 			BinaryName:         "zeno",
 			ParamsTC:           "none so far",
 		})
+	}
+
+	// Reset zones counter.
+	zoneIdx = 0
+
+	for i := numClientsToGen; i < (numClientsToGen + numVuvuzelaMixesToGen); i++ {
+
+		zone := GCloudZones[zoneIdx]
+
+		zoneIdx++
+		if zoneIdx == len(GCloudZones) {
+			shuffleZones()
+			zoneIdx = 0
+		}
 
 		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
 			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
 			Zone:               zone,
 			MachineType:        "n1-standard-4",
-			Subnet:             "default",
-			NetworkTier:        "PREMIUM",
+			Network:            "subnet=default,network-tier=PREMIUM,no-address",
 			MinCPUPlatform:     "Intel Skylake",
 			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
 			Image:              "ubuntu-1804-bionic-v20190429",
@@ -282,8 +290,7 @@ func main() {
 		Name:               fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
 		Zone:               GCloudZones[0],
 		MachineType:        "n1-standard-4",
-		Subnet:             "default",
-		NetworkTier:        "PREMIUM",
+		Network:            "subnet=default,network-tier=PREMIUM,no-address",
 		MinCPUPlatform:     "Intel Skylake",
 		Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
 		Image:              "ubuntu-1804-bionic-v20190429",
@@ -346,8 +353,7 @@ func main() {
 		Name:               "zeno-pki",
 		Zone:               "europe-west3-a",
 		MachineType:        "n1-standard-4",
-		Subnet:             "default",
-		NetworkTier:        "PREMIUM",
+		Network:            "subnet=default,network-tier=PREMIUM",
 		MinCPUPlatform:     "Intel Skylake",
 		Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
 		Image:              "ubuntu-1804-bionic-v20190429",
