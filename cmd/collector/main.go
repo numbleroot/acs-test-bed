@@ -21,58 +21,83 @@ type Collector struct {
 	MetricsChan    chan string
 	SentBytesFile  *os.File
 	RecvdBytesFile *os.File
+	LoadFile       *os.File
+	MemFile        *os.File
 	SendTimeFile   *os.File
 	RecvTimeFile   *os.File
-	TimePipeReader *bufio.Reader
+	PoolSizesFile  *os.File
+	PipeReader     *bufio.Reader
 }
 
 func (col *Collector) prepareMetricsFiles(metricsPath string, pipeName string) error {
 
+	var err error
+
 	// Attempt to create file for sent bytes metric.
-	SentBytesFile, err := os.OpenFile(filepath.Join(metricsPath, "traffic_incoming.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	col.SentBytesFile, err = os.OpenFile(filepath.Join(metricsPath, "traffic_outgoing.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
 
 	// Attempt to create file for received bytes metric.
-	RecvdBytesFile, err := os.OpenFile(filepath.Join(metricsPath, "traffic_outgoing.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	col.RecvdBytesFile, err = os.OpenFile(filepath.Join(metricsPath, "traffic_incoming.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
 
-	// Attempt to create file for send times metric.
-	sendTimeFile, err := os.OpenFile(filepath.Join(metricsPath, "send_unixnano.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	// Attempt to create file for load metrics.
+	col.LoadFile, err = os.OpenFile(filepath.Join(metricsPath, "load_unixnano.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
 
-	// Attempt to create file for receive times metric.
-	recvTimeFile, err := os.OpenFile(filepath.Join(metricsPath, "recv_unixnano.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	// Attempt to create file for memory usage.
+	col.MemFile, err = os.OpenFile(filepath.Join(metricsPath, "mem_unixnano.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
 
-	// Open named pipe for receiving timing values.
+	if col.IsClient {
+
+		// Attempt to create file for send times metric.
+		col.SendTimeFile, err = os.OpenFile(filepath.Join(metricsPath, "send_unixnano.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+		if err != nil {
+			return err
+		}
+
+		// Attempt to create file for receive times metric.
+		col.RecvTimeFile, err = os.OpenFile(filepath.Join(metricsPath, "recv_unixnano.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+		if err != nil {
+			return err
+		}
+
+	} else if col.IsMix {
+
+		// Attempt to create file for pool sizes metrics.
+		col.PoolSizesFile, err = os.OpenFile(filepath.Join(metricsPath, "pool-sizes_round.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+		if err != nil {
+			return err
+		}
+	}
+
+	// Open named pipe for receiving metrics from
+	// system under evaluation.
 	pipe, err := os.OpenFile(pipeName, os.O_RDONLY, 0600)
 	if err != nil {
 		return err
 	}
-
-	col.SentBytesFile = SentBytesFile
-	col.RecvdBytesFile = RecvdBytesFile
-	col.SendTimeFile = sendTimeFile
-	col.RecvTimeFile = recvTimeFile
-	col.TimePipeReader = bufio.NewReader(pipe)
+	col.PipeReader = bufio.NewReader(pipe)
 
 	return nil
 }
 
-func (col *Collector) writeToTrafficFiles() {
+func (col *Collector) collectSystemMetrics() {
 
-	// Prepare commands to extract current number
-	// of sent and received bytes.
+	// Prepare various system metric collection commands.
 	cmdSent := exec.Command("iptables", "-nvxL", "OUTPUT")
 	cmdRecvd := exec.Command("iptables", "-nvxL", "INPUT")
+	cmdLoad := exec.Command("mpstat")
+	cmdMem := exec.Command("head", "-3", "/proc/meminfo")
 
 	// Receive tick every second.
 	secTicker := time.NewTicker(time.Second)
@@ -90,6 +115,8 @@ func (col *Collector) writeToTrafficFiles() {
 
 			sentBytes := "n/a"
 			recvdBytes := "n/a"
+			load := "n/a"
+			mem := "n/a"
 
 			// Obtain current timestamp.
 			now := time.Now().UnixNano()
@@ -107,6 +134,20 @@ func (col *Collector) writeToTrafficFiles() {
 				fmt.Printf("Collecting received bytes metric failed (error: %v):\n%s", err, outRecvdRaw)
 			}
 			outRecvd := string(outRecvdRaw)
+
+			// Execute command to find current load.
+			outLoadRaw, err := cmdLoad.CombinedOutput()
+			if err != nil {
+				fmt.Printf("Collecting load metric failed (error: %v):\n%s", err, outLoadRaw)
+			}
+			outLoad := string(outLoadRaw)
+
+			// Execute command to find memory usage.
+			outMemRaw, err := cmdMem.CombinedOutput()
+			if err != nil {
+				fmt.Printf("Collecting memory usage failed (error: %v):\n%s", err, outMemRaw)
+			}
+			outMem := string(outMemRaw)
 
 			outSentLines := strings.Split(outSent, "\n")
 			for i := range outSentLines {
@@ -132,17 +173,36 @@ func (col *Collector) writeToTrafficFiles() {
 				}
 			}
 
-			// Write both values to their respective
+			// Extract the interesting load metrics.
+			outLoadLines := strings.Split(outLoad, "\n")
+			outLoadParts := strings.Fields(outLoadLines[(len(outLoadLines) - 1)])
+			load = fmt.Sprintf("%d %%usr:%s %%nice:%s %%sys:%s %%iowait:%s %%idle:%s\n", now, outLoadParts[2], outLoadParts[3], outLoadParts[4], outLoadParts[5], outLoadParts[11])
+
+			// Extract memory usage values.
+			outMemLines := strings.Split(outMem, "\n")
+			memTotal := strings.Fields(outMemLines[0])
+			memFree := strings.Fields(outMemLines[1])
+			memAvail := strings.Fields(outMemLines[2])
+			mem = fmt.Sprintf("%d total:%skB free:%skB avail:%skB\n", now, memTotal[1], memFree[1], memAvail[1])
+
+			// Write all values to their respective
 			// metrics files on disk.
 			fmt.Fprintf(col.SentBytesFile, "%d %s\n", now, sentBytes)
-			fmt.Fprintf(col.RecvdBytesFile, "%d %s\n", now, recvdBytes)
 			_ = col.SentBytesFile.Sync()
+
+			fmt.Fprintf(col.RecvdBytesFile, "%d %s\n", now, recvdBytes)
 			_ = col.RecvdBytesFile.Sync()
+
+			fmt.Fprint(col.LoadFile, load)
+			_ = col.LoadFile.Sync()
+
+			fmt.Fprint(col.MemFile, mem)
+			_ = col.MemFile.Sync()
 		}
 	}
 }
 
-func (col *Collector) writeToTimingFiles() {
+func (col *Collector) collectTimingMetrics() {
 
 	for metric := range col.MetricsChan {
 
@@ -161,6 +221,16 @@ func (col *Collector) writeToTimingFiles() {
 			fmt.Fprint(col.RecvTimeFile, metricParts[1])
 			_ = col.RecvTimeFile.Sync()
 		}
+	}
+}
+
+func (col *Collector) collectPoolSizesMetrics() {
+
+	for metric := range col.MetricsChan {
+
+		// Write to file and sync to stable storage.
+		fmt.Fprint(col.PoolSizesFile, metric)
+		_ = col.PoolSizesFile.Sync()
 	}
 }
 
@@ -200,19 +270,28 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Spawn background process writing timing
-	// values into metrics files.
-	go col.writeToTimingFiles()
+	if col.IsClient {
+
+		// Spawn background process writing timing
+		// values into metrics files.
+		go col.collectTimingMetrics()
+
+	} else if col.IsMix {
+
+		// Spawn background process writing message
+		// pool sizes to into metrics file.
+		go col.collectPoolSizesMetrics()
+	}
 
 	// Spawn background process writing sent and
 	// received bytes values to file every second.
-	go col.writeToTrafficFiles()
+	go col.collectSystemMetrics()
 
-	// Read next metric line from named pipe and
-	// clean it up.
-	metric, err := col.TimePipeReader.ReadString('\n')
+	// Read next metric line from named pipe.
+	metric, err := col.PipeReader.ReadString('\n')
 	if err != nil {
 		fmt.Printf("Failed reading from named pipe: %v\n", err)
+		os.Exit(1)
 	}
 
 	for metric != "done" {
@@ -220,17 +299,29 @@ func main() {
 		// Off-load metric line to file writer.
 		col.MetricsChan <- metric
 
-		// Read next metric line from named pipe and
-		// clean it up.
-		metric, err = col.TimePipeReader.ReadString('\n')
+		// Read next metric line from named pipe.
+		metric, err = col.PipeReader.ReadString('\n')
 		if err != nil {
 			fmt.Printf("Failed reading from named pipe: %v\n", err)
-			continue
+			os.Exit(1)
 		}
 	}
 
 	// Node being evaluated signaled that the
-	// evaluation is completed, signal internally
-	// via shutdown channel and wait for response.
+	// evaluation is completed, so shut down
+	// internal routines writing to files.
+	close(col.MetricsChan)
 	col.shutdownChan <- struct{}{}
+
+	col.SentBytesFile.Close()
+	col.RecvdBytesFile.Close()
+	col.LoadFile.Close()
+	col.MemFile.Close()
+
+	if col.IsClient {
+		col.SendTimeFile.Close()
+		col.RecvTimeFile.Close()
+	} else if col.IsMix {
+		col.PoolSizesFile.Close()
+	}
 }

@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-sleep 10
+sleep 5
+
+# Install package sysstat for mpstat.
+DEBIAN_FRONTEND=noninteractive apt-get update && apt-get --yes --quiet install sysstat
 
 # Retrieve metadata required for operation.
 LISTEN_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip -H "Metadata-Flavor: Google")

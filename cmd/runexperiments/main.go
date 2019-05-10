@@ -275,7 +275,7 @@ func main() {
 		}
 
 		fmt.Printf("Waiting for zeno's PKI to finish initialization...")
-		time.Sleep(75 * time.Second)
+		time.Sleep(120 * time.Second)
 		fmt.Printf(" done.\n\n")
 	}
 
