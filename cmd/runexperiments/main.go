@@ -276,7 +276,7 @@ func main() {
 
 		fmt.Printf("Waiting for zeno's PKI to finish initialization...")
 		time.Sleep(75 * time.Second)
-		fmt.Printf("done.\n\n")
+		fmt.Printf(" done.\n\n")
 	}
 
 	// Prepare channels to send configurations
@@ -314,8 +314,8 @@ func main() {
 	// they have fetched all evaluation artifacts
 	// from resources server.
 	fmt.Printf("Waiting for machines to finish initialization...")
-	time.Sleep(75 * time.Second)
-	fmt.Printf("done.\n\n")
+	time.Sleep(120 * time.Second)
+	fmt.Printf(" done.\n\n")
 
 	// If zeno: send PKI signal to start.
 	if system == "zeno" {

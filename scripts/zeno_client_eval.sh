@@ -6,10 +6,16 @@ chmod 0644 /root/cert.pem
 
 # Configure tc according to environment variable.
 
+# Run metrics collector sidecar in background.
+# /root/collector -client -pipe /tmp/collect -metricsPath /root/ &
+
 # Run zeno as client.
-/root/zeno -eval -numMsgToRecv 10 -client -msgPublicAddr ${LISTEN_IP}:33000 -msgLisAddr ${LISTEN_IP}:33000 -pkiLisAddr ${LISTEN_IP}:44000 -pki ${PKI_IP}:33000 -pkiCertPath "/root/cert.pem" > /root/zeno_client_${LISTEN_IP}.log
+/root/zeno -eval -numMsgToRecv 10 -client -msgPublicAddr ${LISTEN_IP}:33000 -msgLisAddr ${LISTEN_IP}:33000 -pkiLisAddr ${LISTEN_IP}:44000 -pki ${PKI_IP}:33000 -pkiCertPath "/root/cert.pem" > /root/zeno_client_${LISTEN_IP}_log.evaluation
+
+# Wait for metrics collector to exit.
+# wait
 
 # Reset tc configuration.
 
 # Upload result files to GCloud bucket.
-/snap/bin/gsutil cp /root/zeno_client_${LISTEN_IP}.log gs://acs-eval/${RESULT_FOLDER}/zeno_client_${LISTEN_IP}.log
+/snap/bin/gsutil cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/${LISTEN_IP}/

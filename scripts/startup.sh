@@ -11,6 +11,15 @@ BINARY_TO_PULL=$(curl http://metadata.google.internal/computeMetadata/v1/instanc
 TC_CONFIG=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/tcConfig -H "Metadata-Flavor: Google")
 PKI_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/pkiIP -H "Metadata-Flavor: Google")
 
+# Add iptables rule to be able to count number of transferred
+# bytes over evaluation system port.
+iptables -A INPUT -p udp --dport 33000
+iptables -A OUTPUT -p udp --dport 33000
+
+# Prepare FIFO pipe for system and collector IPC.
+mkfifo /tmp/collect
+chmod 0600 /tmp/collect
+
 # Pull files from GCloud bucket.
 /snap/bin/gsutil cp gs://acs-eval/${EVAL_SCRIPT_TO_PULL} /root/${EVAL_SCRIPT_TO_PULL}
 /snap/bin/gsutil cp gs://acs-eval/${BINARY_TO_PULL} /root/${BINARY_TO_PULL}
