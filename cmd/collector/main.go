@@ -86,18 +86,13 @@ func (col *Collector) prepareMetricsFiles(metricsPath string, pipeName string) e
 	if err != nil {
 		return err
 	}
+
 	col.PipeReader = bufio.NewReader(pipe)
 
 	return nil
 }
 
 func (col *Collector) collectSystemMetrics() {
-
-	// Prepare various system metric collection commands.
-	cmdSent := exec.Command("iptables", "-nvxL", "OUTPUT")
-	cmdRecvd := exec.Command("iptables", "-nvxL", "INPUT")
-	cmdLoad := exec.Command("mpstat")
-	cmdMem := exec.Command("head", "-3", "/proc/meminfo")
 
 	// Receive tick every second.
 	secTicker := time.NewTicker(time.Second)
@@ -118,34 +113,40 @@ func (col *Collector) collectSystemMetrics() {
 			load := "n/a"
 			mem := "n/a"
 
+			// Prepare various system metric collection commands.
+			cmdSent := exec.Command("iptables", "-nvxL", "OUTPUT")
+			cmdRecvd := exec.Command("iptables", "-nvxL", "INPUT")
+			cmdLoad := exec.Command("mpstat")
+			cmdMem := exec.Command("head", "-3", "/proc/meminfo")
+
 			// Obtain current timestamp.
 			now := time.Now().UnixNano()
 
 			// Execute command to find sent bytes value.
 			outSentRaw, err := cmdSent.CombinedOutput()
 			if err != nil {
-				fmt.Printf("Collecting sent bytes metric failed (error: %v):\n%s", err, outSentRaw)
+				fmt.Printf("Collecting sent bytes metric failed (error: %v):\n%s\n", err, outSentRaw)
 			}
 			outSent := string(outSentRaw)
 
 			// Execute command to find received bytes value.
 			outRecvdRaw, err := cmdRecvd.CombinedOutput()
 			if err != nil {
-				fmt.Printf("Collecting received bytes metric failed (error: %v):\n%s", err, outRecvdRaw)
+				fmt.Printf("Collecting received bytes metric failed (error: %v):\n%s\n", err, outRecvdRaw)
 			}
 			outRecvd := string(outRecvdRaw)
 
 			// Execute command to find current load.
 			outLoadRaw, err := cmdLoad.CombinedOutput()
 			if err != nil {
-				fmt.Printf("Collecting load metric failed (error: %v):\n%s", err, outLoadRaw)
+				fmt.Printf("Collecting load metric failed (error: %v):\n%s\n", err, outLoadRaw)
 			}
 			outLoad := string(outLoadRaw)
 
 			// Execute command to find memory usage.
 			outMemRaw, err := cmdMem.CombinedOutput()
 			if err != nil {
-				fmt.Printf("Collecting memory usage failed (error: %v):\n%s", err, outMemRaw)
+				fmt.Printf("Collecting memory usage failed (error: %v):\n%s\n", err, outMemRaw)
 			}
 			outMem := string(outMemRaw)
 
@@ -157,7 +158,7 @@ func (col *Collector) collectSystemMetrics() {
 					// Split at one or more whitespace characters.
 					// The bytes value is the second.
 					outSentParts := strings.Fields(outSentLines[i])
-					sentBytes = outSentParts[1]
+					sentBytes = fmt.Sprintf("%d %s\n", now, outSentParts[1])
 				}
 			}
 
@@ -169,28 +170,28 @@ func (col *Collector) collectSystemMetrics() {
 					// Split at one or more whitespace characters.
 					// The bytes value is the second.
 					outRecvdParts := strings.Fields(outRecvdLines[i])
-					recvdBytes = outRecvdParts[1]
+					recvdBytes = fmt.Sprintf("%d %s\n", now, outRecvdParts[1])
 				}
 			}
 
 			// Extract the interesting load metrics.
-			outLoadLines := strings.Split(outLoad, "\n")
+			outLoadLines := strings.Split(strings.TrimSpace(outLoad), "\n")
 			outLoadParts := strings.Fields(outLoadLines[(len(outLoadLines) - 1)])
-			load = fmt.Sprintf("%d %%usr:%s %%nice:%s %%sys:%s %%iowait:%s %%idle:%s\n", now, outLoadParts[2], outLoadParts[3], outLoadParts[4], outLoadParts[5], outLoadParts[11])
+			load = fmt.Sprintf("%d usr:%s nice:%s sys:%s iowait:%s idle:%s\n", now, outLoadParts[2], outLoadParts[3], outLoadParts[4], outLoadParts[5], outLoadParts[11])
 
 			// Extract memory usage values.
-			outMemLines := strings.Split(outMem, "\n")
+			outMemLines := strings.Split(strings.TrimSpace(outMem), "\n")
 			memTotal := strings.Fields(outMemLines[0])
 			memFree := strings.Fields(outMemLines[1])
 			memAvail := strings.Fields(outMemLines[2])
-			mem = fmt.Sprintf("%d total:%skB free:%skB avail:%skB\n", now, memTotal[1], memFree[1], memAvail[1])
+			mem = fmt.Sprintf("%d totalKB:%s freeKB:%s availKB:%s\n", now, memTotal[1], memFree[1], memAvail[1])
 
 			// Write all values to their respective
 			// metrics files on disk.
-			fmt.Fprintf(col.SentBytesFile, "%d %s\n", now, sentBytes)
+			fmt.Fprint(col.SentBytesFile, sentBytes)
 			_ = col.SentBytesFile.Sync()
 
-			fmt.Fprintf(col.RecvdBytesFile, "%d %s\n", now, recvdBytes)
+			fmt.Fprint(col.RecvdBytesFile, recvdBytes)
 			_ = col.RecvdBytesFile.Sync()
 
 			fmt.Fprint(col.LoadFile, load)

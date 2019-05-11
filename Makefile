@@ -18,9 +18,10 @@ runexperiments:
 	CGO_ENABLED=0 go build -a -ldflags '-w -extldflags "-static"' ./cmd/runexperiments
 
 syncbucket:
-	gsutil cp scripts/* gs://acs-eval/
+	gsutil -m cp scripts/* gs://acs-eval/
 	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno/zeno gs://acs-eval/zeno
 	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno-pki/zeno-pki gs://acs-eval/zeno-pki
+	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno-eval/collector gs://acs-eval/collector
 
 cleanresults:
 	rm -rf results/*
