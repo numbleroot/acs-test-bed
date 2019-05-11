@@ -1,12 +1,17 @@
 #!/usr/bin/env bash
 
-sleep 5
+download_packages() {
+    DEBIAN_FRONTEND=noninteractive apt-get update && apt-get --yes --quiet install sysstat
+}
+
+sleep 10
 
 # Install package sysstat for mpstat.
-DEBIAN_FRONTEND=noninteractive apt-get update && apt-get --yes --quiet install sysstat
+download_packages &
 
 # Retrieve metadata required for operation.
 LISTEN_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip -H "Metadata-Flavor: Google")
+NAME_OF_NODE=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/nameOfNode -H "Metadata-Flavor: Google")
 TYPE_OF_NODE=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/typeOfNode -H "Metadata-Flavor: Google")
 RESULT_FOLDER=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/resultFolder -H "Metadata-Flavor: Google")
 EVAL_SCRIPT_TO_PULL=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/evalScriptToPull -H "Metadata-Flavor: Google")
@@ -26,9 +31,14 @@ chmod 0600 /tmp/collect
 # Pull files from GCloud bucket.
 /snap/bin/gsutil cp gs://acs-eval/${EVAL_SCRIPT_TO_PULL} /root/${EVAL_SCRIPT_TO_PULL}
 /snap/bin/gsutil cp gs://acs-eval/${BINARY_TO_PULL} /root/${BINARY_TO_PULL}
+/snap/bin/gsutil cp gs://acs-eval/collector /root/collector
 
-# Make the downloaded binary executable.
+# Make the downloaded binaries executable.
 chmod 0700 /root/${BINARY_TO_PULL}
+chmod 0700 /root/collector
+
+# Wait for package download to complete.
+wait
 
 # Hand over to evaluation script.
-LISTEN_IP=${LISTEN_IP} TYPE_OF_NODE=${TYPE_OF_NODE} RESULT_FOLDER=${RESULT_FOLDER} TC_CONFIG=${TC_CONFIG} PKI_IP=${PKI_IP} /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+LISTEN_IP=${LISTEN_IP} NAME_OF_NODE=${NAME_OF_NODE} TYPE_OF_NODE=${TYPE_OF_NODE} RESULT_FOLDER=${RESULT_FOLDER} TC_CONFIG=${TC_CONFIG} PKI_IP=${PKI_IP} /bin/bash /root/${EVAL_SCRIPT_TO_PULL}

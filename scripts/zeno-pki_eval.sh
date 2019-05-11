@@ -7,6 +7,9 @@ upload_cert() {
 
     # Upload TLS certificate to bucket.
     /snap/bin/gsutil cp ./cert.pem gs://acs-eval/cert_zeno-pki.pem
+
+    # Signal readiness of process to experiment script.
+    curl -X PUT --data "ThisNodeIsReady" http://metadata.google.internal/computeMetadata/v1/instance/guest-attributes/acs-eval/initStatus -H "Metadata-Flavor: Google"
 }
 
 # Start process in background to eventually
