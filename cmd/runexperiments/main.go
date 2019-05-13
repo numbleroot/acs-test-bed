@@ -66,11 +66,9 @@ func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, se
 			return
 		}
 
-		time.Sleep(10 * time.Second)
-
 		for !strings.Contains(out, "ThisNodeIsReady") {
 
-			time.Sleep(1 * time.Second)
+			time.Sleep(10 * time.Second)
 
 			// Execute command to query guest attributes.
 			outRaw, _ = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "beta", "compute", "instances", "get-guest-attributes", config.Name,
@@ -267,11 +265,9 @@ func main() {
 			os.Exit(1)
 		}
 
-		time.Sleep(10 * time.Second)
-
 		for !strings.Contains(out, "ThisNodeIsReady") {
 
-			time.Sleep(1 * time.Second)
+			time.Sleep(10 * time.Second)
 
 			// Execute command to query guest attributes.
 			outRaw, _ = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "beta", "compute", "instances", "get-guest-attributes", pkiConfig.Name,

@@ -119,5 +119,6 @@ venv.bak/
 # Project-specific.
 gcloud-configs/
 results/
+collector
 genconfigs
 runexperiments
