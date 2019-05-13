@@ -120,7 +120,7 @@ func (col *Collector) collectSystemMetrics() {
 			cmdMem := exec.Command("head", "-3", "/proc/meminfo")
 
 			// Obtain current timestamp.
-			now := time.Now().UnixNano()
+			now := time.Now().Unix()
 
 			// Execute command to find sent bytes value.
 			outSentRaw, err := cmdSent.CombinedOutput()
@@ -156,7 +156,7 @@ func (col *Collector) collectSystemMetrics() {
 				if strings.Contains(outSentLines[i], "dpt:33000") {
 
 					// Split at one or more whitespace characters.
-					// The bytes value is the second.
+					// The bytes value is the second one.
 					outSentParts := strings.Fields(outSentLines[i])
 					sentBytes = fmt.Sprintf("%d %s\n", now, outSentParts[1])
 				}
@@ -168,7 +168,7 @@ func (col *Collector) collectSystemMetrics() {
 				if strings.Contains(outRecvdLines[i], "dpt:33000") {
 
 					// Split at one or more whitespace characters.
-					// The bytes value is the second.
+					// The bytes value is the second one.
 					outRecvdParts := strings.Fields(outRecvdLines[i])
 					recvdBytes = fmt.Sprintf("%d %s\n", now, outRecvdParts[1])
 				}
@@ -251,7 +251,7 @@ func main() {
 
 	metricsPath, err := filepath.Abs(*metricsPathFlag)
 	if err != nil {
-		fmt.Printf("Error converting results path '%s' into absolute path: %v\n", *metricsPathFlag, err)
+		fmt.Printf("Error converting metrics path '%s' into absolute path: %v\n", *metricsPathFlag, err)
 		os.Exit(1)
 	}
 

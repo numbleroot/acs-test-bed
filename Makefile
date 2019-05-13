@@ -1,18 +1,21 @@
-.PHONY: all clean genconfigs collector runexperiments build syncbucket
+.PHONY: all clean calcstats collector genconfigs runexperiments build syncbucket
 
 all: clean build
 
 clean:
 	go clean -i ./...
-	rm -rf genconfigs collector runexperiments
+	rm -rf calcstats collector genconfigs runexperiments
 
-build: genconfigs collector runexperiments
+build: calcstats collector genconfigs runexperiments
 
-genconfigs:
-	CGO_ENABLED=0 go build -a -ldflags '-w -extldflags "-static"' ./cmd/genconfigs
+calcstats:
+	CGO_ENABLED=0 go build -a -ldflags '-w -extldflags "-static"' ./cmd/calcstats
 
 collector:
 	CGO_ENABLED=0 go build -a -ldflags '-w -extldflags "-static"' ./cmd/collector
+
+genconfigs:
+	CGO_ENABLED=0 go build -a -ldflags '-w -extldflags "-static"' ./cmd/genconfigs
 
 runexperiments:
 	CGO_ENABLED=0 go build -a -ldflags '-w -extldflags "-static"' ./cmd/runexperiments
