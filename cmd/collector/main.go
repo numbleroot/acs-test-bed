@@ -150,7 +150,7 @@ func (col *Collector) collectSystemMetrics() {
 			}
 			outMem := string(outMemRaw)
 
-			outSentLines := strings.Split(outSent, "\n")
+			outSentLines := strings.Split(strings.TrimSpace(outSent), "\n")
 			for i := range outSentLines {
 
 				if strings.Contains(outSentLines[i], "dpt:33000") {
@@ -162,7 +162,7 @@ func (col *Collector) collectSystemMetrics() {
 				}
 			}
 
-			outRecvdLines := strings.Split(outRecvd, "\n")
+			outRecvdLines := strings.Split(strings.TrimSpace(outRecvd), "\n")
 			for i := range outRecvdLines {
 
 				if strings.Contains(outRecvdLines[i], "dpt:33000") {
@@ -182,9 +182,8 @@ func (col *Collector) collectSystemMetrics() {
 			// Extract memory usage values.
 			outMemLines := strings.Split(strings.TrimSpace(outMem), "\n")
 			memTotal := strings.Fields(outMemLines[0])
-			memFree := strings.Fields(outMemLines[1])
 			memAvail := strings.Fields(outMemLines[2])
-			mem = fmt.Sprintf("%d totalKB:%s freeKB:%s availKB:%s\n", now, memTotal[1], memFree[1], memAvail[1])
+			mem = fmt.Sprintf("%d totalKB:%s availKB:%s\n", now, memTotal[1], memAvail[1])
 
 			// Write all values to their respective
 			// metrics files on disk.
