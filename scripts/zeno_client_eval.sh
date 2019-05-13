@@ -27,4 +27,4 @@ wait
 # Reset tc configuration.
 
 # Upload result files to GCloud bucket.
-/snap/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/client_${NAME_OF_NODE}_${LISTEN_IP}/
+/snap/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/

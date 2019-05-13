@@ -1,223 +1,11 @@
 package main
 
 import (
-	"bytes"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
-	"strconv"
-	"strings"
 )
-
-type LoadMetric struct {
-	User   float64
-	Nice   float64
-	System float64
-	IOWait float64
-	Idle   float64
-}
-
-type MemoryMetric struct {
-	TotalKB int64
-	AvailKB int64
-}
-
-type SystemMetrics struct {
-	SentBytes  map[int64][]int64
-	RecvdBytes map[int64][]int64
-	Load       map[int64][]*LoadMetric
-	Memory     map[int64][]*MemoryMetric
-}
-
-type ClientMetrics struct {
-	*SystemMetrics
-	Latency map[int]int64
-}
-
-type MixMetrics struct {
-	*SystemMetrics
-	MsgsPerPool []int64
-}
-
-func (sysM *SystemMetrics) AddSentBytes(path string) error {
-
-	// Ingest supplied file.
-	content, err := ioutil.ReadFile(path)
-	if err != nil {
-		return err
-	}
-	content = bytes.TrimSpace(content)
-
-	// Split file contents into lines.
-	lines := strings.Split(string(content), "\n")
-	for i := range lines {
-
-		// Split line at whitespace characters.
-		metric := strings.Fields(lines[i])
-
-		// Convert first element to timestamp.
-		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
-		if err != nil {
-			return err
-		}
-
-		// Convert second element to metric
-		// we are interested in.
-		value, err := strconv.ParseInt(metric[1], 10, 64)
-		if err != nil {
-			return err
-		}
-
-		// Append to corresponding slice of values.
-		sysM.SentBytes[timestamp] = append(sysM.SentBytes[timestamp], value)
-	}
-
-	return nil
-}
-
-func (sysM *SystemMetrics) AddRecvdBytes(path string) error {
-
-	// Ingest supplied file.
-	content, err := ioutil.ReadFile(path)
-	if err != nil {
-		return err
-	}
-	content = bytes.TrimSpace(content)
-
-	// Split file contents into lines.
-	lines := strings.Split(string(content), "\n")
-	for i := range lines {
-
-		// Split line at whitespace characters.
-		metric := strings.Fields(lines[i])
-
-		// Convert first element to timestamp.
-		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
-		if err != nil {
-			return err
-		}
-
-		// Convert second element to metric
-		// we are interested in.
-		value, err := strconv.ParseInt(metric[1], 10, 64)
-		if err != nil {
-			return err
-		}
-
-		// Append to corresponding slice of values.
-		sysM.RecvdBytes[timestamp] = append(sysM.RecvdBytes[timestamp], value)
-	}
-
-	return nil
-}
-
-func (sysM *SystemMetrics) AddLoad(path string) error {
-
-	// Ingest supplied file.
-	content, err := ioutil.ReadFile(path)
-	if err != nil {
-		return err
-	}
-	content = bytes.TrimSpace(content)
-
-	// Split file contents into lines.
-	lines := strings.Split(string(content), "\n")
-	for i := range lines {
-
-		// Split line at whitespace characters.
-		metric := strings.Fields(lines[i])
-
-		// Convert first element to timestamp.
-		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
-		if err != nil {
-			return err
-		}
-
-		// Convert following elements to load metrics.
-
-		loadUser, err := strconv.ParseFloat(strings.TrimPrefix(metric[1], "usr:"), 64)
-		if err != nil {
-			return err
-		}
-
-		loadNice, err := strconv.ParseFloat(strings.TrimPrefix(metric[2], "nice:"), 64)
-		if err != nil {
-			return err
-		}
-
-		loadSys, err := strconv.ParseFloat(strings.TrimPrefix(metric[3], "sys:"), 64)
-		if err != nil {
-			return err
-		}
-
-		loadIOWait, err := strconv.ParseFloat(strings.TrimPrefix(metric[4], "iowait:"), 64)
-		if err != nil {
-			return err
-		}
-
-		loadIdle, err := strconv.ParseFloat(strings.TrimPrefix(metric[5], "idle:"), 64)
-		if err != nil {
-			return err
-		}
-
-		// Append to corresponding slice of values.
-		sysM.Load[timestamp] = append(sysM.Load[timestamp], &LoadMetric{
-			User:   loadUser,
-			Nice:   loadNice,
-			System: loadSys,
-			IOWait: loadIOWait,
-			Idle:   loadIdle,
-		})
-	}
-
-	return nil
-}
-
-func (sysM *SystemMetrics) AddMem(path string) error {
-
-	// Ingest supplied file.
-	content, err := ioutil.ReadFile(path)
-	if err != nil {
-		return err
-	}
-	content = bytes.TrimSpace(content)
-
-	// Split file contents into lines.
-	lines := strings.Split(string(content), "\n")
-	for i := range lines {
-
-		// Split line at whitespace characters.
-		metric := strings.Fields(lines[i])
-
-		// Convert first element to timestamp.
-		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
-		if err != nil {
-			return err
-		}
-
-		// Convert following elements to memory metrics.
-
-		memTotal, err := strconv.ParseInt(strings.TrimPrefix(metric[1], "totalKB:"), 10, 64)
-		if err != nil {
-			return err
-		}
-
-		memAvail, err := strconv.ParseInt(strings.TrimPrefix(metric[2], "availKB:"), 10, 64)
-		if err != nil {
-			return err
-		}
-
-		// Append to corresponding slice of values.
-		sysM.Memory[timestamp] = append(sysM.Memory[timestamp], &MemoryMetric{
-			TotalKB: memTotal,
-			AvailKB: memAvail,
-		})
-	}
-
-	return nil
-}
 
 func main() {
 
@@ -248,10 +36,10 @@ func main() {
 
 	clientMetrics := &ClientMetrics{
 		SystemMetrics: &SystemMetrics{
-			SentBytes:  make(map[int64][]int64),
-			RecvdBytes: make(map[int64][]int64),
-			Load:       make(map[int64][]*LoadMetric),
-			Memory:     make(map[int64][]*MemoryMetric),
+			SentBytesRaw:  make(map[int64][]int64),
+			RecvdBytesRaw: make(map[int64][]int64),
+			MemoryRaw:     make(map[int64][]int64),
+			LoadRaw:       make(map[int64][]float64),
 		},
 		Latency: make(map[int]int64),
 	}
@@ -288,12 +76,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	err = clientMetrics.OrderSystemMetrics()
+	if err != nil {
+		fmt.Printf("Failed to order system metrics of clients: %v\n", err)
+		os.Exit(1)
+	}
+
 	mixMetrics := &MixMetrics{
 		SystemMetrics: &SystemMetrics{
-			SentBytes:  make(map[int64][]int64),
-			RecvdBytes: make(map[int64][]int64),
-			Load:       make(map[int64][]*LoadMetric),
-			Memory:     make(map[int64][]*MemoryMetric),
+			SentBytesRaw:  make(map[int64][]int64),
+			RecvdBytesRaw: make(map[int64][]int64),
+			MemoryRaw:     make(map[int64][]int64),
+			LoadRaw:       make(map[int64][]float64),
 		},
 		MsgsPerPool: make([]int64, 0, 7),
 	}
@@ -327,6 +121,13 @@ func main() {
 	})
 	if err != nil {
 		fmt.Printf("Ingesting mix metrics failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Calculate and write out client metrics.
+	err = clientMetrics.CalcAndWriteLoad(clientMetricsPath)
+	if err != nil {
+		fmt.Printf("Calculating and writing load metrics of clients failed: %v\n", err)
 		os.Exit(1)
 	}
 }
