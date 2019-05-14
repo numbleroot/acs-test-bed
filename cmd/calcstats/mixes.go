@@ -2,6 +2,7 @@ package main
 
 type MixMetrics struct {
 	*SystemMetrics
+	MetricsPath string
 	MsgsPerPool []int64
 }
 

@@ -41,7 +41,9 @@ func main() {
 			MemoryRaw:     make(map[int64][]float64),
 			LoadRaw:       make(map[int64][]float64),
 		},
-		Latency: make(map[int]int64),
+		MetricsPath:   clientMetricsPath,
+		NumMsgsToCalc: int64(numMsgsToCalc),
+		Latencies:     make([][]*MetricLatency, 0, 10),
 	}
 
 	// Scan metrics directory of clients.
@@ -64,6 +66,9 @@ func main() {
 
 		case "mem_unixnano.evaluation":
 			err = clientMetrics.AddMem(path)
+
+		case "send_unixnano.evaluation":
+			err = clientMetrics.AddLatency(path)
 		}
 		if err != nil {
 			return err
