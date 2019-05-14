@@ -26,9 +26,6 @@ syncbucket:
 	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno-pki/zeno-pki gs://acs-eval/zeno-pki
 	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno-eval/collector gs://acs-eval/collector
 
-cleanresults:
-	rm -rf results/*
-
 cleanplots:
 	rm -rf results/*/clients/*.png
 	rm -rf results/*/mixes/*.png

@@ -20,14 +20,14 @@ type MetricLatency struct {
 
 type ClientMetrics struct {
 	*SystemMetrics
-	MetricsPath       string
-	NumMsgsToCalc     int64
-	LatencyLowerBound int64
-	LatencyUpperBound int64
-	Latencies         [][]*MetricLatency
+	MetricsPath   string
+	NumMsgsToCalc int64
+	Latencies     [][]*MetricLatency
 }
 
 func (clM *ClientMetrics) AddLatency(path string) error {
+
+	var partner string
 
 	// Ingest supplied send times file.
 	content, err := ioutil.ReadFile(path)
@@ -38,8 +38,6 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 
 	// Split file contents into lines.
 	lines := strings.Split(string(content), "\n")
-
-	var partner string
 
 	// Prepare latencies state object.
 	msgLatencies := make([]*MetricLatency, len(lines))
@@ -142,15 +140,32 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 
 	for i := 0; int64(i) < clM.NumMsgsToCalc; i++ {
 
-		// Combine and calculate latency metrics.
+		// Integrate temporarily-stored receive timestamps of partner.
 		msgLatencies[i].ReceiveTimestamp = partnersLatencies[i].ReceiveTimestamp
 
+		// Calculate this message's end-to-end latency in seconds.
 		latencyNano := msgLatencies[i].ReceiveTimestamp - msgLatencies[i].SendTimestamp
 		msgLatencies[i].Latency = float64(latencyNano) / float64(1000000000)
 
 		if msgLatencies[i].Latency <= float64(0.0) {
 			fmt.Printf("Non-existent or negative message latency, impossible. Corrupted data or system clocks?\n")
 			os.Exit(1)
+		}
+
+		// In case one of this client's send timestamps
+		// holds a lower value than the previous lowest
+		// send timestamp, update the global bound.
+		sendTimestampSec := (msgLatencies[i].SendTimestamp / 1000000000) - 1
+		if sendTimestampSec < clM.TimestampLowerBound {
+			clM.TimestampLowerBound = sendTimestampSec
+		}
+
+		// In case one of this client's receive timestamps
+		// holds a higher value than the previous highest
+		// receive timestamp, update the global bound.
+		recvTimestampSec := (msgLatencies[i].ReceiveTimestamp / 1000000000) + 1
+		if recvTimestampSec > clM.TimestampUpperBound {
+			clM.TimestampUpperBound = recvTimestampSec
 		}
 	}
 

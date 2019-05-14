@@ -7,8 +7,7 @@ import numpy as np
 import matplotlib
 from matplotlib import pyplot as plt
 
-# matplotlib.rcParams['text.usetex'] = True
-matplotlib.rcParams['font.size'] = 12
+matplotlib.rcParams['font.size'] = 10
 
 
 def compileTraffic(outgoing, dataFile, outputFile):
@@ -22,7 +21,6 @@ def compileTraffic(outgoing, dataFile, outputFile):
     _, ax = plt.subplots()
     # ax.set_xlim([x_min, x_max])
     # ax.set_ylim([y_min, y_max])
-    # ax.set_aspect(1, share=True)
     ax.boxplot(data)
 
     plt.grid()
@@ -49,7 +47,6 @@ def compileMemory(dataFile, outputFile):
     _, ax = plt.subplots()
     # ax.set_xlim([x_min, x_max])
     ax.set_ylim([0.0, 100.0])
-    # ax.set_aspect(1, share=True)
     ax.boxplot(data)
 
     plt.grid()
@@ -72,7 +69,6 @@ def compileLoad(dataFile, outputFile):
     _, ax = plt.subplots()
     # ax.set_xlim([x_min, x_max])
     ax.set_ylim([0.0, 100.0])
-    # ax.set_aspect(1, share=True)
     ax.boxplot(data)
 
     plt.grid()
@@ -96,8 +92,8 @@ def compileLatencies(dataFile, outputFile):
     y_max = np.ceil(max(flat_data))
 
     _, ax = plt.subplots()
+    # ax.set_xlim([x_min, x_max])
     ax.set_ylim([0, y_max])
-    # ax.set_aspect(1, share=True)
     ax.boxplot(data)
 
     plt.grid()
@@ -105,6 +101,43 @@ def compileLatencies(dataFile, outputFile):
 
     plt.xlabel("Message (sequence number)")
     plt.ylabel("End-to-end latency (seconds)")
+
+    plt.savefig(outputFile, bbox_inches = 'tight', dpi = 200)
+
+
+def compileMessagesPerMix(dataFile, outputFile):
+
+    labels = []
+    data = []
+    with open(dataFile, newline='') as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for idx, row in enumerate(reader):
+            if idx == 0:
+                labels = row
+            else:
+                data.append(list(map(int, row)))
+
+    flat_data = [count for mix in data for count in mix]
+    y_max = np.ceil(max(flat_data)) + 5
+
+    x_max = len(data[0])
+    for msgCounts in data:
+        if len(msgCounts) > x_max:
+            x_max = len(msgCounts)
+
+    _, ax = plt.subplots()
+    ax.set_xlim([0, x_max])
+    ax.set_ylim([0, y_max])
+    
+    for idx, msgCounts in enumerate(data):
+        plt.plot(msgCounts, "-", label = labels[idx], markersize = 2.0, color = np.random.rand(3,))
+
+    plt.grid()
+    plt.legend()
+    plt.tight_layout()
+
+    plt.xlabel("Round number")
+    plt.ylabel("Messages in all pools (count)")
 
     plt.savefig(outputFile, bbox_inches = 'tight', dpi = 200)
 
@@ -135,22 +168,26 @@ mixLoadOutputFile = os.path.join(mixMetricsPath, "load_per_second.png")
 latenciesDataFile = os.path.join(clientMetricsPath, "latency_per_message.boxplot")
 latenciesOutputFile = os.path.join(clientMetricsPath, "latency_per_message.png")
 
+mixMsgsPerMixDataFile = os.path.join(mixMetricsPath, "messages_per_mix.plot")
+mixMsgsPerMixOutputFile = os.path.join(mixMetricsPath, "messages_per_mix.png")
+
 
 # Create figures for outgoing metrics.
-# compileTraffic(True, clientSentBytesDataFile, clientSentBytesOutputFile)
-# compileTraffic(True, mixSentBytesDataFile, mixSentBytesOutputFile)
+compileTraffic(True, clientSentBytesDataFile, clientSentBytesOutputFile)
+compileTraffic(True, mixSentBytesDataFile, mixSentBytesOutputFile)
 
 # Create figures for incoming metrics.
-# compileTraffic(False, clientRecvdBytesDataFile, clientRecvdBytesOutputFile)
-# compileTraffic(False, mixRecvdBytesDataFile, mixRecvdBytesOutputFile)
+compileTraffic(False, clientRecvdBytesDataFile, clientRecvdBytesOutputFile)
+compileTraffic(False, mixRecvdBytesDataFile, mixRecvdBytesOutputFile)
 
 # Create figures for memory metrics.
-# compileMemory(clientMemoryDataFile, clientMemoryOutputFile)
-# compileMemory(mixMemoryDataFile, mixMemoryOutputFile)
+compileMemory(clientMemoryDataFile, clientMemoryOutputFile)
+compileMemory(mixMemoryDataFile, mixMemoryOutputFile)
 
 # Create figures for load metrics.
-# compileLoad(clientLoadDataFile, clientLoadOutputFile)
-# compileLoad(mixLoadDataFile, mixLoadOutputFile)
+compileLoad(clientLoadDataFile, clientLoadOutputFile)
+compileLoad(mixLoadDataFile, mixLoadOutputFile)
 
 # Clients-only: create figures for message latency metrics.
 compileLatencies(latenciesDataFile, latenciesOutputFile)
+compileMessagesPerMix(mixMsgsPerMixDataFile, mixMsgsPerMixOutputFile)

@@ -22,14 +22,16 @@ type MetricsFloat64 struct {
 }
 
 type SystemMetrics struct {
-	SentBytes     []*MetricsInt64
-	SentBytesRaw  map[int64][]int64
-	RecvdBytes    []*MetricsInt64
-	RecvdBytesRaw map[int64][]int64
-	Memory        []*MetricsFloat64
-	MemoryRaw     map[int64][]float64
-	Load          []*MetricsFloat64
-	LoadRaw       map[int64][]float64
+	SentBytes           []*MetricsInt64
+	SentBytesRaw        map[int64][]int64
+	RecvdBytes          []*MetricsInt64
+	RecvdBytesRaw       map[int64][]int64
+	Memory              []*MetricsFloat64
+	MemoryRaw           map[int64][]float64
+	Load                []*MetricsFloat64
+	LoadRaw             map[int64][]float64
+	TimestampLowerBound int64
+	TimestampUpperBound int64
 }
 
 func (sysM *SystemMetrics) AddSentBytes(path string) error {
@@ -200,6 +202,12 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 
 	for ts := range sysM.SentBytesRaw {
 
+		// Exclude metric for further consideration in
+		// case it lies outside our zone of interest.
+		if (ts < sysM.TimestampLowerBound) || (ts > sysM.TimestampUpperBound) {
+			continue
+		}
+
 		sysM.SentBytes = append(sysM.SentBytes, &MetricsInt64{
 			Timestamp: ts,
 			Values:    sysM.SentBytesRaw[ts],
@@ -207,6 +215,12 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 	}
 
 	for ts := range sysM.RecvdBytesRaw {
+
+		// Exclude metric for further consideration in
+		// case it lies outside our zone of interest.
+		if (ts < sysM.TimestampLowerBound) || (ts > sysM.TimestampUpperBound) {
+			continue
+		}
 
 		sysM.RecvdBytes = append(sysM.RecvdBytes, &MetricsInt64{
 			Timestamp: ts,
@@ -216,6 +230,12 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 
 	for ts := range sysM.MemoryRaw {
 
+		// Exclude metric for further consideration in
+		// case it lies outside our zone of interest.
+		if (ts < sysM.TimestampLowerBound) || (ts > sysM.TimestampUpperBound) {
+			continue
+		}
+
 		sysM.Memory = append(sysM.Memory, &MetricsFloat64{
 			Timestamp: ts,
 			Values:    sysM.MemoryRaw[ts],
@@ -223,6 +243,12 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 	}
 
 	for ts := range sysM.LoadRaw {
+
+		// Exclude metric for further consideration in
+		// case it lies outside our zone of interest.
+		if (ts < sysM.TimestampLowerBound) || (ts > sysM.TimestampUpperBound) {
+			continue
+		}
 
 		sysM.Load = append(sysM.Load, &MetricsFloat64{
 			Timestamp: ts,

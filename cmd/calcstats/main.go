@@ -36,10 +36,12 @@ func main() {
 
 	clientMetrics := &ClientMetrics{
 		SystemMetrics: &SystemMetrics{
-			SentBytesRaw:  make(map[int64][]int64),
-			RecvdBytesRaw: make(map[int64][]int64),
-			MemoryRaw:     make(map[int64][]float64),
-			LoadRaw:       make(map[int64][]float64),
+			SentBytesRaw:        make(map[int64][]int64),
+			RecvdBytesRaw:       make(map[int64][]int64),
+			MemoryRaw:           make(map[int64][]float64),
+			LoadRaw:             make(map[int64][]float64),
+			TimestampLowerBound: (1 << 63) - 1,
+			TimestampUpperBound: 0,
 		},
 		MetricsPath:   clientMetricsPath,
 		NumMsgsToCalc: int64(numMsgsToCalc),
@@ -83,12 +85,16 @@ func main() {
 
 	mixMetrics := &MixMetrics{
 		SystemMetrics: &SystemMetrics{
-			SentBytesRaw:  make(map[int64][]int64),
-			RecvdBytesRaw: make(map[int64][]int64),
-			MemoryRaw:     make(map[int64][]float64),
-			LoadRaw:       make(map[int64][]float64),
+			SentBytesRaw:        make(map[int64][]int64),
+			RecvdBytesRaw:       make(map[int64][]int64),
+			MemoryRaw:           make(map[int64][]float64),
+			LoadRaw:             make(map[int64][]float64),
+			TimestampLowerBound: (1 << 63) - 1,
+			TimestampUpperBound: 0,
 		},
-		MsgsPerPool: make([]int64, 0, 7),
+		MetricsPath: mixMetricsPath,
+		Mixes:       make([]string, 0, 10),
+		MsgsPerMix:  make([][]int64, 0, 10),
 	}
 
 	// Scan metrics directory of clients.
@@ -111,6 +117,9 @@ func main() {
 
 		case "mem_unixnano.evaluation":
 			err = mixMetrics.AddMem(path)
+
+		case "pool-sizes_round.evaluation":
+			err = mixMetrics.AddMsgsPerMix(path)
 		}
 		if err != nil {
 			return err
@@ -123,6 +132,7 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Filter and sort system metrics.
 	err = clientMetrics.SystemSortByTimestamp()
 	if err != nil {
 		fmt.Printf("Failed to order system metrics of clients: %v\n", err)
@@ -135,6 +145,8 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Write out system metrics, ready to be
+	// boxplotted with Python script.
 	err = clientMetrics.SystemStoreForBoxplots(clientMetricsPath)
 	if err != nil {
 		fmt.Printf("Failed to write out system metrics boxplot files for clients: %v\n", err)
@@ -147,9 +159,19 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Write out message latency metrics for clients.
+	// Ready to be boxplotted with Python script.
 	err = clientMetrics.ClientStoreForBoxplot()
 	if err != nil {
 		fmt.Printf("Failed to write out message latency metrics boxplot files for clients: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Write out message counts per mix.
+	// Ready to be boxplotted with Python script.
+	err = mixMetrics.MixStoreForPlot()
+	if err != nil {
+		fmt.Printf("Failed to write out message number metrics boxplot files for mixes: %v\n", err)
 		os.Exit(1)
 	}
 }
