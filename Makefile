@@ -28,3 +28,7 @@ syncbucket:
 
 cleanresults:
 	rm -rf results/*
+
+cleanplots:
+	rm -rf results/*/clients/*.png
+	rm -rf results/*/mixes/*.png

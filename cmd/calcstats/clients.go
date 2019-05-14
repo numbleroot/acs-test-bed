@@ -15,7 +15,7 @@ type MetricLatency struct {
 	MsgID            int64
 	SendTimestamp    int64
 	ReceiveTimestamp int64
-	Latency          int64
+	Latency          float64
 }
 
 type ClientMetrics struct {
@@ -144,9 +144,11 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 
 		// Combine and calculate latency metrics.
 		msgLatencies[i].ReceiveTimestamp = partnersLatencies[i].ReceiveTimestamp
-		msgLatencies[i].Latency = msgLatencies[i].ReceiveTimestamp - msgLatencies[i].SendTimestamp
 
-		if msgLatencies[i].Latency <= int64(0) {
+		latencyNano := msgLatencies[i].ReceiveTimestamp - msgLatencies[i].SendTimestamp
+		msgLatencies[i].Latency = float64(latencyNano) / float64(1000000000)
+
+		if msgLatencies[i].Latency <= float64(0.0) {
 			fmt.Printf("Non-existent or negative message latency, impossible. Corrupted data or system clocks?\n")
 			os.Exit(1)
 		}
@@ -161,6 +163,29 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 	return nil
 }
 
-func (clM *ClientMetrics) CalcAndWriteLatency(path string) error {
+func (clM *ClientMetrics) ClientStoreForBoxplot() error {
+
+	latencyFile, err := os.OpenFile(filepath.Join(clM.MetricsPath, "latency_per_message.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	if err != nil {
+		return err
+	}
+	defer latencyFile.Close()
+	defer latencyFile.Sync()
+
+	for i := 0; int64(i) < clM.NumMsgsToCalc; i++ {
+
+		var values string
+		for client := range clM.Latencies {
+
+			if values == "" {
+				values = fmt.Sprintf("%.5f", clM.Latencies[client][i].Latency)
+			} else {
+				values = fmt.Sprintf("%s,%.5f", values, clM.Latencies[client][i].Latency)
+			}
+		}
+
+		fmt.Fprintln(latencyFile, values)
+	}
+
 	return nil
 }

@@ -123,27 +123,33 @@ func main() {
 		os.Exit(1)
 	}
 
-	err = clientMetrics.SortByTimestamp()
+	err = clientMetrics.SystemSortByTimestamp()
 	if err != nil {
 		fmt.Printf("Failed to order system metrics of clients: %v\n", err)
 		os.Exit(1)
 	}
 
-	err = clientMetrics.StoreForBoxplots(clientMetricsPath)
-	if err != nil {
-		fmt.Printf("Failed to write out boxplot files for clients: %v\n", err)
-		os.Exit(1)
-	}
-
-	err = mixMetrics.SortByTimestamp()
+	err = mixMetrics.SystemSortByTimestamp()
 	if err != nil {
 		fmt.Printf("Failed to order system metrics of mixes: %v\n", err)
 		os.Exit(1)
 	}
 
-	err = mixMetrics.StoreForBoxplots(mixMetricsPath)
+	err = clientMetrics.SystemStoreForBoxplots(clientMetricsPath)
 	if err != nil {
-		fmt.Printf("Failed to write out boxplot files for mixes: %v\n", err)
+		fmt.Printf("Failed to write out system metrics boxplot files for clients: %v\n", err)
+		os.Exit(1)
+	}
+
+	err = mixMetrics.SystemStoreForBoxplots(mixMetricsPath)
+	if err != nil {
+		fmt.Printf("Failed to write out system metrics boxplot files for mixes: %v\n", err)
+		os.Exit(1)
+	}
+
+	err = clientMetrics.ClientStoreForBoxplot()
+	if err != nil {
+		fmt.Printf("Failed to write out message latency metrics boxplot files for clients: %v\n", err)
 		os.Exit(1)
 	}
 }

@@ -189,7 +189,7 @@ func (sysM *SystemMetrics) AddLoad(path string) error {
 	return nil
 }
 
-func (sysM *SystemMetrics) SortByTimestamp() error {
+func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 
 	sysM.SentBytes = make([]*MetricsInt64, 0, len(sysM.SentBytesRaw))
 	sysM.RecvdBytes = make([]*MetricsInt64, 0, len(sysM.RecvdBytesRaw))
@@ -248,32 +248,10 @@ func (sysM *SystemMetrics) SortByTimestamp() error {
 		return sysM.Load[i].Timestamp < sysM.Load[j].Timestamp
 	})
 
-	/*
-		fmt.Printf("Sent bytes:\n")
-		for i := range sysM.SentBytes {
-			fmt.Printf("\t%03d:  %03d  =>  %#v\n", i, sysM.SentBytes[i].Timestamp, sysM.SentBytes[i].Values)
-		}
-
-		fmt.Printf("\nRecvd bytes:\n")
-		for i := range sysM.RecvdBytes {
-			fmt.Printf("\t%03d:  %03d  =>  %#v\n", i, sysM.RecvdBytes[i].Timestamp, sysM.RecvdBytes[i].Values)
-		}
-
-		fmt.Printf("\nMemory:\n")
-		for i := range sysM.Memory {
-			fmt.Printf("\t%03d:  %03d  =>  %#v\n", i, sysM.Memory[i].Timestamp, sysM.Memory[i].Values)
-		}
-
-		fmt.Printf("\nLoad:\n")
-		for i := range sysM.Load {
-			fmt.Printf("\t%03d:  %03d  =>  %#v\n", i, sysM.Load[i].Timestamp, sysM.Load[i].Values)
-		}
-	*/
-
 	return nil
 }
 
-func (sysM *SystemMetrics) StoreForBoxplots(path string) error {
+func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
 
 	sentBytesFile, err := os.OpenFile(filepath.Join(path, "sent-bytes_per_second.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
@@ -301,8 +279,8 @@ func (sysM *SystemMetrics) StoreForBoxplots(path string) error {
 	if err != nil {
 		return err
 	}
-	defer sentBytesFile.Close()
-	defer sentBytesFile.Sync()
+	defer recvdBytesFile.Close()
+	defer recvdBytesFile.Sync()
 
 	for ts := range sysM.RecvdBytes {
 
@@ -323,8 +301,8 @@ func (sysM *SystemMetrics) StoreForBoxplots(path string) error {
 	if err != nil {
 		return err
 	}
-	defer sentBytesFile.Close()
-	defer sentBytesFile.Sync()
+	defer memoryFile.Close()
+	defer memoryFile.Sync()
 
 	for ts := range sysM.Memory {
 
@@ -345,8 +323,8 @@ func (sysM *SystemMetrics) StoreForBoxplots(path string) error {
 	if err != nil {
 		return err
 	}
-	defer sentBytesFile.Close()
-	defer sentBytesFile.Sync()
+	defer loadFile.Close()
+	defer loadFile.Sync()
 
 	for ts := range sysM.Load {
 
