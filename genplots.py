@@ -29,9 +29,9 @@ def compileTraffic(outgoing, dataFile, outputFile):
     plt.xlabel("Experiment time (seconds)")
 
     if outgoing:
-        plt.ylabel("Outgoing traffic (bytes)")
+        plt.ylabel("Outgoing traffic (KiB)")
     else:
-        plt.ylabel("Incoming traffic (bytes)")
+        plt.ylabel("Incoming traffic (KiB)")
 
     plt.savefig(outputFile, bbox_inches = 'tight', dpi = 200)
 

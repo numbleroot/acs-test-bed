@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-download_packages() {
-    DEBIAN_FRONTEND=noninteractive apt-get update && apt-get --yes --quiet install sysstat
-}
+sleep 3
 
-sleep 10
+# Prepare FIFO pipe for system and collector IPC.
+mkfifo /tmp/collect
+chmod 0600 /tmp/collect
 
-# Install package sysstat for mpstat.
-download_packages &
+# Add iptables rule to be able to count number of transferred
+# bytes over evaluation system port.
+iptables -A INPUT -p udp --dport 33000
+iptables -A OUTPUT -p udp --dport 33000
 
 # Retrieve metadata required for operation.
 LISTEN_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip -H "Metadata-Flavor: Google")
@@ -19,15 +21,6 @@ BINARY_TO_PULL=$(curl http://metadata.google.internal/computeMetadata/v1/instanc
 TC_CONFIG=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/tcConfig -H "Metadata-Flavor: Google")
 PKI_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/pkiIP -H "Metadata-Flavor: Google")
 
-# Add iptables rule to be able to count number of transferred
-# bytes over evaluation system port.
-iptables -A INPUT -p udp --dport 33000
-iptables -A OUTPUT -p udp --dport 33000
-
-# Prepare FIFO pipe for system and collector IPC.
-mkfifo /tmp/collect
-chmod 0600 /tmp/collect
-
 # Pull files from GCloud bucket.
 /snap/bin/gsutil cp gs://acs-eval/${EVAL_SCRIPT_TO_PULL} /root/${EVAL_SCRIPT_TO_PULL}
 /snap/bin/gsutil cp gs://acs-eval/${BINARY_TO_PULL} /root/${BINARY_TO_PULL}
@@ -36,9 +29,6 @@ chmod 0600 /tmp/collect
 # Make the downloaded binaries executable.
 chmod 0700 /root/${BINARY_TO_PULL}
 chmod 0700 /root/collector
-
-# Wait for package download to complete.
-wait
 
 # Hand over to evaluation script.
 LISTEN_IP=${LISTEN_IP} NAME_OF_NODE=${NAME_OF_NODE} TYPE_OF_NODE=${TYPE_OF_NODE} RESULT_FOLDER=${RESULT_FOLDER} TC_CONFIG=${TC_CONFIG} PKI_IP=${PKI_IP} /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
