@@ -14,28 +14,27 @@ import (
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
-	Name               string `json:"Name"`
-	Zone               string `json:"Zone"`
-	MachineType        string `json:"MachineType"`
-	Network            string `json:"Network"`
-	MinCPUPlatform     string `json:"MinCPUPlatform"`
-	Scopes             string `json:"Scopes"`
-	Image              string `json:"Image"`
-	ImageProject       string `json:"ImageProject"`
-	BootDiskSize       string `json:"BootDiskSize"`
-	BootDiskType       string `json:"BootDiskType"`
-	BootDiskDeviceName string `json:"BootDiskDeviceName"`
-	MaintenancePolicy  string `json:"MaintenancePolicy"`
-	Flags              string `json:"Flags"`
-	TypeOfNode         string `json:"TypeOfNode"`
-	EvaluationScript   string `json:"EvaluationScript"`
-	BinaryName         string `json:"BinaryName"`
-	ParamsTC           string `json:"ParamsTC"`
+	Name              string `json:"Name"`
+	Zone              string `json:"Zone"`
+	MachineType       string `json:"MachineType"`
+	Network           string `json:"Network"`
+	MinCPUPlatform    string `json:"MinCPUPlatform"`
+	Scopes            string `json:"Scopes"`
+	SourceSnapshot    string `json:"SourceSnapshot"`
+	Disk              string `json:"Disk"`
+	BootDiskSize      string `json:"BootDiskSize"`
+	BootDiskType      string `json:"BootDiskType"`
+	MaintenancePolicy string `json:"MaintenancePolicy"`
+	Flags             string `json:"Flags"`
+	TypeOfNode        string `json:"TypeOfNode"`
+	EvaluationScript  string `json:"EvaluationScript"`
+	BinaryName        string `json:"BinaryName"`
+	ParamsTC          string `json:"ParamsTC"`
 }
 
-// GCloudZones contains all but one geographical
+// GCloudZones contains all but two geographical
 // zones GCP has to offer for compute nodes.
-var GCloudZones = [19]string{
+var GCloudZones = [18]string{
 	"asia-east1-b",
 	"asia-east2-b",
 	"asia-northeast1-b",
@@ -46,7 +45,6 @@ var GCloudZones = [19]string{
 	"europe-north1-b",
 	"europe-west1-b",
 	"europe-west2-b",
-	"europe-west3-b",
 	"europe-west4-b",
 	"europe-west6-b",
 	"northamerica-northeast1-b",
@@ -146,63 +144,60 @@ func main() {
 
 		// Prefill all configurations.
 		zenoConfigs = append(zenoConfigs, Config{
-			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Zone:               zone,
-			MachineType:        machineType,
-			Network:            "subnet=default,network-tier=PREMIUM", //,no-address",
-			MinCPUPlatform:     "Intel Skylake",
-			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
-			Image:              "ubuntu-1804-bionic-v20190429",
-			ImageProject:       "ubuntu-os-cloud",
-			BootDiskSize:       "10GB",
-			BootDiskType:       "pd-ssd",
-			BootDiskDeviceName: "mixnet",
-			MaintenancePolicy:  "TERMINATE",
-			Flags:              "--no-restart-on-failure",
-			TypeOfNode:         "client",
-			EvaluationScript:   "zeno_client_eval.sh",
-			BinaryName:         "zeno",
-			ParamsTC:           "none so far",
+			Name:              fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:              zone,
+			MachineType:       machineType,
+			Network:           "subnet=default,network-tier=PREMIUM,no-address",
+			MinCPUPlatform:    "Intel Skylake",
+			Scopes:            "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
+			SourceSnapshot:    "mixnet",
+			Disk:              fmt.Sprintf("name=mixnet-%05d,device-name=mixnet-%05d,mode=rw,boot=yes,auto-delete=yes", (i + 1), (i + 1)),
+			BootDiskSize:      "10",
+			BootDiskType:      "pd-ssd",
+			MaintenancePolicy: "TERMINATE",
+			Flags:             "--no-restart-on-failure",
+			TypeOfNode:        "client",
+			EvaluationScript:  "zeno_client_eval.sh",
+			BinaryName:        "zeno",
+			ParamsTC:          "none so far",
 		})
 
 		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
-			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Zone:               zone,
-			MachineType:        machineType,
-			Network:            "subnet=default,network-tier=PREMIUM", //,no-address",
-			MinCPUPlatform:     "Intel Skylake",
-			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
-			Image:              "ubuntu-1804-bionic-v20190429",
-			ImageProject:       "ubuntu-os-cloud",
-			BootDiskSize:       "10GB",
-			BootDiskType:       "pd-ssd",
-			BootDiskDeviceName: "mixnet",
-			MaintenancePolicy:  "TERMINATE",
-			Flags:              "--no-restart-on-failure",
-			TypeOfNode:         "client",
-			EvaluationScript:   "vuvuzela-client_eval.sh",
-			BinaryName:         "vuvuzela-client",
-			ParamsTC:           "none so far",
+			Name:              fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:              zone,
+			MachineType:       machineType,
+			Network:           "subnet=default,network-tier=PREMIUM,no-address",
+			MinCPUPlatform:    "Intel Skylake",
+			Scopes:            "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
+			SourceSnapshot:    "mixnet",
+			Disk:              fmt.Sprintf("name=mixnet-%05d,device-name=mixnet-%05d,mode=rw,boot=yes,auto-delete=yes", (i + 1), (i + 1)),
+			BootDiskSize:      "10",
+			BootDiskType:      "pd-ssd",
+			MaintenancePolicy: "TERMINATE",
+			Flags:             "--no-restart-on-failure",
+			TypeOfNode:        "client",
+			EvaluationScript:  "vuvuzela-client_eval.sh",
+			BinaryName:        "vuvuzela-client",
+			ParamsTC:          "none so far",
 		})
 
 		pungConfigs = append(pungConfigs, Config{
-			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Zone:               zone,
-			MachineType:        machineType,
-			Network:            "subnet=default,network-tier=PREMIUM", //,no-address",
-			MinCPUPlatform:     "Intel Skylake",
-			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
-			Image:              "ubuntu-1804-bionic-v20190429",
-			ImageProject:       "ubuntu-os-cloud",
-			BootDiskSize:       "10GB",
-			BootDiskType:       "pd-ssd",
-			BootDiskDeviceName: "mixnet",
-			MaintenancePolicy:  "TERMINATE",
-			Flags:              "--no-restart-on-failure",
-			TypeOfNode:         "client",
-			EvaluationScript:   "pung_client_eval.sh",
-			BinaryName:         "pung",
-			ParamsTC:           "none so far",
+			Name:              fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:              zone,
+			MachineType:       machineType,
+			Network:           "subnet=default,network-tier=PREMIUM,no-address",
+			MinCPUPlatform:    "Intel Skylake",
+			Scopes:            "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
+			SourceSnapshot:    "mixnet",
+			Disk:              fmt.Sprintf("name=mixnet-%05d,device-name=mixnet-%05d,mode=rw,boot=yes,auto-delete=yes", (i + 1), (i + 1)),
+			BootDiskSize:      "10",
+			BootDiskType:      "pd-ssd",
+			MaintenancePolicy: "TERMINATE",
+			Flags:             "--no-restart-on-failure",
+			TypeOfNode:        "client",
+			EvaluationScript:  "pung_client_eval.sh",
+			BinaryName:        "pung",
+			ParamsTC:          "none so far",
 		})
 	}
 
@@ -226,23 +221,22 @@ func main() {
 		}
 
 		zenoConfigs = append(zenoConfigs, Config{
-			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Zone:               zone,
-			MachineType:        "n1-standard-4",
-			Network:            "subnet=default,network-tier=PREMIUM", //,no-address",
-			MinCPUPlatform:     "Intel Skylake",
-			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
-			Image:              "ubuntu-1804-bionic-v20190429",
-			ImageProject:       "ubuntu-os-cloud",
-			BootDiskSize:       "10GB",
-			BootDiskType:       "pd-ssd",
-			BootDiskDeviceName: "mixnet",
-			MaintenancePolicy:  "TERMINATE",
-			Flags:              "--no-restart-on-failure",
-			TypeOfNode:         "mix",
-			EvaluationScript:   "zeno_mix_eval.sh",
-			BinaryName:         "zeno",
-			ParamsTC:           "none so far",
+			Name:              fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:              zone,
+			MachineType:       "n1-standard-4",
+			Network:           "subnet=default,network-tier=PREMIUM,no-address",
+			MinCPUPlatform:    "Intel Skylake",
+			Scopes:            "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
+			SourceSnapshot:    "mixnet",
+			Disk:              fmt.Sprintf("name=mixnet-%05d,device-name=mixnet-%05d,mode=rw,boot=yes,auto-delete=yes", (i + 1), (i + 1)),
+			BootDiskSize:      "10",
+			BootDiskType:      "pd-ssd",
+			MaintenancePolicy: "TERMINATE",
+			Flags:             "--no-restart-on-failure",
+			TypeOfNode:        "mix",
+			EvaluationScript:  "zeno_mix_eval.sh",
+			BinaryName:        "zeno",
+			ParamsTC:          "none so far",
 		})
 	}
 
@@ -260,23 +254,22 @@ func main() {
 		}
 
 		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
-			Name:               fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Zone:               zone,
-			MachineType:        "n1-standard-4",
-			Network:            "subnet=default,network-tier=PREMIUM", //,no-address",
-			MinCPUPlatform:     "Intel Skylake",
-			Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
-			Image:              "ubuntu-1804-bionic-v20190429",
-			ImageProject:       "ubuntu-os-cloud",
-			BootDiskSize:       "10GB",
-			BootDiskType:       "pd-ssd",
-			BootDiskDeviceName: "mixnet",
-			MaintenancePolicy:  "TERMINATE",
-			Flags:              "--no-restart-on-failure",
-			TypeOfNode:         "vuvuzela-mixer",
-			EvaluationScript:   "vuvuzela-mixer_eval.sh",
-			BinaryName:         "vuvuzela-mixer",
-			ParamsTC:           "none so far",
+			Name:              fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Zone:              zone,
+			MachineType:       "n1-standard-4",
+			Network:           "subnet=default,network-tier=PREMIUM,no-address",
+			MinCPUPlatform:    "Intel Skylake",
+			Scopes:            "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
+			SourceSnapshot:    "mixnet",
+			Disk:              fmt.Sprintf("name=mixnet-%05d,device-name=mixnet-%05d,mode=rw,boot=yes,auto-delete=yes", (i + 1), (i + 1)),
+			BootDiskSize:      "10",
+			BootDiskType:      "pd-ssd",
+			MaintenancePolicy: "TERMINATE",
+			Flags:             "--no-restart-on-failure",
+			TypeOfNode:        "vuvuzela-mixer",
+			EvaluationScript:  "vuvuzela-mixer_eval.sh",
+			BinaryName:        "vuvuzela-mixer",
+			ParamsTC:          "none so far",
 		})
 
 		if i == numClientsToGen {
@@ -287,23 +280,22 @@ func main() {
 	}
 
 	pungConfigs = append(pungConfigs, Config{
-		Name:               fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
-		Zone:               GCloudZones[0],
-		MachineType:        "n1-standard-4",
-		Network:            "subnet=default,network-tier=PREMIUM", //,no-address",
-		MinCPUPlatform:     "Intel Skylake",
-		Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
-		Image:              "ubuntu-1804-bionic-v20190429",
-		ImageProject:       "ubuntu-os-cloud",
-		BootDiskSize:       "10GB",
-		BootDiskType:       "pd-ssd",
-		BootDiskDeviceName: "mixnet",
-		MaintenancePolicy:  "TERMINATE",
-		Flags:              "--no-restart-on-failure",
-		TypeOfNode:         "server",
-		EvaluationScript:   "pung_server_eval.sh",
-		BinaryName:         "pung",
-		ParamsTC:           "none so far",
+		Name:              fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
+		Zone:              GCloudZones[0],
+		MachineType:       "n1-standard-4",
+		Network:           "subnet=default,network-tier=PREMIUM,no-address",
+		MinCPUPlatform:    "Intel Skylake",
+		Scopes:            "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
+		SourceSnapshot:    "mixnet",
+		Disk:              fmt.Sprintf("name=mixnet-%05d,device-name=mixnet-%05d,mode=rw,boot=yes,auto-delete=yes", (numClientsToGen + 1), (numClientsToGen + 1)),
+		BootDiskSize:      "10",
+		BootDiskType:      "pd-ssd",
+		MaintenancePolicy: "TERMINATE",
+		Flags:             "--no-restart-on-failure",
+		TypeOfNode:        "server",
+		EvaluationScript:  "pung_server_eval.sh",
+		BinaryName:        "pung",
+		ParamsTC:          "none so far",
 	})
 
 	// Marshal slice of zeno configs to JSON.
@@ -350,23 +342,22 @@ func main() {
 
 	// Additionally, create configuration for zeno's PKI node.
 	zenoPKIConfigsJSON, err := json.MarshalIndent(Config{
-		Name:               "zeno-pki",
-		Zone:               "europe-west3-a",
-		MachineType:        "n1-standard-4",
-		Network:            "subnet=default,network-tier=PREMIUM",
-		MinCPUPlatform:     "Intel Skylake",
-		Scopes:             "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
-		Image:              "ubuntu-1804-bionic-v20190429",
-		ImageProject:       "ubuntu-os-cloud",
-		BootDiskSize:       "10GB",
-		BootDiskType:       "pd-ssd",
-		BootDiskDeviceName: "mixnet",
-		MaintenancePolicy:  "TERMINATE",
-		Flags:              "--no-restart-on-failure",
-		TypeOfNode:         "zeno-pki",
-		EvaluationScript:   "zeno-pki_eval.sh",
-		BinaryName:         "zeno-pki",
-		ParamsTC:           "irrelevant",
+		Name:              "zeno-pki",
+		Zone:              "europe-west3-a",
+		MachineType:       "n1-standard-16",
+		Network:           "subnet=default,network-tier=PREMIUM",
+		MinCPUPlatform:    "Intel Skylake",
+		Scopes:            "https://www.googleapis.com/auth/servicecontrol,https://www.googleapis.com/auth/service.management.readonly,https://www.googleapis.com/auth/logging.write,https://www.googleapis.com/auth/monitoring.write,https://www.googleapis.com/auth/trace.append,https://www.googleapis.com/auth/devstorage.full_control",
+		SourceSnapshot:    "mixnet",
+		Disk:              "name=zeno-pki,device-name=zeno-pki,mode=rw,boot=yes,auto-delete=yes",
+		BootDiskSize:      "10",
+		BootDiskType:      "pd-ssd",
+		MaintenancePolicy: "TERMINATE",
+		Flags:             "--no-restart-on-failure",
+		TypeOfNode:        "zeno-pki",
+		EvaluationScript:  "zeno-pki_eval.sh",
+		BinaryName:        "zeno-pki",
+		ParamsTC:          "irrelevant",
 	}, "", "\t")
 	if err != nil {
 		fmt.Printf("Failed to marshal configuration for zeno's PKI to JSON: %v\n", err)

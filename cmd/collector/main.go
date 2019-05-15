@@ -108,10 +108,10 @@ func (col *Collector) collectSystemMetrics() {
 
 		case <-secTicker.C:
 
-			sentBytes := "n/a"
-			recvdBytes := "n/a"
-			load := "n/a"
-			mem := "n/a"
+			sentBytes := "n/a\n"
+			recvdBytes := "n/a\n"
+			load := "n/a\n"
+			mem := "n/a\n"
 
 			// Prepare various system metric collection commands.
 			cmdSent := exec.Command("iptables", "-nvxL", "OUTPUT")
@@ -294,7 +294,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	for metric != "done" {
+	for metric != "done\n" {
 
 		// Off-load metric line to file writer.
 		col.MetricsChan <- metric
