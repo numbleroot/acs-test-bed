@@ -20,19 +20,21 @@ type MetricLatency struct {
 
 type ClientMetrics struct {
 	*SystemMetrics
-	MetricsPath   string
-	NumMsgsToCalc int64
-	Latencies     [][]*MetricLatency
+	SystemUnderEval string
+	MetricsPath     string
+	Clients         []string
+	NumMsgsToCalc   int64
+	Latencies       [][]*MetricLatency
 }
 
-func (clM *ClientMetrics) AddLatency(path string) error {
+func (clM *ClientMetrics) AddLatency(path string, TimestampLowerBound int64, TimestampUpperBound int64) (int64, int64, error) {
 
 	var partner string
 
 	// Ingest supplied send times file.
 	content, err := ioutil.ReadFile(path)
 	if err != nil {
-		return err
+		return 0, 0, err
 	}
 	content = bytes.TrimSpace(content)
 
@@ -50,18 +52,35 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 		// Convert first element to timestamp.
 		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
 		if err != nil {
-			return err
+			return 0, 0, err
 		}
 
-		// Convert second element to partner.
 		if partner == "" {
-			partner = fmt.Sprintf("mixnet-%s", strings.Split(metric[1], "=>")[1])
+
+			if clM.SystemUnderEval == "zeno" {
+
+				// Extract index of partner client in
+				// deterministically sorted address slice.
+				partnerIdx, err := strconv.Atoi(strings.Split(metric[1], "=>")[1])
+				if err != nil {
+					return 0, 0, err
+				}
+
+				fmt.Printf("partnerIdx: %d\n", partnerIdx)
+
+				// Find corresponding node name.
+				partner = clM.Clients[(partnerIdx - 1)]
+
+			} else {
+				fmt.Printf("Implement for other systems!!!\n")
+				os.Exit(1)
+			}
 		}
 
 		// Convert third element to message ID.
 		msgID, err := strconv.ParseInt(metric[2], 10, 64)
 		if err != nil {
-			return err
+			return 0, 0, err
 		}
 
 		// Append to temporary state object.
@@ -83,9 +102,9 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 	}
 
 	// Find partner's receive time file.
-	candidates, err := filepath.Glob(fmt.Sprintf("%s/%s_*/recv_unixnano.evaluation", clM.MetricsPath, partner))
+	candidates, err := filepath.Glob(fmt.Sprintf("%s/mixnet-*_%s/recv_unixnano.evaluation", clM.MetricsPath, partner))
 	if err != nil {
-		return err
+		return 0, 0, err
 	}
 
 	if len(candidates) != 1 {
@@ -96,7 +115,7 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 	// Ingest partner's receive times file.
 	content, err = ioutil.ReadFile(candidates[0])
 	if err != nil {
-		return err
+		return 0, 0, err
 	}
 	content = bytes.TrimSpace(content)
 	lines = strings.Split(string(content), "\n")
@@ -112,13 +131,13 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 		// Convert first element to timestamp.
 		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
 		if err != nil {
-			return err
+			return 0, 0, err
 		}
 
 		// Convert third element to message ID.
 		msgID, err := strconv.ParseInt(metric[2], 10, 64)
 		if err != nil {
-			return err
+			return 0, 0, err
 		}
 
 		partnersLatencies[i] = &MetricLatency{
@@ -156,16 +175,16 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 		// holds a lower value than the previous lowest
 		// send timestamp, update the global bound.
 		sendTimestampSec := (msgLatencies[i].SendTimestamp / 1000000000) - 1
-		if sendTimestampSec < clM.TimestampLowerBound {
-			clM.TimestampLowerBound = sendTimestampSec
+		if sendTimestampSec < TimestampLowerBound {
+			TimestampLowerBound = sendTimestampSec
 		}
 
 		// In case one of this client's receive timestamps
 		// holds a higher value than the previous highest
 		// receive timestamp, update the global bound.
 		recvTimestampSec := (msgLatencies[i].ReceiveTimestamp / 1000000000) + 1
-		if recvTimestampSec > clM.TimestampUpperBound {
-			clM.TimestampUpperBound = recvTimestampSec
+		if recvTimestampSec > TimestampUpperBound {
+			TimestampUpperBound = recvTimestampSec
 		}
 	}
 
@@ -175,7 +194,7 @@ func (clM *ClientMetrics) AddLatency(path string) error {
 	// Append to list of client latencies.
 	clM.Latencies = append(clM.Latencies, msgLatencies)
 
-	return nil
+	return TimestampLowerBound, TimestampUpperBound, nil
 }
 
 func (clM *ClientMetrics) ClientStoreForBoxplot() error {

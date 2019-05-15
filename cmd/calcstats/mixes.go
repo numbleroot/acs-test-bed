@@ -12,9 +12,10 @@ import (
 
 type MixMetrics struct {
 	*SystemMetrics
-	MetricsPath string
-	Mixes       []string
-	MsgsPerMix  [][]int64
+	SystemUnderEval string
+	MetricsPath     string
+	Mixes           []string
+	MsgsPerMix      [][]int64
 }
 
 func (mixM *MixMetrics) AddMsgsPerMix(path string) error {
@@ -80,16 +81,6 @@ func (mixM *MixMetrics) AddMsgsPerMix(path string) error {
 }
 
 func (mixM *MixMetrics) MixStoreForPlot() error {
-
-	/*
-		maxNumMetrics := len(mixM.MsgsPerMix[0])
-		for i := range mixM.MsgsPerMix {
-
-			if len(mixM.MsgsPerMix[i]) > maxNumMetrics {
-				maxNumMetrics = len(mixM.MsgsPerMix[i])
-			}
-		}
-	*/
 
 	msgsPerMixFile, err := os.OpenFile(filepath.Join(mixM.MetricsPath, "messages_per_mix.plot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {

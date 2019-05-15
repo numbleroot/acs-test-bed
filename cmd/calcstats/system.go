@@ -22,16 +22,14 @@ type MetricsFloat64 struct {
 }
 
 type SystemMetrics struct {
-	SentBytes           []*MetricsInt64
-	SentBytesRaw        map[int64][]int64
-	RecvdBytes          []*MetricsInt64
-	RecvdBytesRaw       map[int64][]int64
-	Memory              []*MetricsFloat64
-	MemoryRaw           map[int64][]float64
-	Load                []*MetricsFloat64
-	LoadRaw             map[int64][]float64
-	TimestampLowerBound int64
-	TimestampUpperBound int64
+	SentBytes     []*MetricsInt64
+	SentBytesRaw  map[int64][]int64
+	RecvdBytes    []*MetricsInt64
+	RecvdBytesRaw map[int64][]int64
+	Memory        []*MetricsFloat64
+	MemoryRaw     map[int64][]float64
+	Load          []*MetricsFloat64
+	LoadRaw       map[int64][]float64
 }
 
 func (sysM *SystemMetrics) AddSentBytes(path string) error {
@@ -62,6 +60,9 @@ func (sysM *SystemMetrics) AddSentBytes(path string) error {
 		if err != nil {
 			return err
 		}
+
+		// Normalize to KiB.
+		value = value / 1024
 
 		// Append to corresponding slice of values.
 		sysM.SentBytesRaw[timestamp] = append(sysM.SentBytesRaw[timestamp], value)
@@ -98,6 +99,9 @@ func (sysM *SystemMetrics) AddRecvdBytes(path string) error {
 		if err != nil {
 			return err
 		}
+
+		// Normalize to KiB.
+		value = value / 1024
 
 		// Append to corresponding slice of values.
 		sysM.RecvdBytesRaw[timestamp] = append(sysM.RecvdBytesRaw[timestamp], value)
@@ -191,7 +195,7 @@ func (sysM *SystemMetrics) AddLoad(path string) error {
 	return nil
 }
 
-func (sysM *SystemMetrics) SystemSortByTimestamp() error {
+func (sysM *SystemMetrics) SystemSortByTimestamp(TimestampLowerBound int64, TimestampUpperBound int64) error {
 
 	sysM.SentBytes = make([]*MetricsInt64, 0, len(sysM.SentBytesRaw))
 	sysM.RecvdBytes = make([]*MetricsInt64, 0, len(sysM.RecvdBytesRaw))
@@ -204,7 +208,7 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 
 		// Exclude metric for further consideration in
 		// case it lies outside our zone of interest.
-		if (ts < sysM.TimestampLowerBound) || (ts > sysM.TimestampUpperBound) {
+		if (ts < TimestampLowerBound) || (ts > TimestampUpperBound) {
 			continue
 		}
 
@@ -218,7 +222,7 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 
 		// Exclude metric for further consideration in
 		// case it lies outside our zone of interest.
-		if (ts < sysM.TimestampLowerBound) || (ts > sysM.TimestampUpperBound) {
+		if (ts < TimestampLowerBound) || (ts > TimestampUpperBound) {
 			continue
 		}
 
@@ -232,7 +236,7 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 
 		// Exclude metric for further consideration in
 		// case it lies outside our zone of interest.
-		if (ts < sysM.TimestampLowerBound) || (ts > sysM.TimestampUpperBound) {
+		if (ts < TimestampLowerBound) || (ts > TimestampUpperBound) {
 			continue
 		}
 
@@ -246,7 +250,7 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 
 		// Exclude metric for further consideration in
 		// case it lies outside our zone of interest.
-		if (ts < sysM.TimestampLowerBound) || (ts > sysM.TimestampUpperBound) {
+		if (ts < TimestampLowerBound) || (ts > TimestampUpperBound) {
 			continue
 		}
 
@@ -279,7 +283,7 @@ func (sysM *SystemMetrics) SystemSortByTimestamp() error {
 
 func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
 
-	sentBytesFile, err := os.OpenFile(filepath.Join(path, "sent-bytes_per_second.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	sentBytesFile, err := os.OpenFile(filepath.Join(path, "sent-kibytes_per_second.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -301,7 +305,7 @@ func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
 		fmt.Fprintln(sentBytesFile, values)
 	}
 
-	recvdBytesFile, err := os.OpenFile(filepath.Join(path, "recvd-bytes_per_second.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	recvdBytesFile, err := os.OpenFile(filepath.Join(path, "recvd-kibytes_per_second.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
