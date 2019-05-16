@@ -33,7 +33,7 @@ func main() {
 		os.Exit(1)
 	}
 	clientMetricsPath := filepath.Join(metricsPath, "clients")
-	// mixMetricsPath := filepath.Join(metricsPath, "mixes")
+	mixMetricsPath := filepath.Join(metricsPath, "mixes")
 
 	var TimestampLowerBound int64 = (1 << 63) - 1
 	var TimestampUpperBound int64 = 0
@@ -106,55 +106,53 @@ func main() {
 		os.Exit(1)
 	}
 
-	/*
-		mixMetrics := &MixMetrics{
-			SystemMetrics: &SystemMetrics{
-				SentBytesRaw:  make(map[int64][]int64),
-				RecvdBytesRaw: make(map[int64][]int64),
-				MemoryRaw:     make(map[int64][]float64),
-				LoadRaw:       make(map[int64][]float64),
-			},
-			SystemUnderEval: system,
-			MetricsPath:     mixMetricsPath,
-			Mixes:           make([]string, 0, 10),
-			MsgsPerMix:      make([][]int64, 0, 10),
-		}
+	mixMetrics := &MixMetrics{
+		SystemMetrics: &SystemMetrics{
+			SentBytesRaw:  make(map[int64][]int64),
+			RecvdBytesRaw: make(map[int64][]int64),
+			MemoryRaw:     make(map[int64][]float64),
+			LoadRaw:       make(map[int64][]float64),
+		},
+		SystemUnderEval: system,
+		MetricsPath:     mixMetricsPath,
+		Mixes:           make([]string, 0, 10),
+		MsgsPerMix:      make([][]int64, 0, 10),
+	}
 
-		// Scan metrics directory of clients.
-		err = filepath.Walk(mixMetricsPath, func(path string, info os.FileInfo, err error) error {
+	// Scan metrics directory of clients.
+	err = filepath.Walk(mixMetricsPath, func(path string, info os.FileInfo, err error) error {
 
-			if err != nil {
-				return err
-			}
-
-			switch filepath.Base(path) {
-
-			case "traffic_outgoing.evaluation":
-				err = mixMetrics.AddSentBytes(path)
-
-			case "traffic_incoming.evaluation":
-				err = mixMetrics.AddRecvdBytes(path)
-
-			case "load_unixnano.evaluation":
-				err = mixMetrics.AddLoad(path)
-
-			case "mem_unixnano.evaluation":
-				err = mixMetrics.AddMem(path)
-
-			case "pool-sizes_round.evaluation":
-				err = mixMetrics.AddMsgsPerMix(path)
-			}
-			if err != nil {
-				return err
-			}
-
-			return nil
-		})
 		if err != nil {
-			fmt.Printf("Ingesting mix metrics failed: %v\n", err)
-			os.Exit(1)
+			return err
 		}
-	*/
+
+		switch filepath.Base(path) {
+
+		case "traffic_outgoing.evaluation":
+			err = mixMetrics.AddSentBytes(path)
+
+		case "traffic_incoming.evaluation":
+			err = mixMetrics.AddRecvdBytes(path)
+
+		case "load_unixnano.evaluation":
+			err = mixMetrics.AddLoad(path)
+
+		case "mem_unixnano.evaluation":
+			err = mixMetrics.AddMem(path)
+
+		case "pool-sizes_round.evaluation":
+			err = mixMetrics.AddMsgsPerMix(path)
+		}
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
+	if err != nil {
+		fmt.Printf("Ingesting mix metrics failed: %v\n", err)
+		os.Exit(1)
+	}
 
 	// Filter and sort system metrics.
 	err = clientMetrics.SystemSortByTimestamp(TimestampLowerBound, TimestampUpperBound)
@@ -163,13 +161,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	/*
-		err = mixMetrics.SystemSortByTimestamp(TimestampLowerBound, TimestampUpperBound)
-		if err != nil {
-			fmt.Printf("Failed to order system metrics of mixes: %v\n", err)
-			os.Exit(1)
-		}
-	*/
+	err = mixMetrics.SystemSortByTimestamp(TimestampLowerBound, TimestampUpperBound)
+	if err != nil {
+		fmt.Printf("Failed to order system metrics of mixes: %v\n", err)
+		os.Exit(1)
+	}
 
 	// Write out system metrics, ready to be
 	// boxplotted with Python script.
@@ -179,13 +175,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	/*
-		err = mixMetrics.SystemStoreForBoxplots(mixMetricsPath)
-		if err != nil {
-			fmt.Printf("Failed to write out system metrics boxplot files for mixes: %v\n", err)
-			os.Exit(1)
-		}
-	*/
+	err = mixMetrics.SystemStoreForBoxplots(mixMetricsPath)
+	if err != nil {
+		fmt.Printf("Failed to write out system metrics boxplot files for mixes: %v\n", err)
+		os.Exit(1)
+	}
 
 	// Write out message latency metrics for clients.
 	// Ready to be boxplotted with Python script.
@@ -195,13 +189,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	/*
-		// Write out message counts per mix.
-		// Ready to be boxplotted with Python script.
-		err = mixMetrics.MixStoreForPlot()
-		if err != nil {
-			fmt.Printf("Failed to write out message number metrics boxplot files for mixes: %v\n", err)
-			os.Exit(1)
-		}
-	*/
+	// Write out message counts per mix.
+	// Ready to be boxplotted with Python script.
+	err = mixMetrics.MixStoreForPlot()
+	if err != nil {
+		fmt.Printf("Failed to write out message number metrics boxplot files for mixes: %v\n", err)
+		os.Exit(1)
+	}
 }

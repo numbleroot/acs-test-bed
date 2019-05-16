@@ -145,15 +145,15 @@ def compileMessagesPerMix(dataFile, outputFile):
 clientMetricsPath = os.path.join(sys.argv[1], "clients")
 mixMetricsPath = os.path.join(sys.argv[1], "mixes")
 
-clientSentBytesDataFile = os.path.join(clientMetricsPath, "sent-bytes_per_second.boxplot")
-clientSentBytesOutputFile = os.path.join(clientMetricsPath, "sent-bytes_per_second.png")
-mixSentBytesDataFile = os.path.join(mixMetricsPath, "sent-bytes_per_second.boxplot")
-mixSentBytesOutputFile = os.path.join(mixMetricsPath, "sent-bytes_per_second.png")
+clientSentBytesDataFile = os.path.join(clientMetricsPath, "sent-kibytes_per_second.boxplot")
+clientSentBytesOutputFile = os.path.join(clientMetricsPath, "sent-kibytes_per_second.png")
+mixSentBytesDataFile = os.path.join(mixMetricsPath, "sent-kibytes_per_second.boxplot")
+mixSentBytesOutputFile = os.path.join(mixMetricsPath, "sent-kibytes_per_second.png")
 
-clientRecvdBytesDataFile = os.path.join(clientMetricsPath, "recvd-bytes_per_second.boxplot")
-clientRecvdBytesOutputFile = os.path.join(clientMetricsPath, "recvd-bytes_per_second.png")
-mixRecvdBytesDataFile = os.path.join(mixMetricsPath, "recvd-bytes_per_second.boxplot")
-mixRecvdBytesOutputFile = os.path.join(mixMetricsPath, "recvd-bytes_per_second.png")
+clientRecvdBytesDataFile = os.path.join(clientMetricsPath, "recvd-kibytes_per_second.boxplot")
+clientRecvdBytesOutputFile = os.path.join(clientMetricsPath, "recvd-kibytes_per_second.png")
+mixRecvdBytesDataFile = os.path.join(mixMetricsPath, "recvd-kibytes_per_second.boxplot")
+mixRecvdBytesOutputFile = os.path.join(mixMetricsPath, "recvd-kibytes_per_second.png")
 
 clientMemoryDataFile = os.path.join(clientMetricsPath, "memory_per_second.boxplot")
 clientMemoryOutputFile = os.path.join(clientMetricsPath, "memory_per_second.png")

@@ -2,14 +2,19 @@
 
 sleep 3
 
+# Heavily increase limit on open file descriptors in
+# order to be able to keep lots of connections open.
+sysctl -w fs.file-max=1048575
+ulimit -n 1048575
+
 # Prepare FIFO pipe for system and collector IPC.
 mkfifo /tmp/collect
 chmod 0600 /tmp/collect
 
 # Add iptables rule to be able to count number of transferred
 # bytes over evaluation system port.
-iptables -A INPUT -p udp --dport 33000
-iptables -A OUTPUT -p udp --dport 33000
+iptables -A INPUT -p tcp --dport 33000
+iptables -A OUTPUT -p tcp --dport 33000
 
 # Retrieve metadata required for operation.
 LISTEN_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip -H "Metadata-Flavor: Google")

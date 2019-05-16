@@ -66,8 +66,6 @@ func (clM *ClientMetrics) AddLatency(path string, TimestampLowerBound int64, Tim
 					return 0, 0, err
 				}
 
-				fmt.Printf("partnerIdx: %d\n", partnerIdx)
-
 				// Find corresponding node name.
 				partner = clM.Clients[(partnerIdx - 1)]
 

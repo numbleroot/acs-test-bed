@@ -318,7 +318,7 @@ func main() {
 	errChan := make(chan error, len(configs))
 
 	// Spawn creation workers.
-	for i := 0; i < 10; i++ {
+	for i := 0; i < len(configs); i++ {
 		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket, resultFolder, pkiInternalIP)
 	}
 
@@ -330,7 +330,7 @@ func main() {
 	}
 	close(confChan)
 
-	for i := 0; i < 10; i++ {
+	for i := 0; i < len(configs); i++ {
 
 		// If any worker threw an error, abort.
 		err := <-errChan
