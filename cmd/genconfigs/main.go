@@ -79,6 +79,7 @@ func main() {
 	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify file system location where GCloud Compute configurations are supposed to be saved.")
 	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate according to the 20%%-40%%-30%%-10%% machine power classification. Should be a multiple of 100.")
 	numVuvuzelaMixesToGenFlag := flag.Int("numVuvuzelaMixesToGen", 7, "Specify the number of vuvuzela mix nodes to generate (number of zeno mixes is twice this number minus 1).")
+	numZenoCascadesFlag := flag.Int("numZenoCascades", 1, "Specify the number of cascades in zeno to generate.")
 	flag.Parse()
 
 	// Extract parsed flag values.
@@ -98,6 +99,7 @@ func main() {
 
 	numClientsToGen := *numClientsToGenFlag
 	numVuvuzelaMixesToGen := *numVuvuzelaMixesToGenFlag
+	numZenoCascades := *numZenoCascadesFlag
 
 	numClientsFactor := numClientsToGen / 100.0
 	if numClientsFactor < 1 {
@@ -106,7 +108,7 @@ func main() {
 
 	// Prepare slices for respective client
 	// compute node configurations.
-	zenoConfigs := make([]Config, 0, (numClientsToGen + ((2 * numVuvuzelaMixesToGen) - 1)))
+	zenoConfigs := make([]Config, 0, (numClientsToGen + (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))))
 	vuvuzelaConfigs := make([]Config, 0, (numClientsToGen + numVuvuzelaMixesToGen))
 	pungConfigs := make([]Config, 0, (numClientsToGen + 1))
 
@@ -207,16 +209,16 @@ func main() {
 
 	// Also generate the specified number
 	// of mix or server nodes.
-	for i := numClientsToGen; i < (numClientsToGen + ((2 * numVuvuzelaMixesToGen) - 1)); i++ {
+	for i := numClientsToGen; i < (numClientsToGen + (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))); i++ {
 
 		// Pick next zone from randomized zones array.
 		zone := GCloudZones[zoneIdx]
 
 		// Increment counter. If we traversed zones array
-		// once, shuffle it again and reset index.
+		// or reach the number of mixes in zeno's cascade,
+		// reset counter to zero without shuffling.
 		zoneIdx++
-		if zoneIdx == len(GCloudZones) {
-			shuffleZones()
+		if (zoneIdx == len(GCloudZones)) || (zoneIdx == ((2 * numVuvuzelaMixesToGen) - 1)) {
 			zoneIdx = 0
 		}
 
@@ -249,7 +251,6 @@ func main() {
 
 		zoneIdx++
 		if zoneIdx == len(GCloudZones) {
-			shuffleZones()
 			zoneIdx = 0
 		}
 

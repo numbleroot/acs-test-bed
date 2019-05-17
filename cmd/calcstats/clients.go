@@ -95,7 +95,7 @@ func (clM *ClientMetrics) AddLatency(path string, TimestampLowerBound int64, Tim
 
 	// Determine whether we have all required data points.
 	if (int64(len(msgLatencies)) < clM.NumMsgsToCalc) || (msgLatencies[(clM.NumMsgsToCalc-1)].MsgID != clM.NumMsgsToCalc) {
-		fmt.Printf("Not enough consecutive send message time metrics available (want: %d).\n", clM.NumMsgsToCalc)
+		fmt.Printf("Not enough consecutive send message time metrics available (found: %d, want: %d).\n", msgLatencies[(clM.NumMsgsToCalc-1)].MsgID, clM.NumMsgsToCalc)
 		os.Exit(1)
 	}
 
@@ -151,7 +151,8 @@ func (clM *ClientMetrics) AddLatency(path string, TimestampLowerBound int64, Tim
 
 	// Determine whether we have all required data points.
 	if (int64(len(partnersLatencies)) < clM.NumMsgsToCalc) || (partnersLatencies[(clM.NumMsgsToCalc-1)].MsgID != clM.NumMsgsToCalc) {
-		fmt.Printf("Not enough consecutive receive message time metrics available (want: %d).\n", clM.NumMsgsToCalc)
+		fmt.Printf("Not enough consecutive receive (partner: %s) message time metrics available (found: %d, want: %d).\n", partner,
+			partnersLatencies[(clM.NumMsgsToCalc-1)].MsgID, clM.NumMsgsToCalc)
 		os.Exit(1)
 	}
 

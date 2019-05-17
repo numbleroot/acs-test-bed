@@ -41,6 +41,8 @@ func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, se
 
 	for config := range confChan {
 
+		notYetReadyCounter := 0
+
 		// Execute command to create a boot disk for
 		// new instance from prepared snapshot.
 		outRaw, err := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "disks", "create",
@@ -83,6 +85,11 @@ func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, se
 		}
 
 		for !strings.Contains(out, "ThisNodeIsReady") {
+
+			notYetReadyCounter++
+			if notYetReadyCounter >= 150 {
+				fmt.Printf("Still waiting for instance %s to finish starting up...\n", config.Name)
+			}
 
 			time.Sleep(10 * time.Second)
 
@@ -327,6 +334,7 @@ func main() {
 	// Iterate over configuration slice and spawn instances.
 	for _, config := range configs {
 		confChan <- config
+		time.Sleep(1 * time.Second)
 	}
 	close(confChan)
 
@@ -393,6 +401,7 @@ func main() {
 	// Shutdown and destroy disks and instances.
 	for _, config := range configs {
 		confChan <- config
+		time.Sleep(500 * time.Millisecond)
 	}
 	close(confChan)
 
