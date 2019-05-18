@@ -17,7 +17,7 @@ iptables -Z -t filter -L INPUT
 iptables -Z -t filter -L OUTPUT
 
 # Run zeno as client.
-/root/zeno -eval -numMsgToRecv 20 -metricsPipe /tmp/collect -client \
+/root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client \
     -msgPublicAddr ${LISTEN_IP}:33000 -msgLisAddr ${LISTEN_IP}:33000 -pkiLisAddr ${LISTEN_IP}:44000 \
     -pki ${PKI_IP}:33000 -pkiCertPath "/root/cert.pem" > /root/log.evaluation
 

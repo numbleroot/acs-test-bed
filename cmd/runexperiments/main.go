@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net"
+	"net/http"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -19,90 +20,118 @@ import (
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
-	Name              string `json:"Name"`
-	Zone              string `json:"Zone"`
-	MachineType       string `json:"MachineType"`
-	Network           string `json:"Network"`
-	MinCPUPlatform    string `json:"MinCPUPlatform"`
-	Scopes            string `json:"Scopes"`
-	SourceSnapshot    string `json:"SourceSnapshot"`
-	Disk              string `json:"Disk"`
-	BootDiskSize      string `json:"BootDiskSize"`
-	BootDiskType      string `json:"BootDiskType"`
-	MaintenancePolicy string `json:"MaintenancePolicy"`
-	Flags             string `json:"Flags"`
-	TypeOfNode        string `json:"TypeOfNode"`
-	EvaluationScript  string `json:"EvaluationScript"`
-	BinaryName        string `json:"BinaryName"`
-	ParamsTC          string `json:"ParamsTC"`
+	Name             string `json:"Name"`
+	Zone             string `json:"Zone"`
+	MinCPUPlatform   string `json:"MinCPUPlatform"`
+	MachineType      string `json:"MachineType"`
+	TypeOfNode       string `json:"TypeOfNode"`
+	EvaluationScript string `json:"EvaluationScript"`
+	BinaryName       string `json:"BinaryName"`
+	ParamsTC         string `json:"ParamsTC"`
+	SourceImage      string `json:"SourceImage"`
+	DiskType         string `json:"DiskType"`
+	DiskSize         string `json:"DiskSize"`
 }
 
-func spawnInstance(confChan <-chan Config, errChan chan<- error, proj string, serviceAcc string, bucket string, resultFolder string, pkiIP string) {
+var tmplInstanceCreate string
 
-	for config := range confChan {
+var tmplInstancePublicIP = `
+      "accessConfigs": [
+        {
+          "kind": "compute#accessConfig",
+          "name": "External NAT",
+          "type": "ONE_TO_ONE_NAT",
+          "networkTier": "PREMIUM"
+        }
+      ],`
 
-		notYetReadyCounter := 0
+func spawnInstance(config *Config, proj string, serviceAcc string, accessToken string, bucket string,
+	resultFolder string, pkiIP string, tag string, accessConfig string) string {
 
-		// Execute command to create a boot disk for
-		// new instance from prepared snapshot.
-		outRaw, err := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "disks", "create",
-			config.Name, fmt.Sprintf("--size=%s", config.BootDiskSize), fmt.Sprintf("--zone=%s", config.Zone),
-			fmt.Sprintf("--source-snapshot=%s", config.SourceSnapshot), fmt.Sprintf("--type=%s", config.BootDiskType)).CombinedOutput()
-		if err != nil {
-			errChan <- fmt.Errorf("creating boot disk for %s failed (code: '%v'): '%s'", config.Name, err, outRaw)
-			return
-		}
-		out := string(outRaw)
+	// Customize API endpoint to send request to.
+	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances", proj, config.Zone)
 
-		// Verify successful boot disk creation.
-		if strings.Contains(out, "READY") {
-			fmt.Printf("Successfully created disk for instance %s\n", config.Name)
-		} else {
-			errChan <- fmt.Errorf("creating boot disk for %s returned failure message: '%s'", config.Name, out)
-			return
-		}
+	// Prepare request body.
+	reqBody := strings.ReplaceAll(tmplInstanceCreate, "ACS_EVAL_INSERT_NAME", config.Name)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ZONE", fmt.Sprintf("projects/%s/zones/%s", proj, config.Zone))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MIN_CPU_PLATFORM", config.MinCPUPlatform)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MACHINE_TYPE", fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", proj, config.Zone,
+		config.MachineType))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TYPE_OF_NODE", config.TypeOfNode)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_RESULT_FOLDER", resultFolder)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_EVAL_SCRIPT_TO_PULL", config.EvaluationScript)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_BINARY_TO_PULL", config.BinaryName)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TC_CONFIG", config.ParamsTC)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_PKI_IP", pkiIP)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_STARTUP_SCRIPT", fmt.Sprintf("gs://%s/startup.sh", bucket))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TAG", tag)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SOURCE_IMAGE", fmt.Sprintf("projects/%s/global/images/%s", proj, config.SourceImage))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_DISK_TYPE", fmt.Sprintf("projects/%s/zones/%s/diskTypes/%s", proj, config.Zone, config.DiskType))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_DISK_SIZE", config.DiskSize)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SUBNETWORK", fmt.Sprintf("projects/%s/regions/%s/subnetworks/default", proj,
+		strings.TrimSuffix(config.Zone, "-b")))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ACCESS_CONFIG", accessConfig)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SERVICE_ACCOUNT", serviceAcc)
 
-		// Execute command with all corresponding arguments.
-		outRaw, err = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj), "instances", "create",
-			config.Name, fmt.Sprintf("--service-account=%s", serviceAcc), fmt.Sprintf("--zone=%s", config.Zone),
-			fmt.Sprintf("--machine-type=%s", config.MachineType), fmt.Sprintf("--min-cpu-platform=%s", config.MinCPUPlatform),
-			fmt.Sprintf("--network-interface=%s", config.Network), fmt.Sprintf("--disk=%s", config.Disk),
-			fmt.Sprintf("--metadata=nameOfNode=%s,typeOfNode=%s,resultFolder=%s,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=%s,startup-script-url=gs://%s/startup.sh",
-				config.Name, config.TypeOfNode, resultFolder, config.EvaluationScript, config.BinaryName, config.ParamsTC, pkiIP, bucket),
-			fmt.Sprintf("--scopes=%s", config.Scopes), fmt.Sprintf("--maintenance-policy=%s", config.MaintenancePolicy), config.Flags).CombinedOutput()
-		if err != nil {
-			errChan <- fmt.Errorf("spawning %s failed (code: '%v'):\n'%s'", config.Name, err, outRaw)
-			return
-		}
-		out = string(outRaw)
+	// Create HTTP POST request.
+	request, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(reqBody))
+	if err != nil {
+		fmt.Printf("Failed creating HTTP API request: %v\n", err)
+		os.Exit(1)
+	}
+	request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
+	request.Header.Set(http.CanonicalHeaderKey("content-type"), "application/json")
 
-		// Verify successful machine creation.
-		if strings.Contains(out, "RUNNING") {
-			fmt.Printf("Instance %s is running, waiting to complete initialization now...\n", config.Name)
-		} else {
-			errChan <- fmt.Errorf("spawning %s returned failure message:\n'%s'", config.Name, out)
-			return
-		}
-
-		for !strings.Contains(out, "ThisNodeIsReady") {
-
-			notYetReadyCounter++
-			if notYetReadyCounter >= 150 {
-				fmt.Printf("Still waiting for instance %s to finish starting up...\n", config.Name)
-			}
-
-			time.Sleep(10 * time.Second)
-
-			// Execute command to query guest attributes.
-			outRaw, _ = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "beta", "compute", "instances", "get-guest-attributes", config.Name,
-				"--query-path=acs-eval/initStatus", fmt.Sprintf("--zone=%s", config.Zone)).CombinedOutput()
-			out = string(outRaw)
-		}
-
-		fmt.Printf("Instance %s has completed initialization!\n", config.Name)
+	// Send the request to GCP.
+	resp, err := http.DefaultClient.Do(request)
+	if err != nil {
+		fmt.Printf("Failed sending instance create API request: %v\n", err)
+		os.Exit(1)
 	}
 
-	errChan <- nil
+	// Read the response.
+	outRaw, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("Failed reading from instance create response body: %v\n", err)
+		os.Exit(1)
+	}
+	defer resp.Body.Close()
+
+	return string(outRaw)
+}
+
+func checkInstanceReady(name string, zone string) {
+
+	// Execute command to query guest attributes.
+	outRaw, _ := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "beta", "compute", "instances", "get-guest-attributes", name,
+		"--query-path=acs-eval/initStatus", fmt.Sprintf("--zone=%s", zone)).CombinedOutput()
+	out := string(outRaw)
+
+	for !strings.Contains(out, "ThisNodeIsReady") {
+
+		time.Sleep(5 * time.Second)
+
+		outRaw, _ = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "beta", "compute", "instances", "get-guest-attributes", name,
+			"--query-path=acs-eval/initStatus", fmt.Sprintf("--zone=%s", zone)).CombinedOutput()
+		out = string(outRaw)
+	}
+
+	fmt.Printf("Instance %s has completed initialization!\n", name)
+}
+
+func runInstance(config *Config, proj string, serviceAcc string, accessToken string, bucket string,
+	resultFolder string, pkiIP string, tag string, accessConfig string) {
+
+	// Spawn instance and retrieve response.
+	out := spawnInstance(config, proj, serviceAcc, accessToken, bucket, resultFolder, pkiIP, tag, accessConfig)
+
+	// Verify successful machine creation.
+	if strings.Contains(out, "RUNNING") {
+		fmt.Printf("Instance %s running, waiting for initialization to finish...\n", config.Name)
+	} else {
+		fmt.Printf("Spawning instance %s returned failure message:\n%s\n", config.Name, out)
+		os.Exit(1)
+	}
 }
 
 func shutdownInstance(confChan <-chan Config, errChan chan<- error, proj string) {
@@ -202,6 +231,15 @@ func main() {
 		}
 	}
 
+	// Prepare string containing template
+	// for body of instance creation call.
+	tmplRaw, err := ioutil.ReadFile("./cmd/runexperiments/gcp-instance-create.tmpl")
+	if err != nil {
+		fmt.Printf("Failed ingesting file containing instance creation template: %v\n", err)
+		os.Exit(1)
+	}
+	tmplInstanceCreate = string(tmplRaw)
+
 	// Ingest GCloud configuration file.
 	configsJSON, err := ioutil.ReadFile(configsFile)
 	if err != nil {
@@ -216,6 +254,14 @@ func main() {
 		fmt.Printf("Error while trying to unmarshal JSON-encoded GCloud configurations: %v\n", err)
 		os.Exit(1)
 	}
+
+	// TODO: Read OAuth token from gcloud.
+	out, err := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "auth", "print-access-token").CombinedOutput()
+	if err != nil {
+		fmt.Printf("Could not obtain OAuth2 access token (error: '%v'):\n%s\n", err, out)
+		os.Exit(1)
+	}
+	accessToken := strings.TrimSpace(string(out))
 
 	var pkiConfig Config
 	pkiInternalIP := ""
@@ -246,38 +292,40 @@ func main() {
 			os.Exit(1)
 		}
 
-		// Execute command to create a boot disk for zeno PKI.
-		outRaw, err := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", gcloudProject), "disks", "create",
-			pkiConfig.Name, fmt.Sprintf("--size=%s", pkiConfig.BootDiskSize), fmt.Sprintf("--zone=%s", pkiConfig.Zone),
-			fmt.Sprintf("--source-snapshot=%s", pkiConfig.SourceSnapshot), fmt.Sprintf("--type=%s", pkiConfig.BootDiskType)).CombinedOutput()
-		if err != nil {
-			fmt.Printf("Creating boot disk for PKI of zeno failed (code: '%v'): '%s'", err, outRaw)
+		// Spawn PKI of zeno.
+		spawnResp := spawnInstance(&pkiConfig, gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, "irrelevant", "zeno-pki", tmplInstancePublicIP)
+
+		// Verify successful machine creation.
+		if !strings.Contains(spawnResp, "RUNNING") {
+			fmt.Printf("Spawning PKI of zeno returned failure message:\n%s\n", spawnResp)
 			os.Exit(1)
 		}
+
+		time.Sleep(10 * time.Second)
+
+		request, err := http.NewRequest(http.MethodGet,
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", gcloudProject, pkiConfig.Zone, pkiConfig.Name), nil)
+		if err != nil {
+			fmt.Printf("Failed retrieving details of PKI of zeno: %v\n", err)
+			os.Exit(1)
+		}
+		request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
+
+		// Send the request to GCP.
+		resp, err := http.DefaultClient.Do(request)
+		if err != nil {
+			fmt.Printf("Failed sending instance details API request: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Read the response.
+		outRaw, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Printf("Failed reading from instance details response body: %v\n", err)
+			os.Exit(1)
+		}
+		defer resp.Body.Close()
 		out := string(outRaw)
-
-		// Verify successful boot disk creation.
-		if strings.Contains(out, "READY") {
-			fmt.Printf("Successfully created disk for PKI of zeno\n")
-		} else {
-			fmt.Printf("Creating boot disk for PKI of zeno returned failure message: '%s'", out)
-			os.Exit(1)
-		}
-
-		// Execute command to spawn zeno PKI instance.
-		outRaw, err = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", gcloudProject), "instances", "create",
-			pkiConfig.Name, fmt.Sprintf("--service-account=%s", gcloudServiceAcc), fmt.Sprintf("--zone=%s", pkiConfig.Zone),
-			fmt.Sprintf("--machine-type=%s", pkiConfig.MachineType), fmt.Sprintf("--min-cpu-platform=%s", pkiConfig.MinCPUPlatform),
-			fmt.Sprintf("--network-interface=%s", pkiConfig.Network), fmt.Sprintf("--disk=%s", pkiConfig.Disk),
-			fmt.Sprintf("--metadata=nameOfNode=zeno-pki,typeOfNode=%s,resultFolder=irrelevant,evalScriptToPull=%s,binaryToPull=%s,tcConfig=%s,pkiIP=irrelevant,startup-script-url=gs://%s/startup.sh",
-				pkiConfig.TypeOfNode, pkiConfig.EvaluationScript, pkiConfig.BinaryName, pkiConfig.ParamsTC, gcloudBucket),
-			fmt.Sprintf("--scopes=%s", pkiConfig.Scopes), fmt.Sprintf("--maintenance-policy=%s", pkiConfig.MaintenancePolicy),
-			pkiConfig.Flags, "--tags=zeno-pki").CombinedOutput()
-		if err != nil {
-			fmt.Printf("Spawning PKI for zeno mix-net failed (code: '%v'): '%s'", err, outRaw)
-			os.Exit(1)
-		}
-		out = string(outRaw)
 
 		// Compile regular expression matching on
 		// the assigned IP addresses of the PKI.
@@ -297,57 +345,41 @@ func main() {
 			}
 		}
 
-		// Verify successful machine creation.
-		if strings.Contains(out, "RUNNING") {
-			fmt.Printf("Successfully spawned PKI for zeno mix-net with public IP %s and internal IP %s.\n", pkiExternalIP, pkiInternalIP)
-		} else {
-			fmt.Printf("Spawning PKI for zeno mix-net returned failure message:\n'%s'\n", out)
-			os.Exit(1)
-		}
+		fmt.Printf("Successfully spawned PKI of zeno with public IP %s and internal IP %s.\n", pkiExternalIP, pkiInternalIP)
+		time.Sleep(45 * time.Second)
 
-		for !strings.Contains(out, "ThisNodeIsReady") {
-
-			time.Sleep(10 * time.Second)
-
-			// Execute command to query guest attributes.
-			outRaw, _ = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "beta", "compute", "instances", "get-guest-attributes", pkiConfig.Name,
-				"--query-path=acs-eval/initStatus", fmt.Sprintf("--zone=%s", pkiConfig.Zone)).CombinedOutput()
-			out = string(outRaw)
-		}
-
-		fmt.Printf("PKI for zeno has completed initialization!\n\n")
+		// Ensure initialization has completed.
+		checkInstanceReady(pkiConfig.Name, pkiConfig.Zone)
 		time.Sleep(5 * time.Second)
 	}
 
-	// Prepare channels to send configurations
-	// to individual workers and expect responses.
-	confChan := make(chan Config, len(configs))
-	errChan := make(chan error, len(configs))
-
-	// Spawn creation workers.
+	// Spawn all machines.
+	fmt.Printf("\nSpawning machines...\n")
 	for i := 0; i < len(configs); i++ {
-		go spawnInstance(confChan, errChan, gcloudProject, gcloudServiceAcc, gcloudBucket, resultFolder, pkiInternalIP)
+		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, pkiInternalIP, "zeno-node", "")
 	}
 
-	fmt.Printf("Spawning machines now...\n")
+	fmt.Printf("\nWaiting for instances to initialize...\n")
+	time.Sleep(90 * time.Second)
 
-	// Iterate over configuration slice and spawn instances.
-	for _, config := range configs {
-		confChan <- config
-		time.Sleep(1 * time.Second)
+	for i := 0; i < 10; i++ {
+
+		go func(configs []Config, i int) {
+
+			start := i * (len(configs) / 10)
+			end := (i + 1) * (len(configs) / 10)
+
+			for j := start; j < end; j++ {
+				checkInstanceReady(configs[j].Name, configs[j].Zone)
+			}
+
+		}(configs, i)
 	}
-	close(confChan)
 
+	// Ensure initialization of all
+	// machines has completed.
 	for i := 0; i < len(configs); i++ {
-
-		// If any worker threw an error, abort.
-		err := <-errChan
-		if err != nil {
-			fmt.Printf("Subroutine spawning an instance and awaiting initialization failed: %v\n", err)
-			os.Exit(1)
-		}
 	}
-	close(errChan)
 
 	fmt.Printf("All machines spawned!\n\n")
 	time.Sleep(5 * time.Second)
@@ -388,20 +420,20 @@ func main() {
 
 	// Prepare channels to send configurations
 	// to individual workers and expect responses.
-	confChan = make(chan Config, len(configs))
-	errChan = make(chan error, len(configs))
+	confChan := make(chan Config, len(configs))
+	errChan := make(chan error, len(configs))
 
 	// Spawn deletion workers.
 	for i := 0; i < len(configs); i++ {
 		go shutdownInstance(confChan, errChan, gcloudProject)
 	}
 
-	fmt.Printf("Deleting boot disks and machines now...\n")
+	fmt.Printf("Deleting machines...\n")
 
 	// Shutdown and destroy disks and instances.
 	for _, config := range configs {
 		confChan <- config
-		time.Sleep(500 * time.Millisecond)
+		time.Sleep(1 * time.Second)
 	}
 	close(confChan)
 
@@ -416,7 +448,7 @@ func main() {
 	}
 	close(errChan)
 
-	fmt.Printf("All disks and machines deleted!\n\n")
+	fmt.Printf("All machines deleted!\n\n")
 
 	// Download all files from GCloud bucket
 	// to prepared local experiment folder.
