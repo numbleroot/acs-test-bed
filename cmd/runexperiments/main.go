@@ -83,9 +83,23 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	request.Header.Set(http.CanonicalHeaderKey("content-type"), "application/json")
 
 	// Send the request to GCP.
+	tried := 0
 	resp, err := http.DefaultClient.Do(request)
 	if err != nil {
-		fmt.Printf("Failed sending instance create API request: %v\n", err)
+		fmt.Printf("Create API request failed (will try again): %v\n", err)
+		tried++
+	}
+
+	for err != nil && tried < 10 {
+
+		resp, err = http.DefaultClient.Do(request)
+		if err != nil {
+			fmt.Printf("Create API request failed (will try again): %v\n", err)
+		}
+	}
+
+	if tried >= 10 {
+		fmt.Printf("Create API request failed permanently: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -312,9 +326,23 @@ func main() {
 		request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
 
 		// Send the request to GCP.
+		tried := 0
 		resp, err := http.DefaultClient.Do(request)
 		if err != nil {
-			fmt.Printf("Failed sending instance details API request: %v\n", err)
+			fmt.Printf("Details API request failed (will try again): %v\n", err)
+			tried++
+		}
+
+		for err != nil && tried < 10 {
+
+			resp, err = http.DefaultClient.Do(request)
+			if err != nil {
+				fmt.Printf("Details API request failed (will try again): %v\n", err)
+			}
+		}
+
+		if tried >= 10 {
+			fmt.Printf("Details API request failed permanently: %v\n", err)
 			os.Exit(1)
 		}
 
@@ -359,30 +387,16 @@ func main() {
 		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, pkiInternalIP, "zeno-node", "")
 	}
 
+	time.Sleep(10 * time.Second)
 	fmt.Printf("\nWaiting for instances to initialize...\n")
-	time.Sleep(90 * time.Second)
+	time.Sleep(80 * time.Second)
 
-	for i := 0; i < 10; i++ {
-
-		go func(configs []Config, i int) {
-
-			start := i * (len(configs) / 10)
-			end := (i + 1) * (len(configs) / 10)
-
-			for j := start; j < end; j++ {
-				checkInstanceReady(configs[j].Name, configs[j].Zone)
-			}
-
-		}(configs, i)
-	}
-
-	// Ensure initialization of all
-	// machines has completed.
 	for i := 0; i < len(configs); i++ {
+		checkInstanceReady(configs[i].Name, configs[i].Zone)
 	}
 
 	fmt.Printf("All machines spawned!\n\n")
-	time.Sleep(5 * time.Second)
+	time.Sleep(15 * time.Second)
 
 	// If zeno: send PKI signal to start.
 	if system == "zeno" {

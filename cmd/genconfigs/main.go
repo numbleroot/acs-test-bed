@@ -311,7 +311,7 @@ func main() {
 		Name:             "zeno-pki",
 		Zone:             "europe-west3-b",
 		MinCPUPlatform:   "Intel Skylake",
-		MachineType:      "n1-standard-16",
+		MachineType:      "n1-standard-8",
 		TypeOfNode:       "zeno-pki",
 		EvaluationScript: "zeno-pki_eval.sh",
 		BinaryName:       "zeno-pki",
