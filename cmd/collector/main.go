@@ -287,11 +287,31 @@ func main() {
 	// received bytes values to file every second.
 	go col.collectSystemMetrics()
 
+	defer func(col *Collector) {
+
+		// Clean up when we leave this program.
+
+		close(col.MetricsChan)
+		col.shutdownChan <- struct{}{}
+
+		col.SentBytesFile.Close()
+		col.RecvdBytesFile.Close()
+		col.LoadFile.Close()
+		col.MemFile.Close()
+
+		if col.IsClient {
+			col.SendTimeFile.Close()
+			col.RecvTimeFile.Close()
+		} else if col.IsMix {
+			col.PoolSizesFile.Close()
+		}
+	}(col)
+
 	// Read next metric line from named pipe.
 	metric, err := col.PipeReader.ReadString('\n')
 	if err != nil {
 		fmt.Printf("Failed reading from named pipe: %v\n", err)
-		os.Exit(1)
+		return
 	}
 
 	for metric != "done\n" {
@@ -303,25 +323,7 @@ func main() {
 		metric, err = col.PipeReader.ReadString('\n')
 		if err != nil {
 			fmt.Printf("Failed reading from named pipe: %v\n", err)
-			os.Exit(1)
+			return
 		}
-	}
-
-	// Node being evaluated signaled that the
-	// evaluation is completed, so shut down
-	// internal routines writing to files.
-	close(col.MetricsChan)
-	col.shutdownChan <- struct{}{}
-
-	col.SentBytesFile.Close()
-	col.RecvdBytesFile.Close()
-	col.LoadFile.Close()
-	col.MemFile.Close()
-
-	if col.IsClient {
-		col.SendTimeFile.Close()
-		col.RecvTimeFile.Close()
-	} else if col.IsMix {
-		col.PoolSizesFile.Close()
 	}
 }

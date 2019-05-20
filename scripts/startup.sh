@@ -6,7 +6,7 @@ sleep 7
 # connections per socket in order to be able to keep
 # lots of connections open.
 sysctl -w fs.file-max=1048575
-sysctl -w net.core.somaxconn=2048
+sysctl -w net.core.somaxconn=8192
 ulimit -n 1048575
 
 # Prepare FIFO pipe for system and collector IPC.

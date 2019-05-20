@@ -4,13 +4,13 @@
 /snap/bin/gsutil cp gs://acs-eval/cert_zeno-pki.pem /root/cert.pem
 chmod 0644 /root/cert.pem
 
-# Configure tc according to environment variable.
-
 # Run metrics collector sidecar in background.
 /root/collector -mix -pipe /tmp/collect -metricsPath /root/ &
 
 # Signal readiness of process to experiment script.
 curl -X PUT --data "ThisNodeIsReady" http://metadata.google.internal/computeMetadata/v1/instance/guest-attributes/acs-eval/initStatus -H "Metadata-Flavor: Google"
+
+# Configure tc according to environment variable.
 
 # Reset bytes counters right before starting zeno.
 iptables -Z -t filter -L INPUT

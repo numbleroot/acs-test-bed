@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Pull TLS certificates of PKI.
-/snap/bin/gsutil cp gs://acs-eval/cert_zeno-pki.pem /root/cert.pem
-chmod 0644 /root/cert.pem
-
 # Run metrics collector sidecar in background.
 /root/collector -client -pipe /tmp/collect -metricsPath /root/ &
 
@@ -12,14 +8,12 @@ curl -X PUT --data "ThisNodeIsReady" http://metadata.google.internal/computeMeta
 
 # Configure tc according to environment variable.
 
-# Reset bytes counters right before starting zeno.
+# Reset bytes counters right before starting pung.
 iptables -Z -t filter -L INPUT
 iptables -Z -t filter -L OUTPUT
 
-# Run zeno as client.
-/root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client \
-    -msgPublicAddr ${LISTEN_IP}:33000 -msgLisAddr ${LISTEN_IP}:33000 -pkiLisAddr ${LISTEN_IP}:44000 \
-    -pki ${PKI_IP}:33000 -pkiCertPath "/root/cert.pem" > /root/log.evaluation
+# Run pung as client.
+/root/pung -n 0 -p 0 -x "Shared_Secret_ACS_Eval" -h ${PKI_IP}:33000 -d 2 -r 25 -b 0 -k 64 -o h2 -t b > /root/log.evaluation
 
 # Wait for metrics collector to exit.
 wait
