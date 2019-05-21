@@ -13,7 +13,7 @@ iptables -Z -t filter -L INPUT
 iptables -Z -t filter -L OUTPUT
 
 # Run pung as client.
-/root/pung -n 0 -p 0 -x "Shared_Secret_ACS_Eval" -h ${PKI_IP}:33000 -d 2 -r 25 -b 0 -k 64 -o h2 -t b > /root/log.evaluation
+/root/client -n "mixnet-00001" -p "mixnet-00002" -x "Shared_Secret_ACS_Eval" -h ${PKI_IP}:33000 -r 25 -k 1 -s 1 -t t -d 2 -b 0 > /root/log.evaluation
 
 # Wait for metrics collector to exit.
 wait
