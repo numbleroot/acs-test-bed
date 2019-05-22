@@ -29,7 +29,7 @@ type Collector struct {
 	PipeReader     *bufio.Reader
 }
 
-func (col *Collector) prepareMetricsFiles(metricsPath string, pipeName string) error {
+func (col *Collector) prepareMetricsFiles(metricsPath string) error {
 
 	var err error
 
@@ -79,15 +79,6 @@ func (col *Collector) prepareMetricsFiles(metricsPath string, pipeName string) e
 			return err
 		}
 	}
-
-	// Open named pipe for receiving metrics from
-	// system under evaluation.
-	pipe, err := os.OpenFile(pipeName, os.O_RDONLY, 0600)
-	if err != nil {
-		return err
-	}
-
-	col.PipeReader = bufio.NewReader(pipe)
 
 	return nil
 }
@@ -281,7 +272,7 @@ func main() {
 	}
 
 	// Prepare the various metrics files.
-	err = col.prepareMetricsFiles(metricsPath, *pipeNameFlag)
+	err = col.prepareMetricsFiles(metricsPath)
 	if err != nil {
 		fmt.Printf("Unable to prepare files for collecting metrics: %v\n", err)
 		os.Exit(1)
@@ -323,6 +314,15 @@ func main() {
 			col.PoolSizesFile.Close()
 		}
 	}(col)
+
+	// Open named pipe for receiving metrics from
+	// system under evaluation.
+	pipe, err := os.OpenFile(*pipeNameFlag, os.O_RDONLY, 0600)
+	if err != nil {
+		fmt.Printf("Unable to open named pipe for passing metrics: %v\n", err)
+		os.Exit(1)
+	}
+	col.PipeReader = bufio.NewReader(pipe)
 
 	// Read next metric line from named pipe.
 	metric, err := col.PipeReader.ReadString('\n')

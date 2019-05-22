@@ -527,7 +527,7 @@ func main() {
 		shutdown, _ = stdIn.ReadString('\n')
 	}
 
-	if system == "zeno" {
+	if system == "zeno" || system == "pung" {
 		configs = append(configs, auxConfig)
 	}
 

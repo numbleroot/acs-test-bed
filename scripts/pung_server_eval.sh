@@ -13,7 +13,7 @@ iptables -Z -t filter -L INPUT
 iptables -Z -t filter -L OUTPUT
 
 # Run pung as server.
-/root/pung-server -e 25 -n 1 -w 1 -i ${LISTEN_IP} -s 33000 -k 1 -t t -d 2 -b 0 -m 200 > /root/log.evaluation
+/root/pung-server -e 35 -n 1 -w 1 -i ${LISTEN_IP} -s 33000 -k 1 -t t -d 2 -b 0 -m 10 > /root/log.evaluation
 
 # Wait for metrics collector to exit.
 wait

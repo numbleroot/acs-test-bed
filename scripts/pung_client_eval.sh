@@ -15,7 +15,7 @@ iptables -Z -t filter -L OUTPUT
 # Run pung as client.
 /root/pung-client -e /tmp/collect -n "${NAME_OF_NODE}" -p "${PARTNER_OF_NODE}" \
     -x "ACS_SECRET_${NAME_OF_NODE}_${PARTNER_OF_NODE}" -h ${PKI_IP}:33000 \
-    -r 25 -k 1 -s 1 -t t -d 2 -b 0 > /root/log.evaluation
+    -r 35 -k 1 -s 1 -t t -d 2 -b 0 > /root/log.evaluation
 
 # Wait for metrics collector to exit.
 wait
