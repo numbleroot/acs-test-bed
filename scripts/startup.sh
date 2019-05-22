@@ -21,6 +21,7 @@ iptables -A OUTPUT -p tcp --dport 33000
 # Retrieve metadata required for operation.
 LISTEN_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip -H "Metadata-Flavor: Google")
 NAME_OF_NODE=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/nameOfNode -H "Metadata-Flavor: Google")
+PARTNER_OF_NODE=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/partnerOfNode -H "Metadata-Flavor: Google")
 TYPE_OF_NODE=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/typeOfNode -H "Metadata-Flavor: Google")
 RESULT_FOLDER=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/resultFolder -H "Metadata-Flavor: Google")
 EVAL_SCRIPT_TO_PULL=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/evalScriptToPull -H "Metadata-Flavor: Google")
@@ -38,4 +39,5 @@ chmod 0700 /root/${BINARY_TO_PULL}
 chmod 0700 /root/collector
 
 # Hand over to evaluation script.
-LISTEN_IP=${LISTEN_IP} NAME_OF_NODE=${NAME_OF_NODE} TYPE_OF_NODE=${TYPE_OF_NODE} RESULT_FOLDER=${RESULT_FOLDER} TC_CONFIG=${TC_CONFIG} PKI_IP=${PKI_IP} /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+LISTEN_IP=${LISTEN_IP} NAME_OF_NODE=${NAME_OF_NODE} PARTNER_OF_NODE=${PARTNER_OF_NODE} TYPE_OF_NODE=${TYPE_OF_NODE} \
+    RESULT_FOLDER=${RESULT_FOLDER} TC_CONFIG=${TC_CONFIG} PKI_IP=${PKI_IP} /bin/bash /root/${EVAL_SCRIPT_TO_PULL}

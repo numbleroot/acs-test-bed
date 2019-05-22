@@ -15,6 +15,7 @@ import (
 // exhaustively for reproducibility.
 type Config struct {
 	Name             string `json:"Name"`
+	Partner          string `json:"Partner"`
 	Zone             string `json:"Zone"`
 	MinCPUPlatform   string `json:"MinCPUPlatform"`
 	MachineType      string `json:"MachineType"`
@@ -72,7 +73,7 @@ func main() {
 
 	// Allow for control via command-line flags.
 	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify file system location where GCloud Compute configurations are supposed to be saved.")
-	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate according to the 20%%-40%%-30%%-10%% machine power classification. Should be a multiple of 100.")
+	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate. Has to be an even number.")
 	numVuvuzelaMixesToGenFlag := flag.Int("numVuvuzelaMixesToGen", 7, "Specify the number of vuvuzela mix nodes to generate (number of zeno mixes is twice this number minus 1).")
 	numZenoCascadesFlag := flag.Int("numZenoCascades", 1, "Specify the number of cascades in zeno to generate.")
 	flag.Parse()
@@ -92,20 +93,20 @@ func main() {
 		os.Exit(1)
 	}
 
+	if ((*numClientsToGenFlag % 2) != 0) || (*numClientsToGenFlag < 2) {
+		fmt.Printf("Number of clients to generate has to be an even number > 1.\n")
+		os.Exit(1)
+	}
+
 	numClientsToGen := *numClientsToGenFlag
 	numVuvuzelaMixesToGen := *numVuvuzelaMixesToGenFlag
 	numZenoCascades := *numZenoCascadesFlag
-
-	numClientsFactor := numClientsToGen / 100.0
-	if numClientsFactor < 1 {
-		numClientsFactor = 1.0
-	}
 
 	// Prepare slices for respective client
 	// compute node configurations.
 	zenoConfigs := make([]Config, 0, (numClientsToGen + (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))))
 	vuvuzelaConfigs := make([]Config, 0, (numClientsToGen + numVuvuzelaMixesToGen))
-	pungConfigs := make([]Config, 0, (numClientsToGen + 1))
+	pungConfigs := make([]Config, 0, numClientsToGen)
 
 	// Shuffle zones array.
 	shuffleZones()
@@ -113,19 +114,14 @@ func main() {
 
 	for i := 0; i < numClientsToGen; i++ {
 
-		// Base machine specification on a distribution
-		// approximating real-life hardware availability.
-		machineType := "f1-micro"
+		name := fmt.Sprintf("client-%05d", (i + 1))
 
-		switch {
-		case (i >= (numClientsFactor * 20)) && (i < (numClientsFactor * 60)):
-			machineType = "f1-micro"
-
-		case (i >= (numClientsFactor * 60)) && (i < (numClientsFactor * 90)):
-			machineType = "f1-micro"
-
-		case (i >= (numClientsFactor * 90)) && (i < (numClientsFactor * 100)):
-			machineType = "f1-micro"
+		// Determine partner client of this client.
+		var partner string
+		if (i % 2) == 0 {
+			partner = fmt.Sprintf("client-%05d", (i + 2))
+		} else {
+			partner = fmt.Sprintf("client-%05d", i)
 		}
 
 		// Pick next zone from randomized zones array.
@@ -139,9 +135,13 @@ func main() {
 			zoneIdx = 0
 		}
 
+		// Specify machine type.
+		machineType := "f1-micro"
+
 		// Prefill all configurations.
 		zenoConfigs = append(zenoConfigs, Config{
-			Name:             fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Name:             name,
+			Partner:          partner,
 			Zone:             zone,
 			MinCPUPlatform:   "Intel Skylake",
 			MachineType:      machineType,
@@ -155,7 +155,8 @@ func main() {
 		})
 
 		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
-			Name:             fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Name:             name,
+			Partner:          partner,
 			Zone:             zone,
 			MinCPUPlatform:   "Intel Skylake",
 			MachineType:      machineType,
@@ -169,13 +170,14 @@ func main() {
 		})
 
 		pungConfigs = append(pungConfigs, Config{
-			Name:             fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Name:             name,
+			Partner:          partner,
 			Zone:             zone,
 			MinCPUPlatform:   "Intel Skylake",
 			MachineType:      machineType,
 			TypeOfNode:       "client",
 			EvaluationScript: "pung_client_eval.sh",
-			BinaryName:       "pung",
+			BinaryName:       "pung-client",
 			ParamsTC:         "none so far",
 			SourceImage:      "acs",
 			DiskType:         "pd-ssd",
@@ -204,6 +206,7 @@ func main() {
 
 		zenoConfigs = append(zenoConfigs, Config{
 			Name:             fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Partner:          "irrelevant",
 			Zone:             zone,
 			MinCPUPlatform:   "Intel Skylake",
 			MachineType:      "n1-standard-4",
@@ -231,6 +234,7 @@ func main() {
 
 		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
 			Name:             fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Partner:          "irrelevant",
 			Zone:             zone,
 			MinCPUPlatform:   "Intel Skylake",
 			MachineType:      "n1-standard-4",
@@ -250,20 +254,6 @@ func main() {
 		}
 	}
 
-	pungConfigs = append(pungConfigs, Config{
-		Name:             fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
-		Zone:             GCloudZones[0],
-		MinCPUPlatform:   "Intel Skylake",
-		MachineType:      "n1-standard-4",
-		TypeOfNode:       "server",
-		EvaluationScript: "pung_server_eval.sh",
-		BinaryName:       "pung",
-		ParamsTC:         "none so far",
-		SourceImage:      "acs",
-		DiskType:         "pd-ssd",
-		DiskSize:         "10",
-	})
-
 	// Marshal slice of zeno configs to JSON.
 	zenoConfigsJSON, err := json.MarshalIndent(zenoConfigs, "", "\t")
 	if err != nil {
@@ -272,7 +262,7 @@ func main() {
 	}
 
 	// Write zeno configs to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10_zeno.json"), zenoConfigsJSON, 0644)
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-zeno.json"), zenoConfigsJSON, 0644)
 	if err != nil {
 		fmt.Printf("Error writing zeno configurations in JSON format to file: %v\n", err)
 		os.Exit(1)
@@ -286,7 +276,7 @@ func main() {
 	}
 
 	// Write vuvuzela configs to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10_vuvuzela.json"), vuvuzelaConfigsJSON, 0644)
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-vuvuzela.json"), vuvuzelaConfigsJSON, 0644)
 	if err != nil {
 		fmt.Printf("Error writing vuvuzela configurations in JSON format to file: %v\n", err)
 		os.Exit(1)
@@ -300,7 +290,7 @@ func main() {
 	}
 
 	// Write pung configs to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10_pung.json"), pungConfigsJSON, 0644)
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-pung.json"), pungConfigsJSON, 0644)
 	if err != nil {
 		fmt.Printf("Error writing pung configurations in JSON format to file: %v\n", err)
 		os.Exit(1)
@@ -309,6 +299,7 @@ func main() {
 	// Additionally, create configuration for zeno's PKI node.
 	zenoPKIConfigsJSON, err := json.MarshalIndent(Config{
 		Name:             "zeno-pki",
+		Partner:          "irrelevant",
 		Zone:             "europe-west3-b",
 		MinCPUPlatform:   "Intel Skylake",
 		MachineType:      "n1-standard-8",
@@ -326,9 +317,36 @@ func main() {
 	}
 
 	// Write PKI configuration for zeno to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-mixnet-20-40-30-10_zeno-pki.json"), zenoPKIConfigsJSON, 0644)
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-zeno-pki.json"), zenoPKIConfigsJSON, 0644)
 	if err != nil {
 		fmt.Printf("Error writing configuration for zeno's PKI in JSON format to file: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Prepare server configuration for pung.
+	pungServerJSON, err := json.MarshalIndent(Config{
+		Name:             fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
+		Partner:          "irrelevant",
+		Zone:             GCloudZones[0],
+		MinCPUPlatform:   "Intel Skylake",
+		MachineType:      "n1-standard-4",
+		TypeOfNode:       "server",
+		EvaluationScript: "pung_server_eval.sh",
+		BinaryName:       "pung-server",
+		ParamsTC:         "none so far",
+		SourceImage:      "acs",
+		DiskType:         "pd-ssd",
+		DiskSize:         "10",
+	}, "", "\t")
+	if err != nil {
+		fmt.Printf("Failed to marshal configuration for pung's server to JSON: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Write pung's server configuration to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-pung-server.json"), pungServerJSON, 0644)
+	if err != nil {
+		fmt.Printf("Error writing configuration for pung's server in JSON format to file: %v\n", err)
 		os.Exit(1)
 	}
 

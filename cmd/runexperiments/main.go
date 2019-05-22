@@ -21,6 +21,7 @@ import (
 // exhaustively for reproducibility.
 type Config struct {
 	Name             string `json:"Name"`
+	Partner          string `json:"Partner"`
 	Zone             string `json:"Zone"`
 	MinCPUPlatform   string `json:"MinCPUPlatform"`
 	MachineType      string `json:"MachineType"`
@@ -57,6 +58,7 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MIN_CPU_PLATFORM", config.MinCPUPlatform)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MACHINE_TYPE", fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", proj, config.Zone,
 		config.MachineType))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_PARTNER", config.Partner)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TYPE_OF_NODE", config.TypeOfNode)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_RESULT_FOLDER", resultFolder)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_EVAL_SCRIPT_TO_PULL", config.EvaluationScript)
@@ -212,12 +214,15 @@ func main() {
 	}
 
 	var configsFile string
-	var pkiConfigFile string
+	var auxConfigFile string
+	var auxInternalIP string
+	var auxExternalIP string
+	var auxConfig Config
 
 	if system == "zeno" {
 
 		// Prepare zeno configurations file for ingestion.
-		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-mixnet-20-40-30-10_zeno.json")
+		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-zeno.json")
 		configsFile, err = filepath.Abs(configsFileRel)
 		if err != nil {
 			fmt.Printf("Unable to obtain absolute path to zeno configurations file '%s': %v\n", configsFileRel, err)
@@ -227,7 +232,7 @@ func main() {
 	} else if system == "vuvuzela" {
 
 		// Prepare vuvuzela configurations file for ingestion.
-		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-mixnet-20-40-30-10_vuvuzela.json")
+		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-vuvuzela.json")
 		configsFile, err = filepath.Abs(configsFileRel)
 		if err != nil {
 			fmt.Printf("Unable to obtain absolute path to vuvuzela configurations file '%s': %v\n", configsFileRel, err)
@@ -237,7 +242,7 @@ func main() {
 	} else if system == "pung" {
 
 		// Prepare pung configurations file for ingestion.
-		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-mixnet-20-40-30-10_pung.json")
+		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-pung.json")
 		configsFile, err = filepath.Abs(configsFileRel)
 		if err != nil {
 			fmt.Printf("Unable to obtain absolute path to pung configurations file '%s': %v\n", configsFileRel, err)
@@ -269,7 +274,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// TODO: Read OAuth token from gcloud.
+	// Read OAuth token from gcloud.
 	out, err := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "auth", "print-access-token").CombinedOutput()
 	if err != nil {
 		fmt.Printf("Could not obtain OAuth2 access token (error: '%v'):\n%s\n", err, out)
@@ -277,37 +282,33 @@ func main() {
 	}
 	accessToken := strings.TrimSpace(string(out))
 
-	var pkiConfig Config
-	pkiInternalIP := ""
-	pkiExternalIP := ""
-
 	// If zeno: create PKI with decent hardware specs.
 	if system == "zeno" {
 
 		// Retrieve file defining PKI configuration.
-		pkiConfigFileRel := filepath.Join(*configsPathFlag, "gcloud-mixnet-20-40-30-10_zeno-pki.json")
-		pkiConfigFile, err = filepath.Abs(pkiConfigFileRel)
+		pkiConfigFileRel := filepath.Join(*configsPathFlag, "gcloud-zeno-pki.json")
+		auxConfigFile, err = filepath.Abs(pkiConfigFileRel)
 		if err != nil {
 			fmt.Printf("Unable to obtain absolute path to PKI configuration file for zeno '%s': %v\n", pkiConfigFileRel, err)
 			os.Exit(1)
 		}
 
 		// Ingest GCloud configuration file.
-		pkiConfigJSON, err := ioutil.ReadFile(pkiConfigFile)
+		pkiConfigJSON, err := ioutil.ReadFile(auxConfigFile)
 		if err != nil {
 			fmt.Printf("Failed ingesting GCloud configuration file for zeno PKI: %v\n", err)
 			os.Exit(1)
 		}
 
 		// Unmarshal JSON.
-		err = json.Unmarshal(pkiConfigJSON, &pkiConfig)
+		err = json.Unmarshal(pkiConfigJSON, &auxConfig)
 		if err != nil {
 			fmt.Printf("Error while trying to unmarshal JSON-encoded GCloud configuration for zeno PKI: %v\n", err)
 			os.Exit(1)
 		}
 
 		// Spawn PKI of zeno.
-		spawnResp := spawnInstance(&pkiConfig, gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, "irrelevant", "zeno-pki", tmplInstancePublicIP)
+		spawnResp := spawnInstance(&auxConfig, gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, "irrelevant", "zeno-pki", tmplInstancePublicIP)
 
 		// Verify successful machine creation.
 		if !strings.Contains(spawnResp, "RUNNING") {
@@ -318,7 +319,7 @@ func main() {
 		time.Sleep(10 * time.Second)
 
 		request, err := http.NewRequest(http.MethodGet,
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", gcloudProject, pkiConfig.Zone, pkiConfig.Name), nil)
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", gcloudProject, auxConfig.Zone, auxConfig.Name), nil)
 		if err != nil {
 			fmt.Printf("Failed retrieving details of PKI of zeno: %v\n", err)
 			os.Exit(1)
@@ -367,24 +368,122 @@ func main() {
 		for i := range pkiIPs {
 
 			if strings.HasPrefix(pkiIPs[i], "10.") {
-				pkiInternalIP = pkiIPs[i]
+				auxInternalIP = pkiIPs[i]
 			} else {
-				pkiExternalIP = pkiIPs[i]
+				auxExternalIP = pkiIPs[i]
 			}
 		}
 
-		fmt.Printf("Successfully spawned PKI of zeno with public IP %s and internal IP %s.\n", pkiExternalIP, pkiInternalIP)
+		fmt.Printf("Successfully spawned PKI of zeno with public IP %s and internal IP %s.\n", auxExternalIP, auxInternalIP)
 		time.Sleep(45 * time.Second)
 
 		// Ensure initialization has completed.
-		checkInstanceReady(pkiConfig.Name, pkiConfig.Zone)
+		checkInstanceReady(auxConfig.Name, auxConfig.Zone)
+		time.Sleep(5 * time.Second)
+
+	} else if system == "pung" {
+
+		// Retrieve file defining pung's server configuration.
+		serverConfigFileRel := filepath.Join(*configsPathFlag, "gcloud-pung-server.json")
+		auxConfigFile, err = filepath.Abs(serverConfigFileRel)
+		if err != nil {
+			fmt.Printf("Unable to obtain absolute path to server configuration file for pung '%s': %v\n", serverConfigFileRel, err)
+			os.Exit(1)
+		}
+
+		// Ingest GCloud configuration file.
+		auxConfigJSON, err := ioutil.ReadFile(auxConfigFile)
+		if err != nil {
+			fmt.Printf("Failed ingesting GCloud configuration file for pung server: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Unmarshal JSON.
+		err = json.Unmarshal(auxConfigJSON, &auxConfig)
+		if err != nil {
+			fmt.Printf("Error while trying to unmarshal JSON-encoded GCloud configuration for pung server: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Spawn pung's server.
+		spawnResp := spawnInstance(&auxConfig, gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, "irrelevant", "pung-server", tmplInstancePublicIP)
+
+		// Verify successful machine creation.
+		if !strings.Contains(spawnResp, "RUNNING") {
+			fmt.Printf("Spawning pung's server returned failure message:\n%s\n", spawnResp)
+			os.Exit(1)
+		}
+
+		time.Sleep(10 * time.Second)
+
+		request, err := http.NewRequest(http.MethodGet,
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", gcloudProject, auxConfig.Zone, auxConfig.Name), nil)
+		if err != nil {
+			fmt.Printf("Failed retrieving details of pung's server: %v\n", err)
+			os.Exit(1)
+		}
+		request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
+
+		// Send the request to GCP.
+		tried := 0
+		resp, err := http.DefaultClient.Do(request)
+		if err != nil {
+			fmt.Printf("Details API request failed (will try again): %v\n", err)
+			tried++
+		}
+
+		for err != nil && tried < 10 {
+
+			resp, err = http.DefaultClient.Do(request)
+			if err != nil {
+				fmt.Printf("Details API request failed (will try again): %v\n", err)
+			}
+		}
+
+		if tried >= 10 {
+			fmt.Printf("Details API request failed permanently: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Read the response.
+		outRaw, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Printf("Failed reading from instance details response body: %v\n", err)
+			os.Exit(1)
+		}
+		defer resp.Body.Close()
+		out := string(outRaw)
+
+		// Compile regular expression matching on
+		// the assigned IP addresses of the server.
+		regexpIP, err := regexp.Compile("[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}")
+		if err != nil {
+			fmt.Printf("Failed to match internal IP address of pung's server instance: %v\n", err)
+			os.Exit(1)
+		}
+
+		pkiIPs := regexpIP.FindAllString(out, -1)
+		for i := range pkiIPs {
+
+			if strings.HasPrefix(pkiIPs[i], "10.") {
+				auxInternalIP = pkiIPs[i]
+			} else {
+				auxExternalIP = pkiIPs[i]
+			}
+		}
+
+		fmt.Printf("Successfully spawned pung's server with public IP %s and internal IP %s.\n", auxExternalIP, auxInternalIP)
+		time.Sleep(45 * time.Second)
+
+		// Ensure initialization has completed.
+		checkInstanceReady(auxConfig.Name, auxConfig.Zone)
 		time.Sleep(5 * time.Second)
 	}
 
 	// Spawn all machines.
 	fmt.Printf("\nSpawning machines...\n")
 	for i := 0; i < len(configs); i++ {
-		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, pkiInternalIP, "zeno-node", "")
+		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, auxInternalIP, "client", "")
 	}
 
 	time.Sleep(10 * time.Second)
@@ -405,7 +504,7 @@ func main() {
 
 		// Connect to control plane address used
 		// only for evaluation purposes.
-		ctrlConn, err := net.Dial("tcp", fmt.Sprintf("%s:26345", pkiExternalIP))
+		ctrlConn, err := net.Dial("tcp", fmt.Sprintf("%s:26345", auxExternalIP))
 		if err != nil {
 			fmt.Printf("Failed to connect to zeno PKI's control address to send start signal: %v\n", err)
 			os.Exit(1)
@@ -429,7 +528,7 @@ func main() {
 	}
 
 	if system == "zeno" {
-		configs = append(configs, pkiConfig)
+		configs = append(configs, auxConfig)
 	}
 
 	// Prepare channels to send configurations
@@ -484,11 +583,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	if system == "zeno" {
+	if system == "zeno" || system == "pung" {
 
-		outRaw, err = exec.Command("cp", pkiConfigFile, fmt.Sprintf("%s/%s/", resultsPath, resultFolder)).CombinedOutput()
+		outRaw, err = exec.Command("cp", auxConfigFile, fmt.Sprintf("%s/%s/", resultsPath, resultFolder)).CombinedOutput()
 		if err != nil {
-			fmt.Printf("Copying gcloud config file for PKI of zeno to results folder failed (code: '%v'): '%s'", err, outRaw)
+			fmt.Printf("Copying auxiliary gcloud config file to results folder failed (code: '%v'): '%s'", err, outRaw)
 			os.Exit(1)
 		}
 	}
