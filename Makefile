@@ -24,8 +24,11 @@ syncbucket:
 	gsutil -m cp scripts/* gs://acs-eval/
 	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno/zeno gs://acs-eval/zeno
 	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno-pki/zeno-pki gs://acs-eval/zeno-pki
+	gsutil cp ~/Rust/pung/target/release/client gs://acs-eval/pung-client
+	gsutil cp ~/Rust/pung/target/release/server gs://acs-eval/pung-server
 	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno-eval/collector gs://acs-eval/collector
 
 cleanplots:
 	rm -rf results/*/clients/*.png
 	rm -rf results/*/mixes/*.png
+	rm -rf results/*/servers/*.png

@@ -204,6 +204,11 @@ func (col *Collector) collectSystemMetrics() {
 
 func (col *Collector) collectTimingMetrics() {
 
+	// Receive timing values come in two parts,
+	// first the time for the subsequently
+	// transmitted message ID. Hold buffer.
+	recvTime := ""
+
 	for metric := range col.MetricsChan {
 
 		// Split at semicolon.
@@ -217,9 +222,21 @@ func (col *Collector) collectTimingMetrics() {
 
 		} else if metricParts[0] == "recv" {
 
-			// Write to file and sync to stable storage.
-			fmt.Fprint(col.RecvTimeFile, metricParts[1])
-			_ = col.RecvTimeFile.Sync()
+			if recvTime == "" {
+
+				// Stash receive time until message ID
+				// associated with it is sent next.
+				recvTime = strings.TrimSpace(metricParts[1])
+
+			} else {
+
+				// Write to file and sync to stable storage.
+				fmt.Fprintf(col.RecvTimeFile, "%s %s\n", recvTime, strings.TrimSpace(metricParts[1]))
+				_ = col.RecvTimeFile.Sync()
+
+				// Reset buffer for receive timestamp.
+				recvTime = ""
+			}
 		}
 	}
 }
