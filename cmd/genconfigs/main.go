@@ -329,7 +329,7 @@ func main() {
 		Partner:          "irrelevant",
 		Zone:             GCloudZones[0],
 		MinCPUPlatform:   "Intel Skylake",
-		MachineType:      "n1-standard-4",
+		MachineType:      "n1-standard-16",
 		TypeOfNode:       "server",
 		EvaluationScript: "pung_server_eval.sh",
 		BinaryName:       "pung-server",

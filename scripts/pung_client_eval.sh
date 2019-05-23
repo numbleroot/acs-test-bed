@@ -1,14 +1,17 @@
 #!/usr/bin/env bash
 
 # Run metrics collector sidecar in background.
-/root/collector -client -pipe /tmp/collect -metricsPath /root/ &
+/root/collector -system pung -client -pipe /tmp/collect -metricsPath /root/ &
 
 # Signal readiness of process to experiment script.
 curl -X PUT --data "ThisNodeIsReady" http://metadata.google.internal/computeMetadata/v1/instance/guest-attributes/acs-eval/initStatus -H "Metadata-Flavor: Google"
 
 # Configure tc according to environment variable.
 
-# Reset bytes counters right before starting pung.
+# Add iptables rules to be able to count number of transferred
+# bytes for evaluation and initialize them to zero.
+iptables -A INPUT -m state --state ESTABLISHED,RELATED
+iptables -A OUTPUT -p tcp --dport 33000
 iptables -Z -t filter -L INPUT
 iptables -Z -t filter -L OUTPUT
 

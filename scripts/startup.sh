@@ -13,11 +13,6 @@ ulimit -n 1048575
 mkfifo /tmp/collect
 chmod 0600 /tmp/collect
 
-# Add iptables rule to be able to count number of transferred
-# bytes over evaluation system port.
-iptables -A INPUT -p tcp --dport 33000
-iptables -A OUTPUT -p tcp --dport 33000
-
 # Retrieve metadata required for operation.
 LISTEN_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip -H "Metadata-Flavor: Google")
 NAME_OF_NODE=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/nameOfNode -H "Metadata-Flavor: Google")

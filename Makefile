@@ -30,5 +30,4 @@ syncbucket:
 
 cleanplots:
 	rm -rf results/*/clients/*.png
-	rm -rf results/*/mixes/*.png
 	rm -rf results/*/servers/*.png
