@@ -16,8 +16,9 @@ import (
 // ACS evaluation to work correctly.
 type Collector struct {
 	shutdownChan   chan struct{}
+	System         string
 	IsClient       bool
-	IsMix          bool
+	IsServer       bool
 	MetricsChan    chan string
 	SentBytesFile  *os.File
 	RecvdBytesFile *os.File
@@ -71,7 +72,7 @@ func (col *Collector) prepareMetricsFiles(metricsPath string) error {
 			return err
 		}
 
-	} else if col.IsMix {
+	} else if col.System == "zeno" && col.IsServer {
 
 		// Attempt to create file for pool sizes metrics.
 		col.PoolSizesFile, err = os.OpenFile(filepath.Join(metricsPath, "pool-sizes_round.evaluation"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
@@ -110,6 +111,8 @@ func (col *Collector) collectSystemMetrics() {
 			cmdLoad := exec.Command("mpstat")
 			cmdMem := exec.Command("head", "-3", "/proc/meminfo")
 
+			searchTermTraffic := "dpt:33000"
+
 			// Obtain current timestamp.
 			now := time.Now().Unix()
 
@@ -144,7 +147,15 @@ func (col *Collector) collectSystemMetrics() {
 			outSentLines := strings.Split(strings.TrimSpace(outSent), "\n")
 			for i := range outSentLines {
 
-				if strings.Contains(outSentLines[i], "dpt:33000") {
+				// If this is a pung server, we cannot look for
+				// outgoing traffic to a specific port, but only
+				// for packets sent via already established
+				// connections by clients.
+				if col.System == "pung" && col.IsServer {
+					searchTermTraffic = "ESTABLISHED"
+				}
+
+				if strings.Contains(outSentLines[i], searchTermTraffic) {
 
 					// Split at one or more whitespace characters.
 					// The bytes value is the second one.
@@ -156,7 +167,15 @@ func (col *Collector) collectSystemMetrics() {
 			outRecvdLines := strings.Split(strings.TrimSpace(outRecvd), "\n")
 			for i := range outRecvdLines {
 
-				if strings.Contains(outRecvdLines[i], "dpt:33000") {
+				// If this is a pung client, we cannot look for
+				// incoming traffic to a specific port, but only
+				// for packets sent via connections established
+				// by this client.
+				if col.System == "pung" && col.IsClient {
+					searchTermTraffic = "ESTABLISHED"
+				}
+
+				if strings.Contains(outRecvdLines[i], searchTermTraffic) {
 
 					// Split at one or more whitespace characters.
 					// The bytes value is the second one.
@@ -219,14 +238,19 @@ func (col *Collector) collectTimingMetrics() {
 				// associated with it is sent next.
 				recvTime = strings.TrimSpace(metricParts[1])
 
+				fmt.Printf("recvTime=%s stashed\n", recvTime)
+
 			} else {
 
 				// Write to file and sync to stable storage.
 				fmt.Fprintf(col.RecvTimeFile, "%s %s\n", recvTime, strings.TrimSpace(metricParts[1]))
 				_ = col.RecvTimeFile.Sync()
 
+				fmt.Printf("recvTime=%s for msgID=%s written\n", recvTime, strings.TrimSpace(metricParts[1]))
+
 				// Reset buffer for receive timestamp.
 				recvTime = ""
+
 			}
 		}
 	}
@@ -245,15 +269,22 @@ func (col *Collector) collectPoolSizesMetrics() {
 func main() {
 
 	// Allow some command-line arguments.
+	systemFlag := flag.String("system", "", "Specify system that is being evaluated ('zeno', 'vuvuzela', or 'pung').")
 	isClientFlag := flag.Bool("client", false, "Append this flag if the collector is gathering metrics for a client that is being evaluated.")
-	isMixFlag := flag.Bool("mix", false, "Append this flag if the collector is gathering metrics for a mix that is being evaluated.")
+	isServerFlag := flag.Bool("server", false, "Append this flag if the collector is gathering metrics for a server that is being evaluated.")
 	pipeNameFlag := flag.String("pipe", "/tmp/collect", "Specify the named pipe to use for IPC with system being evaluated.")
 	metricsPathFlag := flag.String("metricsPath", "./", "Specify the file system folder where the various metric files generated here should be placed.")
 	flag.Parse()
 
-	// Enforce either client or mix designation.
-	if *isClientFlag == *isMixFlag {
-		fmt.Printf("Please either specify '-client' or '-mix'.\n")
+	// System flag has to be one of three values.
+	if (*systemFlag == "") || (*systemFlag != "zeno" && *systemFlag != "vuvuzela" && *systemFlag != "pung") {
+		fmt.Printf("Flag '-system' requires one of the three values: 'zeno', 'vuvuzela', or 'pung'.")
+		os.Exit(1)
+	}
+
+	// Enforce either client or server designation.
+	if *isClientFlag == *isServerFlag {
+		fmt.Printf("Please either specify '-client' or '-server'.\n")
 		os.Exit(1)
 	}
 
@@ -266,8 +297,9 @@ func main() {
 	// Initialize collector struct.
 	col := &Collector{
 		shutdownChan: make(chan struct{}),
+		System:       strings.ToLower(*systemFlag),
 		IsClient:     *isClientFlag,
-		IsMix:        *isMixFlag,
+		IsServer:     *isServerFlag,
 		MetricsChan:  make(chan string, 100),
 	}
 
@@ -284,7 +316,7 @@ func main() {
 		// values into metrics files.
 		go col.collectTimingMetrics()
 
-	} else if col.IsMix {
+	} else if col.System == "zeno" && col.IsServer {
 
 		// Spawn background process writing message
 		// pool sizes to into metrics file.
@@ -310,7 +342,7 @@ func main() {
 		if col.IsClient {
 			col.SendTimeFile.Close()
 			col.RecvTimeFile.Close()
-		} else if col.IsMix {
+		} else if col.IsServer {
 			col.PoolSizesFile.Close()
 		}
 	}(col)

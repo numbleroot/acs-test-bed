@@ -14,6 +14,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -490,16 +491,42 @@ func main() {
 	fmt.Printf("\nWaiting for instances to initialize...\n")
 	time.Sleep(80 * time.Second)
 
-	for i := 0; i < len(configs); i++ {
+	wg := &sync.WaitGroup{}
+
+	for i := 0; i < 19; i++ {
+
+		wg.Add(1)
+
+		// Run routine that checks all instances to be
+		// up and running highly parallel.
+
+		go func(wg *sync.WaitGroup, configs []Config, idx int) {
+
+			defer wg.Done()
+
+			for j := (idx * 100); j < ((idx + 1) * 100); j++ {
+
+				if j < len(configs) {
+					checkInstanceReady(configs[j].Name, configs[j].Zone)
+				}
+			}
+
+		}(wg, configs, i)
+	}
+
+	// Catch all remaining configs.
+	for i := 1900; i < len(configs); i++ {
 		checkInstanceReady(configs[i].Name, configs[i].Zone)
 	}
 
+	wg.Wait()
+
 	fmt.Printf("All machines spawned!\n\n")
-	time.Sleep(15 * time.Second)
 
 	// If zeno: send PKI signal to start.
 	if system == "zeno" {
 
+		time.Sleep(15 * time.Second)
 		fmt.Printf("Signaling zeno's PKI to start epoch.\n")
 
 		// Connect to control plane address used
