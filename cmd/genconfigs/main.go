@@ -28,27 +28,45 @@ type Config struct {
 	DiskSize         string `json:"DiskSize"`
 }
 
-// GCloudZones contains all but two geographical
-// zones GCP has to offer for compute nodes.
+// GCloudZones holds all but two GCloud zones.
 var GCloudZones = [18]string{
 	"asia-east1-b",
-	"asia-east2-b",
 	"asia-northeast1-b",
-	"asia-northeast2-b",
-	"asia-south1-b",
 	"asia-southeast1-b",
-	"australia-southeast1-b",
-	"europe-north1-b",
 	"europe-west1-b",
-	"europe-west2-b",
 	"europe-west4-b",
-	"europe-west6-b",
-	"northamerica-northeast1-b",
 	"us-central1-b",
 	"us-east1-b",
 	"us-east4-b",
 	"us-west1-b",
+	// Low storage zones below
+	"asia-east2-b",
+	"asia-northeast2-b",
+	"asia-south1-b",
+	"australia-southeast1-b",
+	"europe-north1-b",
+	"europe-west2-b",
+	"europe-west6-b",
+	"northamerica-northeast1-b",
 	"us-west2-b",
+}
+
+// GCloudZonesLowStorage defines limits in terms
+// of number of instances with a standard disk
+// size of 10GB that can be spawned in a GCloud
+// zone without risking overstepping the quota.
+// This might change if a GCP project is assigned
+// more lenient quotas.
+var GCloudZonesLowStorage = map[string]int{
+	"asia-east2-b":              45,
+	"asia-northeast2-b":         45,
+	"asia-south1-b":             45,
+	"australia-southeast1-b":    45,
+	"europe-north1-b":           45,
+	"europe-west2-b":            45,
+	"europe-west6-b":            45,
+	"northamerica-northeast1-b": 45,
+	"us-west2-b":                45,
 }
 
 func shuffleZones() {
@@ -102,6 +120,21 @@ func main() {
 	numVuvuzelaMixesToGen := *numVuvuzelaMixesToGenFlag
 	numZenoCascades := *numZenoCascadesFlag
 
+	// Create local map that tracks how many
+	// instances have already been assigned
+	// to each of the low storage zones.
+	gcloudZonesLowStorage := map[string]int{
+		"asia-east2-b":              0,
+		"asia-northeast2-b":         0,
+		"asia-south1-b":             0,
+		"australia-southeast1-b":    0,
+		"europe-north1-b":           0,
+		"europe-west2-b":            0,
+		"europe-west6-b":            0,
+		"northamerica-northeast1-b": 0,
+		"us-west2-b":                0,
+	}
+
 	// Prepare slices for respective client
 	// compute node configurations.
 	zenoConfigs := make([]Config, 0, (numClientsToGen + (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))))
@@ -127,8 +160,27 @@ func main() {
 		// Pick next zone from randomized zones array.
 		zone := GCloudZones[zoneIdx]
 
-		// Increment counter. If we traversed zones array
-		// once, shuffle it again and reset index.
+		// In case the storage quota for this zone has
+		// been reached, pick the next zone.
+		for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
+
+			// Increment counter. If we traversed zones array
+			// once, shuffle it again and reset index.
+			zoneIdx++
+			if zoneIdx == len(GCloudZones) {
+				shuffleZones()
+				zoneIdx = 0
+			}
+
+			zone = GCloudZones[zoneIdx]
+		}
+
+		// Increment local map counter if this is a zone
+		// constrained with persistent disk space.
+		if GCloudZonesLowStorage[zone] == 45 {
+			gcloudZonesLowStorage[zone]++
+		}
+
 		zoneIdx++
 		if zoneIdx == len(GCloudZones) {
 			shuffleZones()
@@ -196,11 +248,30 @@ func main() {
 		// Pick next zone from randomized zones array.
 		zone := GCloudZones[zoneIdx]
 
-		// Increment counter. If we traversed zones array
-		// or reach the number of mixes in zeno's cascade,
-		// reset counter to zero without shuffling.
+		// In case the storage quota for this zone has
+		// been reached, pick the next zone.
+		for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
+
+			// Increment counter. If we traversed zones array
+			// once, shuffle it again and reset index.
+			zoneIdx++
+			if zoneIdx == len(GCloudZones) {
+				shuffleZones()
+				zoneIdx = 0
+			}
+
+			zone = GCloudZones[zoneIdx]
+		}
+
+		// Increment local map counter if this is a zone
+		// constrained with persistent disk space.
+		if GCloudZonesLowStorage[zone] == 45 {
+			gcloudZonesLowStorage[zone]++
+		}
+
 		zoneIdx++
-		if (zoneIdx == len(GCloudZones)) || (zoneIdx == ((2 * numVuvuzelaMixesToGen) - 1)) {
+		if zoneIdx == len(GCloudZones) {
+			shuffleZones()
 			zoneIdx = 0
 		}
 
@@ -220,15 +291,30 @@ func main() {
 		})
 	}
 
-	// Reset zones counter.
 	zoneIdx = 0
 
 	for i := numClientsToGen; i < (numClientsToGen + numVuvuzelaMixesToGen); i++ {
 
 		zone := GCloudZones[zoneIdx]
 
+		for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
+
+			zoneIdx++
+			if zoneIdx == len(GCloudZones) {
+				shuffleZones()
+				zoneIdx = 0
+			}
+
+			zone = GCloudZones[zoneIdx]
+		}
+
+		if GCloudZonesLowStorage[zone] == 45 {
+			gcloudZonesLowStorage[zone]++
+		}
+
 		zoneIdx++
 		if zoneIdx == len(GCloudZones) {
+			shuffleZones()
 			zoneIdx = 0
 		}
 
