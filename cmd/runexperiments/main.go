@@ -2,7 +2,6 @@ package main
 
 import (
 	"bufio"
-	"bytes"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -151,28 +150,35 @@ func runInstance(config *Config, proj string, serviceAcc string, accessToken str
 	}
 }
 
-func shutdownInstance(confChan <-chan Config, errChan chan<- error, proj string) {
+func shutdownInstance(confChan <-chan Config, proj string, accessToken string) {
 
 	for config := range confChan {
 
-		// Execute command to shut down compute instance.
-		out, err := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "compute", fmt.Sprintf("--project=%s", proj),
-			"instances", "delete", config.Name, fmt.Sprintf("--zone=%s", config.Zone)).CombinedOutput()
+		endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", proj, config.Zone, config.Name)
+
+		// Create HTTP DELETE request.
+		request, err := http.NewRequest(http.MethodDelete, endpoint, nil)
 		if err != nil {
-			errChan <- fmt.Errorf("deleting compute instance failed (code: '%v'):\n'%s'", err, out)
-			return
+			fmt.Printf("Failed creating HTTP API request: %v\n", err)
+			os.Exit(1)
+		}
+		request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
+
+		// Send the request to GCP.
+		resp, err := http.DefaultClient.Do(request)
+		if err != nil {
+			fmt.Printf("Delete API request failed: %v\n", err)
+			continue
 		}
 
-		// Verify successful instance deletion.
-		if bytes.Contains(out, []byte("Deleted")) {
-			fmt.Printf("Successfully deleted compute instance %s\n", config.Name)
-		} else {
-			errChan <- fmt.Errorf("deleting compute instance returned failure message:\n'%s'", out)
-			return
+		// Read the response.
+		_, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Printf("Failed reading from instance delete response body: %v\n", err)
+			continue
 		}
+		defer resp.Body.Close()
 	}
-
-	errChan <- nil
 }
 
 func main() {
@@ -184,6 +190,7 @@ func main() {
 	gcloudProjectFlag := flag.String("gcloudProj", "", "Supply the GCloud project identifier.")
 	gcloudServiceAccFlag := flag.String("gcloudServiceAcc", "", "Supply the GCloud Service Account identifier.")
 	gcloudBucketFlag := flag.String("gcloudBucket", "", "Supply the GCloud Storage Bucket to use for the experiments.")
+	deleteAllFlag := flag.Bool("deleteAll", false, "Append this flag if the only purpose of this run is to delete all configured instances (caution: permanently deletes them!).")
 	flag.Parse()
 
 	// Enforce arguments to be set.
@@ -196,6 +203,7 @@ func main() {
 	gcloudProject := *gcloudProjectFlag
 	gcloudServiceAcc := *gcloudServiceAccFlag
 	gcloudBucket := *gcloudBucketFlag
+	deleteAll := *deleteAllFlag
 
 	// System flag has to be one of three values.
 	if system != "zeno" && system != "vuvuzela" && system != "pung" {
@@ -282,6 +290,30 @@ func main() {
 		os.Exit(1)
 	}
 	accessToken := strings.TrimSpace(string(out))
+
+	if deleteAll {
+
+		// Prepare channels to send configurations
+		// to individual workers and expect responses.
+		confChan := make(chan Config)
+
+		// Spawn deletion workers.
+		for i := 0; i < len(configs); i++ {
+			go shutdownInstance(confChan, gcloudProject, accessToken)
+		}
+
+		fmt.Printf("WARNING: Deleting all machines...\n")
+
+		// Shutdown and destroy disks and instances.
+		for _, config := range configs {
+			confChan <- config
+		}
+		close(confChan)
+
+		time.Sleep(15 * time.Second)
+		fmt.Printf("All machines deleted!\n\n")
+		os.Exit(0)
+	}
 
 	// If zeno: create PKI with decent hardware specs.
 	if system == "zeno" {
@@ -493,7 +525,7 @@ func main() {
 
 	wg := &sync.WaitGroup{}
 
-	for i := 0; i < 19; i++ {
+	for i := 0; i < 14; i++ {
 
 		wg.Add(1)
 
@@ -504,7 +536,7 @@ func main() {
 
 			defer wg.Done()
 
-			for j := (idx * 100); j < ((idx + 1) * 100); j++ {
+			for j := (idx * 135); j < ((idx + 1) * 135); j++ {
 
 				if j < len(configs) {
 					checkInstanceReady(configs[j].Name, configs[j].Zone)
@@ -515,7 +547,7 @@ func main() {
 	}
 
 	// Catch all remaining configs.
-	for i := 1900; i < len(configs); i++ {
+	for i := (14 * 135); i < len(configs); i++ {
 		checkInstanceReady(configs[i].Name, configs[i].Zone)
 	}
 
@@ -560,34 +592,22 @@ func main() {
 
 	// Prepare channels to send configurations
 	// to individual workers and expect responses.
-	confChan := make(chan Config, len(configs))
-	errChan := make(chan error, len(configs))
+	confChan := make(chan Config)
 
 	// Spawn deletion workers.
 	for i := 0; i < len(configs); i++ {
-		go shutdownInstance(confChan, errChan, gcloudProject)
+		go shutdownInstance(confChan, gcloudProject, accessToken)
 	}
 
-	fmt.Printf("Deleting machines...\n")
+	fmt.Printf("WARNING: Deleting all machines...\n")
 
 	// Shutdown and destroy disks and instances.
 	for _, config := range configs {
 		confChan <- config
-		time.Sleep(1 * time.Second)
 	}
 	close(confChan)
 
-	for i := 0; i < len(configs); i++ {
-
-		// If any worker threw an error, abort.
-		err := <-errChan
-		if err != nil {
-			fmt.Printf("Subroutine deleting boot disk and shutting down a machine failed: %v\n", err)
-			os.Exit(1)
-		}
-	}
-	close(errChan)
-
+	time.Sleep(15 * time.Second)
 	fmt.Printf("All machines deleted!\n\n")
 
 	// Download all files from GCloud bucket
