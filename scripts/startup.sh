@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sleep 7
+sleep 10
 
 # Heavily increase limit on open file descriptors and
 # connections per socket in order to be able to keep
@@ -23,6 +23,8 @@ EVAL_SCRIPT_TO_PULL=$(curl http://metadata.google.internal/computeMetadata/v1/in
 BINARY_TO_PULL=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/binaryToPull -H "Metadata-Flavor: Google")
 TC_CONFIG=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/tcConfig -H "Metadata-Flavor: Google")
 PKI_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/pkiIP -H "Metadata-Flavor: Google")
+
+sleep 3
 
 # Pull files from GCloud bucket.
 /snap/bin/gsutil cp gs://acs-eval/${EVAL_SCRIPT_TO_PULL} /root/${EVAL_SCRIPT_TO_PULL}

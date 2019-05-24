@@ -94,6 +94,8 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 
 	for err != nil && tried < 10 {
 
+		time.Sleep(1 * time.Second)
+
 		resp, err = http.DefaultClient.Do(request)
 		if err != nil {
 			fmt.Printf("Create API request failed (will try again): %v\n", err)
@@ -517,6 +519,7 @@ func main() {
 	fmt.Printf("\nSpawning machines...\n")
 	for i := 0; i < len(configs); i++ {
 		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, auxInternalIP, "client", "")
+		time.Sleep(250 * time.Millisecond)
 	}
 
 	time.Sleep(10 * time.Second)
@@ -525,7 +528,7 @@ func main() {
 
 	wg := &sync.WaitGroup{}
 
-	for i := 0; i < 14; i++ {
+	for i := 0; i < 10; i++ {
 
 		wg.Add(1)
 
@@ -536,7 +539,7 @@ func main() {
 
 			defer wg.Done()
 
-			for j := (idx * 135); j < ((idx + 1) * 135); j++ {
+			for j := (idx * 200); j < ((idx + 1) * 200); j++ {
 
 				if j < len(configs) {
 					checkInstanceReady(configs[j].Name, configs[j].Zone)
@@ -547,7 +550,7 @@ func main() {
 	}
 
 	// Catch all remaining configs.
-	for i := (14 * 135); i < len(configs); i++ {
+	for i := (10 * 200); i < len(configs); i++ {
 		checkInstanceReady(configs[i].Name, configs[i].Zone)
 	}
 
@@ -597,6 +600,7 @@ func main() {
 	// Spawn deletion workers.
 	for i := 0; i < len(configs); i++ {
 		go shutdownInstance(confChan, gcloudProject, accessToken)
+		time.Sleep(250 * time.Millisecond)
 	}
 
 	fmt.Printf("WARNING: Deleting all machines...\n")
