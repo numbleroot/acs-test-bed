@@ -111,7 +111,8 @@ func (col *Collector) collectSystemMetrics() {
 			cmdLoad := exec.Command("mpstat")
 			cmdMem := exec.Command("head", "-3", "/proc/meminfo")
 
-			searchTermTraffic := "dpt:33000"
+			searchSent := "dpt:33000"
+			searchRecvd := "dpt:33000"
 
 			// Obtain current timestamp.
 			now := time.Now().Unix()
@@ -152,10 +153,10 @@ func (col *Collector) collectSystemMetrics() {
 				// for packets sent via already established
 				// connections by clients.
 				if col.System == "pung" && col.IsServer {
-					searchTermTraffic = "ESTABLISHED"
+					searchSent = "ESTABLISHED"
 				}
 
-				if strings.Contains(outSentLines[i], searchTermTraffic) {
+				if strings.Contains(outSentLines[i], searchSent) {
 
 					// Split at one or more whitespace characters.
 					// The bytes value is the second one.
@@ -172,10 +173,10 @@ func (col *Collector) collectSystemMetrics() {
 				// for packets sent via connections established
 				// by this client.
 				if col.System == "pung" && col.IsClient {
-					searchTermTraffic = "ESTABLISHED"
+					searchRecvd = "ESTABLISHED"
 				}
 
-				if strings.Contains(outRecvdLines[i], searchTermTraffic) {
+				if strings.Contains(outRecvdLines[i], searchRecvd) {
 
 					// Split at one or more whitespace characters.
 					// The bytes value is the second one.
@@ -250,7 +251,6 @@ func (col *Collector) collectTimingMetrics() {
 
 				// Reset buffer for receive timestamp.
 				recvTime = ""
-
 			}
 		}
 	}
@@ -277,7 +277,7 @@ func main() {
 	flag.Parse()
 
 	// System flag has to be one of three values.
-	if (*systemFlag == "") || (*systemFlag != "zeno" && *systemFlag != "vuvuzela" && *systemFlag != "pung") {
+	if *systemFlag != "zeno" && *systemFlag != "vuvuzela" && *systemFlag != "pung" {
 		fmt.Printf("Flag '-system' requires one of the three values: 'zeno', 'vuvuzela', or 'pung'.")
 		os.Exit(1)
 	}

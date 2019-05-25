@@ -156,6 +156,8 @@ func shutdownInstance(confChan <-chan Config, proj string, accessToken string) {
 
 	for config := range confChan {
 
+		fmt.Printf("Deleting machine %s\n", config.Name)
+
 		endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", proj, config.Zone, config.Name)
 
 		// Create HTTP DELETE request.
@@ -295,6 +297,12 @@ func main() {
 
 	if deleteAll {
 
+		if system == "zeno" || system == "pung" {
+			configs = append(configs, auxConfig)
+		}
+
+		fmt.Printf("Going to delete all %d machines\n", len(configs))
+
 		// Prepare channels to send configurations
 		// to individual workers and expect responses.
 		confChan := make(chan Config)
@@ -304,11 +312,10 @@ func main() {
 			go shutdownInstance(confChan, gcloudProject, accessToken)
 		}
 
-		fmt.Printf("WARNING: Deleting all machines...\n")
-
 		// Shutdown and destroy disks and instances.
 		for _, config := range configs {
 			confChan <- config
+			time.Sleep(200 * time.Millisecond)
 		}
 		close(confChan)
 
@@ -519,12 +526,12 @@ func main() {
 	fmt.Printf("\nSpawning machines...\n")
 	for i := 0; i < len(configs); i++ {
 		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, auxInternalIP, "client", "")
-		time.Sleep(250 * time.Millisecond)
+		time.Sleep(200 * time.Millisecond)
 	}
 
-	time.Sleep(10 * time.Second)
+	time.Sleep(5 * time.Second)
 	fmt.Printf("\nWaiting for instances to initialize...\n")
-	time.Sleep(80 * time.Second)
+	time.Sleep(45 * time.Second)
 
 	wg := &sync.WaitGroup{}
 
@@ -539,7 +546,7 @@ func main() {
 
 			defer wg.Done()
 
-			for j := (idx * 200); j < ((idx + 1) * 200); j++ {
+			for j := (idx * 47); j < ((idx + 1) * 47); j++ {
 
 				if j < len(configs) {
 					checkInstanceReady(configs[j].Name, configs[j].Zone)
@@ -550,7 +557,7 @@ func main() {
 	}
 
 	// Catch all remaining configs.
-	for i := (10 * 200); i < len(configs); i++ {
+	for i := (10 * 47); i < len(configs); i++ {
 		checkInstanceReady(configs[i].Name, configs[i].Zone)
 	}
 
@@ -561,7 +568,7 @@ func main() {
 	// If zeno: send PKI signal to start.
 	if system == "zeno" {
 
-		time.Sleep(15 * time.Second)
+		time.Sleep(5 * time.Second)
 		fmt.Printf("Signaling zeno's PKI to start epoch.\n")
 
 		// Connect to control plane address used
@@ -593,6 +600,8 @@ func main() {
 		configs = append(configs, auxConfig)
 	}
 
+	fmt.Printf("Going to delete all %d machines\n", len(configs))
+
 	// Prepare channels to send configurations
 	// to individual workers and expect responses.
 	confChan := make(chan Config)
@@ -600,14 +609,12 @@ func main() {
 	// Spawn deletion workers.
 	for i := 0; i < len(configs); i++ {
 		go shutdownInstance(confChan, gcloudProject, accessToken)
-		time.Sleep(250 * time.Millisecond)
 	}
-
-	fmt.Printf("WARNING: Deleting all machines...\n")
 
 	// Shutdown and destroy disks and instances.
 	for _, config := range configs {
 		confChan <- config
+		time.Sleep(200 * time.Millisecond)
 	}
 	close(confChan)
 
