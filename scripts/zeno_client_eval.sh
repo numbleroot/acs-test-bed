@@ -10,7 +10,15 @@ chmod 0644 /root/cert.pem
 # Signal readiness of process to experiment script.
 curl -X PUT --data "ThisNodeIsReady" http://metadata.google.internal/computeMetadata/v1/instance/guest-attributes/acs-eval/initStatus -H "Metadata-Flavor: Google"
 
+# Determine active network device.
+NET_DEVICE=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//')
+printf "Found active network device: '${NET_DEVICE}'.\n"
+
 # Configure tc according to environment variable.
+if [ "${TC_CONFIG}" != "none" ]; then
+    tc qdisc add dev ${NET_DEVICE} root ${TC_CONFIG}
+    printf "Configured ${NET_DEVICE} with tc parameters.\n"
+fi
 
 # Add iptables rules to be able to count number of transferred
 # bytes for evaluation and initialize them to zero.
@@ -28,6 +36,9 @@ iptables -Z -t filter -L OUTPUT
 wait
 
 # Reset tc configuration.
+if [ "${TC_CONFIG}" != "none" ]; then
+    tc qdisc del dev ${NET_DEVICE} root
+fi
 
 # Upload result files to GCloud bucket.
 /snap/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/

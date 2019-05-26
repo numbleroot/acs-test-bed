@@ -22,6 +22,7 @@ RESULT_FOLDER=$(curl http://metadata.google.internal/computeMetadata/v1/instance
 EVAL_SCRIPT_TO_PULL=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/evalScriptToPull -H "Metadata-Flavor: Google")
 BINARY_TO_PULL=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/binaryToPull -H "Metadata-Flavor: Google")
 TC_CONFIG=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/tcConfig -H "Metadata-Flavor: Google")
+KILL_ZENO_MIXES_IN_ROUND=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/killZenoMixesInRound -H "Metadata-Flavor: Google")
 PKI_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/pkiIP -H "Metadata-Flavor: Google")
 
 sleep 3
@@ -36,5 +37,6 @@ chmod 0700 /root/${BINARY_TO_PULL}
 chmod 0700 /root/collector
 
 # Hand over to evaluation script.
-LISTEN_IP=${LISTEN_IP} NAME_OF_NODE=${NAME_OF_NODE} PARTNER_OF_NODE=${PARTNER_OF_NODE} TYPE_OF_NODE=${TYPE_OF_NODE} \
-    RESULT_FOLDER=${RESULT_FOLDER} TC_CONFIG=${TC_CONFIG} PKI_IP=${PKI_IP} /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+LISTEN_IP=${LISTEN_IP} NAME_OF_NODE=${NAME_OF_NODE} PARTNER_OF_NODE=${PARTNER_OF_NODE} \
+    TYPE_OF_NODE=${TYPE_OF_NODE} RESULT_FOLDER=${RESULT_FOLDER} TC_CONFIG=${TC_CONFIG} \
+    KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PKI_IP=${PKI_IP} /bin/bash /root/${EVAL_SCRIPT_TO_PULL}

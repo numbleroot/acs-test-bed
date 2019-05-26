@@ -14,18 +14,18 @@ import (
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
-	Name             string `json:"Name"`
-	Partner          string `json:"Partner"`
-	Zone             string `json:"Zone"`
-	MinCPUPlatform   string `json:"MinCPUPlatform"`
-	MachineType      string `json:"MachineType"`
-	TypeOfNode       string `json:"TypeOfNode"`
-	EvaluationScript string `json:"EvaluationScript"`
-	BinaryName       string `json:"BinaryName"`
-	ParamsTC         string `json:"ParamsTC"`
-	SourceImage      string `json:"SourceImage"`
-	DiskType         string `json:"DiskType"`
-	DiskSize         string `json:"DiskSize"`
+	Name                 string `json:"Name"`
+	Partner              string `json:"Partner"`
+	Zone                 string `json:"Zone"`
+	MinCPUPlatform       string `json:"MinCPUPlatform"`
+	MachineType          string `json:"MachineType"`
+	TypeOfNode           string `json:"TypeOfNode"`
+	EvaluationScript     string `json:"EvaluationScript"`
+	BinaryName           string `json:"BinaryName"`
+	SourceImage          string `json:"SourceImage"`
+	DiskType             string `json:"DiskType"`
+	DiskSize             string `json:"DiskSize"`
+	NetTroublesIfApplied string `json:"NetTroublesIfApplied"`
 }
 
 // GCloudZones holds all but two GCloud zones.
@@ -58,15 +58,15 @@ var GCloudZones = [18]string{
 // This might change if a GCP project is assigned
 // more lenient quotas.
 var GCloudZonesLowStorage = map[string]int{
-	"asia-east2-b":              45,
-	"asia-northeast2-b":         45,
-	"asia-south1-b":             45,
-	"australia-southeast1-b":    45,
-	"europe-north1-b":           45,
-	"europe-west2-b":            45,
-	"europe-west6-b":            45,
-	"northamerica-northeast1-b": 45,
-	"us-west2-b":                45,
+	"asia-east2-b":              290,
+	"asia-northeast2-b":         290,
+	"asia-south1-b":             290,
+	"australia-southeast1-b":    290,
+	"europe-north1-b":           290,
+	"europe-west2-b":            290,
+	"europe-west6-b":            290,
+	"northamerica-northeast1-b": 290,
+	"us-west2-b":                290,
 }
 
 func shuffleZones() {
@@ -145,6 +145,17 @@ func main() {
 	shuffleZones()
 	zoneIdx := 0
 
+	// Pick three zones that will experience
+	// network troubles if runexperiments is
+	// instructed to emulate them.
+	netTroubleZones := make(map[string]bool)
+	netTroubleZones[GCloudZones[0]] = true
+	netTroubleZones[GCloudZones[1]] = true
+	netTroubleZones[GCloudZones[2]] = true
+
+	fmt.Printf("If applied during runexperiments, these zones will experience network troubles: %s, %s, %s\n",
+		GCloudZones[0], GCloudZones[1], GCloudZones[2])
+
 	for i := 0; i < numClientsToGen; i++ {
 
 		name := fmt.Sprintf("client-%05d", (i + 1))
@@ -177,7 +188,7 @@ func main() {
 
 		// Increment local map counter if this is a zone
 		// constrained with persistent disk space.
-		if GCloudZonesLowStorage[zone] == 45 {
+		if GCloudZonesLowStorage[zone] == 290 {
 			gcloudZonesLowStorage[zone]++
 		}
 
@@ -187,53 +198,61 @@ func main() {
 			zoneIdx = 0
 		}
 
+		// If chosen zone is among the ones supposed
+		// to experience network troubles if runexperiments
+		// is instructed accordingly, change the tc config.
+		netTroubles := "none"
+		if netTroubleZones[zone] {
+			netTroubles = "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		}
+
 		// Specify machine type.
 		machineType := "f1-micro"
 
 		// Prefill all configurations.
 		zenoConfigs = append(zenoConfigs, Config{
-			Name:             name,
-			Partner:          partner,
-			Zone:             zone,
-			MinCPUPlatform:   "Intel Skylake",
-			MachineType:      machineType,
-			TypeOfNode:       "client",
-			EvaluationScript: "zeno_client_eval.sh",
-			BinaryName:       "zeno",
-			ParamsTC:         "none so far",
-			SourceImage:      "acs",
-			DiskType:         "pd-ssd",
-			DiskSize:         "10",
+			Name:                 name,
+			Partner:              partner,
+			Zone:                 zone,
+			MinCPUPlatform:       "Intel Skylake",
+			MachineType:          machineType,
+			TypeOfNode:           "client",
+			EvaluationScript:     "zeno_client_eval.sh",
+			BinaryName:           "zeno",
+			SourceImage:          "acs",
+			DiskType:             "pd-ssd",
+			DiskSize:             "10",
+			NetTroublesIfApplied: netTroubles,
 		})
 
 		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
-			Name:             name,
-			Partner:          partner,
-			Zone:             zone,
-			MinCPUPlatform:   "Intel Skylake",
-			MachineType:      machineType,
-			TypeOfNode:       "client",
-			EvaluationScript: "vuvuzela-client_eval.sh",
-			BinaryName:       "vuvuzela-client",
-			ParamsTC:         "none so far",
-			SourceImage:      "acs",
-			DiskType:         "pd-ssd",
-			DiskSize:         "10",
+			Name:                 name,
+			Partner:              partner,
+			Zone:                 zone,
+			MinCPUPlatform:       "Intel Skylake",
+			MachineType:          machineType,
+			TypeOfNode:           "client",
+			EvaluationScript:     "vuvuzela-client_eval.sh",
+			BinaryName:           "vuvuzela-client",
+			SourceImage:          "acs",
+			DiskType:             "pd-ssd",
+			DiskSize:             "10",
+			NetTroublesIfApplied: netTroubles,
 		})
 
 		pungConfigs = append(pungConfigs, Config{
-			Name:             name,
-			Partner:          partner,
-			Zone:             zone,
-			MinCPUPlatform:   "Intel Skylake",
-			MachineType:      machineType,
-			TypeOfNode:       "client",
-			EvaluationScript: "pung_client_eval.sh",
-			BinaryName:       "pung-client",
-			ParamsTC:         "none so far",
-			SourceImage:      "acs",
-			DiskType:         "pd-ssd",
-			DiskSize:         "10",
+			Name:                 name,
+			Partner:              partner,
+			Zone:                 zone,
+			MinCPUPlatform:       "Intel Skylake",
+			MachineType:          machineType,
+			TypeOfNode:           "client",
+			EvaluationScript:     "pung_client_eval.sh",
+			BinaryName:           "pung-client",
+			SourceImage:          "acs",
+			DiskType:             "pd-ssd",
+			DiskSize:             "10",
+			NetTroublesIfApplied: netTroubles,
 		})
 	}
 
@@ -265,7 +284,7 @@ func main() {
 
 		// Increment local map counter if this is a zone
 		// constrained with persistent disk space.
-		if GCloudZonesLowStorage[zone] == 45 {
+		if GCloudZonesLowStorage[zone] == 290 {
 			gcloudZonesLowStorage[zone]++
 		}
 
@@ -276,18 +295,18 @@ func main() {
 		}
 
 		zenoConfigs = append(zenoConfigs, Config{
-			Name:             fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Partner:          "irrelevant",
-			Zone:             zone,
-			MinCPUPlatform:   "Intel Skylake",
-			MachineType:      "n1-standard-4",
-			TypeOfNode:       "mix",
-			EvaluationScript: "zeno_mix_eval.sh",
-			BinaryName:       "zeno",
-			ParamsTC:         "none so far",
-			SourceImage:      "acs",
-			DiskType:         "pd-ssd",
-			DiskSize:         "10",
+			Name:                 fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Partner:              "irrelevant",
+			Zone:                 zone,
+			MinCPUPlatform:       "Intel Skylake",
+			MachineType:          "n1-standard-4",
+			TypeOfNode:           "mix",
+			EvaluationScript:     "zeno_mix_eval.sh",
+			BinaryName:           "zeno",
+			SourceImage:          "acs",
+			DiskType:             "pd-ssd",
+			DiskSize:             "10",
+			NetTroublesIfApplied: "none",
 		})
 	}
 
@@ -308,7 +327,7 @@ func main() {
 			zone = GCloudZones[zoneIdx]
 		}
 
-		if GCloudZonesLowStorage[zone] == 45 {
+		if GCloudZonesLowStorage[zone] == 290 {
 			gcloudZonesLowStorage[zone]++
 		}
 
@@ -319,18 +338,18 @@ func main() {
 		}
 
 		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
-			Name:             fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Partner:          "irrelevant",
-			Zone:             zone,
-			MinCPUPlatform:   "Intel Skylake",
-			MachineType:      "n1-standard-4",
-			TypeOfNode:       "vuvuzela-mixer",
-			EvaluationScript: "vuvuzela-mixer_eval.sh",
-			BinaryName:       "vuvuzela-mixer",
-			ParamsTC:         "none so far",
-			SourceImage:      "acs",
-			DiskType:         "pd-ssd",
-			DiskSize:         "10",
+			Name:                 fmt.Sprintf("mixnet-%05d", (i + 1)),
+			Partner:              "irrelevant",
+			Zone:                 zone,
+			MinCPUPlatform:       "Intel Skylake",
+			MachineType:          "n1-standard-4",
+			TypeOfNode:           "vuvuzela-mixer",
+			EvaluationScript:     "vuvuzela-mixer_eval.sh",
+			BinaryName:           "vuvuzela-mixer",
+			SourceImage:          "acs",
+			DiskType:             "pd-ssd",
+			DiskSize:             "10",
+			NetTroublesIfApplied: "none",
 		})
 
 		if i == numClientsToGen {
@@ -384,18 +403,18 @@ func main() {
 
 	// Additionally, create configuration for zeno's PKI node.
 	zenoPKIConfigsJSON, err := json.MarshalIndent(Config{
-		Name:             "zeno-pki",
-		Partner:          "irrelevant",
-		Zone:             "europe-west3-b",
-		MinCPUPlatform:   "Intel Skylake",
-		MachineType:      "n1-standard-8",
-		TypeOfNode:       "zeno-pki",
-		EvaluationScript: "zeno-pki_eval.sh",
-		BinaryName:       "zeno-pki",
-		ParamsTC:         "irrelevant",
-		SourceImage:      "acs",
-		DiskType:         "pd-ssd",
-		DiskSize:         "10",
+		Name:                 "zeno-pki",
+		Partner:              "irrelevant",
+		Zone:                 "europe-west3-b",
+		MinCPUPlatform:       "Intel Skylake",
+		MachineType:          "n1-standard-8",
+		TypeOfNode:           "zeno-pki",
+		EvaluationScript:     "zeno-pki_eval.sh",
+		BinaryName:           "zeno-pki",
+		SourceImage:          "acs",
+		DiskType:             "pd-ssd",
+		DiskSize:             "10",
+		NetTroublesIfApplied: "none",
 	}, "", "\t")
 	if err != nil {
 		fmt.Printf("Failed to marshal configuration for zeno's PKI to JSON: %v\n", err)
@@ -411,18 +430,18 @@ func main() {
 
 	// Prepare server configuration for pung.
 	pungServerJSON, err := json.MarshalIndent(Config{
-		Name:             fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
-		Partner:          "irrelevant",
-		Zone:             GCloudZones[0],
-		MinCPUPlatform:   "Intel Skylake",
-		MachineType:      "n1-highmem-16",
-		TypeOfNode:       "server",
-		EvaluationScript: "pung_server_eval.sh",
-		BinaryName:       "pung-server",
-		ParamsTC:         "none so far",
-		SourceImage:      "acs",
-		DiskType:         "pd-ssd",
-		DiskSize:         "10",
+		Name:                 fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
+		Partner:              "irrelevant",
+		Zone:                 GCloudZones[0],
+		MinCPUPlatform:       "Intel Skylake",
+		MachineType:          "n1-highmem-16",
+		TypeOfNode:           "server",
+		EvaluationScript:     "pung_server_eval.sh",
+		BinaryName:           "pung-server",
+		SourceImage:          "acs",
+		DiskType:             "pd-ssd",
+		DiskSize:             "10",
+		NetTroublesIfApplied: "none",
 	}, "", "\t")
 	if err != nil {
 		fmt.Printf("Failed to marshal configuration for pung's server to JSON: %v\n", err)

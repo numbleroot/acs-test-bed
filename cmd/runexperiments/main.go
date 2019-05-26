@@ -20,18 +20,19 @@ import (
 // Config describes one compute instance
 // exhaustively for reproducibility.
 type Config struct {
-	Name             string `json:"Name"`
-	Partner          string `json:"Partner"`
-	Zone             string `json:"Zone"`
-	MinCPUPlatform   string `json:"MinCPUPlatform"`
-	MachineType      string `json:"MachineType"`
-	TypeOfNode       string `json:"TypeOfNode"`
-	EvaluationScript string `json:"EvaluationScript"`
-	BinaryName       string `json:"BinaryName"`
-	ParamsTC         string `json:"ParamsTC"`
-	SourceImage      string `json:"SourceImage"`
-	DiskType         string `json:"DiskType"`
-	DiskSize         string `json:"DiskSize"`
+	Name                   string `json:"Name"`
+	Partner                string `json:"Partner"`
+	Zone                   string `json:"Zone"`
+	MinCPUPlatform         string `json:"MinCPUPlatform"`
+	MachineType            string `json:"MachineType"`
+	TypeOfNode             string `json:"TypeOfNode"`
+	EvaluationScript       string `json:"EvaluationScript"`
+	BinaryName             string `json:"BinaryName"`
+	SourceImage            string `json:"SourceImage"`
+	DiskType               string `json:"DiskType"`
+	DiskSize               string `json:"DiskSize"`
+	NetTroublesIfApplied   string `json:"NetTroublesIfApplied"`
+	ZenoMixKilledIfApplied string `json:"ZenoMixKilledIfApplied"`
 }
 
 var tmplInstanceCreate string
@@ -47,7 +48,7 @@ var tmplInstancePublicIP = `
       ],`
 
 func spawnInstance(config *Config, proj string, serviceAcc string, accessToken string, bucket string,
-	resultFolder string, pkiIP string, tag string, accessConfig string) string {
+	resultFolder string, pkiIP string, tag string, accessConfig string, tcEmulNetTroubles bool, killZenoMixesInRound int) string {
 
 	// Customize API endpoint to send request to.
 	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances", proj, config.Zone)
@@ -63,7 +64,6 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_RESULT_FOLDER", resultFolder)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_EVAL_SCRIPT_TO_PULL", config.EvaluationScript)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_BINARY_TO_PULL", config.BinaryName)
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TC_CONFIG", config.ParamsTC)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_PKI_IP", pkiIP)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_STARTUP_SCRIPT", fmt.Sprintf("gs://%s/startup.sh", bucket))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TAG", tag)
@@ -74,6 +74,23 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 		strings.TrimSuffix(config.Zone, "-b")))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ACCESS_CONFIG", accessConfig)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SERVICE_ACCOUNT", serviceAcc)
+
+	// If flag set to true, append the tc configuration
+	// parameters to instance metadata.
+	if tcEmulNetTroubles {
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TC_CONFIG", config.NetTroublesIfApplied)
+	} else {
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TC_CONFIG", "none")
+	}
+
+	// If flag set to true, signal spawning zeno nodes
+	// that in all but the first cascade the second mix
+	// node is instructed to crash in the specified round.
+	if killZenoMixesInRound > 0 {
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_KILL_ZENO_MIXES_IN_ROUND", fmt.Sprintf("%d", killZenoMixesInRound))
+	} else {
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_KILL_ZENO_MIXES_IN_ROUND", "none")
+	}
 
 	// Create HTTP POST request.
 	request, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(reqBody))
@@ -138,10 +155,11 @@ func checkInstanceReady(name string, zone string) {
 }
 
 func runInstance(config *Config, proj string, serviceAcc string, accessToken string, bucket string,
-	resultFolder string, pkiIP string, tag string, accessConfig string) {
+	resultFolder string, pkiIP string, tag string, accessConfig string, tcEmulNetTroubles bool, killZenoMixesInRound int) {
 
 	// Spawn instance and retrieve response.
-	out := spawnInstance(config, proj, serviceAcc, accessToken, bucket, resultFolder, pkiIP, tag, accessConfig)
+	out := spawnInstance(config, proj, serviceAcc, accessToken, bucket, resultFolder, pkiIP,
+		tag, accessConfig, tcEmulNetTroubles, killZenoMixesInRound)
 
 	// Verify successful machine creation.
 	if strings.Contains(out, "RUNNING") {
@@ -194,6 +212,8 @@ func main() {
 	gcloudProjectFlag := flag.String("gcloudProj", "", "Supply the GCloud project identifier.")
 	gcloudServiceAccFlag := flag.String("gcloudServiceAcc", "", "Supply the GCloud Service Account identifier.")
 	gcloudBucketFlag := flag.String("gcloudBucket", "", "Supply the GCloud Storage Bucket to use for the experiments.")
+	tcEmulNetTroublesFlag := flag.Bool("tcEmulNetTroubles", false, "Append this flag to emulate a network trouble in 3 out of all zones.")
+	killZenoMixesInRoundFlag := flag.Int("killZenoMixesInRound", -1, "If specific mix nodes in all but one zeno cascade are supposed to crash, specify the round in which that shall happen.")
 	deleteAllFlag := flag.Bool("deleteAll", false, "Append this flag if the only purpose of this run is to delete all configured instances (caution: permanently deletes them!).")
 	flag.Parse()
 
@@ -207,6 +227,8 @@ func main() {
 	gcloudProject := *gcloudProjectFlag
 	gcloudServiceAcc := *gcloudServiceAccFlag
 	gcloudBucket := *gcloudBucketFlag
+	tcEmulNetTroubles := *tcEmulNetTroublesFlag
+	killZenoMixesInRound := *killZenoMixesInRoundFlag
 	deleteAll := *deleteAllFlag
 
 	// System flag has to be one of three values.
@@ -350,7 +372,8 @@ func main() {
 		}
 
 		// Spawn PKI of zeno.
-		spawnResp := spawnInstance(&auxConfig, gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, "irrelevant", "zeno-pki", tmplInstancePublicIP)
+		spawnResp := spawnInstance(&auxConfig, gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket,
+			resultFolder, "irrelevant", "zeno-pki", tmplInstancePublicIP, false, 0)
 
 		// Verify successful machine creation.
 		if !strings.Contains(spawnResp, "RUNNING") {
@@ -361,7 +384,8 @@ func main() {
 		time.Sleep(10 * time.Second)
 
 		request, err := http.NewRequest(http.MethodGet,
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", gcloudProject, auxConfig.Zone, auxConfig.Name), nil)
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", gcloudProject,
+				auxConfig.Zone, auxConfig.Name), nil)
 		if err != nil {
 			fmt.Printf("Failed retrieving details of PKI of zeno: %v\n", err)
 			os.Exit(1)
@@ -448,7 +472,8 @@ func main() {
 		}
 
 		// Spawn pung's server.
-		spawnResp := spawnInstance(&auxConfig, gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, "irrelevant", "pung-server", tmplInstancePublicIP)
+		spawnResp := spawnInstance(&auxConfig, gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+			"irrelevant", "pung-server", tmplInstancePublicIP, false, 0)
 
 		// Verify successful machine creation.
 		if !strings.Contains(spawnResp, "RUNNING") {
@@ -525,7 +550,8 @@ func main() {
 	// Spawn all machines.
 	fmt.Printf("\nSpawning machines...\n")
 	for i := 0; i < len(configs); i++ {
-		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder, auxInternalIP, "client", "")
+		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+			auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
 		time.Sleep(200 * time.Millisecond)
 	}
 
