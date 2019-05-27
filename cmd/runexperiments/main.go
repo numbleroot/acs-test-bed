@@ -13,7 +13,6 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -54,11 +53,12 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances", proj, config.Zone)
 
 	// Prepare request body.
-	reqBody := strings.ReplaceAll(tmplInstanceCreate, "ACS_EVAL_INSERT_NAME", config.Name)
+	reqBody := strings.ReplaceAll(tmplInstanceCreate, "ACS_EVAL_INSERT_GCP_MACHINE_NAME", fmt.Sprintf("%s-%s", config.Name, resultFolder))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ZONE", fmt.Sprintf("projects/%s/zones/%s", proj, config.Zone))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MIN_CPU_PLATFORM", config.MinCPUPlatform)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MACHINE_TYPE", fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", proj, config.Zone,
 		config.MachineType))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_NAME", config.Name)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_PARTNER", config.Partner)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_TYPE_OF_NODE", config.TypeOfNode)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_RESULT_FOLDER", resultFolder)
@@ -135,21 +135,89 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	return string(outRaw)
 }
 
-func checkInstanceReady(name string, zone string) {
+func checkInstanceReady(proj string, accessToken string, name string, zone string, resultFolder string) {
 
-	// Execute command to query guest attributes.
-	outRaw, _ := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "beta", "compute", "instances", "get-guest-attributes", name,
-		"--query-path=acs-eval/initStatus", fmt.Sprintf("--zone=%s", zone)).CombinedOutput()
+	instName := fmt.Sprintf("%s-%s", name, resultFolder)
+
+	// Customize API endpoint to send request to.
+	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/beta/projects/%s/zones/%s/instances/%s/getGuestAttributes?queryPath=acs-eval%%2FinitStatus&variableKey=initStatus",
+		proj, zone, instName)
+
+	// Create HTTP GET request.
+	request, err := http.NewRequest(http.MethodGet, endpoint, nil)
+	if err != nil {
+		fmt.Printf("Failed creating HTTP API request: %v\n", err)
+		os.Exit(1)
+	}
+	request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
+
+	// Send the request to GCP.
+	tried := 0
+	resp, err := http.DefaultClient.Do(request)
+	if err != nil {
+		fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
+		tried++
+	}
+
+	for err != nil && tried < 10 {
+
+		time.Sleep(1 * time.Second)
+
+		resp, err = http.DefaultClient.Do(request)
+		if err != nil {
+			fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
+		}
+	}
+
+	if tried >= 10 {
+		fmt.Printf("Guest attributes API request failed permanently: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Read the response.
+	outRaw, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("Failed reading from instance guest attributes response body: %v\n", err)
+		os.Exit(1)
+	}
 	out := string(outRaw)
 
 	for !strings.Contains(out, "ThisNodeIsReady") {
 
 		time.Sleep(5 * time.Second)
 
-		outRaw, _ = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "beta", "compute", "instances", "get-guest-attributes", name,
-			"--query-path=acs-eval/initStatus", fmt.Sprintf("--zone=%s", zone)).CombinedOutput()
+		tried = 0
+		resp, err = http.DefaultClient.Do(request)
+		if err != nil {
+			fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
+			tried++
+		}
+
+		for err != nil && tried < 10 {
+
+			time.Sleep(1 * time.Second)
+
+			resp, err = http.DefaultClient.Do(request)
+			if err != nil {
+				fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
+			}
+		}
+
+		if tried >= 10 {
+			fmt.Printf("Guest attributes API request failed permanently: %v\n", err)
+			os.Exit(1)
+		}
+
+		// Read the response.
+		outRaw, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Printf("Failed reading from instance guest attributes response body: %v\n", err)
+			os.Exit(1)
+		}
 		out = string(outRaw)
 	}
+
+	resp.Body.Close()
 
 	fmt.Printf("Instance %s has completed initialization!\n", name)
 }
@@ -170,13 +238,14 @@ func runInstance(config *Config, proj string, serviceAcc string, accessToken str
 	}
 }
 
-func shutdownInstance(confChan <-chan Config, proj string, accessToken string) {
+func shutdownInstance(confChan <-chan Config, proj string, accessToken string, resultFolder string) {
 
 	for config := range confChan {
 
 		fmt.Printf("Deleting machine %s\n", config.Name)
 
-		endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", proj, config.Zone, config.Name)
+		instName := fmt.Sprintf("%s-%s", config.Name, resultFolder)
+		endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", proj, config.Zone, instName)
 
 		// Create HTTP DELETE request.
 		request, err := http.NewRequest(http.MethodDelete, endpoint, nil)
@@ -331,7 +400,7 @@ func main() {
 
 		// Spawn deletion workers.
 		for i := 0; i < len(configs); i++ {
-			go shutdownInstance(confChan, gcloudProject, accessToken)
+			go shutdownInstance(confChan, gcloudProject, accessToken, resultFolder)
 		}
 
 		// Shutdown and destroy disks and instances.
@@ -384,8 +453,8 @@ func main() {
 		time.Sleep(10 * time.Second)
 
 		request, err := http.NewRequest(http.MethodGet,
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", gcloudProject,
-				auxConfig.Zone, auxConfig.Name), nil)
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s",
+				gcloudProject, auxConfig.Zone, fmt.Sprintf("%s-%s", auxConfig.Name, resultFolder)), nil)
 		if err != nil {
 			fmt.Printf("Failed retrieving details of PKI of zeno: %v\n", err)
 			os.Exit(1)
@@ -444,7 +513,7 @@ func main() {
 		time.Sleep(45 * time.Second)
 
 		// Ensure initialization has completed.
-		checkInstanceReady(auxConfig.Name, auxConfig.Zone)
+		checkInstanceReady(gcloudProject, accessToken, auxConfig.Name, auxConfig.Zone, resultFolder)
 		time.Sleep(5 * time.Second)
 
 	} else if system == "pung" {
@@ -484,7 +553,8 @@ func main() {
 		time.Sleep(10 * time.Second)
 
 		request, err := http.NewRequest(http.MethodGet,
-			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", gcloudProject, auxConfig.Zone, auxConfig.Name), nil)
+			fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s",
+				gcloudProject, auxConfig.Zone, fmt.Sprintf("%s-%s", auxConfig.Name, resultFolder)), nil)
 		if err != nil {
 			fmt.Printf("Failed retrieving details of pung's server: %v\n", err)
 			os.Exit(1)
@@ -543,54 +613,33 @@ func main() {
 		time.Sleep(45 * time.Second)
 
 		// Ensure initialization has completed.
-		checkInstanceReady(auxConfig.Name, auxConfig.Zone)
+		checkInstanceReady(gcloudProject, accessToken, auxConfig.Name, auxConfig.Zone, resultFolder)
 		time.Sleep(5 * time.Second)
 	}
 
 	// Spawn all machines.
 	fmt.Printf("\nSpawning machines...\n")
-	for i := 0; i < len(configs); i++ {
+	for i := 0; i < (len(configs) - 1); i++ {
 		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
 			auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
 		time.Sleep(200 * time.Millisecond)
 	}
 
+	runInstance(&configs[(len(configs)-1)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+
 	time.Sleep(5 * time.Second)
 	fmt.Printf("\nWaiting for instances to initialize...\n")
 	time.Sleep(30 * time.Second)
 
-	if system == "zeno" {
-
-		wg := &sync.WaitGroup{}
-
-		for i := 0; i < 4; i++ {
-
-			wg.Add(1)
-
-			// Run routine that checks all instances to be
-			// up and running highly parallel.
-
-			go func(wg *sync.WaitGroup, configs []Config, idx int) {
-
-				defer wg.Done()
-
-				for j := (idx * 105); j < ((idx + 1) * 105); j++ {
-
-					if j < len(configs) {
-						checkInstanceReady(configs[j].Name, configs[j].Zone)
-					}
-				}
-
-			}(wg, configs, i)
-		}
-
-		// Catch all remaining configs.
-		for i := (4 * 105); i < len(configs); i++ {
-			checkInstanceReady(configs[i].Name, configs[i].Zone)
-		}
-
-		wg.Wait()
+	for i := 0; i < (len(configs) - 3); i++ {
+		go checkInstanceReady(gcloudProject, accessToken, configs[i].Name, configs[i].Zone, resultFolder)
+		time.Sleep(200 * time.Millisecond)
 	}
+
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-3)].Name, configs[(len(configs)-3)].Zone, resultFolder)
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-2)].Name, configs[(len(configs)-2)].Zone, resultFolder)
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-1)].Name, configs[(len(configs)-1)].Zone, resultFolder)
 
 	fmt.Printf("All machines spawned!\n\n")
 
@@ -637,7 +686,7 @@ func main() {
 
 	// Spawn deletion workers.
 	for i := 0; i < len(configs); i++ {
-		go shutdownInstance(confChan, gcloudProject, accessToken)
+		go shutdownInstance(confChan, gcloudProject, accessToken, resultFolder)
 	}
 
 	// Shutdown and destroy disks and instances.

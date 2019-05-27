@@ -11,277 +11,413 @@ import (
 	"strings"
 )
 
-type MetricsInt64 struct {
-	Timestamp int64
-	Values    []int64
-}
+func (run *Run) AddSentBytes(runNodesPath string, isClientMetric bool) error {
 
-type MetricsFloat64 struct {
-	Timestamp int64
-	Values    []float64
-}
+	sentBytesRaw := make(map[int64][]int64)
 
-type SystemMetrics struct {
-	SentBytes     []*MetricsInt64
-	SentBytesRaw  map[int64][]int64
-	RecvdBytes    []*MetricsInt64
-	RecvdBytesRaw map[int64][]int64
-	Memory        []*MetricsFloat64
-	MemoryRaw     map[int64][]float64
-	Load          []*MetricsFloat64
-	LoadRaw       map[int64][]float64
-}
+	err := filepath.Walk(runNodesPath, func(path string, info os.FileInfo, err error) error {
 
-func (sysM *SystemMetrics) AddSentBytes(path string) error {
+		if err != nil {
+			return err
+		}
 
-	// Ingest supplied file.
-	content, err := ioutil.ReadFile(path)
+		if filepath.Base(path) == "traffic_outgoing.evaluation" {
+
+			// Ingest supplied file.
+			content, err := ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			content = bytes.TrimSpace(content)
+
+			// Split file contents into lines.
+			lines := strings.Split(string(content), "\n")
+			for i := range lines {
+
+				// Split line at whitespace characters.
+				metric := strings.Fields(lines[i])
+
+				// Convert first element to timestamp.
+				timestamp, err := strconv.ParseInt(metric[0], 10, 64)
+				if err != nil {
+					return err
+				}
+
+				// Convert second element to metric
+				// we are interested in.
+				value, err := strconv.ParseInt(metric[1], 10, 64)
+				if err != nil {
+					return err
+				}
+
+				// Normalize to KiB.
+				value = value / 1024
+
+				// Append to corresponding slice of values.
+				sentBytesRaw[timestamp] = append(sentBytesRaw[timestamp], value)
+			}
+		}
+
+		return nil
+	})
 	if err != nil {
 		return err
 	}
-	content = bytes.TrimSpace(content)
 
-	// Split file contents into lines.
-	lines := strings.Split(string(content), "\n")
-	for i := range lines {
+	sentBytes := make([]*MetricsInt64, 0, len(sentBytesRaw))
 
-		// Split line at whitespace characters.
-		metric := strings.Fields(lines[i])
+	for ts := range sentBytesRaw {
 
-		// Convert first element to timestamp.
-		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
-		if err != nil {
-			return err
+		// Exclude metric for further consideration in
+		// case it lies outside our zone of interest.
+		if (ts < run.TimestampLowest) || (ts > run.TimestampHighest) {
+			continue
 		}
 
-		// Convert second element to metric
-		// we are interested in.
-		value, err := strconv.ParseInt(metric[1], 10, 64)
-		if err != nil {
-			return err
+		sentBytes = append(sentBytes, &MetricsInt64{
+			Timestamp: ts,
+			Values:    sentBytesRaw[ts],
+		})
+	}
+
+	sort.Slice(sentBytes, func(i, j int) bool {
+		return sentBytes[i].Timestamp < sentBytes[j].Timestamp
+	})
+
+	// Extract number of values in last relevant bucket.
+	lastBucket := sentBytes[(len(sentBytes) - 1)].Values
+
+	fmt.Printf("Sent buckets:    highest ts: %d    found num: %d\n", (sentBytes[(len(sentBytes) - 1)].Timestamp), len(lastBucket))
+
+	if isClientMetric {
+
+		// Copy to final structure.
+		run.ClientsSentBytesHighest = make([]int64, len(lastBucket))
+		for i := range lastBucket {
+			run.ClientsSentBytesHighest[i] = lastBucket[i]
 		}
 
-		// Normalize to KiB.
-		value = value / 1024
+	} else {
 
-		// Append to corresponding slice of values.
-		sysM.SentBytesRaw[timestamp] = append(sysM.SentBytesRaw[timestamp], value)
+		// Copy to final structure.
+		run.ServersSentBytesHighest = make([]int64, len(lastBucket))
+		for i := range lastBucket {
+			run.ServersSentBytesHighest[i] = lastBucket[i]
+		}
 	}
 
 	return nil
 }
 
-func (sysM *SystemMetrics) AddRecvdBytes(path string) error {
+func (run *Run) AddRecvdBytes(runNodesPath string, isClientMetric bool) error {
 
-	// Ingest supplied file.
-	content, err := ioutil.ReadFile(path)
+	recvdBytesRaw := make(map[int64][]int64)
+
+	err := filepath.Walk(runNodesPath, func(path string, info os.FileInfo, err error) error {
+
+		if err != nil {
+			return err
+		}
+
+		if filepath.Base(path) == "traffic_incoming.evaluation" {
+
+			// Ingest supplied file.
+			content, err := ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			content = bytes.TrimSpace(content)
+
+			// Split file contents into lines.
+			lines := strings.Split(string(content), "\n")
+			for i := range lines {
+
+				// Split line at whitespace characters.
+				metric := strings.Fields(lines[i])
+
+				// Convert first element to timestamp.
+				timestamp, err := strconv.ParseInt(metric[0], 10, 64)
+				if err != nil {
+					return err
+				}
+
+				// Convert second element to metric
+				// we are interested in.
+				value, err := strconv.ParseInt(metric[1], 10, 64)
+				if err != nil {
+					return err
+				}
+
+				// Normalize to KiB.
+				value = value / 1024
+
+				// Append to corresponding slice of values.
+				recvdBytesRaw[timestamp] = append(recvdBytesRaw[timestamp], value)
+			}
+		}
+
+		return nil
+	})
 	if err != nil {
 		return err
 	}
-	content = bytes.TrimSpace(content)
 
-	// Split file contents into lines.
-	lines := strings.Split(string(content), "\n")
-	for i := range lines {
+	recvdBytes := make([]*MetricsInt64, 0, len(recvdBytesRaw))
 
-		// Split line at whitespace characters.
-		metric := strings.Fields(lines[i])
+	for ts := range recvdBytesRaw {
 
-		// Convert first element to timestamp.
-		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
-		if err != nil {
-			return err
+		// Exclude metric for further consideration in
+		// case it lies outside our zone of interest.
+		if (ts < run.TimestampLowest) || (ts > run.TimestampHighest) {
+			continue
 		}
 
-		// Convert second element to metric
-		// we are interested in.
-		value, err := strconv.ParseInt(metric[1], 10, 64)
-		if err != nil {
-			return err
+		recvdBytes = append(recvdBytes, &MetricsInt64{
+			Timestamp: ts,
+			Values:    recvdBytesRaw[ts],
+		})
+	}
+
+	sort.Slice(recvdBytes, func(i, j int) bool {
+		return recvdBytes[i].Timestamp < recvdBytes[j].Timestamp
+	})
+
+	// Extract number of values in last relevant bucket.
+	lastBucket := recvdBytes[(len(recvdBytes) - 1)].Values
+
+	fmt.Printf("Recvd buckets:    highest ts: %d    found num: %d\n", (recvdBytes[(len(recvdBytes) - 1)].Timestamp), len(lastBucket))
+
+	if isClientMetric {
+
+		// Copy to final structure.
+		run.ClientsRecvdBytesHighest = make([]int64, len(lastBucket))
+		for i := range lastBucket {
+			run.ClientsRecvdBytesHighest[i] = lastBucket[i]
 		}
 
-		// Normalize to KiB.
-		value = value / 1024
+	} else {
 
-		// Append to corresponding slice of values.
-		sysM.RecvdBytesRaw[timestamp] = append(sysM.RecvdBytesRaw[timestamp], value)
+		// Copy to final structure.
+		run.ServersRecvdBytesHighest = make([]int64, len(lastBucket))
+		for i := range lastBucket {
+			run.ServersRecvdBytesHighest[i] = lastBucket[i]
+		}
 	}
 
 	return nil
 }
 
-func (sysM *SystemMetrics) AddMem(path string) error {
+func (run *Run) AddMem(runNodesPath string, isClientMetric bool) error {
 
-	// Ingest supplied file.
-	content, err := ioutil.ReadFile(path)
+	memRaw := make(map[int64][]float64)
+
+	err := filepath.Walk(runNodesPath, func(path string, info os.FileInfo, err error) error {
+
+		if err != nil {
+			return err
+		}
+
+		if filepath.Base(path) == "mem_unixnano.evaluation" {
+
+			// Ingest supplied file.
+			content, err := ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			content = bytes.TrimSpace(content)
+
+			// Split file contents into lines.
+			lines := strings.Split(string(content), "\n")
+			for i := range lines {
+
+				// Split line at whitespace characters.
+				metric := strings.Fields(lines[i])
+
+				// Convert first element to timestamp.
+				timestamp, err := strconv.ParseInt(metric[0], 10, 64)
+				if err != nil {
+					return err
+				}
+
+				// Convert following elements to memory metrics.
+
+				memTotal, err := strconv.ParseFloat(strings.TrimPrefix(metric[1], "totalKB:"), 64)
+				if err != nil {
+					return err
+				}
+
+				memAvail, err := strconv.ParseFloat(strings.TrimPrefix(metric[2], "availKB:"), 64)
+				if err != nil {
+					return err
+				}
+
+				// Calculate difference ("used" memory metric).
+				memUsed := memTotal - memAvail
+
+				// Calculate ratio of used to total memory.
+				memUsedRatio := (float64(memUsed / memTotal)) * 100.0
+
+				// Append to corresponding slice of values.
+				memRaw[timestamp] = append(memRaw[timestamp], memUsedRatio)
+			}
+		}
+
+		return nil
+	})
 	if err != nil {
 		return err
 	}
-	content = bytes.TrimSpace(content)
 
-	// Split file contents into lines.
-	lines := strings.Split(string(content), "\n")
-	for i := range lines {
+	if isClientMetric {
 
-		// Split line at whitespace characters.
-		metric := strings.Fields(lines[i])
+		run.ClientsMemory = make([]*MetricsFloat64, 0, len(memRaw))
 
-		// Convert first element to timestamp.
-		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
-		if err != nil {
-			return err
+		for ts := range memRaw {
+
+			// Exclude metric for further consideration in
+			// case it lies outside our zone of interest.
+			if (ts < run.TimestampLowest) || (ts > run.TimestampHighest) {
+				continue
+			}
+
+			run.ClientsMemory = append(run.ClientsMemory, &MetricsFloat64{
+				Timestamp: ts,
+				Values:    memRaw[ts],
+			})
 		}
 
-		// Convert following elements to memory metrics.
+		sort.Slice(run.ClientsMemory, func(i, j int) bool {
+			return run.ClientsMemory[i].Timestamp < run.ClientsMemory[j].Timestamp
+		})
 
-		memTotal, err := strconv.ParseFloat(strings.TrimPrefix(metric[1], "totalKB:"), 64)
-		if err != nil {
-			return err
+	} else {
+
+		run.ServersMemory = make([]*MetricsFloat64, 0, len(memRaw))
+
+		for ts := range memRaw {
+
+			// Exclude metric for further consideration in
+			// case it lies outside our zone of interest.
+			if (ts < run.TimestampLowest) || (ts > run.TimestampHighest) {
+				continue
+			}
+
+			run.ServersMemory = append(run.ServersMemory, &MetricsFloat64{
+				Timestamp: ts,
+				Values:    memRaw[ts],
+			})
 		}
 
-		memAvail, err := strconv.ParseFloat(strings.TrimPrefix(metric[2], "availKB:"), 64)
-		if err != nil {
-			return err
-		}
-
-		// Calculate difference ("used" memory metric).
-		memUsed := memTotal - memAvail
-
-		// Calculate ratio of used to total memory.
-		memUsedRatio := (float64(memUsed / memTotal)) * 100.0
-
-		// Append to corresponding slice of values.
-		sysM.MemoryRaw[timestamp] = append(sysM.MemoryRaw[timestamp], memUsedRatio)
+		sort.Slice(run.ServersMemory, func(i, j int) bool {
+			return run.ServersMemory[i].Timestamp < run.ServersMemory[j].Timestamp
+		})
 	}
 
 	return nil
 }
 
-func (sysM *SystemMetrics) AddLoad(path string) error {
+func (run *Run) AddLoad(runNodesPath string, isClientMetric bool) error {
 
-	// Ingest supplied file.
-	content, err := ioutil.ReadFile(path)
+	loadRaw := make(map[int64][]float64)
+
+	err := filepath.Walk(runNodesPath, func(path string, info os.FileInfo, err error) error {
+
+		if err != nil {
+			return err
+		}
+
+		if filepath.Base(path) == "load_unixnano.evaluation" {
+
+			// Ingest supplied file.
+			content, err := ioutil.ReadFile(path)
+			if err != nil {
+				return err
+			}
+			content = bytes.TrimSpace(content)
+
+			// Split file contents into lines.
+			lines := strings.Split(string(content), "\n")
+			for i := range lines {
+
+				// Split line at whitespace characters.
+				metric := strings.Fields(lines[i])
+
+				// Convert first element to timestamp.
+				timestamp, err := strconv.ParseInt(metric[0], 10, 64)
+				if err != nil {
+					return err
+				}
+
+				// Convert specific element to idle metrics.
+				loadIdle, err := strconv.ParseFloat(strings.TrimPrefix(metric[5], "idle:"), 64)
+				if err != nil {
+					return err
+				}
+
+				// Calculate difference ("busy" load metric).
+				loadBusy := 100.0 - loadIdle
+
+				// Append to corresponding slice of values.
+				loadRaw[timestamp] = append(loadRaw[timestamp], loadBusy)
+			}
+		}
+
+		return nil
+	})
 	if err != nil {
 		return err
 	}
-	content = bytes.TrimSpace(content)
 
-	// Split file contents into lines.
-	lines := strings.Split(string(content), "\n")
-	for i := range lines {
+	if isClientMetric {
 
-		// Split line at whitespace characters.
-		metric := strings.Fields(lines[i])
+		run.ClientsLoad = make([]*MetricsFloat64, 0, len(loadRaw))
 
-		// Convert first element to timestamp.
-		timestamp, err := strconv.ParseInt(metric[0], 10, 64)
-		if err != nil {
-			return err
+		for ts := range loadRaw {
+
+			// Exclude metric for further consideration in
+			// case it lies outside our zone of interest.
+			if (ts < run.TimestampLowest) || (ts > run.TimestampHighest) {
+				continue
+			}
+
+			run.ClientsLoad = append(run.ClientsLoad, &MetricsFloat64{
+				Timestamp: ts,
+				Values:    loadRaw[ts],
+			})
 		}
 
-		// Convert specific element to idle metrics.
-		loadIdle, err := strconv.ParseFloat(strings.TrimPrefix(metric[5], "idle:"), 64)
-		if err != nil {
-			return err
+		sort.Slice(run.ClientsLoad, func(i, j int) bool {
+			return run.ClientsLoad[i].Timestamp < run.ClientsLoad[j].Timestamp
+		})
+
+	} else {
+
+		run.ServersLoad = make([]*MetricsFloat64, 0, len(loadRaw))
+
+		for ts := range loadRaw {
+
+			// Exclude metric for further consideration in
+			// case it lies outside our zone of interest.
+			if (ts < run.TimestampLowest) || (ts > run.TimestampHighest) {
+				continue
+			}
+
+			run.ServersLoad = append(run.ServersLoad, &MetricsFloat64{
+				Timestamp: ts,
+				Values:    loadRaw[ts],
+			})
 		}
 
-		// Calculate difference ("busy" load metric).
-		loadBusy := 100.0 - loadIdle
-
-		// Append to corresponding slice of values.
-		sysM.LoadRaw[timestamp] = append(sysM.LoadRaw[timestamp], loadBusy)
+		sort.Slice(run.ServersLoad, func(i, j int) bool {
+			return run.ServersLoad[i].Timestamp < run.ServersLoad[j].Timestamp
+		})
 	}
 
 	return nil
 }
 
-func (sysM *SystemMetrics) SystemSortByTimestamp(TimestampLowerBound int64, TimestampUpperBound int64) error {
-
-	sysM.SentBytes = make([]*MetricsInt64, 0, len(sysM.SentBytesRaw))
-	sysM.RecvdBytes = make([]*MetricsInt64, 0, len(sysM.RecvdBytesRaw))
-	sysM.Memory = make([]*MetricsFloat64, 0, len(sysM.MemoryRaw))
-	sysM.Load = make([]*MetricsFloat64, 0, len(sysM.LoadRaw))
-
-	// Insert metric values into slices for sorting.
-
-	for ts := range sysM.SentBytesRaw {
-
-		// Exclude metric for further consideration in
-		// case it lies outside our zone of interest.
-		if (ts < TimestampLowerBound) || (ts > TimestampUpperBound) {
-			continue
-		}
-
-		sysM.SentBytes = append(sysM.SentBytes, &MetricsInt64{
-			Timestamp: ts,
-			Values:    sysM.SentBytesRaw[ts],
-		})
-	}
-
-	for ts := range sysM.RecvdBytesRaw {
-
-		// Exclude metric for further consideration in
-		// case it lies outside our zone of interest.
-		if (ts < TimestampLowerBound) || (ts > TimestampUpperBound) {
-			continue
-		}
-
-		sysM.RecvdBytes = append(sysM.RecvdBytes, &MetricsInt64{
-			Timestamp: ts,
-			Values:    sysM.RecvdBytesRaw[ts],
-		})
-	}
-
-	for ts := range sysM.MemoryRaw {
-
-		// Exclude metric for further consideration in
-		// case it lies outside our zone of interest.
-		if (ts < TimestampLowerBound) || (ts > TimestampUpperBound) {
-			continue
-		}
-
-		sysM.Memory = append(sysM.Memory, &MetricsFloat64{
-			Timestamp: ts,
-			Values:    sysM.MemoryRaw[ts],
-		})
-	}
-
-	for ts := range sysM.LoadRaw {
-
-		// Exclude metric for further consideration in
-		// case it lies outside our zone of interest.
-		if (ts < TimestampLowerBound) || (ts > TimestampUpperBound) {
-			continue
-		}
-
-		sysM.Load = append(sysM.Load, &MetricsFloat64{
-			Timestamp: ts,
-			Values:    sysM.LoadRaw[ts],
-		})
-	}
-
-	// Sort resulting slices by timestamp.
-
-	sort.Slice(sysM.SentBytes, func(i, j int) bool {
-		return sysM.SentBytes[i].Timestamp < sysM.SentBytes[j].Timestamp
-	})
-
-	sort.Slice(sysM.RecvdBytes, func(i, j int) bool {
-		return sysM.RecvdBytes[i].Timestamp < sysM.RecvdBytes[j].Timestamp
-	})
-
-	sort.Slice(sysM.Memory, func(i, j int) bool {
-		return sysM.Memory[i].Timestamp < sysM.Memory[j].Timestamp
-	})
-
-	sort.Slice(sysM.Load, func(i, j int) bool {
-		return sysM.Load[i].Timestamp < sysM.Load[j].Timestamp
-	})
-
-	return nil
-}
-
-func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
+/*
+func (run *Run) SystemStoreForBoxplots(path string) error {
 
 	sentBytesFile, err := os.OpenFile(filepath.Join(path, "sent-kibytes_per_second.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
@@ -290,15 +426,15 @@ func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
 	defer sentBytesFile.Close()
 	defer sentBytesFile.Sync()
 
-	for ts := range sysM.SentBytes {
+	for ts := range run.SentBytes {
 
 		var values string
-		for i := range sysM.SentBytes[ts].Values {
+		for i := range run.SentBytes[ts].Values {
 
 			if values == "" {
-				values = fmt.Sprintf("%d", sysM.SentBytes[ts].Values[i])
+				values = fmt.Sprintf("%d", run.SentBytes[ts].Values[i])
 			} else {
-				values = fmt.Sprintf("%s,%d", values, sysM.SentBytes[ts].Values[i])
+				values = fmt.Sprintf("%s,%d", values, run.SentBytes[ts].Values[i])
 			}
 		}
 
@@ -312,15 +448,15 @@ func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
 	defer recvdBytesFile.Close()
 	defer recvdBytesFile.Sync()
 
-	for ts := range sysM.RecvdBytes {
+	for ts := range run.RecvdBytes {
 
 		var values string
-		for i := range sysM.RecvdBytes[ts].Values {
+		for i := range run.RecvdBytes[ts].Values {
 
 			if values == "" {
-				values = fmt.Sprintf("%d", sysM.RecvdBytes[ts].Values[i])
+				values = fmt.Sprintf("%d", run.RecvdBytes[ts].Values[i])
 			} else {
-				values = fmt.Sprintf("%s,%d", values, sysM.RecvdBytes[ts].Values[i])
+				values = fmt.Sprintf("%s,%d", values, run.RecvdBytes[ts].Values[i])
 			}
 		}
 
@@ -334,15 +470,15 @@ func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
 	defer memoryFile.Close()
 	defer memoryFile.Sync()
 
-	for ts := range sysM.Memory {
+	for ts := range run.Memory {
 
 		var values string
-		for i := range sysM.Memory[ts].Values {
+		for i := range run.Memory[ts].Values {
 
 			if values == "" {
-				values = fmt.Sprintf("%f", sysM.Memory[ts].Values[i])
+				values = fmt.Sprintf("%f", run.Memory[ts].Values[i])
 			} else {
-				values = fmt.Sprintf("%s,%f", values, sysM.Memory[ts].Values[i])
+				values = fmt.Sprintf("%s,%f", values, run.Memory[ts].Values[i])
 			}
 		}
 
@@ -356,15 +492,15 @@ func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
 	defer loadFile.Close()
 	defer loadFile.Sync()
 
-	for ts := range sysM.Load {
+	for ts := range run.Load {
 
 		var values string
-		for i := range sysM.Load[ts].Values {
+		for i := range run.Load[ts].Values {
 
 			if values == "" {
-				values = fmt.Sprintf("%f", sysM.Load[ts].Values[i])
+				values = fmt.Sprintf("%f", run.Load[ts].Values[i])
 			} else {
-				values = fmt.Sprintf("%s,%f", values, sysM.Load[ts].Values[i])
+				values = fmt.Sprintf("%s,%f", values, run.Load[ts].Values[i])
 			}
 		}
 
@@ -373,3 +509,4 @@ func (sysM *SystemMetrics) SystemStoreForBoxplots(path string) error {
 
 	return nil
 }
+*/
