@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+# Determine shared secret for two pung clients
+# based on deterministically sorting name and partner.
+CLIENTS=(${NAME_OF_NODE} ${PARTNER_OF_NODE})
+CLIENTS=($(for CLIENT in ${CLIENTS[@]}; do echo ${CLIENT}; done | sort -n -k1.8))
+SHARED_SECRET="ACS_EVALUATION_SECRET_${CLIENTS[0]}_${CLIENTS[1]}"
+
 # Run metrics collector sidecar in background.
 /root/collector -system pung -client -pipe /tmp/collect -metricsPath /root/ &
 
@@ -8,7 +14,6 @@ curl -X PUT --data "ThisNodeIsReady" http://metadata.google.internal/computeMeta
 
 # Determine active network device.
 NET_DEVICE=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//')
-printf "Found active network device: '${NET_DEVICE}'.\n"
 
 # Configure tc according to environment variable.
 if [ "${TC_CONFIG}" != "none" ]; then
@@ -25,7 +30,7 @@ iptables -Z -t filter -L OUTPUT
 
 # Run pung as client.
 /root/pung-client -e /tmp/collect -n "${NAME_OF_NODE}" -p "${PARTNER_OF_NODE}" \
-    -x "ACS_EVALUATION_SECRET" -h ${PKI_IP}:33000 -r 30 -k 1 -s 1 -t b -d 2 -b 0 > /root/log.evaluation
+    -x ${SHARED_SECRET} -h ${PKI_IP}:33000 -r 30 -k 1 -s 1 -t e -d 2 -b 0 > /root/log.evaluation
 
 # Wait for metrics collector to exit.
 wait

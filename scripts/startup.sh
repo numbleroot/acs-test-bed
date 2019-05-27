@@ -25,7 +25,7 @@ TC_CONFIG=$(curl http://metadata.google.internal/computeMetadata/v1/instance/att
 KILL_ZENO_MIXES_IN_ROUND=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/killZenoMixesInRound -H "Metadata-Flavor: Google")
 PKI_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/pkiIP -H "Metadata-Flavor: Google")
 
-sleep 3
+sleep 5
 
 # Pull files from GCloud bucket.
 /snap/bin/gsutil cp gs://acs-eval/${EVAL_SCRIPT_TO_PULL} /root/${EVAL_SCRIPT_TO_PULL}

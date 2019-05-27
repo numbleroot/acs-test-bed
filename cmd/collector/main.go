@@ -239,15 +239,11 @@ func (col *Collector) collectTimingMetrics() {
 				// associated with it is sent next.
 				recvTime = strings.TrimSpace(metricParts[1])
 
-				fmt.Printf("recvTime=%s stashed\n", recvTime)
-
 			} else {
 
 				// Write to file and sync to stable storage.
 				fmt.Fprintf(col.RecvTimeFile, "%s %s\n", recvTime, strings.TrimSpace(metricParts[1]))
 				_ = col.RecvTimeFile.Sync()
-
-				fmt.Printf("recvTime=%s for msgID=%s written\n", recvTime, strings.TrimSpace(metricParts[1]))
 
 				// Reset buffer for receive timestamp.
 				recvTime = ""

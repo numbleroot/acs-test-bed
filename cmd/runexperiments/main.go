@@ -89,7 +89,7 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	if killZenoMixesInRound > 0 {
 		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_KILL_ZENO_MIXES_IN_ROUND", fmt.Sprintf("%d", killZenoMixesInRound))
 	} else {
-		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_KILL_ZENO_MIXES_IN_ROUND", "none")
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_KILL_ZENO_MIXES_IN_ROUND", "-1")
 	}
 
 	// Create HTTP POST request.
@@ -557,37 +557,40 @@ func main() {
 
 	time.Sleep(5 * time.Second)
 	fmt.Printf("\nWaiting for instances to initialize...\n")
-	time.Sleep(45 * time.Second)
+	time.Sleep(30 * time.Second)
 
-	wg := &sync.WaitGroup{}
+	if system == "zeno" {
 
-	for i := 0; i < 10; i++ {
+		wg := &sync.WaitGroup{}
 
-		wg.Add(1)
+		for i := 0; i < 4; i++ {
 
-		// Run routine that checks all instances to be
-		// up and running highly parallel.
+			wg.Add(1)
 
-		go func(wg *sync.WaitGroup, configs []Config, idx int) {
+			// Run routine that checks all instances to be
+			// up and running highly parallel.
 
-			defer wg.Done()
+			go func(wg *sync.WaitGroup, configs []Config, idx int) {
 
-			for j := (idx * 47); j < ((idx + 1) * 47); j++ {
+				defer wg.Done()
 
-				if j < len(configs) {
-					checkInstanceReady(configs[j].Name, configs[j].Zone)
+				for j := (idx * 105); j < ((idx + 1) * 105); j++ {
+
+					if j < len(configs) {
+						checkInstanceReady(configs[j].Name, configs[j].Zone)
+					}
 				}
-			}
 
-		}(wg, configs, i)
+			}(wg, configs, i)
+		}
+
+		// Catch all remaining configs.
+		for i := (4 * 105); i < len(configs); i++ {
+			checkInstanceReady(configs[i].Name, configs[i].Zone)
+		}
+
+		wg.Wait()
 	}
-
-	// Catch all remaining configs.
-	for i := (10 * 47); i < len(configs); i++ {
-		checkInstanceReady(configs[i].Name, configs[i].Zone)
-	}
-
-	wg.Wait()
 
 	fmt.Printf("All machines spawned!\n\n")
 
@@ -644,7 +647,6 @@ func main() {
 	}
 	close(confChan)
 
-	time.Sleep(15 * time.Second)
 	fmt.Printf("All machines deleted!\n\n")
 
 	// Download all files from GCloud bucket

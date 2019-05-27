@@ -12,7 +12,6 @@ curl -X PUT --data "ThisNodeIsReady" http://metadata.google.internal/computeMeta
 
 # Determine active network device.
 NET_DEVICE=$(ip addr | awk '/state UP/ {print $2}' | sed 's/.$//')
-printf "Found active network device: '${NET_DEVICE}'.\n"
 
 # Configure tc according to environment variable.
 if [ "${TC_CONFIG}" != "none" ]; then
