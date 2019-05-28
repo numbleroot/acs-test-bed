@@ -44,7 +44,9 @@ type Run struct {
 type Setting struct {
 	Runs                       []*Run
 	ClientsBandwidthHighestAvg float64
+	ClientsBandwidthHighestMed float64
 	ServersBandwidthHighestAvg float64
+	ServersBandwidthHighestMed float64
 	ClientsLoadLowestToHighest []float64
 	ServersLoadLowestToHighest []float64
 	LatenciesLowestToHighest   []float64

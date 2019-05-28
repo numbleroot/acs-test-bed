@@ -83,6 +83,11 @@ func (run *Run) AddMsgsPerMix(runServersPath string) error {
 	return err
 }
 
+func (set *Setting) MsgsPerMixToFile(path string) error {
+
+	return nil
+}
+
 /*
 func (run *Run) MixStoreForPlot() error {
 

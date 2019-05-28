@@ -222,6 +222,11 @@ func (run *Run) AddLatency(runClientsPath string, systemUnderEval string, numMsg
 	return err
 }
 
+func (set *Setting) LatenciesToFile(path string) error {
+
+	return nil
+}
+
 /*
 func (clM *ClientMetrics) ClientStoreForBoxplot() error {
 
