@@ -72,8 +72,13 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_DISK_SIZE", config.DiskSize)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SUBNETWORK", fmt.Sprintf("projects/%s/regions/%s/subnetworks/default", proj,
 		strings.TrimSuffix(config.Zone, "-b")))
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ACCESS_CONFIG", accessConfig)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SERVICE_ACCOUNT", serviceAcc)
+
+	if strings.Contains(config.Name, "mixnet-") {
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ACCESS_CONFIG", tmplInstancePublicIP)
+	} else {
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ACCESS_CONFIG", accessConfig)
+	}
 
 	// If flag set to true, append the tc configuration
 	// parameters to instance metadata.
@@ -104,19 +109,13 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	// Send the request to GCP.
 	tried := 0
 	resp, err := http.DefaultClient.Do(request)
-	if err != nil {
-		fmt.Printf("Create API request failed (will try again): %v\n", err)
-		tried++
-	}
-
 	for err != nil && tried < 10 {
 
+		tried++
+		fmt.Printf("Create API request failed (will try again): %v\n", err)
 		time.Sleep(1 * time.Second)
 
 		resp, err = http.DefaultClient.Do(request)
-		if err != nil {
-			fmt.Printf("Create API request failed (will try again): %v\n", err)
-		}
 	}
 
 	if tried >= 10 {
@@ -152,26 +151,13 @@ func checkInstanceReady(proj string, accessToken string, name string, zone strin
 	request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
 
 	// Send the request to GCP.
-	tried := 0
 	resp, err := http.DefaultClient.Do(request)
-	if err != nil {
+	for err != nil {
+
 		fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
-		tried++
-	}
-
-	for err != nil && tried < 10 {
-
 		time.Sleep(1 * time.Second)
 
 		resp, err = http.DefaultClient.Do(request)
-		if err != nil {
-			fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
-		}
-	}
-
-	if tried >= 10 {
-		fmt.Printf("Guest attributes API request failed permanently: %v\n", err)
-		os.Exit(1)
 	}
 
 	// Read the response.
@@ -186,26 +172,13 @@ func checkInstanceReady(proj string, accessToken string, name string, zone strin
 
 		time.Sleep(5 * time.Second)
 
-		tried = 0
 		resp, err = http.DefaultClient.Do(request)
-		if err != nil {
+		for err != nil {
+
 			fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
-			tried++
-		}
-
-		for err != nil && tried < 10 {
-
 			time.Sleep(1 * time.Second)
 
 			resp, err = http.DefaultClient.Do(request)
-			if err != nil {
-				fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
-			}
-		}
-
-		if tried >= 10 {
-			fmt.Printf("Guest attributes API request failed permanently: %v\n", err)
-			os.Exit(1)
 		}
 
 		// Read the response.
@@ -238,38 +211,38 @@ func runInstance(config *Config, proj string, serviceAcc string, accessToken str
 	}
 }
 
-func shutdownInstance(confChan <-chan Config, proj string, accessToken string, resultFolder string) {
+func shutdownInstance(config *Config, proj string, accessToken string, resultFolder string) {
 
-	for config := range confChan {
+	fmt.Printf("Deleting machine %s\n", config.Name)
 
-		fmt.Printf("Deleting machine %s\n", config.Name)
+	instName := fmt.Sprintf("%s-%s", config.Name, resultFolder)
+	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", proj, config.Zone, instName)
 
-		instName := fmt.Sprintf("%s-%s", config.Name, resultFolder)
-		endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", proj, config.Zone, instName)
-
-		// Create HTTP DELETE request.
-		request, err := http.NewRequest(http.MethodDelete, endpoint, nil)
-		if err != nil {
-			fmt.Printf("Failed creating HTTP API request: %v\n", err)
-			os.Exit(1)
-		}
-		request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
-
-		// Send the request to GCP.
-		resp, err := http.DefaultClient.Do(request)
-		if err != nil {
-			fmt.Printf("Delete API request failed: %v\n", err)
-			continue
-		}
-
-		// Read the response.
-		_, err = ioutil.ReadAll(resp.Body)
-		if err != nil {
-			fmt.Printf("Failed reading from instance delete response body: %v\n", err)
-			continue
-		}
-		defer resp.Body.Close()
+	// Create HTTP DELETE request.
+	request, err := http.NewRequest(http.MethodDelete, endpoint, nil)
+	if err != nil {
+		fmt.Printf("Failed creating HTTP API request: %v\n", err)
+		os.Exit(1)
 	}
+	request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
+
+	// Send the request to GCP.
+	resp, err := http.DefaultClient.Do(request)
+	for err != nil {
+
+		fmt.Printf("Delete API request failed (will try again): %v\n", err)
+		time.Sleep(1 * time.Second)
+
+		resp, err = http.DefaultClient.Do(request)
+	}
+
+	// Read the response.
+	_, err = ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("Failed reading from instance delete response body: %v\n", err)
+		return
+	}
+	defer resp.Body.Close()
 }
 
 func main() {
@@ -283,7 +256,6 @@ func main() {
 	gcloudBucketFlag := flag.String("gcloudBucket", "", "Supply the GCloud Storage Bucket to use for the experiments.")
 	tcEmulNetTroublesFlag := flag.Bool("tcEmulNetTroubles", false, "Append this flag to emulate a network trouble in 3 out of all zones.")
 	killZenoMixesInRoundFlag := flag.Int("killZenoMixesInRound", -1, "If specific mix nodes in all but one zeno cascade are supposed to crash, specify the round in which that shall happen.")
-	deleteAllFlag := flag.Bool("deleteAll", false, "Append this flag if the only purpose of this run is to delete all configured instances (caution: permanently deletes them!).")
 	flag.Parse()
 
 	// Enforce arguments to be set.
@@ -298,7 +270,6 @@ func main() {
 	gcloudBucket := *gcloudBucketFlag
 	tcEmulNetTroubles := *tcEmulNetTroublesFlag
 	killZenoMixesInRound := *killZenoMixesInRoundFlag
-	deleteAll := *deleteAllFlag
 
 	// System flag has to be one of three values.
 	if system != "zeno" && system != "vuvuzela" && system != "pung" {
@@ -386,35 +357,6 @@ func main() {
 	}
 	accessToken := strings.TrimSpace(string(out))
 
-	if deleteAll {
-
-		if system == "zeno" || system == "pung" {
-			configs = append(configs, auxConfig)
-		}
-
-		fmt.Printf("Going to delete all %d machines\n", len(configs))
-
-		// Prepare channels to send configurations
-		// to individual workers and expect responses.
-		confChan := make(chan Config)
-
-		// Spawn deletion workers.
-		for i := 0; i < len(configs); i++ {
-			go shutdownInstance(confChan, gcloudProject, accessToken, resultFolder)
-		}
-
-		// Shutdown and destroy disks and instances.
-		for _, config := range configs {
-			confChan <- config
-			time.Sleep(200 * time.Millisecond)
-		}
-		close(confChan)
-
-		time.Sleep(15 * time.Second)
-		fmt.Printf("All machines deleted!\n\n")
-		os.Exit(0)
-	}
-
 	// If zeno: create PKI with decent hardware specs.
 	if system == "zeno" {
 
@@ -462,24 +404,13 @@ func main() {
 		request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
 
 		// Send the request to GCP.
-		tried := 0
 		resp, err := http.DefaultClient.Do(request)
-		if err != nil {
-			fmt.Printf("Details API request failed (will try again): %v\n", err)
-			tried++
-		}
+		for err != nil {
 
-		for err != nil && tried < 10 {
+			fmt.Printf("Details API request failed (will try again): %v\n", err)
+			time.Sleep(1 * time.Second)
 
 			resp, err = http.DefaultClient.Do(request)
-			if err != nil {
-				fmt.Printf("Details API request failed (will try again): %v\n", err)
-			}
-		}
-
-		if tried >= 10 {
-			fmt.Printf("Details API request failed permanently: %v\n", err)
-			os.Exit(1)
 		}
 
 		// Read the response.
@@ -510,11 +441,10 @@ func main() {
 		}
 
 		fmt.Printf("Successfully spawned PKI of zeno with public IP %s and internal IP %s.\n", auxExternalIP, auxInternalIP)
-		time.Sleep(45 * time.Second)
+		time.Sleep(30 * time.Second)
 
 		// Ensure initialization has completed.
 		checkInstanceReady(gcloudProject, accessToken, auxConfig.Name, auxConfig.Zone, resultFolder)
-		time.Sleep(5 * time.Second)
 
 	} else if system == "pung" {
 
@@ -562,24 +492,13 @@ func main() {
 		request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
 
 		// Send the request to GCP.
-		tried := 0
 		resp, err := http.DefaultClient.Do(request)
-		if err != nil {
-			fmt.Printf("Details API request failed (will try again): %v\n", err)
-			tried++
-		}
+		for err != nil {
 
-		for err != nil && tried < 10 {
+			fmt.Printf("Details API request failed (will try again): %v\n", err)
+			time.Sleep(1 * time.Second)
 
 			resp, err = http.DefaultClient.Do(request)
-			if err != nil {
-				fmt.Printf("Details API request failed (will try again): %v\n", err)
-			}
-		}
-
-		if tried >= 10 {
-			fmt.Printf("Details API request failed permanently: %v\n", err)
-			os.Exit(1)
 		}
 
 		// Read the response.
@@ -610,21 +529,39 @@ func main() {
 		}
 
 		fmt.Printf("Successfully spawned pung's server with public IP %s and internal IP %s.\n", auxExternalIP, auxInternalIP)
-		time.Sleep(45 * time.Second)
+		time.Sleep(30 * time.Second)
 
 		// Ensure initialization has completed.
 		checkInstanceReady(gcloudProject, accessToken, auxConfig.Name, auxConfig.Zone, resultFolder)
-		time.Sleep(5 * time.Second)
 	}
 
 	// Spawn all machines.
 	fmt.Printf("\nSpawning machines...\n")
-	for i := 0; i < (len(configs) - 1); i++ {
+	for i := 0; i < (len(configs) - 10); i++ {
 		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
 			auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 	}
 
+	// Ensure last ten instances are spawned sequentially.
+	runInstance(&configs[(len(configs)-10)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	runInstance(&configs[(len(configs)-9)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	runInstance(&configs[(len(configs)-8)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	runInstance(&configs[(len(configs)-7)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	runInstance(&configs[(len(configs)-6)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	runInstance(&configs[(len(configs)-5)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	runInstance(&configs[(len(configs)-4)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	runInstance(&configs[(len(configs)-3)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	runInstance(&configs[(len(configs)-2)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
 	runInstance(&configs[(len(configs)-1)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
 		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
 
@@ -632,11 +569,19 @@ func main() {
 	fmt.Printf("\nWaiting for instances to initialize...\n")
 	time.Sleep(30 * time.Second)
 
-	for i := 0; i < (len(configs) - 3); i++ {
+	for i := 0; i < (len(configs) - 10); i++ {
 		go checkInstanceReady(gcloudProject, accessToken, configs[i].Name, configs[i].Zone, resultFolder)
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(50 * time.Millisecond)
 	}
 
+	// Ensure last ten instances are checked sequentially.
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-10)].Name, configs[(len(configs)-10)].Zone, resultFolder)
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-9)].Name, configs[(len(configs)-9)].Zone, resultFolder)
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-8)].Name, configs[(len(configs)-8)].Zone, resultFolder)
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-7)].Name, configs[(len(configs)-7)].Zone, resultFolder)
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-6)].Name, configs[(len(configs)-6)].Zone, resultFolder)
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-5)].Name, configs[(len(configs)-5)].Zone, resultFolder)
+	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-4)].Name, configs[(len(configs)-4)].Zone, resultFolder)
 	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-3)].Name, configs[(len(configs)-3)].Zone, resultFolder)
 	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-2)].Name, configs[(len(configs)-2)].Zone, resultFolder)
 	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-1)].Name, configs[(len(configs)-1)].Zone, resultFolder)
@@ -646,7 +591,7 @@ func main() {
 	// If zeno: send PKI signal to start.
 	if system == "zeno" {
 
-		time.Sleep(5 * time.Second)
+		time.Sleep(1 * time.Second)
 		fmt.Printf("Signaling zeno's PKI to start epoch.\n")
 
 		// Connect to control plane address used
@@ -664,7 +609,8 @@ func main() {
 		ctrlConn.Close()
 	}
 
-	fmt.Printf("\nType 'yes' and press ENTER to shutdown and delete all resources...")
+	fmt.Printf("\nExperiment run for %s\n", resultFolder)
+	fmt.Printf("Type 'yes' and press ENTER to shutdown and delete all resources... ")
 
 	shutdown := ""
 	stdIn := bufio.NewReader(os.Stdin)
@@ -680,21 +626,23 @@ func main() {
 
 	fmt.Printf("Going to delete all %d machines\n", len(configs))
 
-	// Prepare channels to send configurations
-	// to individual workers and expect responses.
-	confChan := make(chan Config)
-
 	// Spawn deletion workers.
-	for i := 0; i < len(configs); i++ {
-		go shutdownInstance(confChan, gcloudProject, accessToken, resultFolder)
+	for i := 0; i < (len(configs) - 10); i++ {
+		go shutdownInstance(&configs[i], gcloudProject, accessToken, resultFolder)
+		time.Sleep(50 * time.Millisecond)
 	}
 
-	// Shutdown and destroy disks and instances.
-	for _, config := range configs {
-		confChan <- config
-		time.Sleep(200 * time.Millisecond)
-	}
-	close(confChan)
+	// Ensure last ten instances are deleted sequentially.
+	shutdownInstance(&configs[(len(configs)-10)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-9)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-8)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-7)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-6)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-5)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-4)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-3)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-2)], gcloudProject, accessToken, resultFolder)
+	shutdownInstance(&configs[(len(configs)-1)], gcloudProject, accessToken, resultFolder)
 
 	fmt.Printf("All machines deleted!\n\n")
 

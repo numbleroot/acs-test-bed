@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Pull TLS certificates of PKI.
-/snap/bin/gsutil cp gs://acs-eval/cert_zeno-pki.pem /root/cert.pem
+/snap/bin/gsutil cp gs://acs-eval/cert_zeno-pki-${RESULT_FOLDER}.pem /root/cert.pem
 chmod 0644 /root/cert.pem
 
 # Run metrics collector sidecar in background.

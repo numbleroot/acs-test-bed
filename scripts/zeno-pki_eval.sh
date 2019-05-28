@@ -6,7 +6,7 @@ upload_cert() {
     sleep 5
 
     # Upload TLS certificate to bucket.
-    /snap/bin/gsutil cp ./cert.pem gs://acs-eval/cert_zeno-pki.pem
+    /snap/bin/gsutil cp ./cert.pem gs://acs-eval/cert_zeno-pki-${RESULT_FOLDER}.pem
 
     # Signal readiness of process to experiment script.
     curl -X PUT --data "ThisNodeIsReady" http://metadata.google.internal/computeMetadata/v1/instance/guest-attributes/acs-eval/initStatus -H "Metadata-Flavor: Google"
