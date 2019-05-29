@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -134,7 +135,7 @@ func spawnInstance(config *Config, proj string, serviceAcc string, accessToken s
 	return string(outRaw)
 }
 
-func checkInstanceReady(proj string, accessToken string, name string, zone string, resultFolder string) {
+func checkInstanceReady(errChan chan error, proj string, accessToken string, name string, zone string, resultFolder string) {
 
 	instName := fmt.Sprintf("%s-%s", name, resultFolder)
 
@@ -145,37 +146,55 @@ func checkInstanceReady(proj string, accessToken string, name string, zone strin
 	// Create HTTP GET request.
 	request, err := http.NewRequest(http.MethodGet, endpoint, nil)
 	if err != nil {
-		fmt.Printf("Failed creating HTTP API request: %v\n", err)
-		os.Exit(1)
+		errChan <- fmt.Errorf("failed creating HTTP API request: %v", err)
+		return
 	}
 	request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", accessToken))
 
 	// Send the request to GCP.
+	tried := 1
 	resp, err := http.DefaultClient.Do(request)
 	for err != nil {
 
-		fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
+		fmt.Printf("Guest attributes API request failed %d times already (will try again): %v\n", tried, err)
+
+		tried++
 		time.Sleep(1 * time.Second)
 
 		resp, err = http.DefaultClient.Do(request)
 	}
 
 	// Read the response.
+	waited := 1
 	outRaw, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Printf("Failed reading from instance guest attributes response body: %v\n", err)
-		os.Exit(1)
+		errChan <- fmt.Errorf("failed reading from instance guest attributes response body: %v", err)
+		return
 	}
 	out := string(outRaw)
 
 	for !strings.Contains(out, "ThisNodeIsReady") {
 
+		if waited >= 5 {
+			fmt.Printf("Waited %d times already for instance %s to signal initialization completion (will try again)\n", waited, name)
+		}
+
+		if waited >= 50 {
+			fmt.Printf("Alright, enough. Shutting everything down.\n")
+			errChan <- fmt.Errorf("failed to initialize instance %s for %d times", name, waited)
+			return
+		}
+
+		waited++
 		time.Sleep(5 * time.Second)
 
+		tried = 0
 		resp, err = http.DefaultClient.Do(request)
 		for err != nil {
 
-			fmt.Printf("Guest attributes API request failed (will try again): %v\n", err)
+			fmt.Printf("Guest attributes API request failed %d times already (will try again): %v\n", tried, err)
+
+			tried++
 			time.Sleep(1 * time.Second)
 
 			resp, err = http.DefaultClient.Do(request)
@@ -184,8 +203,8 @@ func checkInstanceReady(proj string, accessToken string, name string, zone strin
 		// Read the response.
 		outRaw, err = ioutil.ReadAll(resp.Body)
 		if err != nil {
-			fmt.Printf("Failed reading from instance guest attributes response body: %v\n", err)
-			os.Exit(1)
+			errChan <- fmt.Errorf("failed reading from instance guest attributes response body: %v", err)
+			return
 		}
 		out = string(outRaw)
 	}
@@ -193,17 +212,20 @@ func checkInstanceReady(proj string, accessToken string, name string, zone strin
 	resp.Body.Close()
 
 	fmt.Printf("Instance %s has completed initialization!\n", name)
+	errChan <- nil
 }
 
-func runInstance(config *Config, proj string, serviceAcc string, accessToken string, bucket string,
+func runInstance(wg *sync.WaitGroup, config *Config, proj string, serviceAcc string, accessToken string, bucket string,
 	resultFolder string, pkiIP string, tag string, accessConfig string, tcEmulNetTroubles bool, killZenoMixesInRound int) {
+
+	defer wg.Done()
 
 	// Spawn instance and retrieve response.
 	out := spawnInstance(config, proj, serviceAcc, accessToken, bucket, resultFolder, pkiIP,
 		tag, accessConfig, tcEmulNetTroubles, killZenoMixesInRound)
 
 	// Verify successful machine creation.
-	if strings.Contains(out, "RUNNING") {
+	if strings.Contains(out, "RUNNING") || strings.Contains(out, "DONE") {
 		fmt.Printf("Instance %s running, waiting for initialization to finish...\n", config.Name)
 	} else {
 		fmt.Printf("Spawning instance %s returned failure message:\n%s\n", config.Name, out)
@@ -211,7 +233,9 @@ func runInstance(config *Config, proj string, serviceAcc string, accessToken str
 	}
 }
 
-func shutdownInstance(config *Config, proj string, accessToken string, resultFolder string) {
+func shutdownInstance(wg *sync.WaitGroup, config *Config, proj string, accessToken string, resultFolder string) {
+
+	defer wg.Done()
 
 	fmt.Printf("Deleting machine %s\n", config.Name)
 
@@ -237,12 +261,45 @@ func shutdownInstance(config *Config, proj string, accessToken string, resultFol
 	}
 
 	// Read the response.
-	_, err = ioutil.ReadAll(resp.Body)
+	outRaw, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Printf("Failed reading from instance delete response body: %v\n", err)
 		return
 	}
 	defer resp.Body.Close()
+	out := string(outRaw)
+
+	// Verify successful machine deletion.
+	if !strings.Contains(out, "RUNNING") && !strings.Contains(out, "DONE") {
+		fmt.Printf("Failed deleting instance %s\n", config.Name)
+	}
+}
+
+func shutdownAll(configs []Config, proj string, resultFolder string) error {
+
+	// Read OAuth token from gcloud.
+	out, err := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "auth", "print-access-token").CombinedOutput()
+	if err != nil {
+		return fmt.Errorf("could not obtain OAuth2 access token (error: '%v'):\n%s", err, out)
+	}
+	accessToken := strings.TrimSpace(string(out))
+
+	fmt.Printf("Going to delete all %d machines\n", len(configs))
+
+	wg := sync.WaitGroup{}
+
+	// Spawn deletion workers.
+	for i := 0; i < len(configs); i++ {
+		wg.Add(1)
+		go shutdownInstance(&wg, &configs[i], proj, accessToken, resultFolder)
+		time.Sleep(150 * time.Millisecond)
+	}
+
+	wg.Wait()
+
+	fmt.Printf("All machines deleted!\n\n")
+
+	return nil
 }
 
 func main() {
@@ -387,7 +444,7 @@ func main() {
 			resultFolder, "irrelevant", "zeno-pki", tmplInstancePublicIP, false, 0)
 
 		// Verify successful machine creation.
-		if !strings.Contains(spawnResp, "RUNNING") {
+		if !strings.Contains(spawnResp, "RUNNING") && !strings.Contains(spawnResp, "DONE") {
 			fmt.Printf("Spawning PKI of zeno returned failure message:\n%s\n", spawnResp)
 			os.Exit(1)
 		}
@@ -443,8 +500,16 @@ func main() {
 		fmt.Printf("Successfully spawned PKI of zeno with public IP %s and internal IP %s.\n", auxExternalIP, auxInternalIP)
 		time.Sleep(30 * time.Second)
 
+		errChan := make(chan error)
+
 		// Ensure initialization has completed.
-		checkInstanceReady(gcloudProject, accessToken, auxConfig.Name, auxConfig.Zone, resultFolder)
+		go checkInstanceReady(errChan, gcloudProject, accessToken, auxConfig.Name, auxConfig.Zone, resultFolder)
+
+		err = <-errChan
+		if err != nil {
+			fmt.Printf("Zeno's PKI did not initialize: %v\n", err)
+			os.Exit(1)
+		}
 
 	} else if system == "pung" {
 
@@ -475,7 +540,7 @@ func main() {
 			"irrelevant", "pung-server", tmplInstancePublicIP, false, 0)
 
 		// Verify successful machine creation.
-		if !strings.Contains(spawnResp, "RUNNING") {
+		if !strings.Contains(spawnResp, "RUNNING") && !strings.Contains(spawnResp, "DONE") {
 			fmt.Printf("Spawning pung's server returned failure message:\n%s\n", spawnResp)
 			os.Exit(1)
 		}
@@ -531,60 +596,55 @@ func main() {
 		fmt.Printf("Successfully spawned pung's server with public IP %s and internal IP %s.\n", auxExternalIP, auxInternalIP)
 		time.Sleep(30 * time.Second)
 
+		errChan := make(chan error)
+
 		// Ensure initialization has completed.
-		checkInstanceReady(gcloudProject, accessToken, auxConfig.Name, auxConfig.Zone, resultFolder)
+		go checkInstanceReady(errChan, gcloudProject, accessToken, auxConfig.Name, auxConfig.Zone, resultFolder)
+
+		err = <-errChan
+		if err != nil {
+			fmt.Printf("Pung's server did not initialize: %v\n", err)
+			os.Exit(1)
+		}
 	}
+
+	wg := sync.WaitGroup{}
 
 	// Spawn all machines.
 	fmt.Printf("\nSpawning machines...\n")
-	for i := 0; i < (len(configs) - 10); i++ {
-		go runInstance(&configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
+	for i := 0; i < len(configs); i++ {
+		wg.Add(1)
+		go runInstance(&wg, &configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
 			auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-		time.Sleep(50 * time.Millisecond)
+		time.Sleep(150 * time.Millisecond)
 	}
 
-	// Ensure last ten instances are spawned sequentially.
-	runInstance(&configs[(len(configs)-10)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-9)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-8)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-7)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-6)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-5)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-4)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-3)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-2)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-	runInstance(&configs[(len(configs)-1)], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
-		auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
+	wg.Wait()
 
 	time.Sleep(5 * time.Second)
 	fmt.Printf("\nWaiting for instances to initialize...\n")
 	time.Sleep(30 * time.Second)
 
-	for i := 0; i < (len(configs) - 10); i++ {
-		go checkInstanceReady(gcloudProject, accessToken, configs[i].Name, configs[i].Zone, resultFolder)
-		time.Sleep(50 * time.Millisecond)
+	errChan := make(chan error)
+
+	for i := 0; i < len(configs); i++ {
+		wg.Add(1)
+		go checkInstanceReady(errChan, gcloudProject, accessToken, configs[i].Name, configs[i].Zone, resultFolder)
+		time.Sleep(150 * time.Millisecond)
 	}
 
-	// Ensure last ten instances are checked sequentially.
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-10)].Name, configs[(len(configs)-10)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-9)].Name, configs[(len(configs)-9)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-8)].Name, configs[(len(configs)-8)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-7)].Name, configs[(len(configs)-7)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-6)].Name, configs[(len(configs)-6)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-5)].Name, configs[(len(configs)-5)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-4)].Name, configs[(len(configs)-4)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-3)].Name, configs[(len(configs)-3)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-2)].Name, configs[(len(configs)-2)].Zone, resultFolder)
-	checkInstanceReady(gcloudProject, accessToken, configs[(len(configs)-1)].Name, configs[(len(configs)-1)].Zone, resultFolder)
+	for i := 0; i < len(configs); i++ {
+
+		err := <-errChan
+		if err != nil {
+
+			err := shutdownAll(configs, gcloudProject, resultFolder)
+			if err != nil {
+				fmt.Printf("Shutting down all machines failed: %v\n", err)
+				os.Exit(1)
+			}
+		}
+	}
 
 	fmt.Printf("All machines spawned!\n\n")
 
@@ -624,27 +684,11 @@ func main() {
 		configs = append(configs, auxConfig)
 	}
 
-	fmt.Printf("Going to delete all %d machines\n", len(configs))
-
-	// Spawn deletion workers.
-	for i := 0; i < (len(configs) - 10); i++ {
-		go shutdownInstance(&configs[i], gcloudProject, accessToken, resultFolder)
-		time.Sleep(50 * time.Millisecond)
+	err = shutdownAll(configs, gcloudProject, resultFolder)
+	if err != nil {
+		fmt.Printf("Shutting down all machines failed: %v\n", err)
+		os.Exit(1)
 	}
-
-	// Ensure last ten instances are deleted sequentially.
-	shutdownInstance(&configs[(len(configs)-10)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-9)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-8)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-7)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-6)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-5)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-4)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-3)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-2)], gcloudProject, accessToken, resultFolder)
-	shutdownInstance(&configs[(len(configs)-1)], gcloudProject, accessToken, resultFolder)
-
-	fmt.Printf("All machines deleted!\n\n")
 
 	// Download all files from GCloud bucket
 	// to prepared local experiment folder.

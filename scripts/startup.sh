@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sleep 10
+sleep 5
 
 # Heavily increase limit on open file descriptors and
 # connections per socket in order to be able to keep
@@ -25,12 +25,61 @@ TC_CONFIG=$(curl http://metadata.google.internal/computeMetadata/v1/instance/att
 KILL_ZENO_MIXES_IN_ROUND=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/killZenoMixesInRound -H "Metadata-Flavor: Google")
 PKI_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/pkiIP -H "Metadata-Flavor: Google")
 
-sleep 5
+tried=0
+while [ ! -e /snap/bin/gsutil ] && [ "${tried}" -lt 30 ]; do
+
+    printf "/snap/bin/gsutil not yet available, sleeping 1 second\n"
+    ls -lah /snap/bin/
+
+    sleep 1
+    tried=$(( tried + 1 ))
+done
+
+if [ "${tried}" -eq 30 ]; then
+    printf "Waited 30 seconds for /snap/bin/gsutil to become available, no success, shutting down\n"
+    poweroff
+fi
+
+tried=0
+while [ ! -e /usr/bin/python2 ] && [ "${tried}" -lt 30 ]; do
+
+    printf "/usr/bin/python2 not yet available, sleeping 1 second\n"
+    ls -lah /usr/bin | grep pyth
+
+    sleep 1
+    tried=$(( tried + 1 ))
+done
+
+if [ "${tried}" -eq 30 ]; then
+    printf "Waited 30 seconds for /usr/bin/python2 to become available, no success, shutting down\n"
+    poweroff
+fi
+
+sleep 10
 
 # Pull files from GCloud bucket.
 /snap/bin/gsutil cp gs://acs-eval/${EVAL_SCRIPT_TO_PULL} /root/${EVAL_SCRIPT_TO_PULL}
 /snap/bin/gsutil cp gs://acs-eval/${BINARY_TO_PULL} /root/${BINARY_TO_PULL}
 /snap/bin/gsutil cp gs://acs-eval/collector /root/collector
+
+tried=0
+while ([ ! -e /root/${EVAL_SCRIPT_TO_PULL} ] || [ ! -e /root/${BINARY_TO_PULL} ] || [ ! -e /root/collector ]) && [ "${tried}" -lt 20 ]; do
+
+    printf "Failed to pull required files from GCloud bucket, sleeping 1 second\n"
+    ls -lah /root/
+
+    sleep 1
+
+    # Reattempt to pull files from GCloud bucket.
+    /snap/bin/gsutil cp gs://acs-eval/${EVAL_SCRIPT_TO_PULL} /root/${EVAL_SCRIPT_TO_PULL}
+    /snap/bin/gsutil cp gs://acs-eval/${BINARY_TO_PULL} /root/${BINARY_TO_PULL}
+    /snap/bin/gsutil cp gs://acs-eval/collector /root/collector
+done
+
+if [ "${tried}" -eq 20 ]; then
+    printf "Waited 20 seconds for required experiment files to be downloaded, no success, shutting down\n"
+    poweroff
+fi
 
 # Make the downloaded binaries executable.
 chmod 0700 /root/${BINARY_TO_PULL}

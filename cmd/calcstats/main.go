@@ -30,13 +30,13 @@ type Run struct {
 	TimestampHighest         int64
 	ClientsSentBytesHighest  []int64
 	ClientsRecvdBytesHighest []int64
-	ClientsMemory            []*MetricsFloat64
-	ClientsLoad              []*MetricsFloat64
+	ClientsCPULoad           []float64
+	ClientsMemLoad           []float64
 	Latencies                [][]*MetricLatency
 	ServersSentBytesHighest  []int64
 	ServersRecvdBytesHighest []int64
-	ServersMemory            []*MetricsFloat64
-	ServersLoad              []*MetricsFloat64
+	ServersCPULoad           []float64
+	ServersMemLoad           []float64
 	Mixes                    []string
 	MsgsPerMix               [][]int64
 }
@@ -93,13 +93,13 @@ func (set *Setting) AppendRun(runPath string, systemUnderEval string, numMsgsToC
 		os.Exit(1)
 	}
 
-	err = run.AddLoad(clientsPath, true)
+	err = run.AddCPULoad(clientsPath, true)
 	if err != nil {
 		fmt.Printf("Ingesting client CPU load metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	err = run.AddMem(clientsPath, true)
+	err = run.AddMemLoad(clientsPath, true)
 	if err != nil {
 		fmt.Printf("Ingesting client memory load metrics failed: %v\n", err)
 		os.Exit(1)
@@ -118,13 +118,13 @@ func (set *Setting) AppendRun(runPath string, systemUnderEval string, numMsgsToC
 		os.Exit(1)
 	}
 
-	err = run.AddLoad(serversPath, false)
+	err = run.AddCPULoad(serversPath, false)
 	if err != nil {
 		fmt.Printf("Ingesting server CPU load metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	err = run.AddMem(serversPath, false)
+	err = run.AddMemLoad(serversPath, false)
 	if err != nil {
 		fmt.Printf("Ingesting server memory load metrics failed: %v\n", err)
 		os.Exit(1)
