@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -85,37 +86,35 @@ func (run *Run) AddMsgsPerMix(runServersPath string) error {
 
 func (set *Setting) MsgsPerMixToFile(path string) error {
 
-	return nil
-}
+	for i := range set.Runs {
 
-/*
-func (run *Run) MixStoreForPlot() error {
+		runPlotPath := filepath.Join(path, fmt.Sprintf("run-%02d", i), "msgs-per-mix_first-to-last-round.data")
 
-	msgsPerMixFile, err := os.OpenFile(filepath.Join(mixM.MetricsPath, "messages_per_mix.plot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
-	if err != nil {
-		return err
-	}
-	defer msgsPerMixFile.Close()
-	defer msgsPerMixFile.Sync()
-
-	// Prefix list of metrics with labels.
-	fmt.Fprintf(msgsPerMixFile, "%s\n", strings.Join(mixM.Mixes, ","))
-
-	for j := range mixM.MsgsPerMix {
-
-		var values string
-		for i := 0; i < len(mixM.MsgsPerMix[j]); i++ {
-
-			if values == "" {
-				values = fmt.Sprintf("%d", mixM.MsgsPerMix[j][i])
-			} else {
-				values = fmt.Sprintf("%s,%d", values, mixM.MsgsPerMix[j][i])
-			}
+		msgsPerMixFile, err := os.OpenFile(runPlotPath, (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+		if err != nil {
+			return err
 		}
+		defer msgsPerMixFile.Close()
+		defer msgsPerMixFile.Sync()
 
-		fmt.Fprintln(msgsPerMixFile, values)
+		// Prefix list of metrics with labels.
+		fmt.Fprintf(msgsPerMixFile, "%s\n", strings.Join(set.Runs[i].Mixes, ","))
+
+		for j := range set.Runs[i].MsgsPerMix {
+
+			values := ""
+			for k := 0; k < len(set.Runs[i].MsgsPerMix[j]); k++ {
+
+				if values == "" {
+					values = fmt.Sprintf("%d", set.Runs[i].MsgsPerMix[j][k])
+				} else {
+					values = fmt.Sprintf("%s,%d", values, set.Runs[i].MsgsPerMix[j][k])
+				}
+			}
+
+			fmt.Fprintln(msgsPerMixFile, values)
+		}
 	}
 
 	return nil
 }
-*/

@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type MetricsInt64 struct {
@@ -26,46 +27,41 @@ type MetricLatency struct {
 }
 
 type Run struct {
-	TimestampLowest          int64
-	TimestampHighest         int64
-	ClientsSentBytesHighest  []int64
-	ClientsRecvdBytesHighest []int64
-	ClientsCPULoad           []float64
-	ClientsMemLoad           []float64
-	Latencies                [][]*MetricLatency
-	ServersSentBytesHighest  []int64
-	ServersRecvdBytesHighest []int64
-	ServersCPULoad           []float64
-	ServersMemLoad           []float64
-	Mixes                    []string
-	MsgsPerMix               [][]int64
+	TimestampLowest            int64
+	TimestampHighest           int64
+	ClientsSentKiBytesHighest  []float64
+	ClientsRecvdKiBytesHighest []float64
+	ClientsCPULoad             []float64
+	ClientsMemLoad             []float64
+	Latencies                  [][]*MetricLatency
+	ServersSentKiBytesHighest  []float64
+	ServersRecvdKiBytesHighest []float64
+	ServersCPULoad             []float64
+	ServersMemLoad             []float64
+	Mixes                      []string
+	MsgsPerMix                 [][]int64
 }
 
 type Setting struct {
-	Runs                       []*Run
-	ClientsBandwidthHighestAvg float64
-	ClientsBandwidthHighestMed float64
-	ServersBandwidthHighestAvg float64
-	ServersBandwidthHighestMed float64
-	ClientsLoadLowestToHighest []float64
-	ServersLoadLowestToHighest []float64
-	LatenciesLowestToHighest   []float64
+	Runs []*Run
 }
 
 type Experiment struct {
 	ZenoClients0500 *Setting
 	ZenoClients1000 *Setting
-	ZenoClients2000 *Setting
 	PungClients0500 *Setting
 	PungClients1000 *Setting
-	PungClients2000 *Setting
 }
 
-func (set *Setting) AppendRun(runPath string, systemUnderEval string, numMsgsToCalc int64) {
+func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	run := &Run{
-		TimestampLowest:  (1 << 63) - 1,
-		TimestampHighest: 0,
+		TimestampLowest:            (1 << 63) - 1,
+		TimestampHighest:           0,
+		ClientsSentKiBytesHighest:  make([]float64, 0, 1000),
+		ClientsRecvdKiBytesHighest: make([]float64, 0, 1000),
+		ServersSentKiBytesHighest:  make([]float64, 0, 1000),
+		ServersRecvdKiBytesHighest: make([]float64, 0, 1000),
 	}
 
 	clientsPath := filepath.Join(runPath, "clients")
@@ -74,7 +70,7 @@ func (set *Setting) AppendRun(runPath string, systemUnderEval string, numMsgsToC
 	// Determine lowest and highest relevant
 	// timestamp of run while ingesting message
 	// latency metrics.
-	err := run.AddLatency(clientsPath, systemUnderEval, numMsgsToCalc)
+	err := run.AddLatency(clientsPath, numMsgsToCalc)
 	if err != nil {
 		fmt.Printf("Ingesting client message latency metrics failed: %v\n", err)
 		os.Exit(1)
@@ -83,54 +79,55 @@ func (set *Setting) AppendRun(runPath string, systemUnderEval string, numMsgsToC
 	// Read into memory system metrics from clients.
 	err = run.AddSentBytes(clientsPath, true)
 	if err != nil {
-		fmt.Printf("Ingesting client sent bytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting client sent kibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
 	err = run.AddRecvdBytes(clientsPath, true)
 	if err != nil {
-		fmt.Printf("Ingesting client received bytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting client received kibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	err = run.AddCPULoad(clientsPath, true)
-	if err != nil {
-		fmt.Printf("Ingesting client CPU load metrics failed: %v\n", err)
-		os.Exit(1)
-	}
+	/*
+		err = run.AddCPULoad(clientsPath, true)
+		if err != nil {
+			fmt.Printf("Ingesting client CPU load metrics failed: %v\n", err)
+			os.Exit(1)
+		}
 
-	err = run.AddMemLoad(clientsPath, true)
-	if err != nil {
-		fmt.Printf("Ingesting client memory load metrics failed: %v\n", err)
-		os.Exit(1)
-	}
+		err = run.AddMemLoad(clientsPath, true)
+		if err != nil {
+			fmt.Printf("Ingesting client memory load metrics failed: %v\n", err)
+			os.Exit(1)
+		}
+	*/
 
 	// Read into memory system metrics from servers.
 	err = run.AddSentBytes(serversPath, false)
 	if err != nil {
-		fmt.Printf("Ingesting server sent bytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting server sent kibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
 	err = run.AddRecvdBytes(serversPath, false)
 	if err != nil {
-		fmt.Printf("Ingesting server received bytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting server received kibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	err = run.AddCPULoad(serversPath, false)
-	if err != nil {
-		fmt.Printf("Ingesting server CPU load metrics failed: %v\n", err)
-		os.Exit(1)
-	}
+	/*
+		err = run.AddCPULoad(serversPath, false)
+		if err != nil {
+			fmt.Printf("Ingesting server CPU load metrics failed: %v\n", err)
+			os.Exit(1)
+		}
 
-	err = run.AddMemLoad(serversPath, false)
-	if err != nil {
-		fmt.Printf("Ingesting server memory load metrics failed: %v\n", err)
-		os.Exit(1)
-	}
-
-	if systemUnderEval == "zeno" {
+		err = run.AddMemLoad(serversPath, false)
+		if err != nil {
+			fmt.Printf("Ingesting server memory load metrics failed: %v\n", err)
+			os.Exit(1)
+		}
 
 		// If this is zeno being evaluated, also read
 		// in metrics about the number of messages in
@@ -140,13 +137,13 @@ func (set *Setting) AppendRun(runPath string, systemUnderEval string, numMsgsToC
 			fmt.Printf("Ingesting server sent bytes metrics failed: %v\n", err)
 			os.Exit(1)
 		}
-	}
+	*/
 
 	// Append newly created run to all runs.
 	set.Runs = append(set.Runs, run)
 }
 
-func (set *Setting) MetricsToFiles(settingsPath string, systemUnderEval string) error {
+func (set *Setting) MetricsToFiles(settingsPath string) error {
 
 	// Write bandwidth data for clients and servers.
 	err := set.BandwidthToFiles(settingsPath)
@@ -154,11 +151,13 @@ func (set *Setting) MetricsToFiles(settingsPath string, systemUnderEval string) 
 		return err
 	}
 
-	// Write load data for clients and servers.
-	err = set.LoadToFiles(settingsPath)
-	if err != nil {
-		return err
-	}
+	/*
+		// Write load data for clients and servers.
+		err = set.LoadToFiles(settingsPath)
+		if err != nil {
+			return err
+		}
+	*/
 
 	// Write message latencies for clients.
 	err = set.LatenciesToFile(settingsPath)
@@ -166,14 +165,13 @@ func (set *Setting) MetricsToFiles(settingsPath string, systemUnderEval string) 
 		return err
 	}
 
-	if systemUnderEval == "zeno" {
-
+	/*
 		// Write messages-per-mix data for servers.
 		err = set.MsgsPerMixToFile(settingsPath)
 		if err != nil {
 			return err
 		}
-	}
+	*/
 
 	return nil
 }
@@ -181,18 +179,10 @@ func (set *Setting) MetricsToFiles(settingsPath string, systemUnderEval string) 
 func main() {
 
 	// Expect command-line arguments.
-	systemFlag := flag.String("system", "", "Specify which ACS to evaluate: 'zeno', 'vuvuzela', 'pung'.")
-	experimentPathFlag := flag.String("experimentPath", "./results/01_tc-off_proc-off", "Specify the file system location of the directory containing the metric files for one experiment.")
-	numMsgsToCalcFlag := flag.Int("numMsgsToCalc", 10, "Calculate statistics for this number of measured messages.")
+	experimentPathFlag := flag.String("experimentPath", "", "Specify the file system location of the directory containing the metric files for one experiment.")
+	numMsgsToCalcFlag := flag.Int("numMsgsToCalc", 25, "Calculate statistics for this number of measured messages.")
 	flag.Parse()
 
-	// System flag has to be one of three values.
-	if *systemFlag != "zeno" && *systemFlag != "vuvuzela" && *systemFlag != "pung" {
-		fmt.Printf("Flag '-system' requires one of the three values: 'zeno', 'vuvuzela', or 'pung'.")
-		os.Exit(1)
-	}
-
-	system := *systemFlag
 	numMsgsToCalc := int64(*numMsgsToCalcFlag)
 
 	experimentPath, err := filepath.Abs(*experimentPathFlag)
@@ -205,111 +195,113 @@ func main() {
 
 	foldersZenoClients0500, err := ioutil.ReadDir(filepath.Join(experimentPath, "zeno", "clients-0500"))
 	if err != nil {
-		fmt.Printf("Failed to retrieve all folders for zeno's 500 clients setting: %v\n", err)
-		os.Exit(1)
+
+		if !strings.Contains(err.Error(), "no such file or directory") {
+			fmt.Printf("Failed to retrieve all folders for zeno's 500 clients setting: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
 	foldersZenoClients1000, err := ioutil.ReadDir(filepath.Join(experimentPath, "zeno", "clients-1000"))
 	if err != nil {
-		fmt.Printf("Failed to retrieve all folders for zeno's 1000 clients setting: %v\n", err)
-		os.Exit(1)
-	}
 
-	foldersZenoClients2000, err := ioutil.ReadDir(filepath.Join(experimentPath, "zeno", "clients-2000"))
-	if err != nil {
-		fmt.Printf("Failed to retrieve all folders for zeno's 2000 clients setting: %v\n", err)
-		os.Exit(1)
+		if !strings.Contains(err.Error(), "no such file or directory") {
+			fmt.Printf("Failed to retrieve all folders for zeno's 1000 clients setting: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
 	foldersPungClients0500, err := ioutil.ReadDir(filepath.Join(experimentPath, "pung", "clients-0500"))
 	if err != nil {
-		fmt.Printf("Failed to retrieve all folders for pung's 500 clients setting: %v\n", err)
-		os.Exit(1)
+
+		if !strings.Contains(err.Error(), "no such file or directory") {
+			fmt.Printf("Failed to retrieve all folders for pung's 500 clients setting: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
 	foldersPungClients1000, err := ioutil.ReadDir(filepath.Join(experimentPath, "pung", "clients-1000"))
 	if err != nil {
-		fmt.Printf("Failed to retrieve all folders for pung's 1000 clients setting: %v\n", err)
-		os.Exit(1)
-	}
 
-	foldersPungClients2000, err := ioutil.ReadDir(filepath.Join(experimentPath, "pung", "clients-2000"))
-	if err != nil {
-		fmt.Printf("Failed to retrieve all folders for pung's 2000 clients setting: %v\n", err)
-		os.Exit(1)
+		if !strings.Contains(err.Error(), "no such file or directory") {
+			fmt.Printf("Failed to retrieve all folders for pung's 1000 clients setting: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
 	experiment := &Experiment{
 		ZenoClients0500: &Setting{Runs: make([]*Run, 0, len(foldersZenoClients0500))},
 		ZenoClients1000: &Setting{Runs: make([]*Run, 0, len(foldersZenoClients1000))},
-		ZenoClients2000: &Setting{Runs: make([]*Run, 0, len(foldersZenoClients2000))},
 		PungClients0500: &Setting{Runs: make([]*Run, 0, len(foldersPungClients0500))},
 		PungClients1000: &Setting{Runs: make([]*Run, 0, len(foldersPungClients1000))},
-		PungClients2000: &Setting{Runs: make([]*Run, 0, len(foldersPungClients2000))},
 	}
 
 	// Append each run to internal structures.
 
 	for i := range foldersZenoClients0500 {
-		experiment.ZenoClients0500.AppendRun(filepath.Join(experimentPath, "zeno", "clients-0500", fmt.Sprintf("run-%02d", (i+1))), system, numMsgsToCalc)
+
+		if foldersZenoClients0500[i].IsDir() {
+			experiment.ZenoClients0500.AppendRun(filepath.Join(experimentPath, "zeno", "clients-0500", foldersZenoClients0500[i].Name()), numMsgsToCalc)
+		}
 	}
 
 	for i := range foldersZenoClients1000 {
-		experiment.ZenoClients1000.AppendRun(filepath.Join(experimentPath, "zeno", "clients-1000", fmt.Sprintf("run-%02d", (i+1))), system, numMsgsToCalc)
-	}
 
-	for i := range foldersZenoClients2000 {
-		experiment.ZenoClients2000.AppendRun(filepath.Join(experimentPath, "zeno", "clients-2000", fmt.Sprintf("run-%02d", (i+1))), system, numMsgsToCalc)
+		if foldersZenoClients1000[i].IsDir() {
+			experiment.ZenoClients1000.AppendRun(filepath.Join(experimentPath, "zeno", "clients-1000", foldersZenoClients1000[i].Name()), numMsgsToCalc)
+		}
 	}
 
 	for i := range foldersPungClients0500 {
-		experiment.PungClients0500.AppendRun(filepath.Join(experimentPath, "pung", "clients-0500", fmt.Sprintf("run-%02d", (i+1))), system, numMsgsToCalc)
+
+		if foldersPungClients0500[i].IsDir() {
+			experiment.PungClients0500.AppendRun(filepath.Join(experimentPath, "pung", "clients-0500", foldersPungClients0500[i].Name()), numMsgsToCalc)
+		}
 	}
 
 	for i := range foldersPungClients1000 {
-		experiment.PungClients1000.AppendRun(filepath.Join(experimentPath, "pung", "clients-1000", fmt.Sprintf("run-%02d", (i+1))), system, numMsgsToCalc)
-	}
 
-	for i := range foldersPungClients2000 {
-		experiment.PungClients2000.AppendRun(filepath.Join(experimentPath, "pung", "clients-2000", fmt.Sprintf("run-%02d", (i+1))), system, numMsgsToCalc)
+		if foldersPungClients1000[i].IsDir() {
+			experiment.PungClients1000.AppendRun(filepath.Join(experimentPath, "pung", "clients-1000", foldersPungClients1000[i].Name()), numMsgsToCalc)
+		}
 	}
 
 	// Write all metrics to files ready to be
 	// turned into figures by genplots.
 
-	err = experiment.ZenoClients0500.MetricsToFiles(filepath.Join(experimentPath, "zeno", "clients-0500"), system)
-	if err != nil {
-		fmt.Printf("Failed to store calculated statistics for zeno's setting of 500 clients to files: %v\n", err)
-		os.Exit(1)
+	if len(experiment.ZenoClients0500.Runs) > 0 {
+
+		err = experiment.ZenoClients0500.MetricsToFiles(filepath.Join(experimentPath, "zeno", "clients-0500"))
+		if err != nil {
+			fmt.Printf("Failed to store calculated statistics for zeno's setting of 500 clients to files: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
-	err = experiment.ZenoClients1000.MetricsToFiles(filepath.Join(experimentPath, "zeno", "clients-1000"), system)
-	if err != nil {
-		fmt.Printf("Failed to store calculated statistics for zeno's setting of 1000 clients to files: %v\n", err)
-		os.Exit(1)
+	if len(experiment.ZenoClients1000.Runs) > 0 {
+
+		err = experiment.ZenoClients1000.MetricsToFiles(filepath.Join(experimentPath, "zeno", "clients-1000"))
+		if err != nil {
+			fmt.Printf("Failed to store calculated statistics for zeno's setting of 1000 clients to files: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
-	err = experiment.ZenoClients2000.MetricsToFiles(filepath.Join(experimentPath, "zeno", "clients-2000"), system)
-	if err != nil {
-		fmt.Printf("Failed to store calculated statistics for zeno's setting of 2000 clients to files: %v\n", err)
-		os.Exit(1)
+	if len(experiment.PungClients0500.Runs) > 0 {
+
+		err = experiment.PungClients0500.MetricsToFiles(filepath.Join(experimentPath, "pung", "clients-0500"))
+		if err != nil {
+			fmt.Printf("Failed to store calculated statistics for pung's setting of 500 clients to files: %v\n", err)
+			os.Exit(1)
+		}
 	}
 
-	err = experiment.PungClients0500.MetricsToFiles(filepath.Join(experimentPath, "pung", "clients-0500"), system)
-	if err != nil {
-		fmt.Printf("Failed to store calculated statistics for pung's setting of 500 clients to files: %v\n", err)
-		os.Exit(1)
-	}
+	if len(experiment.PungClients1000.Runs) > 0 {
 
-	err = experiment.PungClients1000.MetricsToFiles(filepath.Join(experimentPath, "pung", "clients-1000"), system)
-	if err != nil {
-		fmt.Printf("Failed to store calculated statistics for pung's setting of 1000 clients to files: %v\n", err)
-		os.Exit(1)
-	}
-
-	err = experiment.PungClients2000.MetricsToFiles(filepath.Join(experimentPath, "pung", "clients-2000"), system)
-	if err != nil {
-		fmt.Printf("Failed to store calculated statistics for pung's setting of 2000 clients to files: %v\n", err)
-		os.Exit(1)
+		err = experiment.PungClients1000.MetricsToFiles(filepath.Join(experimentPath, "pung", "clients-1000"))
+		if err != nil {
+			fmt.Printf("Failed to store calculated statistics for pung's setting of 1000 clients to files: %v\n", err)
+			os.Exit(1)
+		}
 	}
 }

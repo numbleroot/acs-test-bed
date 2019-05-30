@@ -11,7 +11,7 @@ import (
 	"strings"
 )
 
-func (run *Run) AddLatency(runClientsPath string, systemUnderEval string, numMsgsToCalc int64) error {
+func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 
 	err := filepath.Walk(runClientsPath, func(path string, info os.FileInfo, err error) error {
 
@@ -34,7 +34,7 @@ func (run *Run) AddLatency(runClientsPath string, systemUnderEval string, numMsg
 			lines := strings.Split(string(content), "\n")
 
 			// Prepare latencies state object.
-			msgLatencies := make([]*MetricLatency, len(lines))
+			clientMsgLatencies := make([]*MetricLatency, len(lines))
 
 			for i := range lines {
 
@@ -50,7 +50,6 @@ func (run *Run) AddLatency(runClientsPath string, systemUnderEval string, numMsg
 				// Extract name of partner node.
 				if partner == "" {
 					partner = strings.Split(metric[1], "=>")[1]
-					// fmt.Printf("Partner of '%s': '%s'\n", path, partner)
 				}
 
 				// Convert third element to message ID.
@@ -60,44 +59,19 @@ func (run *Run) AddLatency(runClientsPath string, systemUnderEval string, numMsg
 				}
 
 				// Append to temporary state object.
-				msgLatencies[i] = &MetricLatency{
+				clientMsgLatencies[i] = &MetricLatency{
 					MsgID:         msgID,
 					SendTimestamp: timestamp,
 				}
 			}
 
 			// Sort state object by message IDs.
-			sort.Slice(msgLatencies, func(i, j int) bool {
-				return msgLatencies[i].MsgID < msgLatencies[j].MsgID
+			sort.Slice(clientMsgLatencies, func(i, j int) bool {
+				return clientMsgLatencies[i].MsgID < clientMsgLatencies[j].MsgID
 			})
 
-			/*
-				fmt.Printf("[AAA] Found:\n")
-				for i := range msgLatencies {
-					fmt.Printf("\t%d: %d\n", msgLatencies[i].MsgID, msgLatencies[i].SendTimestamp)
-				}
-			*/
-
-			if systemUnderEval == "pung" {
-
-				// Reslice list of messages to capture
-				// messages [#2, (#2 + #numMsgs)).
-				fmt.Printf("[PUNG] Reslicing msgLatencies to [2, %d)\n", (2 + int(numMsgsToCalc)))
-				msgLatencies = msgLatencies[2:(2 + int(numMsgsToCalc))]
-			}
-
-			/*
-				fmt.Printf("[BBB] Found:\n")
-				for i := range msgLatencies {
-					fmt.Printf("\t%d: %d\n", msgLatencies[i].MsgID, msgLatencies[i].SendTimestamp)
-				}
-			*/
-
-			// Determine whether we have all required data points.
-			if (int64(len(msgLatencies)) < numMsgsToCalc) || (msgLatencies[(numMsgsToCalc-1)].MsgID != numMsgsToCalc) {
-				fmt.Printf("Not enough consecutive send message time metrics available (found: %d, want: %d).\n", msgLatencies[(numMsgsToCalc-1)].MsgID, numMsgsToCalc)
-				os.Exit(1)
-			}
+			// Reslice list of messages to capture messages [#2, ...).
+			clientMsgLatencies = clientMsgLatencies[2:]
 
 			// Find partner's receive time file.
 			candidates, err := filepath.Glob(fmt.Sprintf("%s/%s_*/recv_unixnano.evaluation", runClientsPath, partner))
@@ -149,48 +123,58 @@ func (run *Run) AddLatency(runClientsPath string, systemUnderEval string, numMsg
 				return partnersLatencies[i].MsgID < partnersLatencies[j].MsgID
 			})
 
-			/*
-				fmt.Printf("[CCC] Found:\n")
-				for i := range partnersLatencies {
-					fmt.Printf("\t%d: %d\n", partnersLatencies[i].MsgID, partnersLatencies[i].ReceiveTimestamp)
+			// Reslice list of messages to capture messages [#2, ...).
+			partnersLatencies = partnersLatencies[2:]
+
+			for i := range clientMsgLatencies {
+
+				if i < len(partnersLatencies) {
+
+					if int64(i) < numMsgsToCalc {
+
+						if clientMsgLatencies[i].MsgID != partnersLatencies[i].MsgID {
+							fmt.Printf("For client %s and partner %s the message ID %d != %d\n", path, partner,
+								clientMsgLatencies[i].MsgID, partnersLatencies[i].MsgID)
+							os.Exit(1)
+						}
+					}
 				}
-			*/
-
-			if systemUnderEval == "pung" {
-
-				// Reslice list of messages to capture
-				// messages [#2, (#2 + #numMsgs)).
-				fmt.Printf("[PUNG] Reslicing partnersLatencies to [2, %d)\n", (2 + int(numMsgsToCalc)))
-				partnersLatencies = partnersLatencies[2:(2 + int(numMsgsToCalc))]
 			}
 
-			/*
-				fmt.Printf("[DDD] Found:\n")
-				for i := range partnersLatencies {
-					fmt.Printf("\t%d: %d\n", partnersLatencies[i].MsgID, partnersLatencies[i].ReceiveTimestamp)
-				}
-			*/
+			msgLatencies := make([]*MetricLatency, 0, len(clientMsgLatencies))
 
-			// Determine whether we have all required data points.
-			if (int64(len(partnersLatencies)) < numMsgsToCalc) || (partnersLatencies[(numMsgsToCalc-1)].MsgID != numMsgsToCalc) {
-				fmt.Printf("Not enough consecutive receive (partner: %s) message time metrics available (found: %d, want: %d).\n", partner,
-					partnersLatencies[(numMsgsToCalc-1)].MsgID, numMsgsToCalc)
+			for i := range clientMsgLatencies {
+
+				if i < len(partnersLatencies) {
+
+					// Calculate this message's end-to-end latency in seconds.
+					latencyNano := partnersLatencies[i].ReceiveTimestamp - clientMsgLatencies[i].SendTimestamp
+
+					if latencyNano <= int64(0) {
+						fmt.Printf("[SKIPPING] Incorrect latency: %d (ID: %d, send: %d, recv: %d, client: %s, partner: %s)\n", latencyNano,
+							clientMsgLatencies[i].MsgID, clientMsgLatencies[i].SendTimestamp, partnersLatencies[i].ReceiveTimestamp, path, partner)
+						continue
+					}
+
+					// Append to struct capturing all useful latency metrics.
+					msgLatencies = append(msgLatencies, &MetricLatency{
+						MsgID:            clientMsgLatencies[i].MsgID,
+						SendTimestamp:    clientMsgLatencies[i].SendTimestamp,
+						ReceiveTimestamp: partnersLatencies[i].ReceiveTimestamp,
+						Latency:          float64(latencyNano) / float64(1000000000),
+					})
+				}
+			}
+
+			if int64(len(msgLatencies)) < numMsgsToCalc {
+				fmt.Printf("Too few latency pairs to use for %s (want: %d, have: %d)\n", path, numMsgsToCalc, len(msgLatencies))
 				os.Exit(1)
 			}
 
-			for i := 0; int64(i) < numMsgsToCalc; i++ {
+			// Reslice to desired size.
+			msgLatencies = msgLatencies[:numMsgsToCalc]
 
-				// Integrate temporarily-stored receive timestamps of partner.
-				msgLatencies[i].ReceiveTimestamp = partnersLatencies[i].ReceiveTimestamp
-
-				// Calculate this message's end-to-end latency in seconds.
-				latencyNano := msgLatencies[i].ReceiveTimestamp - msgLatencies[i].SendTimestamp
-				msgLatencies[i].Latency = float64(latencyNano) / float64(1000000000)
-
-				if msgLatencies[i].Latency <= float64(0.0) {
-					fmt.Printf("Non-existent or negative message latency, impossible. Corrupted data or system clocks?\n")
-					os.Exit(1)
-				}
+			for i := range msgLatencies {
 
 				// In case one of this client's send timestamps
 				// holds a lower value than the previous lowest
@@ -209,8 +193,12 @@ func (run *Run) AddLatency(runClientsPath string, systemUnderEval string, numMsg
 				}
 			}
 
-			// Reslice to desired size.
-			msgLatencies = msgLatencies[:numMsgsToCalc]
+			/*
+				fmt.Printf("Found:\n")
+				for i := range msgLatencies {
+					fmt.Printf("\t%d: %d => %d: %f\n", msgLatencies[i].MsgID, msgLatencies[i].SendTimestamp, msgLatencies[i].ReceiveTimestamp, msgLatencies[i].Latency)
+				}
+			*/
 
 			// Append to list of client latencies.
 			run.Latencies = append(run.Latencies, msgLatencies)
@@ -224,34 +212,30 @@ func (run *Run) AddLatency(runClientsPath string, systemUnderEval string, numMsg
 
 func (set *Setting) LatenciesToFile(path string) error {
 
-	return nil
-}
+	metrics := ""
+	for i := range set.Runs {
 
-/*
-func (clM *ClientMetrics) ClientStoreForBoxplot() error {
+		for j := range set.Runs[i].Latencies {
 
-	latencyFile, err := os.OpenFile(filepath.Join(clM.MetricsPath, "latency_per_message.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+			for k := range set.Runs[i].Latencies[j] {
+
+				if metrics == "" {
+					metrics = fmt.Sprintf("%.5f", set.Runs[i].Latencies[j][k].Latency)
+				} else {
+					metrics = fmt.Sprintf("%s,%.5f", metrics, set.Runs[i].Latencies[j][k].Latency)
+				}
+			}
+		}
+	}
+
+	clientsLatenciesFile, err := os.OpenFile(filepath.Join(path, "msg-latencies_lowest-to-highest_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
-	defer latencyFile.Close()
-	defer latencyFile.Sync()
+	defer clientsLatenciesFile.Close()
+	defer clientsLatenciesFile.Sync()
 
-	for i := 0; int64(i) < numMsgsToCalc; i++ {
-
-		var values string
-		for client := range clM.Latencies {
-
-			if values == "" {
-				values = fmt.Sprintf("%.5f", clM.Latencies[client][i].Latency)
-			} else {
-				values = fmt.Sprintf("%s,%.5f", values, clM.Latencies[client][i].Latency)
-			}
-		}
-
-		fmt.Fprintln(latencyFile, values)
-	}
+	fmt.Fprintf(clientsLatenciesFile, "%s\n", metrics)
 
 	return nil
 }
-*/

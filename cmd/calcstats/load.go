@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -35,6 +36,10 @@ func (run *Run) AddMemLoad(runNodesPath string, isClientMetric bool) error {
 
 				// Split line at whitespace characters.
 				metric := strings.Fields(lines[i])
+
+				if metric[0] == "n/a" {
+					continue
+				}
 
 				// Convert first element to timestamp.
 				timestamp, err := strconv.ParseInt(metric[0], 10, 64)
@@ -163,6 +168,10 @@ func (run *Run) AddCPULoad(runNodesPath string, isClientMetric bool) error {
 				// Split line at whitespace characters.
 				metric := strings.Fields(lines[i])
 
+				if metric[0] == "n/a" {
+					continue
+				}
+
 				// Convert first element to timestamp.
 				timestamp, err := strconv.ParseInt(metric[0], 10, 64)
 				if err != nil {
@@ -257,56 +266,93 @@ func (run *Run) AddCPULoad(runNodesPath string, isClientMetric bool) error {
 
 func (set *Setting) LoadToFiles(path string) error {
 
-	return nil
-}
+	metrics := ""
+	for i := range set.Runs {
 
-/*
-func (run *Run) SystemStoreForBoxplots(path string) error {
+		for j := range set.Runs[i].ClientsCPULoad {
 
-	memoryFile, err := os.OpenFile(filepath.Join(path, "memory_per_second.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+			if metrics == "" {
+				metrics = fmt.Sprintf("%f", set.Runs[i].ClientsCPULoad[j])
+			} else {
+				metrics = fmt.Sprintf("%s,%f", metrics, set.Runs[i].ClientsCPULoad[j])
+			}
+		}
+	}
+
+	clientsCPULoadFile, err := os.OpenFile(filepath.Join(path, "load_cpu_lowest-to-highest_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
-	defer memoryFile.Close()
-	defer memoryFile.Sync()
+	defer clientsCPULoadFile.Close()
+	defer clientsCPULoadFile.Sync()
 
-	for ts := range run.Memory {
+	fmt.Fprintf(clientsCPULoadFile, "%s\n", metrics)
 
-		var values string
-		for i := range run.Memory[ts].Values {
+	metrics = ""
+	for i := range set.Runs {
 
-			if values == "" {
-				values = fmt.Sprintf("%f", run.Memory[ts].Values[i])
+		for j := range set.Runs[i].ClientsMemLoad {
+
+			if metrics == "" {
+				metrics = fmt.Sprintf("%f", set.Runs[i].ClientsMemLoad[j])
 			} else {
-				values = fmt.Sprintf("%s,%f", values, run.Memory[ts].Values[i])
+				metrics = fmt.Sprintf("%s,%f", metrics, set.Runs[i].ClientsMemLoad[j])
 			}
 		}
-
-		fmt.Fprintln(memoryFile, values)
 	}
 
-	loadFile, err := os.OpenFile(filepath.Join(path, "load_per_second.boxplot"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsMemLoadFile, err := os.OpenFile(filepath.Join(path, "load_mem_lowest-to-highest_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
-	defer loadFile.Close()
-	defer loadFile.Sync()
+	defer clientsMemLoadFile.Close()
+	defer clientsMemLoadFile.Sync()
 
-	for ts := range run.Load {
+	fmt.Fprintf(clientsMemLoadFile, "%s\n", metrics)
 
-		var values string
-		for i := range run.Load[ts].Values {
+	metrics = ""
+	for i := range set.Runs {
 
-			if values == "" {
-				values = fmt.Sprintf("%f", run.Load[ts].Values[i])
+		for j := range set.Runs[i].ServersCPULoad {
+
+			if metrics == "" {
+				metrics = fmt.Sprintf("%f", set.Runs[i].ServersCPULoad[j])
 			} else {
-				values = fmt.Sprintf("%s,%f", values, run.Load[ts].Values[i])
+				metrics = fmt.Sprintf("%s,%f", metrics, set.Runs[i].ServersCPULoad[j])
 			}
 		}
-
-		fmt.Fprintln(loadFile, values)
 	}
+
+	serversCPULoadFile, err := os.OpenFile(filepath.Join(path, "load_cpu_lowest-to-highest_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	if err != nil {
+		return err
+	}
+	defer serversCPULoadFile.Close()
+	defer serversCPULoadFile.Sync()
+
+	fmt.Fprintf(serversCPULoadFile, "%s\n", metrics)
+
+	metrics = ""
+	for i := range set.Runs {
+
+		for j := range set.Runs[i].ServersMemLoad {
+
+			if metrics == "" {
+				metrics = fmt.Sprintf("%f", set.Runs[i].ServersMemLoad[j])
+			} else {
+				metrics = fmt.Sprintf("%s,%f", metrics, set.Runs[i].ServersMemLoad[j])
+			}
+		}
+	}
+
+	serversMemLoadFile, err := os.OpenFile(filepath.Join(path, "load_mem_lowest-to-highest_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	if err != nil {
+		return err
+	}
+	defer serversMemLoadFile.Close()
+	defer serversMemLoadFile.Sync()
+
+	fmt.Fprintf(serversMemLoadFile, "%s\n", metrics)
 
 	return nil
 }
-*/
