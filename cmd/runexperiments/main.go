@@ -292,7 +292,7 @@ func shutdownAll(configs []Config, proj string, resultFolder string) error {
 	for i := 0; i < len(configs); i++ {
 		wg.Add(1)
 		go shutdownInstance(&wg, &configs[i], proj, accessToken, resultFolder)
-		time.Sleep(150 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 	}
 
 	wg.Wait()
@@ -616,7 +616,7 @@ func main() {
 		wg.Add(1)
 		go runInstance(&wg, &configs[i], gcloudProject, gcloudServiceAcc, accessToken, gcloudBucket, resultFolder,
 			auxInternalIP, "client", "", tcEmulNetTroubles, killZenoMixesInRound)
-		time.Sleep(150 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 	}
 
 	wg.Wait()
@@ -630,7 +630,7 @@ func main() {
 	for i := 0; i < len(configs); i++ {
 		wg.Add(1)
 		go checkInstanceReady(errChan, gcloudProject, accessToken, configs[i].Name, configs[i].Zone, resultFolder)
-		time.Sleep(150 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 	}
 
 	for i := 0; i < len(configs); i++ {
@@ -720,5 +720,21 @@ func main() {
 	}
 
 	fmt.Printf(" done!\n\n")
-	fmt.Printf("Evaluation run completed.\n")
+
+	if !tcEmulNetTroubles {
+
+		if killZenoMixesInRound == -1 {
+			fmt.Printf("Evaluation run %s for 01_tc-off_proc-off completed\n", resultFolder)
+		} else {
+			fmt.Printf("Evaluation run %s for 03_tc-off_proc-on completed\n", resultFolder)
+		}
+
+	} else {
+
+		if killZenoMixesInRound == -1 {
+			fmt.Printf("Evaluation run %s for 02_tc-on_proc-off completed\n", resultFolder)
+		} else {
+			fmt.Printf("Evaluation run %s for 04_tc-on_proc-on completed\n", resultFolder)
+		}
+	}
 }

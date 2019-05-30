@@ -1,8 +1,56 @@
 #!/usr/bin/env bash
 
+tried=0
+while [ ! -e /snap/bin/gsutil ] && [ "${tried}" -lt 30 ]; do
+
+    printf "/snap/bin/gsutil not yet available, sleeping 1 second\n"
+    ls -lah /snap/bin/
+
+    sleep 1
+    tried=$(( tried + 1 ))
+done
+
+if [ "${tried}" -eq 30 ]; then
+    printf "Waited 30 seconds for /snap/bin/gsutil to become available, no success, shutting down\n"
+    poweroff
+fi
+
+tried=0
+while [ ! -e /usr/bin/python2 ] && [ "${tried}" -lt 30 ]; do
+
+    printf "/usr/bin/python2 not yet available, sleeping 1 second\n"
+    ls -lah /usr/bin | grep pyth
+
+    sleep 1
+    tried=$(( tried + 1 ))
+done
+
+if [ "${tried}" -eq 30 ]; then
+    printf "Waited 30 seconds for /usr/bin/python2 to become available, no success, shutting down\n"
+    poweroff
+fi
+
 # Pull TLS certificates of PKI.
 /snap/bin/gsutil cp gs://acs-eval/cert_zeno-pki-${RESULT_FOLDER}.pem /root/cert.pem
 chmod 0644 /root/cert.pem
+
+tried=0
+while [ ! -e /root/cert.pem ] && [ "${tried}" -lt 20 ]; do
+
+    printf "Failed to pull cert_zeno-pki-${RESULT_FOLDER}.pem, sleeping 1 second\n"
+    ls -lah /root/
+
+    sleep 1
+
+    # Reattempt to pull TLS certificates of PKI.
+    /snap/bin/gsutil cp gs://acs-eval/cert_zeno-pki-${RESULT_FOLDER}.pem /root/cert.pem
+    chmod 0644 /root/cert.pem
+done
+
+if [ "${tried}" -eq 20 ]; then
+    printf "Waited 20 seconds for cert_zeno-pki-${RESULT_FOLDER}.pem to be downloaded, no success, shutting down\n"
+    poweroff
+fi
 
 # Run metrics collector sidecar in background.
 /root/collector -system zeno -client -pipe /tmp/collect -metricsPath /root/ &

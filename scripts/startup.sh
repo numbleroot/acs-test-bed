@@ -85,6 +85,8 @@ fi
 chmod 0700 /root/${BINARY_TO_PULL}
 chmod 0700 /root/collector
 
+sleep 5
+
 # Hand over to evaluation script.
 LISTEN_IP=${LISTEN_IP} NAME_OF_NODE=${NAME_OF_NODE} PARTNER_OF_NODE=${PARTNER_OF_NODE} \
     TYPE_OF_NODE=${TYPE_OF_NODE} RESULT_FOLDER=${RESULT_FOLDER} TC_CONFIG=${TC_CONFIG} \
