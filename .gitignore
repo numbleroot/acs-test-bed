@@ -120,6 +120,7 @@ venv.bak/
 # Project-specific.
 gcloud-configs/
 gcloud-configs_*/
+results/*.png
 calcstats
 collector
 genconfigs
