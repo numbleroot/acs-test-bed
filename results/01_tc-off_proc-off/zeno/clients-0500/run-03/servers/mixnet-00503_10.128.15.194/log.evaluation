@@ -1,0 +1,1128 @@
+Waiting for PKI messages...
+
+Connected to PKI at 10.156.15.220:33000.
+
+Registered at PKI, waiting for mix election to finish
+PKI mix candidates broadcast received!
+Upcoming cascades matrix:
+	CASCADE 0: mixnet-00515@10.164.15.194:33000 => mixnet-00510@10.150.15.193:33000 => mixnet-00509@10.152.15.194:33000 => mixnet-00514@10.170.15.193:33000 => mixnet-00511@10.162.15.194:33000 => mixnet-00517@10.174.0.153:33000 => mixnet-00518@10.138.15.194:33000
+	CASCADE 1: mixnet-00513@10.148.15.194:33000 => mixnet-00501@10.172.15.193:33000 => mixnet-00521@10.166.15.195:33000 => mixnet-00516@10.168.15.193:33000 => mixnet-00507@10.154.15.194:33000 => mixnet-00520@10.164.15.195:33000 => mixnet-00505@10.160.15.194:33000
+	CASCADE 2: mixnet-00506@10.146.15.194:33000 => mixnet-00519@10.174.15.195:33000 => mixnet-00504@10.132.15.194:33000 => mixnet-00508@10.166.15.194:33000 => mixnet-00512@10.142.15.194:33000 => mixnet-00502@10.140.15.194:33000 => mixnet-00503@10.128.15.194:33000
+Node 10.128.15.194:33000 has been elected to be a mix.
+
+Mixes determined, waiting for clients to be broadcast.
+PKI clients broadcast received!
+mixnet-00503@10.128.15.194:33000:  OwnChain=2, OwnIndex=6, IsEntry=false, IsExit=true
+Exit mix unable to reach 10.128.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.151:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.57:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.57:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.62:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.151:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.63:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.61:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.57:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.51:33000 (tried 3 times)
+Failed to send msg to client 10.162.0.42:33000: write tcp 10.128.15.194:33514->10.162.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.42:33000. Will reconnect.
+Exit mix unable to reach 10.162.0.42:33000 (tried 3 times)
+Failed to send msg to client 10.172.0.46:33000: write tcp 10.128.15.194:39014->10.172.0.46:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.46:33000. Will reconnect.
+Failed to send msg to client 10.168.0.150:33000: write tcp 10.128.15.194:41668->10.168.0.150:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.150:33000. Will reconnect.
+Failed to send msg to client 10.162.0.53:33000: write tcp 10.128.15.194:57916->10.162.0.53:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.53:33000. Will reconnect.
+Failed to send msg to client 10.168.0.34:33000: write tcp 10.128.15.194:34378->10.168.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.34:33000. Will reconnect.
+Exit mix unable to reach 10.162.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.46:33000 (tried 3 times)
+Failed to send msg to client 10.132.0.40:33000: write tcp 10.128.15.194:53896->10.132.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.40:33000. Will reconnect.
+Failed to send msg to client 10.166.0.33:33000: write tcp 10.128.15.194:40870->10.166.0.33:33000: write: broken pipe
+Detected broken pipe to client 10.166.0.33:33000. Will reconnect.
+Failed to send msg to client 10.142.0.52:33000: write tcp 10.128.15.194:58632->10.142.0.52:33000: write: broken pipe
+Detected broken pipe to client 10.142.0.52:33000. Will reconnect.
+Failed to send msg to client 10.166.0.36:33000: write tcp 10.128.15.194:46262->10.166.0.36:33000: write: broken pipe
+Detected broken pipe to client 10.166.0.36:33000. Will reconnect.
+Failed to send msg to client 10.172.0.31:33000: write tcp 10.128.15.194:47302->10.172.0.31:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.31:33000. Will reconnect.
+Failed to send msg to client 10.128.0.52:33000: write tcp 10.128.15.194:46632->10.128.0.52:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.52:33000. Will reconnect.
+Failed to send msg to client 10.172.0.45:33000: write tcp 10.128.15.194:37486->10.172.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.45:33000. Will reconnect.
+Failed to send msg to client 10.132.0.48:33000: write tcp 10.128.15.194:48476->10.132.0.48:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.48:33000. Will reconnect.
+Failed to send msg to client 10.138.0.45:33000: write tcp 10.128.15.194:38136->10.138.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.45:33000. Will reconnect.
+Failed to send msg to client 10.132.0.150:33000: write tcp 10.128.15.194:39108->10.132.0.150:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.150:33000. Will reconnect.
+Exit mix unable to reach 10.128.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.43:33000 (tried 3 times)
+Failed to send msg to client 10.132.0.49:33000: write tcp 10.128.15.194:38678->10.132.0.49:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.49:33000. Will reconnect.
+Failed to send msg to client 10.154.0.36:33000: write tcp 10.128.15.194:50518->10.154.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.36:33000. Will reconnect.
+Failed to send msg to client 10.164.0.35:33000: write tcp 10.128.15.194:43088->10.164.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.35:33000. Will reconnect.
+Failed to send msg to client 10.132.0.35:33000: write tcp 10.128.15.194:60180->10.132.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.35:33000. Will reconnect.
+Failed to send msg to client 10.164.0.59:33000: write tcp 10.128.15.194:50580->10.164.0.59:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.59:33000. Will reconnect.
+Failed to send msg to client 10.154.0.37:33000: write tcp 10.128.15.194:48960->10.154.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.37:33000. Will reconnect.
+Failed to send msg to client 10.152.0.50:33000: write tcp 10.128.15.194:59190->10.152.0.50:33000: write: broken pipe
+Detected broken pipe to client 10.152.0.50:33000. Will reconnect.
+Failed to send msg to client 10.166.0.46:33000: write tcp 10.128.15.194:33572->10.166.0.46:33000: write: broken pipe
+Detected broken pipe to client 10.166.0.46:33000. Will reconnect.
+Failed to send msg to client 10.164.0.39:33000: write tcp 10.128.15.194:45200->10.164.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.39:33000. Will reconnect.
+Failed to send msg to client 10.172.0.28:33000: write tcp 10.128.15.194:40336->10.172.0.28:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.28:33000. Will reconnect.
+Failed to send msg to client 10.164.0.38:33000: write tcp 10.128.15.194:47880->10.164.0.38:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.38:33000. Will reconnect.
+Failed to send msg to client 10.132.0.36:33000: write tcp 10.128.15.194:49064->10.132.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.36:33000. Will reconnect.
+Failed to send msg to client 10.154.0.48:33000: write tcp 10.128.15.194:51496->10.154.0.48:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.48:33000. Will reconnect.
+Failed to send msg to client 10.154.0.35:33000: write tcp 10.128.15.194:40164->10.154.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.35:33000. Will reconnect.
+Failed to send msg to client 10.128.0.44:33000: write tcp 10.128.15.194:46888->10.128.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.44:33000. Will reconnect.
+Failed to send msg to client 10.164.0.47:33000: write tcp 10.128.15.194:58616->10.164.0.47:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.47:33000. Will reconnect.
+Failed to send msg to client 10.166.0.37:33000: write tcp 10.128.15.194:58834->10.166.0.37:33000: write: broken pipe
+Detected broken pipe to client 10.166.0.37:33000. Will reconnect.
+Failed to send msg to client 10.172.0.26:33000: write tcp 10.128.15.194:38830->10.172.0.26:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.26:33000. Will reconnect.
+Failed to send msg to client 10.142.0.32:33000: write tcp 10.128.15.194:49806->10.142.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.32:33000. Will reconnect.
+Failed to send msg to client 10.128.0.48:33000: write tcp 10.128.15.194:40384->10.128.0.48:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.48:33000. Will reconnect.
+Failed to send msg to client 10.164.0.50:33000: write tcp 10.128.15.194:41686->10.164.0.50:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.50:33000. Will reconnect.
+Failed to send msg to client 10.154.0.46:33000: write tcp 10.128.15.194:59402->10.154.0.46:33000: write: broken pipe
+Detected broken pipe to client 10.154.0.46:33000. Will reconnect.
+Failed to send msg to client 10.128.0.51:33000: write tcp 10.128.15.194:49718->10.128.0.51:33000: write: broken pipe
+Detected broken pipe to client 10.128.0.51:33000. Will reconnect.
+Failed to send msg to client 10.172.0.23:33000: write tcp 10.128.15.194:58118->10.172.0.23:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.23:33000. Will reconnect.
+Failed to send msg to client 10.128.0.34:33000: write tcp 10.128.15.194:37370->10.128.0.34:33000: write: broken pipe
+Detected broken pipe to client 10.128.0.34:33000. Will reconnect.
+Exit mix unable to reach 10.128.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.59:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.54:33000 (tried 3 times)
+Failed to send msg to client 10.154.0.50:33000: write tcp 10.128.15.194:45164->10.154.0.50:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.50:33000. Will reconnect.
+Failed to send msg to client 10.168.0.39:33000: write tcp 10.128.15.194:44120->10.168.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.39:33000. Will reconnect.
+Failed to send msg to client 10.132.0.44:33000: write tcp 10.128.15.194:48380->10.132.0.44:33000: write: broken pipe
+Detected broken pipe to client 10.132.0.44:33000. Will reconnect.
+Failed to send msg to client 10.146.0.37:33000: write tcp 10.128.15.194:48502->10.146.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.37:33000. Will reconnect.
+Failed to send msg to client 10.164.0.41:33000: write tcp 10.128.15.194:54756->10.164.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.41:33000. Will reconnect.
+Failed to send msg to client 10.166.0.44:33000: write tcp 10.128.15.194:57772->10.166.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.44:33000. Will reconnect.
+Failed to send msg to client 10.162.0.43:33000: write tcp 10.128.15.194:48898->10.162.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.43:33000. Will reconnect.
+Failed to send msg to client 10.154.0.49:33000: write tcp 10.128.15.194:47278->10.154.0.49:33000: write: broken pipe
+Detected broken pipe to client 10.154.0.49:33000. Will reconnect.
+Failed to send msg to client 10.164.0.55:33000: write tcp 10.128.15.194:34018->10.164.0.55:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.55:33000. Will reconnect.
+Failed to send msg to client 10.138.0.53:33000: write tcp 10.128.15.194:52352->10.138.0.53:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.53:33000. Will reconnect.
+Failed to send msg to client 10.172.0.41:33000: write tcp 10.128.15.194:45212->10.172.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.41:33000. Will reconnect.
+Failed to send msg to client 10.164.0.43:33000: write tcp 10.128.15.194:51324->10.164.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.43:33000. Will reconnect.
+Failed to send msg to client 10.138.0.32:33000: write tcp 10.128.15.194:39588->10.138.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.32:33000. Will reconnect.
+Failed to send msg to client 10.174.0.54:33000: write tcp 10.128.15.194:49386->10.174.0.54:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.54:33000. Will reconnect.
+Failed to send msg to client 10.168.0.40:33000: write tcp 10.128.15.194:44734->10.168.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.40:33000. Will reconnect.
+Failed to send msg to client 10.142.0.39:33000: write tcp 10.128.15.194:52222->10.142.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.39:33000. Will reconnect.
+Failed to send msg to client 10.142.0.55:33000: write tcp 10.128.15.194:41932->10.142.0.55:33000: write: broken pipe
+Detected broken pipe to client 10.142.0.55:33000. Will reconnect.
+Failed to send msg to client 10.164.0.48:33000: write tcp 10.128.15.194:55782->10.164.0.48:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.48:33000. Will reconnect.
+Failed to send msg to client 10.128.0.39:33000: write tcp 10.128.15.194:41578->10.128.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.39:33000. Will reconnect.
+Failed to send msg to client 10.150.0.37:33000: write tcp 10.128.15.194:43520->10.150.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.37:33000. Will reconnect.
+Failed to send msg to client 10.132.0.50:33000: write tcp 10.128.15.194:53168->10.132.0.50:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.50:33000. Will reconnect.
+Failed to send msg to client 10.166.0.55:33000: write tcp 10.128.15.194:49490->10.166.0.55:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.55:33000. Will reconnect.
+Failed to send msg to client 10.146.0.58:33000: write tcp 10.128.15.194:37220->10.146.0.58:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.58:33000. Will reconnect.
+Failed to send msg to client 10.132.0.30:33000: write tcp 10.128.15.194:51932->10.132.0.30:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.30:33000. Will reconnect.
+Failed to send msg to client 10.142.0.49:33000: write tcp 10.128.15.194:34102->10.142.0.49:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.49:33000. Will reconnect.
+Failed to send msg to client 10.174.0.152:33000: write tcp 10.128.15.194:54824->10.174.0.152:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.152:33000. Will reconnect.
+Failed to send msg to client 10.168.0.43:33000: write tcp 10.128.15.194:43720->10.168.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.43:33000. Will reconnect.
+Failed to send msg to client 10.146.0.49:33000: write tcp 10.128.15.194:33438->10.146.0.49:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.49:33000. Will reconnect.
+Failed to send msg to client 10.166.0.43:33000: write tcp 10.128.15.194:54030->10.166.0.43:33000: write: broken pipe
+Detected broken pipe to client 10.166.0.43:33000. Will reconnect.
+Failed to send msg to client 10.138.0.49:33000: write tcp 10.128.15.194:56216->10.138.0.49:33000: write: broken pipe
+Detected broken pipe to client 10.138.0.49:33000. Will reconnect.
+Failed to send msg to client 10.132.0.41:33000: write tcp 10.128.15.194:37698->10.132.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.41:33000. Will reconnect.
+Failed to send msg to client 10.164.0.51:33000: write tcp 10.128.15.194:46226->10.164.0.51:33000: write: broken pipe
+Detected broken pipe to client 10.164.0.51:33000. Will reconnect.
+Failed to send msg to client 10.164.0.42:33000: write tcp 10.128.15.194:49764->10.164.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.42:33000. Will reconnect.
+Failed to send msg to client 10.128.0.43:33000: write tcp 10.128.15.194:35232->10.128.0.43:33000: write: broken pipe
+Detected broken pipe to client 10.128.0.43:33000. Will reconnect.
+Failed to send msg to client 10.128.0.36:33000: write tcp 10.128.15.194:51446->10.128.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.36:33000. Will reconnect.
+Failed to send msg to client 10.172.0.25:33000: write tcp 10.128.15.194:49154->10.172.0.25:33000: write: broken pipe
+Detected broken pipe to client 10.172.0.25:33000. Will reconnect.
+Failed to send msg to client 10.172.0.43:33000: write tcp 10.128.15.194:41226->10.172.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.43:33000. Will reconnect.
+Exit mix unable to reach 10.128.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.58:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.152:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.58:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.59:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.54:33000 (tried 3 times)
+Failed to send msg to client 10.164.0.37:33000: write tcp 10.128.15.194:39012->10.164.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.37:33000. Will reconnect.
+Failed to send msg to client 10.148.0.51:33000: write tcp 10.128.15.194:41174->10.148.0.51:33000: write: broken pipe
+Detected broken pipe to client 10.148.0.51:33000. Will reconnect.
+Failed to send msg to client 10.138.0.39:33000: write tcp 10.128.15.194:39544->10.138.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.39:33000. Will reconnect.
+Failed to send msg to client 10.168.0.32:33000: write tcp 10.128.15.194:59680->10.168.0.32:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.32:33000. Will reconnect.
+Failed to send msg to client 10.132.0.55:33000: write tcp 10.128.15.194:53530->10.132.0.55:33000: write: broken pipe
+Detected broken pipe to client 10.132.0.55:33000. Will reconnect.
+Failed to send msg to client 10.146.0.39:33000: write tcp 10.128.15.194:34080->10.146.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.39:33000. Will reconnect.
+Failed to send msg to client 10.166.0.48:33000: write tcp 10.128.15.194:41012->10.166.0.48:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.48:33000. Will reconnect.
+Failed to send msg to client 10.164.0.149:33000: write tcp 10.128.15.194:45752->10.164.0.149:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.149:33000. Will reconnect.
+Failed to send msg to client 10.166.0.41:33000: write tcp 10.128.15.194:33960->10.166.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.41:33000. Will reconnect.
+Failed to send msg to client 10.132.0.33:33000: write tcp 10.128.15.194:43148->10.132.0.33:33000: write: broken pipe
+Detected broken pipe to client 10.132.0.33:33000. Will reconnect.
+Failed to send msg to client 10.160.0.52:33000: write tcp 10.128.15.194:34972->10.160.0.52:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.52:33000. Will reconnect.
+Failed to send msg to client 10.138.15.193:33000: write tcp 10.128.15.194:55072->10.138.15.193:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.15.193:33000. Will reconnect.
+Failed to send msg to client 10.160.0.150:33000: write tcp 10.128.15.194:46598->10.160.0.150:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.150:33000. Will reconnect.
+Failed to send msg to client 10.164.0.46:33000: write tcp 10.128.15.194:34916->10.164.0.46:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.46:33000. Will reconnect.
+Failed to send msg to client 10.166.0.51:33000: write tcp 10.128.15.194:47540->10.166.0.51:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.51:33000. Will reconnect.
+Failed to send msg to client 10.142.0.40:33000: write tcp 10.128.15.194:54470->10.142.0.40:33000: write: connection reset by peer
+Failed to send msg to client 10.168.0.27:33000: write tcp 10.128.15.194:54394->10.168.0.27:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.27:33000. Will reconnect.
+Detected broken pipe to client 10.142.0.40:33000. Will reconnect.
+Failed to send msg to client 10.150.0.34:33000: write tcp 10.128.15.194:37716->10.150.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.34:33000. Will reconnect.
+Failed to send msg to client 10.128.0.47:33000: write tcp 10.128.15.194:39898->10.128.0.47:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.47:33000. Will reconnect.
+Failed to send msg to client 10.132.0.38:33000: write tcp 10.128.15.194:50702->10.132.0.38:33000: write: broken pipe
+Detected broken pipe to client 10.132.0.38:33000. Will reconnect.
+Failed to send msg to client 10.128.0.57:33000: write tcp 10.128.15.194:51234->10.128.0.57:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.57:33000. Will reconnect.
+Failed to send msg to client 10.128.0.32:33000: write tcp 10.128.15.194:41024->10.128.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.32:33000. Will reconnect.
+Failed to send msg to client 10.132.0.45:33000: write tcp 10.128.15.194:50652->10.132.0.45:33000: write: broken pipe
+Detected broken pipe to client 10.132.0.45:33000. Will reconnect.
+Failed to send msg to client 10.142.0.38:33000: write tcp 10.128.15.194:42570->10.142.0.38:33000: write: broken pipe
+Detected broken pipe to client 10.142.0.38:33000. Will reconnect.
+Failed to send msg to client 10.162.0.56:33000: write tcp 10.128.15.194:45844->10.162.0.56:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.56:33000. Will reconnect.
+Failed to send msg to client 10.150.0.30:33000: write tcp 10.128.15.194:45876->10.150.0.30:33000: write: broken pipe
+Detected broken pipe to client 10.150.0.30:33000. Will reconnect.
+Failed to send msg to client 10.164.0.45:33000: write tcp 10.128.15.194:37320->10.164.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.45:33000. Will reconnect.
+Failed to send msg to client 10.142.0.41:33000: write tcp 10.128.15.194:39042->10.142.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.41:33000. Will reconnect.
+Failed to send msg to client 10.162.0.50:33000: write tcp 10.128.15.194:48022->10.162.0.50:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.50:33000. Will reconnect.
+Failed to send msg to client 10.168.0.47:33000: write tcp 10.128.15.194:43670->10.168.0.47:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.47:33000. Will reconnect.
+Failed to send msg to client 10.166.0.52:33000: write tcp 10.128.15.194:54270->10.166.0.52:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.52:33000. Will reconnect.
+Failed to send msg to client 10.168.0.23:33000: write tcp 10.128.15.194:59758->10.168.0.23:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.23:33000. Will reconnect.
+Failed to send msg to client 10.142.0.51:33000: write tcp 10.128.15.194:42762->10.142.0.51:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.51:33000. Will reconnect.
+Failed to send msg to client 10.166.0.39:33000: write tcp 10.128.15.194:47058->10.166.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.39:33000. Will reconnect.
+Failed to send msg to client 10.132.0.56:33000: write tcp 10.128.15.194:53684->10.132.0.56:33000: write: broken pipe
+Detected broken pipe to client 10.132.0.56:33000. Will reconnect.
+Failed to send msg to client 10.152.0.37:33000: write tcp 10.128.15.194:34408->10.152.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.37:33000. Will reconnect.
+Failed to send msg to client 10.142.0.29:33000: write tcp 10.128.15.194:60348->10.142.0.29:33000: write: broken pipe
+Detected broken pipe to client 10.142.0.29:33000. Will reconnect.
+Exit mix unable to reach 10.128.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.57:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.138.15.193:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.149:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.151:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.39:33000 (tried 3 times)
+Failed to send msg to client 10.168.0.35:33000: write tcp 10.128.15.194:42604->10.168.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.35:33000. Will reconnect.
+Failed to send msg to client 10.146.0.46:33000: write tcp 10.128.15.194:55388->10.146.0.46:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.46:33000. Will reconnect.
+Failed to send msg to client 10.154.0.54:33000: write tcp 10.128.15.194:55540->10.154.0.54:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.54:33000. Will reconnect.
+Failed to send msg to client 10.128.0.42:33000: write tcp 10.128.15.194:55412->10.128.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.42:33000. Will reconnect.
+Failed to send msg to client 10.170.0.24:33000: write tcp 10.128.15.194:34442->10.170.0.24:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.24:33000. Will reconnect.
+Failed to send msg to client 10.172.0.44:33000: write tcp 10.128.15.194:35708->10.172.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.44:33000. Will reconnect.
+Failed to send msg to client 10.168.0.24:33000: write tcp 10.128.15.194:55512->10.168.0.24:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.24:33000. Will reconnect.
+Failed to send msg to client 10.150.0.32:33000: write tcp 10.128.15.194:49944->10.150.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.32:33000. Will reconnect.
+Failed to send msg to client 10.162.0.33:33000: write tcp 10.128.15.194:45580->10.162.0.33:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.33:33000. Will reconnect.
+Failed to send msg to client 10.154.0.55:33000: write tcp 10.128.15.194:43826->10.154.0.55:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.55:33000. Will reconnect.
+Failed to send msg to client 10.164.0.36:33000: write tcp 10.128.15.194:36912->10.164.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.36:33000. Will reconnect.
+Failed to send msg to client 10.166.0.50:33000: write tcp 10.128.15.194:49266->10.166.0.50:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.50:33000. Will reconnect.
+Failed to send msg to client 10.162.0.48:33000: write tcp 10.128.15.194:37306->10.162.0.48:33000: write: broken pipe
+Detected broken pipe to client 10.162.0.48:33000. Will reconnect.
+Failed to send msg to client 10.146.0.45:33000: write tcp 10.128.15.194:37314->10.146.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.45:33000. Will reconnect.
+Failed to send msg to client 10.170.0.30:33000: write tcp 10.128.15.194:56864->10.170.0.30:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.30:33000. Will reconnect.
+Failed to send msg to client 10.166.0.42:33000: write tcp 10.128.15.194:40138->10.166.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.42:33000. Will reconnect.
+Failed to send msg to client 10.168.0.36:33000: write tcp 10.128.15.194:42246->10.168.0.36:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.36:33000. Will reconnect.
+Failed to send msg to client 10.172.0.24:33000: write tcp 10.128.15.194:55034->10.172.0.24:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.24:33000. Will reconnect.
+Failed to send msg to client 10.128.0.53:33000: write tcp 10.128.15.194:60562->10.128.0.53:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.53:33000. Will reconnect.
+Failed to send msg to client 10.138.0.38:33000: write tcp 10.128.15.194:45464->10.138.0.38:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.38:33000. Will reconnect.
+Failed to send msg to client 10.138.0.35:33000: write tcp 10.128.15.194:53556->10.138.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.35:33000. Will reconnect.
+Failed to send msg to client 10.170.0.31:33000: write tcp 10.128.15.194:37476->10.170.0.31:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.31:33000. Will reconnect.
+Failed to send msg to client 10.154.0.17:33000: write tcp 10.128.15.194:36492->10.154.0.17:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.17:33000. Will reconnect.
+Failed to send msg to client 10.138.0.54:33000: write tcp 10.128.15.194:42530->10.138.0.54:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.54:33000. Will reconnect.
+Failed to send msg to client 10.166.0.35:33000: write tcp 10.128.15.194:51354->10.166.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.35:33000. Will reconnect.
+Failed to send msg to client 10.150.0.46:33000: write tcp 10.128.15.194:60316->10.150.0.46:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.46:33000. Will reconnect.
+Failed to send msg to client 10.164.0.34:33000: write tcp 10.128.15.194:47226->10.164.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.34:33000. Will reconnect.
+Failed to send msg to client 10.140.0.42:33000: write tcp 10.128.15.194:41518->10.140.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.42:33000. Will reconnect.
+Failed to send msg to client 10.172.0.151:33000: write tcp 10.128.15.194:60720->10.172.0.151:33000: write: broken pipe
+Detected broken pipe to client 10.172.0.151:33000. Will reconnect.
+Failed to send msg to client 10.164.0.56:33000: write tcp 10.128.15.194:43552->10.164.0.56:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.56:33000. Will reconnect.
+Failed to send msg to client 10.154.0.44:33000: write tcp 10.128.15.194:58230->10.154.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.44:33000. Will reconnect.
+Failed to send msg to client 10.142.0.56:33000: write tcp 10.128.15.194:45202->10.142.0.56:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.56:33000. Will reconnect.
+Failed to send msg to client 10.166.0.54:33000: write tcp 10.128.15.194:48950->10.166.0.54:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.54:33000. Will reconnect.
+Failed to send msg to client 10.164.0.52:33000: write tcp 10.128.15.194:46370->10.164.0.52:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.52:33000. Will reconnect.
+Failed to send msg to client 10.166.0.57:33000: write tcp 10.128.15.194:48516->10.166.0.57:33000: write: broken pipe
+Detected broken pipe to client 10.166.0.57:33000. Will reconnect.
+Failed to send msg to client 10.174.0.51:33000: write tcp 10.128.15.194:35742->10.174.0.51:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.51:33000. Will reconnect.
+Failed to send msg to client 10.168.0.22:33000: write tcp 10.128.15.194:53690->10.168.0.22:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.22:33000. Will reconnect.
+Failed to send msg to client 10.160.0.53:33000: write tcp 10.128.15.194:52664->10.160.0.53:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.53:33000. Will reconnect.
+Failed to send msg to client 10.162.0.37:33000: write tcp 10.128.15.194:45488->10.162.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.37:33000. Will reconnect.
+Failed to send msg to client 10.148.0.40:33000: write tcp 10.128.15.194:46218->10.148.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.148.0.40:33000. Will reconnect.
+Failed to send msg to client 10.162.0.55:33000: write tcp 10.128.15.194:37150->10.162.0.55:33000: write: broken pipe
+Detected broken pipe to client 10.162.0.55:33000. Will reconnect.
+Failed to send msg to client 10.150.0.43:33000: write tcp 10.128.15.194:35960->10.150.0.43:33000: write: broken pipe
+Detected broken pipe to client 10.150.0.43:33000. Will reconnect.
+Failed to send msg to client 10.146.0.42:33000: write tcp 10.128.15.194:49370->10.146.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.42:33000. Will reconnect.
+Failed to send msg to client 10.150.0.33:33000: write tcp 10.128.15.194:34772->10.150.0.33:33000: write: broken pipe
+Detected broken pipe to client 10.150.0.33:33000. Will reconnect.
+Failed to send msg to client 10.172.0.47:33000: write tcp 10.128.15.194:42688->10.172.0.47:33000: write: broken pipe
+Detected broken pipe to client 10.172.0.47:33000. Will reconnect.
+Failed to send msg to client 10.150.0.25:33000: write tcp 10.128.15.194:46248->10.150.0.25:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.25:33000. Will reconnect.
+Failed to send msg to client 10.162.0.49:33000: write tcp 10.128.15.194:40674->10.162.0.49:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.49:33000. Will reconnect.
+Failed to send msg to client 10.142.0.34:33000: write tcp 10.128.15.194:37428->10.142.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.34:33000. Will reconnect.
+Failed to send msg to client 10.172.0.33:33000: write tcp 10.128.15.194:51352->10.172.0.33:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.33:33000. Will reconnect.
+Failed to send msg to client 10.132.0.34:33000: write tcp 10.128.15.194:53760->10.132.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.34:33000. Will reconnect.
+Failed to send msg to client 10.168.0.42:33000: write tcp 10.128.15.194:50436->10.168.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.42:33000. Will reconnect.
+Failed to send msg to client 10.172.0.27:33000: write tcp 10.128.15.194:48158->10.172.0.27:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.27:33000. Will reconnect.
+Failed to send msg to client 10.166.0.59:33000: write tcp 10.128.15.194:35596->10.166.0.59:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.59:33000. Will reconnect.
+Failed to send msg to client 10.150.0.28:33000: write tcp 10.128.15.194:59418->10.150.0.28:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.28:33000. Will reconnect.
+Failed to send msg to client 10.164.0.49:33000: write tcp 10.128.15.194:52508->10.164.0.49:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.49:33000. Will reconnect.
+Failed to send msg to client 10.142.0.43:33000: write tcp 10.128.15.194:34222->10.142.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.43:33000. Will reconnect.
+Failed to send msg to client 10.146.0.55:33000: write tcp 10.128.15.194:50962->10.146.0.55:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.55:33000. Will reconnect.
+Failed to send msg to client 10.150.0.31:33000: write tcp 10.128.15.194:43164->10.150.0.31:33000: write: broken pipe
+Detected broken pipe to client 10.150.0.31:33000. Will reconnect.
+Failed to send msg to client 10.154.0.34:33000: write tcp 10.128.15.194:33852->10.154.0.34:33000: write: broken pipe
+Detected broken pipe to client 10.154.0.34:33000. Will reconnect.
+Failed to send msg to client 10.140.0.44:33000: write tcp 10.128.15.194:54216->10.140.0.44:33000: write: broken pipe
+Detected broken pipe to client 10.140.0.44:33000. Will reconnect.
+Failed to send msg to client 10.162.0.36:33000: write tcp 10.128.15.194:44868->10.162.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.36:33000. Will reconnect.
+Failed to send msg to client 10.142.0.50:33000: write tcp 10.128.15.194:41980->10.142.0.50:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.50:33000. Will reconnect.
+Failed to send msg to client 10.172.0.36:33000: write tcp 10.128.15.194:57408->10.172.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.36:33000. Will reconnect.
+Failed to send msg to client 10.128.0.60:33000: write tcp 10.128.15.194:50462->10.128.0.60:33000: write: broken pipe
+Detected broken pipe to client 10.128.0.60:33000. Will reconnect.
+Failed to send msg to client 10.154.0.56:33000: write tcp 10.128.15.194:45042->10.154.0.56:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.56:33000. Will reconnect.
+Failed to send msg to client 10.142.0.54:33000: write tcp 10.128.15.194:37642->10.142.0.54:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.54:33000. Will reconnect.
+Failed to send msg to client 10.164.0.150:33000: write tcp 10.128.15.194:50874->10.164.0.150:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.150:33000. Will reconnect.
+Failed to send msg to client 10.150.0.22:33000: write tcp 10.128.15.194:46050->10.150.0.22:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.22:33000. Will reconnect.
+Failed to send msg to client 10.172.0.42:33000: write tcp 10.128.15.194:52576->10.172.0.42:33000: write: broken pipe
+Detected broken pipe to client 10.172.0.42:33000. Will reconnect.
+Failed to send msg to client 10.172.0.39:33000: write tcp 10.128.15.194:43298->10.172.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.39:33000. Will reconnect.
+Failed to send msg to client 10.138.0.30:33000: write tcp 10.128.15.194:58470->10.138.0.30:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.30:33000. Will reconnect.
+Failed to send msg to client 10.172.0.22:33000: write tcp 10.128.15.194:46288->10.172.0.22:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.22:33000. Will reconnect.
+Exit mix unable to reach 10.128.0.60:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.151:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.57:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.59:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.32:33000 (tried 3 times)
+Failed to send msg to client 10.142.0.42:33000: write tcp 10.128.15.194:45044->10.142.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.42:33000. Will reconnect.
+Failed to send msg to client 10.150.0.35:33000: write tcp 10.128.15.194:50856->10.150.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.35:33000. Will reconnect.
+Failed to send msg to client 10.154.0.42:33000: write tcp 10.128.15.194:51582->10.154.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.42:33000. Will reconnect.
+Failed to send msg to client 10.154.0.31:33000: write tcp 10.128.15.194:58266->10.154.0.31:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.31:33000. Will reconnect.
+Failed to send msg to client 10.138.0.41:33000: write tcp 10.128.15.194:37512->10.138.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.41:33000. Will reconnect.
+Failed to send msg to client 10.166.0.45:33000: write tcp 10.128.15.194:57052->10.166.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.45:33000. Will reconnect.
+Failed to send msg to client 10.142.0.150:33000: write tcp 10.128.15.194:43946->10.142.0.150:33000: write: broken pipe
+Detected broken pipe to client 10.142.0.150:33000. Will reconnect.
+Failed to send msg to client 10.172.0.29:33000: write tcp 10.128.15.194:56448->10.172.0.29:33000: write: connection reset by peer
+Failed to send msg to client 10.168.0.37:33000: write tcp 10.128.15.194:38806->10.168.0.37:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.37:33000. Will reconnect.
+Detected broken pipe to client 10.172.0.29:33000. Will reconnect.
+Failed to send msg to client 10.150.0.48:33000: write tcp 10.128.15.194:49062->10.150.0.48:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.48:33000. Will reconnect.
+Failed to send msg to client 10.162.0.38:33000: write tcp 10.128.15.194:56622->10.162.0.38:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.38:33000. Will reconnect.
+Failed to send msg to client 10.162.0.35:33000: write tcp 10.128.15.194:48492->10.162.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.35:33000. Will reconnect.
+Failed to send msg to client 10.132.0.31:33000: write tcp 10.128.15.194:52012->10.132.0.31:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.31:33000. Will reconnect.
+Failed to send msg to client 10.154.0.38:33000: write tcp 10.128.15.194:52222->10.154.0.38:33000: write: connection reset by peer
+Failed to send msg to client 10.148.0.38:33000: write tcp 10.128.15.194:48804->10.148.0.38:33000: write: broken pipe
+Detected broken pipe to client 10.148.0.38:33000. Will reconnect.
+Detected broken pipe to client 10.154.0.38:33000. Will reconnect.
+Failed to send msg to client 10.142.0.44:33000: write tcp 10.128.15.194:44192->10.142.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.44:33000. Will reconnect.
+Failed to send msg to client 10.164.0.44:33000: write tcp 10.128.15.194:50350->10.164.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.44:33000. Will reconnect.
+Failed to send msg to client 10.168.0.28:33000: write tcp 10.128.15.194:41146->10.168.0.28:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.28:33000. Will reconnect.
+Failed to send msg to client 10.154.0.52:33000: write tcp 10.128.15.194:36228->10.154.0.52:33000: write: broken pipe
+Detected broken pipe to client 10.154.0.52:33000. Will reconnect.
+Failed to send msg to client 10.154.0.33:33000: write tcp 10.128.15.194:50468->10.154.0.33:33000: write: connection reset by peer
+Failed to send msg to client 10.164.0.60:33000: write tcp 10.128.15.194:34434->10.164.0.60:33000: write: broken pipe
+Detected broken pipe to client 10.164.0.60:33000. Will reconnect.
+Detected broken pipe to client 10.154.0.33:33000. Will reconnect.
+Failed to send msg to client 10.168.0.44:33000: write tcp 10.128.15.194:41574->10.168.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.44:33000. Will reconnect.
+Failed to send msg to client 10.154.0.40:33000: write tcp 10.128.15.194:44144->10.154.0.40:33000: write: broken pipe
+Detected broken pipe to client 10.154.0.40:33000. Will reconnect.
+Failed to send msg to client 10.166.0.49:33000: write tcp 10.128.15.194:34086->10.166.0.49:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.49:33000. Will reconnect.
+Failed to send msg to client 10.174.0.55:33000: write tcp 10.128.15.194:41544->10.174.0.55:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.55:33000. Will reconnect.
+Failed to send msg to client 10.168.0.45:33000: write tcp 10.128.15.194:49706->10.168.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.45:33000. Will reconnect.
+Failed to send msg to client 10.150.0.27:33000: write tcp 10.128.15.194:39258->10.150.0.27:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.27:33000. Will reconnect.
+Failed to send msg to client 10.162.0.51:33000: write tcp 10.128.15.194:38998->10.162.0.51:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.51:33000. Will reconnect.
+Failed to send msg to client 10.166.0.53:33000: write tcp 10.128.15.194:45502->10.166.0.53:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.53:33000. Will reconnect.
+Failed to send msg to client 10.142.0.36:33000: write tcp 10.128.15.194:47156->10.142.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.36:33000. Will reconnect.
+Failed to send msg to client 10.162.0.32:33000: write tcp 10.128.15.194:58742->10.162.0.32:33000: write: broken pipe
+Detected broken pipe to client 10.162.0.32:33000. Will reconnect.
+Failed to send msg to client 10.170.0.150:33000: write tcp 10.128.15.194:48372->10.170.0.150:33000: write: broken pipe
+Detected broken pipe to client 10.170.0.150:33000. Will reconnect.
+Failed to send msg to client 10.164.0.53:33000: write tcp 10.128.15.194:39954->10.164.0.53:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.53:33000. Will reconnect.
+Failed to send msg to client 10.168.0.30:33000: write tcp 10.128.15.194:36200->10.168.0.30:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.30:33000. Will reconnect.
+Failed to send msg to client 10.172.0.30:33000: write tcp 10.128.15.194:54548->10.172.0.30:33000: write: connection reset by peer
+Failed to send msg to client 10.162.0.39:33000: write tcp 10.128.15.194:52976->10.162.0.39:33000: write: broken pipe
+Detected broken pipe to client 10.162.0.39:33000. Will reconnect.
+Detected broken pipe to client 10.172.0.30:33000. Will reconnect.
+Failed to send msg to client 10.140.0.52:33000: write tcp 10.128.15.194:57104->10.140.0.52:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.52:33000. Will reconnect.
+Failed to send msg to client 10.138.0.36:33000: write tcp 10.128.15.194:52456->10.138.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.36:33000. Will reconnect.
+Failed to send msg to client 10.150.15.192:33000: write tcp 10.128.15.194:51134->10.150.15.192:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.15.192:33000. Will reconnect.
+Failed to send msg to client 10.132.0.42:33000: write tcp 10.128.15.194:34538->10.132.0.42:33000: write: broken pipe
+Detected broken pipe to client 10.132.0.42:33000. Will reconnect.
+Failed to send msg to client 10.138.0.55:33000: write tcp 10.128.15.194:34908->10.138.0.55:33000: write: broken pipe
+Detected broken pipe to client 10.138.0.55:33000. Will reconnect.
+Failed to send msg to client 10.172.0.32:33000: write tcp 10.128.15.194:57818->10.172.0.32:33000: write: broken pipe
+Detected broken pipe to client 10.172.0.32:33000. Will reconnect.
+Failed to send msg to client 10.132.0.53:33000: write tcp 10.128.15.194:53152->10.132.0.53:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.53:33000. Will reconnect.
+Failed to send msg to client 10.132.0.52:33000: write tcp 10.128.15.194:49040->10.132.0.52:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.52:33000. Will reconnect.
+Failed to send msg to client 10.172.0.40:33000: write tcp 10.128.15.194:45410->10.172.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.40:33000. Will reconnect.
+Failed to send msg to client 10.168.0.33:33000: write tcp 10.128.15.194:35222->10.168.0.33:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.33:33000. Will reconnect.
+Exit mix unable to reach 10.150.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.150.15.192:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.60:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.55:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.60:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.35:33000 (tried 3 times)
+Failed to send msg to client 10.154.0.39:33000: write tcp 10.128.15.194:35432->10.154.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.39:33000. Will reconnect.
+Failed to send msg to client 10.162.0.40:33000: write tcp 10.128.15.194:33048->10.162.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.40:33000. Will reconnect.
+Failed to send msg to client 10.164.0.54:33000: write tcp 10.128.15.194:58088->10.164.0.54:33000: write: broken pipe
+Detected broken pipe to client 10.164.0.54:33000. Will reconnect.
+Failed to send msg to client 10.140.0.37:33000: write tcp 10.128.15.194:54128->10.140.0.37:33000: write: broken pipe
+Detected broken pipe to client 10.140.0.37:33000. Will reconnect.
+Failed to send msg to client 10.162.0.34:33000: write tcp 10.128.15.194:34294->10.162.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.34:33000. Will reconnect.
+Failed to send msg to client 10.138.0.52:33000: write tcp 10.128.15.194:57266->10.138.0.52:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.52:33000. Will reconnect.
+Failed to send msg to client 10.160.0.32:33000: write tcp 10.128.15.194:54164->10.160.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.32:33000. Will reconnect.
+Failed to send msg to client 10.164.0.57:33000: write tcp 10.128.15.194:42794->10.164.0.57:33000: write: broken pipe
+Detected broken pipe to client 10.164.0.57:33000. Will reconnect.
+Failed to send msg to client 10.132.0.47:33000: write tcp 10.128.15.194:57578->10.132.0.47:33000: write: broken pipe
+Detected broken pipe to client 10.132.0.47:33000. Will reconnect.
+Failed to send msg to client 10.132.0.32:33000: write tcp 10.128.15.194:41554->10.132.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.32:33000. Will reconnect.
+Failed to send msg to client 10.154.0.53:33000: write tcp 10.128.15.194:33616->10.154.0.53:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.53:33000. Will reconnect.
+Failed to send msg to client 10.168.0.38:33000: write tcp 10.128.15.194:51736->10.168.0.38:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.38:33000. Will reconnect.
+Failed to send msg to client 10.154.0.47:33000: write tcp 10.128.15.194:36620->10.154.0.47:33000: write: broken pipe
+Detected broken pipe to client 10.154.0.47:33000. Will reconnect.
+Failed to send msg to client 10.152.0.43:33000: write tcp 10.128.15.194:45652->10.152.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.43:33000. Will reconnect.
+Failed to send msg to client 10.138.0.44:33000: write tcp 10.128.15.194:49956->10.138.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.44:33000. Will reconnect.
+Failed to send msg to client 10.150.0.39:33000: write tcp 10.128.15.194:55346->10.150.0.39:33000: write: broken pipe
+Detected broken pipe to client 10.150.0.39:33000. Will reconnect.
+Failed to send msg to client 10.154.0.51:33000: write tcp 10.128.15.194:36480->10.154.0.51:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.51:33000. Will reconnect.
+Failed to send msg to client 10.162.0.54:33000: write tcp 10.128.15.194:33416->10.162.0.54:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.54:33000. Will reconnect.
+Failed to send msg to client 10.150.0.24:33000: write tcp 10.128.15.194:47066->10.150.0.24:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.24:33000. Will reconnect.
+Failed to send msg to client 10.150.0.26:33000: write tcp 10.128.15.194:45106->10.150.0.26:33000: write: broken pipe
+Detected broken pipe to client 10.150.0.26:33000. Will reconnect.
+Failed to send msg to client 10.150.0.44:33000: write tcp 10.128.15.194:55398->10.150.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.44:33000. Will reconnect.
+Failed to send msg to client 10.146.0.34:33000: write tcp 10.128.15.194:47698->10.146.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.34:33000. Will reconnect.
+Failed to send msg to client 10.168.0.29:33000: write tcp 10.128.15.194:42244->10.168.0.29:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.29:33000. Will reconnect.
+Failed to send msg to client 10.146.0.44:33000: write tcp 10.128.15.194:39482->10.146.0.44:33000: write: broken pipe
+Detected broken pipe to client 10.146.0.44:33000. Will reconnect.
+Failed to send msg to client 10.132.0.57:33000: write tcp 10.128.15.194:36186->10.132.0.57:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.57:33000. Will reconnect.
+Failed to send msg to client 10.166.0.56:33000: write tcp 10.128.15.194:33356->10.166.0.56:33000: write: broken pipe
+Detected broken pipe to client 10.166.0.56:33000. Will reconnect.
+Failed to send msg to client 10.154.0.32:33000: write tcp 10.128.15.194:47026->10.154.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.32:33000. Will reconnect.
+Failed to send msg to client 10.172.0.34:33000: write tcp 10.128.15.194:43570->10.172.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.34:33000. Will reconnect.
+Failed to send msg to client 10.162.0.31:33000: write tcp 10.128.15.194:58252->10.162.0.31:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.31:33000. Will reconnect.
+Exit mix unable to reach 10.150.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.57:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.56:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.57:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.30:33000 (tried 3 times)
+Failed to send msg to client 10.142.0.46:33000: write tcp 10.128.15.194:40106->10.142.0.46:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.46:33000. Will reconnect.
+Failed to send msg to client 10.132.0.43:33000: write tcp 10.128.15.194:55282->10.132.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.43:33000. Will reconnect.
+Failed to send msg to client 10.142.0.35:33000: write tcp 10.128.15.194:47906->10.142.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.35:33000. Will reconnect.
+Failed to send msg to client 10.154.0.41:33000: write tcp 10.128.15.194:33616->10.154.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.41:33000. Will reconnect.
+Failed to send msg to client 10.162.0.52:33000: write tcp 10.128.15.194:44484->10.162.0.52:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.52:33000. Will reconnect.
+Failed to send msg to client 10.168.0.46:33000: write tcp 10.128.15.194:45304->10.168.0.46:33000: write: broken pipe
+Detected broken pipe to client 10.168.0.46:33000. Will reconnect.
+Failed to send msg to client 10.166.0.40:33000: write tcp 10.128.15.194:43644->10.166.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.40:33000. Will reconnect.
+Failed to send msg to client 10.150.0.41:33000: write tcp 10.128.15.194:49848->10.150.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.41:33000. Will reconnect.
+Failed to send msg to client 10.132.0.39:33000: write tcp 10.128.15.194:36402->10.132.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.39:33000. Will reconnect.
+Failed to send msg to client 10.128.0.41:33000: write tcp 10.128.15.194:34044->10.128.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.41:33000. Will reconnect.
+Failed to send msg to client 10.138.0.34:33000: write tcp 10.128.15.194:43550->10.138.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.34:33000. Will reconnect.
+Failed to send msg to client 10.162.0.47:33000: write tcp 10.128.15.194:57882->10.162.0.47:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.47:33000. Will reconnect.
+Failed to send msg to client 10.166.0.150:33000: write tcp 10.128.15.194:38592->10.166.0.150:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.150:33000. Will reconnect.
+Failed to send msg to client 10.166.0.58:33000: write tcp 10.128.15.194:51348->10.166.0.58:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.58:33000. Will reconnect.
+Failed to send msg to client 10.128.0.46:33000: write tcp 10.128.15.194:49610->10.128.0.46:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.46:33000. Will reconnect.
+Failed to send msg to client 10.166.0.149:33000: write tcp 10.128.15.194:58928->10.166.0.149:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.149:33000. Will reconnect.
+Failed to send msg to client 10.166.0.47:33000: write tcp 10.128.15.194:37904->10.166.0.47:33000: write: connection reset by peer
+Detected broken pipe to client 10.166.0.47:33000. Will reconnect.
+Failed to send msg to client 10.132.0.51:33000: write tcp 10.128.15.194:60128->10.132.0.51:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.51:33000. Will reconnect.
+Failed to send msg to client 10.146.0.40:33000: write tcp 10.128.15.194:37188->10.146.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.40:33000. Will reconnect.
+Failed to send msg to client 10.174.0.40:33000: write tcp 10.128.15.194:49936->10.174.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.40:33000. Will reconnect.
+Failed to send msg to client 10.164.0.40:33000: write tcp 10.128.15.194:37708->10.164.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.164.0.40:33000. Will reconnect.
+Failed to send msg to client 10.166.0.38:33000: write tcp 10.128.15.194:34430->10.166.0.38:33000: write: broken pipe
+Detected broken pipe to client 10.166.0.38:33000. Will reconnect.
+Exit mix unable to reach 10.128.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.52:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.51:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.58:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.149:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.53:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.35:33000 (tried 3 times)
+Failed to send msg to client 10.152.0.36:33000: write tcp 10.128.15.194:59530->10.152.0.36:33000: write: broken pipe
+Detected broken pipe to client 10.152.0.36:33000. Will reconnect.
+Failed to send msg to client 10.150.0.38:33000: write tcp 10.128.15.194:47730->10.150.0.38:33000: write: broken pipe
+Detected broken pipe to client 10.150.0.38:33000. Will reconnect.
+Failed to send msg to client 10.154.0.43:33000: write tcp 10.128.15.194:56210->10.154.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.154.0.43:33000. Will reconnect.
+Failed to send msg to client 10.152.0.44:33000: write tcp 10.128.15.194:37466->10.152.0.44:33000: write: broken pipe
+Detected broken pipe to client 10.152.0.44:33000. Will reconnect.
+Failed to send msg to client 10.138.0.50:33000: write tcp 10.128.15.194:47924->10.138.0.50:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.50:33000. Will reconnect.
+Failed to send msg to client 10.172.0.37:33000: write tcp 10.128.15.194:40418->10.172.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.37:33000. Will reconnect.
+Failed to send msg to client 10.132.0.37:33000: write tcp 10.128.15.194:40756->10.132.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.37:33000. Will reconnect.
+Failed to send msg to client 10.154.0.150:33000: write tcp 10.128.15.194:37400->10.154.0.150:33000: write: broken pipe
+Detected broken pipe to client 10.154.0.150:33000. Will reconnect.
+Failed to send msg to client 10.174.0.39:33000: write tcp 10.128.15.194:54286->10.174.0.39:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.39:33000. Will reconnect.
+Failed to send msg to client 10.172.0.38:33000: write tcp 10.128.15.194:52472->10.172.0.38:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.38:33000. Will reconnect.
+Failed to send msg to client 10.150.0.23:33000: write tcp 10.128.15.194:33878->10.150.0.23:33000: write: broken pipe
+Detected broken pipe to client 10.150.0.23:33000. Will reconnect.
+Failed to send msg to client 10.128.0.59:33000: write tcp 10.128.15.194:46312->10.128.0.59:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.59:33000. Will reconnect.
+Failed to send msg to client 10.128.0.37:33000: write tcp 10.128.15.194:39668->10.128.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.37:33000. Will reconnect.
+Failed to send msg to client 10.142.0.30:33000: write tcp 10.128.15.194:52074->10.142.0.30:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.30:33000. Will reconnect.
+Failed to send msg to client 10.128.0.49:33000: write tcp 10.128.15.194:49018->10.128.0.49:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.49:33000. Will reconnect.
+Failed to send msg to client 10.150.0.42:33000: write tcp 10.128.15.194:51964->10.150.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.150.0.42:33000. Will reconnect.
+Exit mix unable to reach 10.128.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.49:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.59:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.50:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.150:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.36:33000 (tried 3 times)
+Failed to send msg to client 10.172.0.35:33000: write tcp 10.128.15.194:37570->10.172.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.172.0.35:33000. Will reconnect.
+Failed to send msg to client 10.142.0.37:33000: write tcp 10.128.15.194:51062->10.142.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.142.0.37:33000. Will reconnect.
+Failed to send msg to client 10.154.0.45:33000: write tcp 10.128.15.194:58622->10.154.0.45:33000: write: broken pipe
+Detected broken pipe to client 10.154.0.45:33000. Will reconnect.
+Failed to send msg to client 10.138.0.37:33000: write tcp 10.128.15.194:60990->10.138.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.37:33000. Will reconnect.
+Failed to send msg to client 10.132.0.54:33000: write tcp 10.128.15.194:41134->10.132.0.54:33000: write: connection reset by peer
+Detected broken pipe to client 10.132.0.54:33000. Will reconnect.
+Failed to send msg to client 10.162.0.46:33000: write tcp 10.128.15.194:45160->10.162.0.46:33000: write: connection reset by peer
+Detected broken pipe to client 10.162.0.46:33000. Will reconnect.
+Exit mix unable to reach 10.162.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.54:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.48:33000 (tried 3 times)
+Failed to send msg to client 10.128.0.40:33000: write tcp 10.128.15.194:60308->10.128.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.128.0.40:33000. Will reconnect.
+Exit mix unable to reach 10.128.0.40:33000 (tried 3 times)
+Non-entry mix received stop message, completing metrics collection.

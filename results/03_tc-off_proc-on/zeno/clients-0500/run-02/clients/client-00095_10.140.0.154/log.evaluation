@@ -1,0 +1,109 @@
+Waiting for PKI messages...
+
+Connected to PKI at 10.156.0.37:33000.
+
+Registered at PKI, waiting for mix election to finish
+PKI mix candidates broadcast received!
+Upcoming cascades matrix:
+	CASCADE 0: mixnet-00508@10.174.0.227:33000 => mixnet-00509@10.132.15.227:33000 => mixnet-00511@10.172.15.227:33000 => mixnet-00501@10.146.15.227:33000 => mixnet-00519@10.132.15.228:33000 => mixnet-00512@10.164.0.227:33000 => mixnet-00515@10.154.15.227:33000
+	CASCADE 1: mixnet-00518@10.138.0.227:33000 => mixnet-00502@10.138.0.226:33000 => mixnet-00510@10.148.0.228:33000 => mixnet-00517@10.142.15.226:33000 => mixnet-00505@10.152.15.225:33000 => mixnet-00521@10.142.15.227:33000 => mixnet-00507@10.160.15.225:33000
+	CASCADE 2: mixnet-00504@10.166.15.225:33000 => mixnet-00520@10.148.0.229:33000 => mixnet-00506@10.140.15.226:33000 => mixnet-00514@10.150.15.225:33000 => mixnet-00513@10.168.15.227:33000 => mixnet-00503@10.162.15.225:33000 => mixnet-00516@10.170.15.226:33000
+
+Mixes determined, waiting for clients to be broadcast.
+PKI clients broadcast received!
+Found partner of this node: 'client-00096'@'10.138.0.154:33000' => '1680247427a45e89d5fea7867222f8ee329710fa428d8e01857c59279d6a004d'
+Failed connecting to entry mix 10.174.0.227:33000 via TLS: dial tcp 10.174.0.227:33000: connect: connection refused
+@00001> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00002> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00003> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00004> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00005> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00006> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00007> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00008> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Failed decoding incoming message from 10.170.15.226:58978: EOF
+Exit mix at 10.170.15.226:58978 seems to have disappeared, closing connection.
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Failed decoding incoming message from 10.160.15.225:51090: EOF
+Exit mix at 10.160.15.225:51090 seems to have disappeared, closing connection.
+@00009> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00011> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00010> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00012> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00014> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00015> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00013> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00017> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00019> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00016> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00018> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00020> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00021> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00022> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00024> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00023> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00026> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00025> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00027> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00028> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00029> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00030> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00033> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00032> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00031> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00034> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00036> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00038> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00037> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00035> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00040> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00041> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00039> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00043> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00042> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00045> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00044> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00046> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00047> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00048> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+@00049> All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se
+Number of messages to receive reached (want: 25, saw: 49), exiting.

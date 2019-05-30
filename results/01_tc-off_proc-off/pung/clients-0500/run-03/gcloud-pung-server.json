@@ -1,0 +1,14 @@
+{
+	"Name": "mixnet-00501",
+	"Partner": "irrelevant",
+	"Zone": "asia-northeast2-b",
+	"MinCPUPlatform": "Intel Skylake",
+	"MachineType": "n1-highmem-16",
+	"TypeOfNode": "server",
+	"EvaluationScript": "pung_server_eval.sh",
+	"BinaryName": "pung-server",
+	"SourceImage": "acs",
+	"DiskType": "pd-ssd",
+	"DiskSize": "10",
+	"NetTroublesIfApplied": "none"
+}

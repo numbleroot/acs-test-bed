@@ -1,0 +1,666 @@
+Waiting for PKI messages...
+
+Connected to PKI at 10.156.15.218:33000.
+
+Registered at PKI, waiting for mix election to finish
+PKI mix candidates broadcast received!
+Upcoming cascades matrix:
+	CASCADE 0: mixnet-00520@10.164.0.150:33000 => mixnet-00504@10.132.0.150:33000 => mixnet-00516@10.168.0.150:33000 => mixnet-00503@10.128.0.150:33000 => mixnet-00514@10.170.0.150:33000 => mixnet-00515@10.164.0.149:33000 => mixnet-00518@10.138.15.194:33000
+	CASCADE 1: mixnet-00513@10.148.0.150:33000 => mixnet-00510@10.150.15.193:33000 => mixnet-00512@10.142.0.150:33000 => mixnet-00501@10.172.0.151:33000 => mixnet-00507@10.154.0.150:33000 => mixnet-00506@10.146.0.150:33000 => mixnet-00502@10.140.0.151:33000
+	CASCADE 2: mixnet-00521@10.166.0.150:33000 => mixnet-00509@10.152.0.150:33000 => mixnet-00511@10.162.0.151:33000 => mixnet-00519@10.174.0.150:33000 => mixnet-00505@10.160.0.150:33000 => mixnet-00508@10.166.0.149:33000 => mixnet-00517@10.174.0.49:33000
+Node 10.174.0.49:33000 has been elected to be a mix.
+
+Mixes determined, waiting for clients to be broadcast.
+PKI clients broadcast received!
+mixnet-00517@10.174.0.49:33000:  OwnChain=2, OwnIndex=6, IsEntry=false, IsExit=true
+Exit mix unable to reach 10.148.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.42:33000 (tried 3 times)
+Failed to send msg to client 10.174.0.45:33000: write tcp 10.174.0.49:41354->10.174.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.45:33000. Will reconnect.
+Exit mix unable to reach 10.174.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.22:33000 (tried 3 times)
+Failed to send msg to client 10.146.0.19:33000: write tcp 10.174.0.49:33200->10.146.0.19:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.19:33000. Will reconnect.
+Exit mix unable to reach 10.146.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.16:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.41:33000 (tried 3 times)
+Failed to send msg to client 10.140.0.31:33000: write tcp 10.174.0.49:45758->10.140.0.31:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.31:33000. Will reconnect.
+Failed to send msg to client 10.160.0.35:33000: write tcp 10.174.0.49:37606->10.160.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.35:33000. Will reconnect.
+Failed to send msg to client 10.140.0.22:33000: write tcp 10.174.0.49:60172->10.140.0.22:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.22:33000. Will reconnect.
+Failed to send msg to client 10.160.0.41:33000: write tcp 10.174.0.49:40830->10.160.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.41:33000. Will reconnect.
+Failed to send msg to client 10.146.0.37:33000: write tcp 10.174.0.49:41594->10.146.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.37:33000. Will reconnect.
+Exit mix unable to reach 10.146.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.35:33000 (tried 3 times)
+Failed to send msg to client 10.174.0.12:33000: write tcp 10.174.0.49:54996->10.174.0.12:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.12:33000. Will reconnect.
+Failed to send msg to client 10.160.0.18:33000: write tcp 10.174.0.49:44312->10.160.0.18:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.18:33000. Will reconnect.
+Failed to send msg to client 10.148.0.27:33000: write tcp 10.174.0.49:37812->10.148.0.27:33000: write: connection reset by peer
+Detected broken pipe to client 10.148.0.27:33000. Will reconnect.
+Failed to send msg to client 10.170.0.16:33000: write tcp 10.174.0.49:44188->10.170.0.16:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.16:33000. Will reconnect.
+Failed to send msg to client 10.146.0.40:33000: write tcp 10.174.0.49:38006->10.146.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.40:33000. Will reconnect.
+Failed to send msg to client 10.152.0.31:33000: write tcp 10.174.0.49:45460->10.152.0.31:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.31:33000. Will reconnect.
+Exit mix unable to reach 10.174.0.12:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.16:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.37:33000 (tried 3 times)
+Failed to send msg to client 10.140.0.45:33000: write tcp 10.174.0.49:36380->10.140.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.45:33000. Will reconnect.
+Failed to send msg to client 10.146.0.38:33000: write tcp 10.174.0.49:36720->10.146.0.38:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.38:33000. Will reconnect.
+Failed to send msg to client 10.174.0.28:33000: write tcp 10.174.0.49:45546->10.174.0.28:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.28:33000. Will reconnect.
+Failed to send msg to client 10.152.0.28:33000: write tcp 10.174.0.49:57904->10.152.0.28:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.28:33000. Will reconnect.
+Failed to send msg to client 10.160.0.31:33000: write tcp 10.174.0.49:52960->10.160.0.31:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.31:33000. Will reconnect.
+Failed to send msg to client 10.170.0.44:33000: write tcp 10.174.0.49:59400->10.170.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.44:33000. Will reconnect.
+Failed to send msg to client 10.152.0.46:33000: write tcp 10.174.0.49:36680->10.152.0.46:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.46:33000. Will reconnect.
+Failed to send msg to client 10.160.0.21:33000: write tcp 10.174.0.49:52044->10.160.0.21:33000: write: broken pipe
+Detected broken pipe to client 10.160.0.21:33000. Will reconnect.
+Failed to send msg to client 10.152.0.36:33000: write tcp 10.174.0.49:37236->10.152.0.36:33000: write: broken pipe
+Detected broken pipe to client 10.152.0.36:33000. Will reconnect.
+Failed to send msg to client 10.140.0.41:33000: write tcp 10.174.0.49:37478->10.140.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.41:33000. Will reconnect.
+Failed to send msg to client 10.146.0.17:33000: write tcp 10.174.0.49:36104->10.146.0.17:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.17:33000. Will reconnect.
+Failed to send msg to client 10.152.0.45:33000: write tcp 10.174.0.49:45606->10.152.0.45:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.45:33000. Will reconnect.
+Failed to send msg to client 10.174.0.43:33000: write tcp 10.174.0.49:47918->10.174.0.43:33000: write: broken pipe
+Detected broken pipe to client 10.174.0.43:33000. Will reconnect.
+Exit mix unable to reach 10.174.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.11:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.14:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.13:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.14:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.16:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.14:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.14:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.37:33000 (tried 3 times)
+Failed to send msg to client 10.170.0.33:33000: write tcp 10.174.0.49:51692->10.170.0.33:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.33:33000. Will reconnect.
+Failed to send msg to client 10.140.0.30:33000: write tcp 10.174.0.49:60032->10.140.0.30:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.30:33000. Will reconnect.
+Failed to send msg to client 10.170.0.28:33000: write tcp 10.174.0.49:59504->10.170.0.28:33000: write: broken pipe
+Detected broken pipe to client 10.170.0.28:33000. Will reconnect.
+Failed to send msg to client 10.160.0.26:33000: write tcp 10.174.0.49:56470->10.160.0.26:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.26:33000. Will reconnect.
+Failed to send msg to client 10.148.0.40:33000: write tcp 10.174.0.49:43166->10.148.0.40:33000: write: connection reset by peer
+Detected broken pipe to client 10.148.0.40:33000. Will reconnect.
+Failed to send msg to client 10.174.0.48:33000: write tcp 10.174.0.49:50808->10.174.0.48:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.48:33000. Will reconnect.
+Exit mix unable to reach 10.174.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.14:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.15:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.48:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.16:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.15:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.13:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.25:33000 (tried 3 times)
+Failed to send msg to client 10.168.0.32:33000: write tcp 10.174.0.49:39686->10.168.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.32:33000. Will reconnect.
+Failed to send msg to client 10.152.0.18:33000: write tcp 10.174.0.49:55052->10.152.0.18:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.18:33000. Will reconnect.
+Failed to send msg to client 10.160.0.33:33000: write tcp 10.174.0.49:48342->10.160.0.33:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.33:33000. Will reconnect.
+Failed to send msg to client 10.152.0.26:33000: write tcp 10.174.0.49:47834->10.152.0.26:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.26:33000. Will reconnect.
+Failed to send msg to client 10.174.0.27:33000: write tcp 10.174.0.49:51308->10.174.0.27:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.27:33000. Will reconnect.
+Failed to send msg to client 10.170.0.41:33000: write tcp 10.174.0.49:51174->10.170.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.41:33000. Will reconnect.
+Failed to send msg to client 10.140.0.33:33000: write tcp 10.174.0.49:44822->10.140.0.33:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.33:33000. Will reconnect.
+Failed to send msg to client 10.152.0.44:33000: write tcp 10.174.0.49:42944->10.152.0.44:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.44:33000. Will reconnect.
+Failed to send msg to client 10.152.0.35:33000: write tcp 10.174.0.49:37896->10.152.0.35:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.35:33000. Will reconnect.
+Failed to send msg to client 10.160.0.42:33000: write tcp 10.174.0.49:55452->10.160.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.42:33000. Will reconnect.
+Failed to send msg to client 10.160.0.36:33000: write tcp 10.174.0.49:53422->10.160.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.36:33000. Will reconnect.
+Failed to send msg to client 10.146.0.29:33000: write tcp 10.174.0.49:45464->10.146.0.29:33000: write: broken pipe
+Detected broken pipe to client 10.146.0.29:33000. Will reconnect.
+Failed to send msg to client 10.146.0.34:33000: write tcp 10.174.0.49:52896->10.146.0.34:33000: write: broken pipe
+Detected broken pipe to client 10.146.0.34:33000. Will reconnect.
+Exit mix unable to reach 10.174.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.16:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.44:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.37:33000 (tried 3 times)
+Failed to send msg to client 10.140.0.34:33000: write tcp 10.174.0.49:44484->10.140.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.34:33000. Will reconnect.
+Failed to send msg to client 10.174.0.23:33000: write tcp 10.174.0.49:56142->10.174.0.23:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.23:33000. Will reconnect.
+Failed to send msg to client 10.146.0.22:33000: write tcp 10.174.0.49:49596->10.146.0.22:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.22:33000. Will reconnect.
+Failed to send msg to client 10.174.0.31:33000: write tcp 10.174.0.49:41732->10.174.0.31:33000: write: connection reset by peer
+Failed to send msg to client 10.174.0.32:33000: write tcp 10.174.0.49:60924->10.174.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.32:33000. Will reconnect.
+Detected broken pipe to client 10.174.0.31:33000. Will reconnect.
+Failed to send msg to client 10.152.0.22:33000: write tcp 10.174.0.49:45184->10.152.0.22:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.22:33000. Will reconnect.
+Failed to send msg to client 10.152.0.37:33000: write tcp 10.174.0.49:39926->10.152.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.37:33000. Will reconnect.
+Failed to send msg to client 10.138.0.30:33000: write tcp 10.174.0.49:44624->10.138.0.30:33000: write: broken pipe
+Detected broken pipe to client 10.138.0.30:33000. Will reconnect.
+Failed to send msg to client 10.152.0.24:33000: write tcp 10.174.0.49:42456->10.152.0.24:33000: write: broken pipe
+Detected broken pipe to client 10.152.0.24:33000. Will reconnect.
+Exit mix unable to reach 10.174.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.23:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.15:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.10:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.39:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.46:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.35:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.28:33000 (tried 3 times)
+Failed to send msg to client 10.160.0.27:33000: write tcp 10.174.0.49:34894->10.160.0.27:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.27:33000. Will reconnect.
+Failed to send msg to client 10.174.0.47:33000: write tcp 10.174.0.49:44524->10.174.0.47:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.47:33000. Will reconnect.
+Failed to send msg to client 10.174.0.29:33000: write tcp 10.174.0.49:35746->10.174.0.29:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.29:33000. Will reconnect.
+Failed to send msg to client 10.152.0.17:33000: write tcp 10.174.0.49:51968->10.152.0.17:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.17:33000. Will reconnect.
+Failed to send msg to client 10.160.0.43:33000: write tcp 10.174.0.49:46478->10.160.0.43:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.43:33000. Will reconnect.
+Failed to send msg to client 10.160.0.20:33000: write tcp 10.174.0.49:41992->10.160.0.20:33000: write: broken pipe
+Detected broken pipe to client 10.160.0.20:33000. Will reconnect.
+Failed to send msg to client 10.170.0.15:33000: write tcp 10.174.0.49:52930->10.170.0.15:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.15:33000. Will reconnect.
+Failed to send msg to client 10.148.0.41:33000: write tcp 10.174.0.49:46672->10.148.0.41:33000: write: connection reset by peer
+Detected broken pipe to client 10.148.0.41:33000. Will reconnect.
+Exit mix unable to reach 10.174.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.47:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.15:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.43:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.162.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.31:33000 (tried 3 times)
+Exit mix unable to reach 10.128.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.45:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.36:33000 (tried 3 times)
+Failed to send msg to client 10.140.0.38:33000: write tcp 10.174.0.49:42292->10.140.0.38:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.38:33000. Will reconnect.
+Failed to send msg to client 10.170.0.32:33000: write tcp 10.174.0.49:57900->10.170.0.32:33000: write: connection reset by peer
+Detected broken pipe to client 10.170.0.32:33000. Will reconnect.
+Exit mix unable to reach 10.140.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.32:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.2:33000 (tried 3 times)
+Exit mix unable to reach 10.148.0.38:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.28:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.19:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.13:33000 (tried 3 times)
+Exit mix unable to reach 10.150.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.142.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.146.0.18:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.33:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.154.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.30:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.15:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.24:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.20:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.21:33000 (tried 3 times)
+Failed to send msg to client 10.152.0.42:33000: write tcp 10.174.0.49:44676->10.152.0.42:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.42:33000. Will reconnect.
+Failed to send msg to client 10.152.0.25:33000: write tcp 10.174.0.49:43264->10.152.0.25:33000: write: broken pipe
+Detected broken pipe to client 10.152.0.25:33000. Will reconnect.
+Failed to send msg to client 10.160.0.22:33000: write tcp 10.174.0.49:41952->10.160.0.22:33000: write: connection reset by peer
+Detected broken pipe to client 10.160.0.22:33000. Will reconnect.
+Failed to send msg to client 10.168.0.36:33000: write tcp 10.174.0.49:48072->10.168.0.36:33000: write: connection reset by peer
+Detected broken pipe to client 10.168.0.36:33000. Will reconnect.
+Failed to send msg to client 10.152.0.21:33000: write tcp 10.174.0.49:34902->10.152.0.21:33000: write: connection reset by peer
+Detected broken pipe to client 10.152.0.21:33000. Will reconnect.
+Failed to send msg to client 10.146.0.42:33000: write tcp 10.174.0.49:34294->10.146.0.42:33000: write: broken pipe
+Detected broken pipe to client 10.146.0.42:33000. Will reconnect.
+Exit mix unable to reach 10.146.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.36:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.25:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.17:33000 (tried 3 times)
+Exit mix unable to reach 10.170.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.40:33000 (tried 3 times)
+Exit mix unable to reach 10.160.0.37:33000 (tried 3 times)
+Exit mix unable to reach 10.168.0.13:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.22:33000 (tried 3 times)
+Exit mix unable to reach 10.132.0.41:33000 (tried 3 times)
+Exit mix unable to reach 10.152.0.27:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.172.0.21:33000 (tried 3 times)
+Exit mix unable to reach 10.164.0.47:33000 (tried 3 times)
+Failed to send msg to client 10.174.0.26:33000: write tcp 10.174.0.49:34418->10.174.0.26:33000: write: connection reset by peer
+Detected broken pipe to client 10.174.0.26:33000. Will reconnect.
+Failed to send msg to client 10.140.0.29:33000: write tcp 10.174.0.49:44830->10.140.0.29:33000: write: connection reset by peer
+Detected broken pipe to client 10.140.0.29:33000. Will reconnect.
+Failed to send msg to client 10.138.0.34:33000: write tcp 10.174.0.49:40752->10.138.0.34:33000: write: connection reset by peer
+Detected broken pipe to client 10.138.0.34:33000. Will reconnect.
+Exit mix unable to reach 10.174.0.26:33000 (tried 3 times)
+Exit mix unable to reach 10.140.0.29:33000 (tried 3 times)
+Exit mix unable to reach 10.138.0.34:33000 (tried 3 times)
+Exit mix unable to reach 10.174.0.42:33000 (tried 3 times)
+Exit mix unable to reach 10.166.0.38:33000 (tried 3 times)
+Failed to send msg to client 10.148.0.37:33000: write tcp 10.174.0.49:56052->10.148.0.37:33000: write: connection reset by peer
+Detected broken pipe to client 10.148.0.37:33000. Will reconnect.
+Exit mix unable to reach 10.148.0.37:33000 (tried 3 times)
+Failed to send msg to client 10.146.0.30:33000: write tcp 10.174.0.49:35796->10.146.0.30:33000: write: connection reset by peer
+Detected broken pipe to client 10.146.0.30:33000. Will reconnect.
+Exit mix unable to reach 10.146.0.30:33000 (tried 3 times)
+Non-entry mix received stop message, completing metrics collection.
