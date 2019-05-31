@@ -86,33 +86,36 @@ func (run *Run) AddMsgsPerMix(runServersPath string) error {
 
 func (set *Setting) MsgsPerMixToFile(path string) error {
 
-	for i := range set.Runs {
+	if strings.Contains(path, "/zeno/") {
 
-		runPlotPath := filepath.Join(path, fmt.Sprintf("run-%02d", i), "msgs-per-mix_first-to-last-round.data")
+		for i := range set.Runs {
 
-		msgsPerMixFile, err := os.OpenFile(runPlotPath, (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
-		if err != nil {
-			return err
-		}
-		defer msgsPerMixFile.Close()
-		defer msgsPerMixFile.Sync()
+			runPlotPath := filepath.Join(path, (fmt.Sprintf("run-%02d", (i + 1))), "msgs-per-mix_first-to-last-round.data")
 
-		// Prefix list of metrics with labels.
-		fmt.Fprintf(msgsPerMixFile, "%s\n", strings.Join(set.Runs[i].Mixes, ","))
+			msgsPerMixFile, err := os.OpenFile(runPlotPath, (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+			if err != nil {
+				return err
+			}
+			defer msgsPerMixFile.Close()
+			defer msgsPerMixFile.Sync()
 
-		for j := range set.Runs[i].MsgsPerMix {
+			// Prefix list of metrics with labels.
+			fmt.Fprintf(msgsPerMixFile, "%s\n", strings.Join(set.Runs[i].Mixes, ","))
 
-			values := ""
-			for k := 0; k < len(set.Runs[i].MsgsPerMix[j]); k++ {
+			for j := range set.Runs[i].MsgsPerMix {
 
-				if values == "" {
-					values = fmt.Sprintf("%d", set.Runs[i].MsgsPerMix[j][k])
-				} else {
-					values = fmt.Sprintf("%s,%d", values, set.Runs[i].MsgsPerMix[j][k])
+				// Start each subsequent line with first metrics
+				// value for that corresponding mix.
+				fmt.Fprintf(msgsPerMixFile, "%d", set.Runs[i].MsgsPerMix[j][0])
+
+				for k := 1; k < len(set.Runs[i].MsgsPerMix[j]); k++ {
+					fmt.Fprintf(msgsPerMixFile, ",%d", set.Runs[i].MsgsPerMix[j][k])
 				}
+
+				fmt.Fprintf(msgsPerMixFile, "\n")
 			}
 
-			fmt.Fprintln(msgsPerMixFile, values)
+			fmt.Fprintf(msgsPerMixFile, "\n")
 		}
 	}
 

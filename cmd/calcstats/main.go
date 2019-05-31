@@ -60,8 +60,12 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		TimestampHighest:           0,
 		ClientsSentKiBytesHighest:  make([]float64, 0, 1000),
 		ClientsRecvdKiBytesHighest: make([]float64, 0, 1000),
-		ServersSentKiBytesHighest:  make([]float64, 0, 1000),
-		ServersRecvdKiBytesHighest: make([]float64, 0, 1000),
+		ClientsCPULoad:             make([]float64, 0, 50000),
+		ClientsMemLoad:             make([]float64, 0, 50000),
+		ServersSentKiBytesHighest:  make([]float64, 0, 50),
+		ServersRecvdKiBytesHighest: make([]float64, 0, 50),
+		ServersCPULoad:             make([]float64, 0, 50000),
+		ServersMemLoad:             make([]float64, 0, 50000),
 	}
 
 	clientsPath := filepath.Join(runPath, "clients")
@@ -72,16 +76,20 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 	// latency metrics.
 	err := run.AddLatency(clientsPath, numMsgsToCalc)
 	if err != nil {
-		fmt.Printf("Ingesting client message latency metrics failed: %v\n", err)
+		fmt.Printf("Ingesting clients message latency metrics failed: %v\n", err)
 		os.Exit(1)
 	}
+
+	fmt.Printf("Done adding clients latency for %s\n", runPath)
 
 	// Read into memory system metrics from clients.
 	err = run.AddSentBytes(clientsPath, true)
 	if err != nil {
-		fmt.Printf("Ingesting client sent kibytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting clients sent kibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
+
+	fmt.Printf("Done adding clients sent bytes for %s\n", runPath)
 
 	err = run.AddRecvdBytes(clientsPath, true)
 	if err != nil {
@@ -89,55 +97,67 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	/*
-		err = run.AddCPULoad(clientsPath, true)
-		if err != nil {
-			fmt.Printf("Ingesting client CPU load metrics failed: %v\n", err)
-			os.Exit(1)
-		}
+	fmt.Printf("Done adding clients received bytes for %s\n", runPath)
 
-		err = run.AddMemLoad(clientsPath, true)
-		if err != nil {
-			fmt.Printf("Ingesting client memory load metrics failed: %v\n", err)
-			os.Exit(1)
-		}
-	*/
+	err = run.AddCPULoad(clientsPath, true)
+	if err != nil {
+		fmt.Printf("Ingesting clients CPU load metrics failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Done adding clients CPU load for %s\n", runPath)
+
+	err = run.AddMemLoad(clientsPath, true)
+	if err != nil {
+		fmt.Printf("Ingesting clients memory load metrics failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Done adding clients mem load for %s\n", runPath)
 
 	// Read into memory system metrics from servers.
 	err = run.AddSentBytes(serversPath, false)
 	if err != nil {
-		fmt.Printf("Ingesting server sent kibytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting servers sent kibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
+
+	fmt.Printf("Done adding servers sent bytes for %s\n", runPath)
 
 	err = run.AddRecvdBytes(serversPath, false)
 	if err != nil {
-		fmt.Printf("Ingesting server received kibytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting servers received kibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	/*
-		err = run.AddCPULoad(serversPath, false)
-		if err != nil {
-			fmt.Printf("Ingesting server CPU load metrics failed: %v\n", err)
-			os.Exit(1)
-		}
+	fmt.Printf("Done adding servers received bytes for %s\n", runPath)
 
-		err = run.AddMemLoad(serversPath, false)
-		if err != nil {
-			fmt.Printf("Ingesting server memory load metrics failed: %v\n", err)
-			os.Exit(1)
-		}
+	err = run.AddCPULoad(serversPath, false)
+	if err != nil {
+		fmt.Printf("Ingesting servers CPU load metrics failed: %v\n", err)
+		os.Exit(1)
+	}
 
-		// If this is zeno being evaluated, also read
-		// in metrics about the number of messages in
-		// each pool.
-		err = run.AddMsgsPerMix(serversPath)
-		if err != nil {
-			fmt.Printf("Ingesting server sent bytes metrics failed: %v\n", err)
-			os.Exit(1)
-		}
-	*/
+	fmt.Printf("Done adding servers CPU load for %s\n", runPath)
+
+	err = run.AddMemLoad(serversPath, false)
+	if err != nil {
+		fmt.Printf("Ingesting servers memory load metrics failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Done adding servers mem load for %s\n", runPath)
+
+	// If this is zeno being evaluated, also read
+	// in metrics about the number of messages in
+	// each pool.
+	err = run.AddMsgsPerMix(serversPath)
+	if err != nil {
+		fmt.Printf("Ingesting server sent bytes metrics failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	fmt.Printf("Done adding servers messages per mix for %s\n\n", runPath)
 
 	// Append newly created run to all runs.
 	set.Runs = append(set.Runs, run)
@@ -151,13 +171,15 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	/*
-		// Write load data for clients and servers.
-		err = set.LoadToFiles(settingsPath)
-		if err != nil {
-			return err
-		}
-	*/
+	fmt.Printf("Done writing bandwidth to files for %s\n", settingsPath)
+
+	// Write load data for clients and servers.
+	err = set.LoadToFiles(settingsPath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Done writing load to files for %s\n", settingsPath)
 
 	// Write message latencies for clients.
 	err = set.LatenciesToFile(settingsPath)
@@ -165,13 +187,16 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	/*
-		// Write messages-per-mix data for servers.
-		err = set.MsgsPerMixToFile(settingsPath)
-		if err != nil {
-			return err
-		}
-	*/
+	fmt.Printf("Done writing latencies to files for %s\n", settingsPath)
+
+	// Write messages-per-mix data for mix nodes
+	// in a zeno evaluation.
+	err = set.MsgsPerMixToFile(settingsPath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Done writing messages per mix to files for %s\n\n", settingsPath)
 
 	return nil
 }

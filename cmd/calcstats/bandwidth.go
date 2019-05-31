@@ -198,15 +198,23 @@ func (set *Setting) BandwidthToFiles(path string) error {
 	clientsBandwidthAvg = float64(allMetricsSum / numMetrics)
 	clientsBandwidthMed = allMetrics[(len(allMetrics) / 2)]
 
-	clientsBandwidthFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_avg_med_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsBandwidthAvgFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_avg_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
-	defer clientsBandwidthFile.Close()
-	defer clientsBandwidthFile.Sync()
+	defer clientsBandwidthAvgFile.Close()
+	defer clientsBandwidthAvgFile.Sync()
 
-	// Write values to file for clients.
-	fmt.Fprintf(clientsBandwidthFile, "%.5f,%.5f\n", clientsBandwidthAvg, clientsBandwidthMed)
+	clientsBandwidthMedFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_med_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	if err != nil {
+		return err
+	}
+	defer clientsBandwidthMedFile.Close()
+	defer clientsBandwidthMedFile.Sync()
+
+	// Write values to files for clients.
+	fmt.Fprintf(clientsBandwidthAvgFile, "%.5f\n", clientsBandwidthAvg)
+	fmt.Fprintf(clientsBandwidthMedFile, "%.5f\n", clientsBandwidthMed)
 
 	// Calculate combined bandwidth average
 	// and median values for servers.
@@ -239,15 +247,23 @@ func (set *Setting) BandwidthToFiles(path string) error {
 	serversBandwidthAvg = float64(allMetricsSum / numMetrics)
 	serversBandwidthMed = allMetrics[(len(allMetrics) / 2)]
 
-	serversBandwidthFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_avg_med_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	serversBandwidthAvgFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_avg_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
-	defer serversBandwidthFile.Close()
-	defer serversBandwidthFile.Sync()
+	defer serversBandwidthAvgFile.Close()
+	defer serversBandwidthAvgFile.Sync()
 
-	// Write values to file for clients.
-	fmt.Fprintf(serversBandwidthFile, "%.5f,%.5f\n", serversBandwidthAvg, serversBandwidthMed)
+	serversBandwidthMedFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_med_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	if err != nil {
+		return err
+	}
+	defer serversBandwidthMedFile.Close()
+	defer serversBandwidthMedFile.Sync()
+
+	// Write values to files for servers.
+	fmt.Fprintf(serversBandwidthAvgFile, "%.5f\n", serversBandwidthAvg)
+	fmt.Fprintf(serversBandwidthMedFile, "%.5f\n", serversBandwidthMed)
 
 	return nil
 }
