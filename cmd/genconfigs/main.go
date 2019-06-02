@@ -29,13 +29,13 @@ type Config struct {
 }
 
 // GCloudZones holds all but two GCloud zones.
-var GCloudZones = [18]string{
+var GCloudZones = [17]string{
 	"asia-east1-b",
 	"asia-northeast1-b",
 	"asia-southeast1-b",
 	"europe-west1-b",
 	"europe-west4-b",
-	"us-central1-b",
+	//"us-central1-b",
 	"us-east1-b",
 	"us-east4-b",
 	"us-west1-b",
