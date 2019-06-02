@@ -10,8 +10,6 @@ from matplotlib import pyplot as plt
 from matplotlib import patches as mpatches
 from pylab import setp
 
-# matplotlib.rcParams['font.size'] = 10
-
 # Load all measurement files.
 metrics = {
     "01": {
@@ -561,7 +559,8 @@ def compileLoadClients():
     with open(metrics["01"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set01_zeno_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set01_zeno_0500_Load_CPU.append(float(item))
 
     set01_zeno_0500_Load_Mem = 0.0
     with open(metrics["01"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -571,7 +570,8 @@ def compileLoadClients():
     with open(metrics["01"]["pung"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set01_pung_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set01_pung_0500_Load_CPU.append(float(item))
 
     set01_pung_0500_Load_Mem = 0.0
     with open(metrics["01"]["pung"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -581,7 +581,8 @@ def compileLoadClients():
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set01_zeno_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set01_zeno_1000_Load_CPU.append(float(item))
 
     set01_zeno_1000_Load_Mem = 0.0
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -591,7 +592,8 @@ def compileLoadClients():
     with open(metrics["01"]["pung"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set01_pung_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set01_pung_1000_Load_CPU.append(float(item))
 
     set01_pung_1000_Load_Mem = 0.0
     with open(metrics["01"]["pung"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -601,7 +603,8 @@ def compileLoadClients():
     with open(metrics["02"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set02_zeno_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set02_zeno_0500_Load_CPU.append(float(item))
 
     set02_zeno_0500_Load_Mem = 0.0
     with open(metrics["02"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -611,7 +614,8 @@ def compileLoadClients():
     with open(metrics["02"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set02_zeno_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set02_zeno_1000_Load_CPU.append(float(item))
 
     set02_zeno_1000_Load_Mem = 0.0
     with open(metrics["02"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -621,7 +625,8 @@ def compileLoadClients():
     with open(metrics["03"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set03_zeno_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set03_zeno_0500_Load_CPU.append(float(item))
 
     set03_zeno_0500_Load_Mem = 0.0
     with open(metrics["03"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -631,7 +636,8 @@ def compileLoadClients():
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set03_zeno_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set03_zeno_1000_Load_CPU.append(float(item))
 
     set03_zeno_1000_Load_Mem = 0.0
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -641,7 +647,8 @@ def compileLoadClients():
     with open(metrics["04"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set04_zeno_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set04_zeno_0500_Load_CPU.append(float(item))
 
     set04_zeno_0500_Load_Mem = 0.0
     with open(metrics["04"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -651,7 +658,8 @@ def compileLoadClients():
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set04_zeno_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set04_zeno_1000_Load_CPU.append(float(item))
 
     set04_zeno_1000_Load_Mem = 0.0
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
@@ -782,7 +790,8 @@ def compileLoadServers():
     with open(metrics["01"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set01_zeno_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set01_zeno_0500_Load_CPU.append(float(item))
 
     set01_zeno_0500_Load_Mem = 0.0
     with open(metrics["01"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -792,7 +801,8 @@ def compileLoadServers():
     with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set01_pung_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set01_pung_0500_Load_CPU.append(float(item))
 
     set01_pung_0500_Load_Mem = 0.0
     with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -802,7 +812,8 @@ def compileLoadServers():
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set01_zeno_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set01_zeno_1000_Load_CPU.append(float(item))
 
     set01_zeno_1000_Load_Mem = 0.0
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -812,7 +823,8 @@ def compileLoadServers():
     with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set01_pung_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set01_pung_1000_Load_CPU.append(float(item))
 
     set01_pung_1000_Load_Mem = 0.0
     with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -822,7 +834,8 @@ def compileLoadServers():
     with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set02_zeno_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set02_zeno_0500_Load_CPU.append(float(item))
 
     set02_zeno_0500_Load_Mem = 0.0
     with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -832,7 +845,8 @@ def compileLoadServers():
     with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set02_zeno_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set02_zeno_1000_Load_CPU.append(float(item))
 
     set02_zeno_1000_Load_Mem = 0.0
     with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -842,7 +856,8 @@ def compileLoadServers():
     with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set03_zeno_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set03_zeno_0500_Load_CPU.append(float(item))
 
     set03_zeno_0500_Load_Mem = 0.0
     with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -852,7 +867,8 @@ def compileLoadServers():
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set03_zeno_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set03_zeno_1000_Load_CPU.append(float(item))
 
     set03_zeno_1000_Load_Mem = 0.0
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -862,7 +878,8 @@ def compileLoadServers():
     with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set04_zeno_0500_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set04_zeno_0500_Load_CPU.append(float(item))
 
     set04_zeno_0500_Load_Mem = 0.0
     with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -872,7 +889,8 @@ def compileLoadServers():
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            set04_zeno_1000_Load_CPU.append(list(map(float, row)))
+            for item in row:
+                set04_zeno_1000_Load_CPU.append(float(item))
 
     set04_zeno_1000_Load_Mem = 0.0
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -993,61 +1011,145 @@ def compileLoadServers():
         sys.argv[1], "load_servers.png"), bbox_inches='tight', dpi=400)
 
 
-def compileLatencies(path, bothSystems):
+def compileLatencies():
 
     global metrics
 
     # Ingest data.
 
-    zeno0500Latencies = []
-    with open(zeno0500LatenciesPath, newline='') as dataFile:
+    set01_zeno_0500_Latencies = []
+    with open(metrics["01"]["zeno"]["0500"]["Latencies"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            zeno0500Latencies.append(list(map(float, row)))
+            for item in row:
+                set01_zeno_0500_Latencies.append(float(item))
 
-    pung0500Latencies = []
-    with open(pung0500LatenciesPath, newline='') as dataFile:
+    set01_zeno_1000_Latencies = []
+    with open(metrics["01"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            pung0500Latencies.append(list(map(float, row)))
+            for item in row:
+                set01_zeno_1000_Latencies.append(float(item))
 
-    zeno1000Latencies = []
-    with open(zeno1000LatenciesPath, newline='') as dataFile:
+    set02_zeno_0500_Latencies = []
+    with open(metrics["02"]["zeno"]["0500"]["Latencies"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            zeno1000Latencies.append(list(map(float, row)))
+            for item in row:
+                set02_zeno_0500_Latencies.append(float(item))
 
-    pung1000Latencies = []
-    with open(pung1000LatenciesPath, newline='') as dataFile:
+    set02_zeno_1000_Latencies = []
+    with open(metrics["02"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            pung1000Latencies.append(list(map(float, row)))
+            for item in row:
+                set02_zeno_1000_Latencies.append(float(item))
+
+    set03_zeno_0500_Latencies = []
+    with open(metrics["03"]["zeno"]["0500"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set03_zeno_0500_Latencies.append(float(item))
+
+    set03_zeno_1000_Latencies = []
+    with open(metrics["03"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set03_zeno_1000_Latencies.append(float(item))
+
+    set04_zeno_0500_Latencies = []
+    with open(metrics["04"]["zeno"]["0500"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set04_zeno_0500_Latencies.append(float(item))
+
+    set04_zeno_1000_Latencies = []
+    with open(metrics["04"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set04_zeno_1000_Latencies.append(float(item))
+
+    set01_pung_0500_Latencies = []
+    with open(metrics["01"]["pung"]["0500"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_pung_0500_Latencies.append(float(item))
+
+    set01_pung_1000_Latencies = []
+    with open(metrics["01"]["pung"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_pung_1000_Latencies.append(float(item))
+
+    # Prepare CDF arrays.
+
+    set01_zeno_0500_Latencies = np.sort(set01_zeno_0500_Latencies)
+    set01_zeno_0500_CDF = np.array(range(len(set01_zeno_0500_Latencies))) / float(len(set01_zeno_0500_Latencies))
+
+    set01_zeno_1000_Latencies = np.sort(set01_zeno_1000_Latencies)
+    set01_zeno_1000_CDF = np.array(range(len(set01_zeno_1000_Latencies))) / float(len(set01_zeno_1000_Latencies))
+
+    set02_zeno_0500_Latencies = np.sort(set02_zeno_0500_Latencies)
+    set02_zeno_0500_CDF = np.array(range(len(set02_zeno_0500_Latencies))) / float(len(set02_zeno_0500_Latencies))
+
+    set02_zeno_1000_Latencies = np.sort(set02_zeno_1000_Latencies)
+    set02_zeno_1000_CDF = np.array(range(len(set02_zeno_1000_Latencies))) / float(len(set02_zeno_1000_Latencies))
+
+    set03_zeno_0500_Latencies = np.sort(set03_zeno_0500_Latencies)
+    set03_zeno_0500_CDF = np.array(range(len(set03_zeno_0500_Latencies))) / float(len(set03_zeno_0500_Latencies))
+
+    set03_zeno_1000_Latencies = np.sort(set03_zeno_1000_Latencies)
+    set03_zeno_1000_CDF = np.array(range(len(set03_zeno_1000_Latencies))) / float(len(set03_zeno_1000_Latencies))
+
+    set04_zeno_0500_Latencies = np.sort(set04_zeno_0500_Latencies)
+    set04_zeno_0500_CDF = np.array(range(len(set04_zeno_0500_Latencies))) / float(len(set04_zeno_0500_Latencies))
+
+    set04_zeno_1000_Latencies = np.sort(set04_zeno_1000_Latencies)
+    set04_zeno_1000_CDF = np.array(range(len(set04_zeno_1000_Latencies))) / float(len(set04_zeno_1000_Latencies))
+
+    set01_pung_0500_Latencies = np.sort(set01_pung_0500_Latencies)
+    set01_pung_0500_CDF = np.array(range(len(set01_pung_0500_Latencies))) / float(len(set01_pung_0500_Latencies))
+
+    set01_pung_1000_Latencies = np.sort(set01_pung_1000_Latencies)
+    set01_pung_1000_CDF = np.array(range(len(set01_pung_1000_Latencies))) / float(len(set01_pung_1000_Latencies))
 
     # Draw plots.
 
-    _, ax = plt.subplots()
+    _, ax = plt.subplots(figsize=(9, 5))
+    
+    ax.plot(set01_zeno_0500_Latencies, set01_zeno_0500_CDF, label='zeno, 500 clients (tc off, no failures)')
+    ax.plot(set02_zeno_0500_Latencies, set02_zeno_0500_CDF, label='zeno, 500 clients (tc on, no failures)')
+    ax.plot(set03_zeno_0500_Latencies, set03_zeno_0500_CDF, label='zeno, 500 clients (tc off, mix failure)')
+    ax.plot(set04_zeno_0500_Latencies, set04_zeno_0500_CDF, label='zeno, 500 clients (tc on, mix failure)')
+    ax.plot(set01_pung_0500_Latencies, set01_pung_0500_CDF, label='pung, 500 clients (tc off, no failures)')
+    ax.plot(set01_zeno_1000_Latencies, set01_zeno_1000_CDF, label='zeno, 1000 clients (tc off, no failures)')
+    ax.plot(set02_zeno_1000_Latencies, set02_zeno_1000_CDF, label='zeno, 1000 clients (tc on, no failures)')
+    ax.plot(set03_zeno_1000_Latencies, set03_zeno_1000_CDF, label='zeno, 1000 clients (tc off, mix failure)')
+    ax.plot(set04_zeno_1000_Latencies, set04_zeno_1000_CDF, label='zeno, 1000 clients (tc on, mix failure)')
+    ax.plot(set01_pung_1000_Latencies, set01_pung_1000_CDF, label='pung, 1000 clients (tc off, no failures)')
 
-    n_bins = 1000
-    ax.hist(zeno0500Latencies, n_bins, density=True, histtype='step',
-            cumulative=True, label='zeno (500 clients)')
-    ax.hist(pung0500Latencies, n_bins, density=True, histtype='step',
-            cumulative=True, label='pung (500 clients)')
-    ax.hist(zeno1000Latencies, n_bins, density=True, histtype='step',
-            cumulative=True, label='zeno (1000 clients)')
-    ax.hist(pung1000Latencies, n_bins, density=True, histtype='step',
-            cumulative=True, label='pung (1000 clients)')
-
-    ax.legend(loc='lower right')
+    ax.xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
-    plt.grid()
-    plt.tight_layout()
+    ax.set_ylim([0.0, 1.0])
+    ax.set_yticks((0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0))
 
+    boxOfPlot = ax.get_position()
+    ax.set_position([boxOfPlot.x0, boxOfPlot.y0, (boxOfPlot.width * 0.8), boxOfPlot.height])
+    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+    plt.tight_layout()
     plt.xlabel("End-to-end transmission latency (seconds)")
     plt.ylabel("Fraction of messages transmitted")
 
-    plt.savefig(os.path.join(
-        sys.argv[1], "01_tc-off_proc-off_msg-latencies.png"), bbox_inches='tight', dpi=400)
+    plt.savefig(os.path.join(sys.argv[1], "msg-latencies.png"), bbox_inches='tight', dpi=400)
 
 
 def compileMessagesPerMix():
@@ -1082,6 +1184,7 @@ def compileMessagesPerMix():
                         x_max = len(msgCounts)
 
                 _, ax = plt.subplots()
+
                 ax.set_xlim([0, x_max])
                 ax.set_ylim([0, y_max])
 
@@ -1105,7 +1208,6 @@ def compileMessagesPerMix():
 
 # Create all figures.
 
-
 # Build bandwidth figures.
 compileTrafficClients()
 compileTrafficServers()
@@ -1115,8 +1217,8 @@ compileLoadClients()
 compileLoadServers()
 
 # Build message latencies figure.
-# compileLatencies()
+compileLatencies()
 
 # Build figures describing the number of
 # messages in each mix server over rounds.
-# compileMessagesPerMix()
+compileMessagesPerMix()
