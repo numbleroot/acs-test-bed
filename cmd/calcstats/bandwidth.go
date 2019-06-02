@@ -166,8 +166,7 @@ func (run *Run) AddRecvdBytes(runNodesPath string, isClientMetric bool) error {
 
 func (set *Setting) BandwidthToFiles(path string) error {
 
-	// Calculate combined bandwidth average
-	// and median values for clients.
+	// Calculate bandwidth average for clients.
 	var clientsBandwidthAvg float64
 
 	allMetricsSum := float64(0.0)
@@ -192,8 +191,7 @@ func (set *Setting) BandwidthToFiles(path string) error {
 	// Write values to files for clients.
 	fmt.Fprintf(clientsBandwidthAvgFile, "%.5f\n", clientsBandwidthAvg)
 
-	// Calculate combined bandwidth average
-	// and median values for servers.
+	// Calculate bandwidth average for servers.
 	var serversBandwidthAvg float64
 
 	allMetricsSum = 0.0

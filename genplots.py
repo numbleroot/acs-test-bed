@@ -28,11 +28,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "msg-latencies_lowest-to-highest.data"),
@@ -54,11 +54,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "msg-latencies_lowest-to-highest.data"),
@@ -82,11 +82,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "msg-latencies_lowest-to-highest.data"),
@@ -103,11 +103,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "msg-latencies_lowest-to-highest.data"),
@@ -128,11 +128,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "msg-latencies_lowest-to-highest.data"),
@@ -154,11 +154,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "msg-latencies_lowest-to-highest.data"),
@@ -184,11 +184,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "msg-latencies_lowest-to-highest.data"),
@@ -210,11 +210,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "msg-latencies_lowest-to-highest.data"),
@@ -240,11 +240,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "msg-latencies_lowest-to-highest.data"),
@@ -266,11 +266,11 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "load_cpu_lowest-to-highest_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "load_mem_lowest-to-highest_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "load_mem_avg_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "load_cpu_lowest-to-highest_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "load_mem_lowest-to-highest_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "load_mem_avg_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "msg-latencies_lowest-to-highest.data"),
@@ -357,7 +357,6 @@ def compileTrafficClients():
     # Draw plots.
 
     width = 1.0
-    barWidth = (1.0 / 12.0)
     y_max = np.ceil((max(bandwidthAvg) + 1.0))
 
     _, ax = plt.subplots()
@@ -552,117 +551,446 @@ def compileTrafficServers():
         sys.argv[1], "bandwidth-usage_servers.png"), bbox_inches='tight', dpi=400)
 
 
-def compileLoad(path, bothSystems, isClientsFigure):
+def compileLoadClients():
 
     global metrics
 
     # Ingest data.
 
-    zeno0500LoadCPU = []
-    with open(zeno0500LoadCPUPath, newline='') as dataFile:
+    set01_zeno_0500_Load_CPU = []
+    with open(metrics["01"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            zeno0500LoadCPU.append(list(map(float, row)))
+            set01_zeno_0500_Load_CPU.append(list(map(float, row)))
 
-    zeno0500LoadMem = []
-    with open(zeno0500LoadMemPath, newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            zeno0500LoadMem.append(list(map(float, row)))
+    set01_zeno_0500_Load_Mem = 0.0
+    with open(metrics["01"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set01_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
 
-    zeno1000LoadCPU = []
-    with open(zeno1000LoadCPUPath, newline='') as dataFile:
+    set01_pung_0500_Load_CPU = []
+    with open(metrics["01"]["pung"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            zeno1000LoadCPU.append(list(map(float, row)))
+            set01_pung_0500_Load_CPU.append(list(map(float, row)))
 
-    zeno1000LoadMem = []
-    with open(zeno1000LoadMemPath, newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            zeno1000LoadMem.append(list(map(float, row)))
+    set01_pung_0500_Load_Mem = 0.0
+    with open(metrics["01"]["pung"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set01_pung_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
 
-    pung0500LoadCPU = []
-    with open(pung0500LoadCPUPath, newline='') as dataFile:
+    set01_zeno_1000_Load_CPU = []
+    with open(metrics["01"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            pung0500LoadCPU.append(list(map(float, row)))
+            set01_zeno_1000_Load_CPU.append(list(map(float, row)))
 
-    pung0500LoadMem = []
-    with open(pung0500LoadMemPath, newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            pung0500LoadMem.append(list(map(float, row)))
+    set01_zeno_1000_Load_Mem = 0.0
+    with open(metrics["01"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set01_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
 
-    pung1000LoadCPU = []
-    with open(pung1000LoadCPUPath, newline='') as dataFile:
+    set01_pung_1000_Load_CPU = []
+    with open(metrics["01"]["pung"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            pung1000LoadCPU.append(list(map(float, row)))
+            set01_pung_1000_Load_CPU.append(list(map(float, row)))
 
-    pung1000LoadMem = []
-    with open(pung1000LoadMemPath, newline='') as dataFile:
+    set01_pung_1000_Load_Mem = 0.0
+    with open(metrics["01"]["pung"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set01_pung_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set02_zeno_0500_Load_CPU = []
+    with open(metrics["02"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
-            pung1000LoadMem.append(list(map(float, row)))
+            set02_zeno_0500_Load_CPU.append(list(map(float, row)))
+
+    set02_zeno_0500_Load_Mem = 0.0
+    with open(metrics["02"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set02_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set02_zeno_1000_Load_CPU = []
+    with open(metrics["02"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set02_zeno_1000_Load_CPU.append(list(map(float, row)))
+
+    set02_zeno_1000_Load_Mem = 0.0
+    with open(metrics["02"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set02_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set03_zeno_0500_Load_CPU = []
+    with open(metrics["03"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set03_zeno_0500_Load_CPU.append(list(map(float, row)))
+
+    set03_zeno_0500_Load_Mem = 0.0
+    with open(metrics["03"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set03_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set03_zeno_1000_Load_CPU = []
+    with open(metrics["03"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set03_zeno_1000_Load_CPU.append(list(map(float, row)))
+
+    set03_zeno_1000_Load_Mem = 0.0
+    with open(metrics["03"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set03_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set04_zeno_0500_Load_CPU = []
+    with open(metrics["04"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set04_zeno_0500_Load_CPU.append(list(map(float, row)))
+
+    set04_zeno_0500_Load_Mem = 0.0
+    with open(metrics["04"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set04_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set04_zeno_1000_Load_CPU = []
+    with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set04_zeno_1000_Load_CPU.append(list(map(float, row)))
+
+    set04_zeno_1000_Load_Mem = 0.0
+    with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set04_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
 
     # Draw plots.
 
-    _, ax = plt.subplots()
+    width = 0.9
 
-    zeno01 = ax.boxplot(zeno0500LoadCPU, positions=[
-                        2], widths=0.85, patch_artist=True, whis='range')
-    zeno02 = ax.boxplot(zeno0500LoadMem, positions=[
-                        3], widths=0.85, patch_artist=True, whis='range')
-    pung01 = ax.boxplot(pung0500LoadCPU, positions=[
-                        5], widths=0.85, patch_artist=True, whis='range')
-    pung02 = ax.boxplot(pung0500LoadMem, positions=[
-                        6], widths=0.85, patch_artist=True, whis='range')
+    _, ax1 = plt.subplots(figsize=(10, 5))
+    ax2 = ax1.twinx()
 
-    zeno03 = ax.boxplot(zeno1000LoadCPU, positions=[
-                        9], widths=0.85, patch_artist=True, whis='range')
-    zeno04 = ax.boxplot(zeno1000LoadMem, positions=[
-                        10], widths=0.85, patch_artist=True, whis='range')
-    pung03 = ax.boxplot(pung1000LoadCPU, positions=[
-                        12], widths=0.85, patch_artist=True, whis='range')
-    pung04 = ax.boxplot(pung1000LoadMem, positions=[
-                        13], widths=0.85, patch_artist=True, whis='range')
+    set01_zeno01 = ax1.boxplot(set01_zeno_0500_Load_CPU, positions=[
+        1], widths=width, patch_artist=True, whis='range')
+    ax2.bar(2, set01_zeno_0500_Load_Mem, width,
+            label='zeno (tc off, no failures)', color='gold', hatch='/')
 
-    # Color boxes.
-    setp(zeno01['boxes'], color='gold')
-    setp(zeno02['boxes'], color='gold')
-    setp(zeno03['boxes'], color='gold')
-    setp(zeno04['boxes'], color='gold')
+    set02_zeno01 = ax1.boxplot(set02_zeno_0500_Load_CPU, positions=[
+        3], widths=width, patch_artist=True, whis='range')
+    ax2.bar(4, set02_zeno_0500_Load_Mem, width,
+            label='zeno (tc on, no failures)', color='gold', hatch='x')
 
-    setp(pung01['boxes'], color='steelblue')
-    setp(pung02['boxes'], color='steelblue')
-    setp(pung03['boxes'], color='steelblue')
-    setp(pung04['boxes'], color='steelblue')
+    set03_zeno01 = ax1.boxplot(set03_zeno_0500_Load_CPU, positions=[
+        5], widths=width, patch_artist=True, whis='range')
+    ax2.bar(6, set03_zeno_0500_Load_Mem, width,
+            label='zeno (tc off, mix failure)', color='gold', hatch='o')
 
-    ax.yaxis.grid(True, linestyle='-', which='major',
-                  color='lightgrey', alpha=0.5)
-    ax.set_axisbelow(True)
+    set04_zeno01 = ax1.boxplot(set04_zeno_0500_Load_CPU, positions=[
+        7], widths=width, patch_artist=True, whis='range')
+    ax2.bar(8, set04_zeno_0500_Load_Mem, width,
+            label='zeno (tc on, mix failure)', color='gold', hatch='+')
 
-    ax.set_xlim([0, 15])
-    ax.set_ylim([0.0, 100.0])
-    ax.set_xticks((4, 11))
-    ax.set_xticklabels(('500 clients', '1000 clients'))
+    set01_pung01 = ax1.boxplot(set01_pung_0500_Load_CPU, positions=[
+        9], widths=width, patch_artist=True, whis='range')
+    ax2.bar(10, set01_pung_0500_Load_Mem, width,
+            label='pung (tc off, no failures)', color='steelblue', hatch='\\')
 
-    zeno_patch = mpatches.Patch(color='gold', label='zeno')
-    pung_patch = mpatches.Patch(color='steelblue', label='pung')
+    set01_zeno03 = ax1.boxplot(set01_zeno_1000_Load_CPU, positions=[
+        12], widths=width, patch_artist=True, whis='range')
+    ax2.bar(13, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
 
-    plt.legend(handles=[zeno_patch, pung_patch])
+    set02_zeno03 = ax1.boxplot(set02_zeno_1000_Load_CPU, positions=[
+        14], widths=width, patch_artist=True, whis='range')
+    ax2.bar(15, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
+
+    set03_zeno03 = ax1.boxplot(set03_zeno_1000_Load_CPU, positions=[
+        16], widths=width, patch_artist=True, whis='range')
+    ax2.bar(17, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
+
+    set04_zeno03 = ax1.boxplot(set04_zeno_1000_Load_CPU, positions=[
+        18], widths=width, patch_artist=True, whis='range')
+    ax2.bar(19, set04_zeno_1000_Load_Mem, width, color='gold', hatch='+')
+
+    set01_pung03 = ax1.boxplot(set01_pung_1000_Load_CPU, positions=[
+        20], widths=width, patch_artist=True, whis='range')
+    ax2.bar(21, set01_pung_1000_Load_Mem, width, color='steelblue', hatch='\\')
+
+    # Color boxplots.
+    setp(set01_zeno01['boxes'], color='black')
+    setp(set01_zeno01['boxes'], facecolor='gold')
+    setp(set01_zeno01['boxes'], hatch='/')
+
+    setp(set02_zeno01['boxes'], color='black')
+    setp(set02_zeno01['boxes'], facecolor='gold')
+    setp(set02_zeno01['boxes'], hatch='x')
+
+    setp(set03_zeno01['boxes'], color='black')
+    setp(set03_zeno01['boxes'], facecolor='gold')
+    setp(set03_zeno01['boxes'], hatch='o')
+
+    setp(set04_zeno01['boxes'], color='black')
+    setp(set04_zeno01['boxes'], facecolor='gold')
+    setp(set04_zeno01['boxes'], hatch='+')
+
+    setp(set01_pung01['boxes'], color='black')
+    setp(set01_pung01['boxes'], facecolor='steelblue')
+    setp(set01_pung01['boxes'], hatch='\\')
+
+    setp(set01_zeno03['boxes'], color='black')
+    setp(set01_zeno03['boxes'], facecolor='gold')
+    setp(set01_zeno03['boxes'], hatch='/')
+
+    setp(set02_zeno03['boxes'], color='black')
+    setp(set02_zeno03['boxes'], facecolor='gold')
+    setp(set02_zeno03['boxes'], hatch='x')
+
+    setp(set03_zeno03['boxes'], color='black')
+    setp(set03_zeno03['boxes'], facecolor='gold')
+    setp(set03_zeno03['boxes'], hatch='o')
+
+    setp(set04_zeno03['boxes'], color='black')
+    setp(set04_zeno03['boxes'], facecolor='gold')
+    setp(set04_zeno03['boxes'], hatch='+')
+
+    setp(set01_pung03['boxes'], color='black')
+    setp(set01_pung03['boxes'], facecolor='steelblue')
+    setp(set01_pung03['boxes'], hatch='\\')
+
+    ax1.yaxis.grid(True, linestyle='-', which='major',
+                   color='lightgrey', alpha=0.5)
+    ax1.set_axisbelow(True)
+
+    ax1.set_xlim([0, 22])
+    ax1.set_ylim([0.0, 100.0])
+    # ax2.set_ylim([0.0, 100.0])
+    ax1.set_xticks((5.5, 16.5))
+    ax1.set_xticklabels(('500 clients', '1000 clients'))
+    ax1.set_ylabel("Busy CPU (percentage)")
+    ax2.set_ylabel("Used memory (MB)")
+
+   # Add a legend.
+    ax2.legend(loc='upper left')
 
     plt.tight_layout()
     plt.xlabel("Number of clients")
-    plt.ylabel("Load (percentage)")
 
-    if isClientsFigure:
-        plt.savefig(os.path.join(
-            sys.argv[1], "01_tc-off_proc-off_load_clients.png"), bbox_inches='tight', dpi=400)
-    else:
-        plt.savefig(os.path.join(
-            sys.argv[1], "01_tc-off_proc-off_load_servers.png"), bbox_inches='tight', dpi=400)
+    plt.savefig(os.path.join(
+        sys.argv[1], "load_clients.png"), bbox_inches='tight', dpi=400)
+
+
+def compileLoadServers():
+
+    global metrics
+
+    # Ingest data.
+
+    set01_zeno_0500_Load_CPU = []
+    with open(metrics["01"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set01_zeno_0500_Load_CPU.append(list(map(float, row)))
+
+    set01_zeno_0500_Load_Mem = 0.0
+    with open(metrics["01"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set01_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set01_pung_0500_Load_CPU = []
+    with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set01_pung_0500_Load_CPU.append(list(map(float, row)))
+
+    set01_pung_0500_Load_Mem = 0.0
+    with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set01_pung_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set01_zeno_1000_Load_CPU = []
+    with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set01_zeno_1000_Load_CPU.append(list(map(float, row)))
+
+    set01_zeno_1000_Load_Mem = 0.0
+    with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set01_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set01_pung_1000_Load_CPU = []
+    with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set01_pung_1000_Load_CPU.append(list(map(float, row)))
+
+    set01_pung_1000_Load_Mem = 0.0
+    with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set01_pung_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set02_zeno_0500_Load_CPU = []
+    with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set02_zeno_0500_Load_CPU.append(list(map(float, row)))
+
+    set02_zeno_0500_Load_Mem = 0.0
+    with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set02_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set02_zeno_1000_Load_CPU = []
+    with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set02_zeno_1000_Load_CPU.append(list(map(float, row)))
+
+    set02_zeno_1000_Load_Mem = 0.0
+    with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set02_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set03_zeno_0500_Load_CPU = []
+    with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set03_zeno_0500_Load_CPU.append(list(map(float, row)))
+
+    set03_zeno_0500_Load_Mem = 0.0
+    with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set03_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set03_zeno_1000_Load_CPU = []
+    with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set03_zeno_1000_Load_CPU.append(list(map(float, row)))
+
+    set03_zeno_1000_Load_Mem = 0.0
+    with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set03_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set04_zeno_0500_Load_CPU = []
+    with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set04_zeno_0500_Load_CPU.append(list(map(float, row)))
+
+    set04_zeno_0500_Load_Mem = 0.0
+    with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set04_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set04_zeno_1000_Load_CPU = []
+    with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            set04_zeno_1000_Load_CPU.append(list(map(float, row)))
+
+    set04_zeno_1000_Load_Mem = 0.0
+    with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set04_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    # Draw plots.
+
+    width = 0.9
+
+    _, ax1 = plt.subplots(figsize=(10, 5))
+    ax2 = ax1.twinx()
+
+    set01_zeno01 = ax1.boxplot(set01_zeno_0500_Load_CPU, positions=[
+        1], widths=width, patch_artist=True, whis='range')
+    ax2.bar(2, set01_zeno_0500_Load_Mem, width,
+            label='zeno (tc off, no failures)', color='gold', hatch='/')
+
+    set02_zeno01 = ax1.boxplot(set02_zeno_0500_Load_CPU, positions=[
+        3], widths=width, patch_artist=True, whis='range')
+    ax2.bar(4, set02_zeno_0500_Load_Mem, width,
+            label='zeno (tc on, no failures)', color='gold', hatch='x')
+
+    set03_zeno01 = ax1.boxplot(set03_zeno_0500_Load_CPU, positions=[
+        5], widths=width, patch_artist=True, whis='range')
+    ax2.bar(6, set03_zeno_0500_Load_Mem, width,
+            label='zeno (tc off, mix failure)', color='gold', hatch='o')
+
+    set04_zeno01 = ax1.boxplot(set04_zeno_0500_Load_CPU, positions=[
+        7], widths=width, patch_artist=True, whis='range')
+    ax2.bar(8, set04_zeno_0500_Load_Mem, width,
+            label='zeno (tc on, mix failure)', color='gold', hatch='+')
+
+    set01_pung01 = ax1.boxplot(set01_pung_0500_Load_CPU, positions=[
+        9], widths=width, patch_artist=True, whis='range')
+    ax2.bar(10, set01_pung_0500_Load_Mem, width,
+            label='pung (tc off, no failures)', color='steelblue', hatch='\\')
+
+    set01_zeno03 = ax1.boxplot(set01_zeno_1000_Load_CPU, positions=[
+        12], widths=width, patch_artist=True, whis='range')
+    ax2.bar(13, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
+
+    set02_zeno03 = ax1.boxplot(set02_zeno_1000_Load_CPU, positions=[
+        14], widths=width, patch_artist=True, whis='range')
+    ax2.bar(15, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
+
+    set03_zeno03 = ax1.boxplot(set03_zeno_1000_Load_CPU, positions=[
+        16], widths=width, patch_artist=True, whis='range')
+    ax2.bar(17, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
+
+    set04_zeno03 = ax1.boxplot(set04_zeno_1000_Load_CPU, positions=[
+        18], widths=width, patch_artist=True, whis='range')
+    ax2.bar(19, set04_zeno_1000_Load_Mem, width, color='gold', hatch='+')
+
+    set01_pung03 = ax1.boxplot(set01_pung_1000_Load_CPU, positions=[
+        20], widths=width, patch_artist=True, whis='range')
+    ax2.bar(21, set01_pung_1000_Load_Mem, width, color='steelblue', hatch='\\')
+
+    # Color boxplots.
+    setp(set01_zeno01['boxes'], color='black')
+    setp(set01_zeno01['boxes'], facecolor='gold')
+    setp(set01_zeno01['boxes'], hatch='/')
+
+    setp(set02_zeno01['boxes'], color='black')
+    setp(set02_zeno01['boxes'], facecolor='gold')
+    setp(set02_zeno01['boxes'], hatch='x')
+
+    setp(set03_zeno01['boxes'], color='black')
+    setp(set03_zeno01['boxes'], facecolor='gold')
+    setp(set03_zeno01['boxes'], hatch='o')
+
+    setp(set04_zeno01['boxes'], color='black')
+    setp(set04_zeno01['boxes'], facecolor='gold')
+    setp(set04_zeno01['boxes'], hatch='+')
+
+    setp(set01_pung01['boxes'], color='black')
+    setp(set01_pung01['boxes'], facecolor='steelblue')
+    setp(set01_pung01['boxes'], hatch='\\')
+
+    setp(set01_zeno03['boxes'], color='black')
+    setp(set01_zeno03['boxes'], facecolor='gold')
+    setp(set01_zeno03['boxes'], hatch='/')
+
+    setp(set02_zeno03['boxes'], color='black')
+    setp(set02_zeno03['boxes'], facecolor='gold')
+    setp(set02_zeno03['boxes'], hatch='x')
+
+    setp(set03_zeno03['boxes'], color='black')
+    setp(set03_zeno03['boxes'], facecolor='gold')
+    setp(set03_zeno03['boxes'], hatch='o')
+
+    setp(set04_zeno03['boxes'], color='black')
+    setp(set04_zeno03['boxes'], facecolor='gold')
+    setp(set04_zeno03['boxes'], hatch='+')
+
+    setp(set01_pung03['boxes'], color='black')
+    setp(set01_pung03['boxes'], facecolor='steelblue')
+    setp(set01_pung03['boxes'], hatch='\\')
+
+    ax1.yaxis.grid(True, linestyle='-', which='major',
+                   color='lightgrey', alpha=0.5)
+    ax1.set_axisbelow(True)
+
+    ax1.set_xlim([0, 22])
+    ax1.set_ylim([0.0, 100.0])
+    # ax2.set_ylim([0.0, 100.0])
+    ax1.set_xticks((5.5, 16.5))
+    ax1.set_xticklabels(('500 clients', '1000 clients'))
+    ax1.set_ylabel("Busy CPU (percentage)")
+    ax2.set_ylabel("Used memory (GB)")
+
+   # Add a legend.
+    ax2.legend(loc='upper left')
+
+    plt.tight_layout()
+    plt.xlabel("Number of clients")
+
+    plt.savefig(os.path.join(
+        sys.argv[1], "load_servers.png"), bbox_inches='tight', dpi=400)
 
 
 def compileLatencies(path, bothSystems):
@@ -780,10 +1108,11 @@ def compileMessagesPerMix():
 
 # Build bandwidth figures.
 compileTrafficClients()
-# compileTrafficServers()
+compileTrafficServers()
 
 # Build load usage figures.
-# compileLoad()
+compileLoadClients()
+compileLoadServers()
 
 # Build message latencies figure.
 # compileLatencies()
