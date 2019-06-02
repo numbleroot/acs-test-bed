@@ -2,7 +2,7 @@
 	{
 		"Name": "client-00001",
 		"Partner": "client-00002",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -16,7 +16,7 @@
 	{
 		"Name": "client-00002",
 		"Partner": "client-00001",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -30,7 +30,7 @@
 	{
 		"Name": "client-00003",
 		"Partner": "client-00004",
-		"Zone": "us-west2-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -44,7 +44,7 @@
 	{
 		"Name": "client-00004",
 		"Partner": "client-00003",
-		"Zone": "asia-south1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -58,7 +58,7 @@
 	{
 		"Name": "client-00005",
 		"Partner": "client-00006",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -72,7 +72,7 @@
 	{
 		"Name": "client-00006",
 		"Partner": "client-00005",
-		"Zone": "asia-southeast1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -86,7 +86,7 @@
 	{
 		"Name": "client-00007",
 		"Partner": "client-00008",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -100,7 +100,7 @@
 	{
 		"Name": "client-00008",
 		"Partner": "client-00007",
-		"Zone": "asia-east1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -114,7 +114,7 @@
 	{
 		"Name": "client-00009",
 		"Partner": "client-00010",
-		"Zone": "asia-east2-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -128,7 +128,7 @@
 	{
 		"Name": "client-00010",
 		"Partner": "client-00009",
-		"Zone": "europe-west4-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -142,7 +142,7 @@
 	{
 		"Name": "client-00011",
 		"Partner": "client-00012",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -156,7 +156,7 @@
 	{
 		"Name": "client-00012",
 		"Partner": "client-00011",
-		"Zone": "europe-west6-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -170,7 +170,7 @@
 	{
 		"Name": "client-00013",
 		"Partner": "client-00014",
-		"Zone": "europe-west2-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -184,7 +184,7 @@
 	{
 		"Name": "client-00014",
 		"Partner": "client-00013",
-		"Zone": "us-west1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -198,7 +198,7 @@
 	{
 		"Name": "client-00015",
 		"Partner": "client-00016",
-		"Zone": "us-east4-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -212,7 +212,7 @@
 	{
 		"Name": "client-00016",
 		"Partner": "client-00015",
-		"Zone": "us-east1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -226,7 +226,7 @@
 	{
 		"Name": "client-00017",
 		"Partner": "client-00018",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -240,7 +240,7 @@
 	{
 		"Name": "client-00018",
 		"Partner": "client-00017",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -254,7 +254,7 @@
 	{
 		"Name": "client-00019",
 		"Partner": "client-00020",
-		"Zone": "asia-east2-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -296,7 +296,7 @@
 	{
 		"Name": "client-00022",
 		"Partner": "client-00021",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -310,7 +310,7 @@
 	{
 		"Name": "client-00023",
 		"Partner": "client-00024",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -338,7 +338,7 @@
 	{
 		"Name": "client-00025",
 		"Partner": "client-00026",
-		"Zone": "asia-south1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -352,7 +352,7 @@
 	{
 		"Name": "client-00026",
 		"Partner": "client-00025",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -361,12 +361,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00027",
 		"Partner": "client-00028",
-		"Zone": "europe-west4-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -380,7 +380,7 @@
 	{
 		"Name": "client-00028",
 		"Partner": "client-00027",
-		"Zone": "us-central1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -394,21 +394,7 @@
 	{
 		"Name": "client-00029",
 		"Partner": "client-00030",
-		"Zone": "us-west2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
-		"Name": "client-00030",
-		"Partner": "client-00029",
-		"Zone": "us-west1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -420,9 +406,23 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "client-00030",
+		"Partner": "client-00029",
+		"Zone": "europe-north1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
 		"Name": "client-00031",
 		"Partner": "client-00032",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -436,7 +436,7 @@
 	{
 		"Name": "client-00032",
 		"Partner": "client-00031",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -450,7 +450,7 @@
 	{
 		"Name": "client-00033",
 		"Partner": "client-00034",
-		"Zone": "asia-northeast2-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -459,12 +459,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00034",
 		"Partner": "client-00033",
-		"Zone": "europe-west1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -478,7 +478,7 @@
 	{
 		"Name": "client-00035",
 		"Partner": "client-00036",
-		"Zone": "us-east4-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -487,12 +487,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00036",
 		"Partner": "client-00035",
-		"Zone": "europe-north1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -506,7 +506,7 @@
 	{
 		"Name": "client-00037",
 		"Partner": "client-00038",
-		"Zone": "europe-west2-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -515,12 +515,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00038",
 		"Partner": "client-00037",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -534,7 +534,7 @@
 	{
 		"Name": "client-00039",
 		"Partner": "client-00040",
-		"Zone": "asia-northeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -548,7 +548,7 @@
 	{
 		"Name": "client-00040",
 		"Partner": "client-00039",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -562,21 +562,7 @@
 	{
 		"Name": "client-00041",
 		"Partner": "client-00042",
-		"Zone": "asia-northeast2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
-		"Name": "client-00042",
-		"Partner": "client-00041",
-		"Zone": "asia-south1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -588,9 +574,23 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "client-00042",
+		"Partner": "client-00041",
+		"Zone": "asia-northeast1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
 		"Name": "client-00043",
 		"Partner": "client-00044",
-		"Zone": "europe-west6-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -604,7 +604,7 @@
 	{
 		"Name": "client-00044",
 		"Partner": "client-00043",
-		"Zone": "us-east4-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -618,7 +618,7 @@
 	{
 		"Name": "client-00045",
 		"Partner": "client-00046",
-		"Zone": "us-west2-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -627,7 +627,7 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00046",
@@ -641,12 +641,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00047",
 		"Partner": "client-00048",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -660,7 +660,7 @@
 	{
 		"Name": "client-00048",
 		"Partner": "client-00047",
-		"Zone": "europe-west1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -674,7 +674,7 @@
 	{
 		"Name": "client-00049",
 		"Partner": "client-00050",
-		"Zone": "asia-east2-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -688,7 +688,7 @@
 	{
 		"Name": "client-00050",
 		"Partner": "client-00049",
-		"Zone": "asia-east1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -716,7 +716,7 @@
 	{
 		"Name": "client-00052",
 		"Partner": "client-00051",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -730,7 +730,7 @@
 	{
 		"Name": "client-00053",
 		"Partner": "client-00054",
-		"Zone": "us-west1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -744,7 +744,7 @@
 	{
 		"Name": "client-00054",
 		"Partner": "client-00053",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -758,7 +758,7 @@
 	{
 		"Name": "client-00055",
 		"Partner": "client-00056",
-		"Zone": "asia-south1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -772,7 +772,7 @@
 	{
 		"Name": "client-00056",
 		"Partner": "client-00055",
-		"Zone": "europe-west2-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -786,7 +786,7 @@
 	{
 		"Name": "client-00057",
 		"Partner": "client-00058",
-		"Zone": "europe-west4-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -800,7 +800,7 @@
 	{
 		"Name": "client-00058",
 		"Partner": "client-00057",
-		"Zone": "us-west2-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -814,7 +814,7 @@
 	{
 		"Name": "client-00059",
 		"Partner": "client-00060",
-		"Zone": "us-east1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -828,7 +828,7 @@
 	{
 		"Name": "client-00060",
 		"Partner": "client-00059",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -842,7 +842,7 @@
 	{
 		"Name": "client-00061",
 		"Partner": "client-00062",
-		"Zone": "asia-northeast2-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -856,7 +856,7 @@
 	{
 		"Name": "client-00062",
 		"Partner": "client-00061",
-		"Zone": "europe-west1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -870,7 +870,7 @@
 	{
 		"Name": "client-00063",
 		"Partner": "client-00064",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -884,7 +884,7 @@
 	{
 		"Name": "client-00064",
 		"Partner": "client-00063",
-		"Zone": "asia-east1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -893,12 +893,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00065",
 		"Partner": "client-00066",
-		"Zone": "us-east4-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -912,7 +912,7 @@
 	{
 		"Name": "client-00066",
 		"Partner": "client-00065",
-		"Zone": "asia-northeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -926,7 +926,7 @@
 	{
 		"Name": "client-00067",
 		"Partner": "client-00068",
-		"Zone": "europe-north1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -940,7 +940,7 @@
 	{
 		"Name": "client-00068",
 		"Partner": "client-00067",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -954,7 +954,7 @@
 	{
 		"Name": "client-00069",
 		"Partner": "client-00070",
-		"Zone": "asia-east2-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -968,7 +968,7 @@
 	{
 		"Name": "client-00070",
 		"Partner": "client-00069",
-		"Zone": "europe-west6-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -982,7 +982,7 @@
 	{
 		"Name": "client-00071",
 		"Partner": "client-00072",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -991,12 +991,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00072",
 		"Partner": "client-00071",
-		"Zone": "us-west1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1010,7 +1010,7 @@
 	{
 		"Name": "client-00073",
 		"Partner": "client-00074",
-		"Zone": "us-west1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1024,7 +1024,7 @@
 	{
 		"Name": "client-00074",
 		"Partner": "client-00073",
-		"Zone": "asia-east1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1038,7 +1038,7 @@
 	{
 		"Name": "client-00075",
 		"Partner": "client-00076",
-		"Zone": "us-west2-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1047,12 +1047,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00076",
 		"Partner": "client-00075",
-		"Zone": "us-east1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1066,21 +1066,7 @@
 	{
 		"Name": "client-00077",
 		"Partner": "client-00078",
-		"Zone": "europe-west6-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "client-00078",
-		"Partner": "client-00077",
-		"Zone": "asia-northeast2-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1092,9 +1078,9 @@
 		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
-		"Name": "client-00079",
-		"Partner": "client-00080",
-		"Zone": "europe-north1-b",
+		"Name": "client-00078",
+		"Partner": "client-00077",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1106,9 +1092,23 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "client-00079",
+		"Partner": "client-00080",
+		"Zone": "us-west2-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
 		"Name": "client-00080",
 		"Partner": "client-00079",
-		"Zone": "us-east4-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1122,7 +1122,7 @@
 	{
 		"Name": "client-00081",
 		"Partner": "client-00082",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1136,7 +1136,7 @@
 	{
 		"Name": "client-00082",
 		"Partner": "client-00081",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1150,7 +1150,7 @@
 	{
 		"Name": "client-00083",
 		"Partner": "client-00084",
-		"Zone": "asia-southeast1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1164,7 +1164,7 @@
 	{
 		"Name": "client-00084",
 		"Partner": "client-00083",
-		"Zone": "europe-west1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1173,12 +1173,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00085",
 		"Partner": "client-00086",
-		"Zone": "europe-west2-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1192,7 +1192,7 @@
 	{
 		"Name": "client-00086",
 		"Partner": "client-00085",
-		"Zone": "asia-south1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1206,7 +1206,7 @@
 	{
 		"Name": "client-00087",
 		"Partner": "client-00088",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1215,12 +1215,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00088",
 		"Partner": "client-00087",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1234,7 +1234,7 @@
 	{
 		"Name": "client-00089",
 		"Partner": "client-00090",
-		"Zone": "us-central1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1248,7 +1248,7 @@
 	{
 		"Name": "client-00090",
 		"Partner": "client-00089",
-		"Zone": "asia-east2-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1262,7 +1262,7 @@
 	{
 		"Name": "client-00091",
 		"Partner": "client-00092",
-		"Zone": "us-east1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1271,12 +1271,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00092",
 		"Partner": "client-00091",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1290,7 +1290,7 @@
 	{
 		"Name": "client-00093",
 		"Partner": "client-00094",
-		"Zone": "australia-southeast1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1304,7 +1304,7 @@
 	{
 		"Name": "client-00094",
 		"Partner": "client-00093",
-		"Zone": "asia-south1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1318,7 +1318,7 @@
 	{
 		"Name": "client-00095",
 		"Partner": "client-00096",
-		"Zone": "us-west1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1332,7 +1332,7 @@
 	{
 		"Name": "client-00096",
 		"Partner": "client-00095",
-		"Zone": "asia-northeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1346,7 +1346,7 @@
 	{
 		"Name": "client-00097",
 		"Partner": "client-00098",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1355,12 +1355,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00098",
 		"Partner": "client-00097",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1369,12 +1369,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00099",
 		"Partner": "client-00100",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1388,7 +1388,7 @@
 	{
 		"Name": "client-00100",
 		"Partner": "client-00099",
-		"Zone": "asia-east2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1402,7 +1402,7 @@
 	{
 		"Name": "client-00101",
 		"Partner": "client-00102",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1416,7 +1416,7 @@
 	{
 		"Name": "client-00102",
 		"Partner": "client-00101",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1430,7 +1430,7 @@
 	{
 		"Name": "client-00103",
 		"Partner": "client-00104",
-		"Zone": "europe-west1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1444,7 +1444,7 @@
 	{
 		"Name": "client-00104",
 		"Partner": "client-00103",
-		"Zone": "asia-east1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1458,7 +1458,7 @@
 	{
 		"Name": "client-00105",
 		"Partner": "client-00106",
-		"Zone": "us-east4-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1467,12 +1467,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00106",
 		"Partner": "client-00105",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1486,7 +1486,21 @@
 	{
 		"Name": "client-00107",
 		"Partner": "client-00108",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-north1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
+		"Name": "client-00108",
+		"Partner": "client-00107",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1498,23 +1512,9 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "client-00108",
-		"Partner": "client-00107",
-		"Zone": "us-west2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
 		"Name": "client-00109",
 		"Partner": "client-00110",
-		"Zone": "us-west2-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1523,12 +1523,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00110",
 		"Partner": "client-00109",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1537,12 +1537,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00111",
 		"Partner": "client-00112",
-		"Zone": "us-east4-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1556,7 +1556,7 @@
 	{
 		"Name": "client-00112",
 		"Partner": "client-00111",
-		"Zone": "europe-west6-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1570,7 +1570,7 @@
 	{
 		"Name": "client-00113",
 		"Partner": "client-00114",
-		"Zone": "asia-northeast1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1584,7 +1584,7 @@
 	{
 		"Name": "client-00114",
 		"Partner": "client-00113",
-		"Zone": "europe-west2-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1593,12 +1593,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00115",
 		"Partner": "client-00116",
-		"Zone": "us-east1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1612,7 +1612,7 @@
 	{
 		"Name": "client-00116",
 		"Partner": "client-00115",
-		"Zone": "europe-west4-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1626,7 +1626,7 @@
 	{
 		"Name": "client-00117",
 		"Partner": "client-00118",
-		"Zone": "europe-west1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1640,7 +1640,7 @@
 	{
 		"Name": "client-00118",
 		"Partner": "client-00117",
-		"Zone": "asia-northeast2-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1649,7 +1649,7 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00119",
@@ -1668,7 +1668,7 @@
 	{
 		"Name": "client-00120",
 		"Partner": "client-00119",
-		"Zone": "us-west1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1677,12 +1677,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00121",
 		"Partner": "client-00122",
-		"Zone": "us-central1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1696,7 +1696,7 @@
 	{
 		"Name": "client-00122",
 		"Partner": "client-00121",
-		"Zone": "asia-east2-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1710,7 +1710,7 @@
 	{
 		"Name": "client-00123",
 		"Partner": "client-00124",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1724,7 +1724,7 @@
 	{
 		"Name": "client-00124",
 		"Partner": "client-00123",
-		"Zone": "australia-southeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1738,7 +1738,7 @@
 	{
 		"Name": "client-00125",
 		"Partner": "client-00126",
-		"Zone": "asia-east1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1752,7 +1752,7 @@
 	{
 		"Name": "client-00126",
 		"Partner": "client-00125",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1766,7 +1766,7 @@
 	{
 		"Name": "client-00127",
 		"Partner": "client-00128",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1780,7 +1780,7 @@
 	{
 		"Name": "client-00128",
 		"Partner": "client-00127",
-		"Zone": "europe-west6-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1794,7 +1794,7 @@
 	{
 		"Name": "client-00129",
 		"Partner": "client-00130",
-		"Zone": "asia-east1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1808,7 +1808,7 @@
 	{
 		"Name": "client-00130",
 		"Partner": "client-00129",
-		"Zone": "europe-west2-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1822,7 +1822,7 @@
 	{
 		"Name": "client-00131",
 		"Partner": "client-00132",
-		"Zone": "asia-northeast2-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1831,12 +1831,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00132",
 		"Partner": "client-00131",
-		"Zone": "us-west1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1850,7 +1850,7 @@
 	{
 		"Name": "client-00133",
 		"Partner": "client-00134",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1864,7 +1864,7 @@
 	{
 		"Name": "client-00134",
 		"Partner": "client-00133",
-		"Zone": "us-central1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1878,7 +1878,7 @@
 	{
 		"Name": "client-00135",
 		"Partner": "client-00136",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1892,7 +1892,7 @@
 	{
 		"Name": "client-00136",
 		"Partner": "client-00135",
-		"Zone": "asia-south1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1901,12 +1901,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00137",
 		"Partner": "client-00138",
-		"Zone": "us-east1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1920,7 +1920,7 @@
 	{
 		"Name": "client-00138",
 		"Partner": "client-00137",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1934,7 +1934,7 @@
 	{
 		"Name": "client-00139",
 		"Partner": "client-00140",
-		"Zone": "us-west2-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1943,12 +1943,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00140",
 		"Partner": "client-00139",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1962,7 +1962,7 @@
 	{
 		"Name": "client-00141",
 		"Partner": "client-00142",
-		"Zone": "asia-east2-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1976,7 +1976,7 @@
 	{
 		"Name": "client-00142",
 		"Partner": "client-00141",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -1985,12 +1985,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00143",
 		"Partner": "client-00144",
-		"Zone": "asia-northeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2004,7 +2004,7 @@
 	{
 		"Name": "client-00144",
 		"Partner": "client-00143",
-		"Zone": "us-east4-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2018,7 +2018,7 @@
 	{
 		"Name": "client-00145",
 		"Partner": "client-00146",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2032,7 +2032,7 @@
 	{
 		"Name": "client-00146",
 		"Partner": "client-00145",
-		"Zone": "us-east1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2041,12 +2041,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00147",
 		"Partner": "client-00148",
-		"Zone": "us-west1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2060,7 +2060,7 @@
 	{
 		"Name": "client-00148",
 		"Partner": "client-00147",
-		"Zone": "asia-east2-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2069,12 +2069,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00149",
 		"Partner": "client-00150",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2088,7 +2088,7 @@
 	{
 		"Name": "client-00150",
 		"Partner": "client-00149",
-		"Zone": "us-west2-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2097,12 +2097,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00151",
 		"Partner": "client-00152",
-		"Zone": "asia-northeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2116,7 +2116,7 @@
 	{
 		"Name": "client-00152",
 		"Partner": "client-00151",
-		"Zone": "europe-north1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2130,7 +2130,7 @@
 	{
 		"Name": "client-00153",
 		"Partner": "client-00154",
-		"Zone": "europe-west1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2153,12 +2153,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00155",
 		"Partner": "client-00156",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2167,12 +2167,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00156",
 		"Partner": "client-00155",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2186,7 +2186,7 @@
 	{
 		"Name": "client-00157",
 		"Partner": "client-00158",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2195,12 +2195,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00158",
 		"Partner": "client-00157",
-		"Zone": "europe-west4-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2214,7 +2214,7 @@
 	{
 		"Name": "client-00159",
 		"Partner": "client-00160",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2223,12 +2223,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00160",
 		"Partner": "client-00159",
-		"Zone": "asia-south1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2242,7 +2242,7 @@
 	{
 		"Name": "client-00161",
 		"Partner": "client-00162",
-		"Zone": "us-east4-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2251,7 +2251,7 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00162",
@@ -2270,7 +2270,7 @@
 	{
 		"Name": "client-00163",
 		"Partner": "client-00164",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2284,7 +2284,7 @@
 	{
 		"Name": "client-00164",
 		"Partner": "client-00163",
-		"Zone": "us-west2-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2293,12 +2293,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00165",
 		"Partner": "client-00166",
-		"Zone": "us-east4-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2312,7 +2312,7 @@
 	{
 		"Name": "client-00166",
 		"Partner": "client-00165",
-		"Zone": "us-west1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2326,7 +2326,7 @@
 	{
 		"Name": "client-00167",
 		"Partner": "client-00168",
-		"Zone": "europe-west6-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2340,7 +2340,7 @@
 	{
 		"Name": "client-00168",
 		"Partner": "client-00167",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2354,7 +2354,7 @@
 	{
 		"Name": "client-00169",
 		"Partner": "client-00170",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2368,7 +2368,7 @@
 	{
 		"Name": "client-00170",
 		"Partner": "client-00169",
-		"Zone": "asia-east2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2382,7 +2382,7 @@
 	{
 		"Name": "client-00171",
 		"Partner": "client-00172",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2396,7 +2396,7 @@
 	{
 		"Name": "client-00172",
 		"Partner": "client-00171",
-		"Zone": "asia-east1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2419,12 +2419,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00174",
 		"Partner": "client-00173",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2433,12 +2433,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00175",
 		"Partner": "client-00176",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2452,7 +2452,7 @@
 	{
 		"Name": "client-00176",
 		"Partner": "client-00175",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2461,12 +2461,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00177",
 		"Partner": "client-00178",
-		"Zone": "us-east1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2480,7 +2480,7 @@
 	{
 		"Name": "client-00178",
 		"Partner": "client-00177",
-		"Zone": "europe-west1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2494,7 +2494,7 @@
 	{
 		"Name": "client-00179",
 		"Partner": "client-00180",
-		"Zone": "asia-south1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2508,7 +2508,7 @@
 	{
 		"Name": "client-00180",
 		"Partner": "client-00179",
-		"Zone": "europe-north1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2522,7 +2522,7 @@
 	{
 		"Name": "client-00181",
 		"Partner": "client-00182",
-		"Zone": "us-east4-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2550,7 +2550,7 @@
 	{
 		"Name": "client-00183",
 		"Partner": "client-00184",
-		"Zone": "us-east1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2564,7 +2564,7 @@
 	{
 		"Name": "client-00184",
 		"Partner": "client-00183",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2578,7 +2578,7 @@
 	{
 		"Name": "client-00185",
 		"Partner": "client-00186",
-		"Zone": "asia-east2-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2592,7 +2592,7 @@
 	{
 		"Name": "client-00186",
 		"Partner": "client-00185",
-		"Zone": "asia-northeast1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2601,12 +2601,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00187",
 		"Partner": "client-00188",
-		"Zone": "asia-northeast2-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2620,7 +2620,7 @@
 	{
 		"Name": "client-00188",
 		"Partner": "client-00187",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2629,12 +2629,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00189",
 		"Partner": "client-00190",
-		"Zone": "asia-south1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2648,7 +2648,7 @@
 	{
 		"Name": "client-00190",
 		"Partner": "client-00189",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2662,7 +2662,7 @@
 	{
 		"Name": "client-00191",
 		"Partner": "client-00192",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2676,7 +2676,7 @@
 	{
 		"Name": "client-00192",
 		"Partner": "client-00191",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2690,7 +2690,7 @@
 	{
 		"Name": "client-00193",
 		"Partner": "client-00194",
-		"Zone": "us-west1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2699,12 +2699,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00194",
 		"Partner": "client-00193",
-		"Zone": "europe-west1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2718,21 +2718,7 @@
 	{
 		"Name": "client-00195",
 		"Partner": "client-00196",
-		"Zone": "us-west2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
-		"Name": "client-00196",
-		"Partner": "client-00195",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2744,9 +2730,23 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "client-00196",
+		"Partner": "client-00195",
+		"Zone": "europe-north1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
 		"Name": "client-00197",
 		"Partner": "client-00198",
-		"Zone": "europe-west4-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2760,7 +2760,7 @@
 	{
 		"Name": "client-00198",
 		"Partner": "client-00197",
-		"Zone": "europe-west6-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2774,7 +2774,7 @@
 	{
 		"Name": "client-00199",
 		"Partner": "client-00200",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2788,21 +2788,7 @@
 	{
 		"Name": "client-00200",
 		"Partner": "client-00199",
-		"Zone": "us-west2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
-		"Name": "client-00201",
-		"Partner": "client-00202",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2814,9 +2800,23 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "client-00201",
+		"Partner": "client-00202",
+		"Zone": "asia-northeast1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
 		"Name": "client-00202",
 		"Partner": "client-00201",
-		"Zone": "europe-west4-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2830,7 +2830,7 @@
 	{
 		"Name": "client-00203",
 		"Partner": "client-00204",
-		"Zone": "asia-south1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2858,7 +2858,7 @@
 	{
 		"Name": "client-00205",
 		"Partner": "client-00206",
-		"Zone": "asia-east1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2867,12 +2867,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00206",
 		"Partner": "client-00205",
-		"Zone": "us-central1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2886,7 +2886,7 @@
 	{
 		"Name": "client-00207",
 		"Partner": "client-00208",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2895,12 +2895,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00208",
 		"Partner": "client-00207",
-		"Zone": "us-east4-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2914,7 +2914,7 @@
 	{
 		"Name": "client-00209",
 		"Partner": "client-00210",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2923,12 +2923,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00210",
 		"Partner": "client-00209",
-		"Zone": "asia-northeast1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2942,7 +2942,7 @@
 	{
 		"Name": "client-00211",
 		"Partner": "client-00212",
-		"Zone": "europe-west2-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2951,12 +2951,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00212",
 		"Partner": "client-00211",
-		"Zone": "europe-north1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2970,7 +2970,7 @@
 	{
 		"Name": "client-00213",
 		"Partner": "client-00214",
-		"Zone": "asia-east2-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2984,7 +2984,7 @@
 	{
 		"Name": "client-00214",
 		"Partner": "client-00213",
-		"Zone": "us-east1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -2998,7 +2998,7 @@
 	{
 		"Name": "client-00215",
 		"Partner": "client-00216",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3012,7 +3012,7 @@
 	{
 		"Name": "client-00216",
 		"Partner": "client-00215",
-		"Zone": "us-west1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3021,12 +3021,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00217",
 		"Partner": "client-00218",
-		"Zone": "europe-west6-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3040,7 +3040,7 @@
 	{
 		"Name": "client-00218",
 		"Partner": "client-00217",
-		"Zone": "us-central1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3054,7 +3054,7 @@
 	{
 		"Name": "client-00219",
 		"Partner": "client-00220",
-		"Zone": "us-east1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3082,7 +3082,7 @@
 	{
 		"Name": "client-00221",
 		"Partner": "client-00222",
-		"Zone": "europe-west1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3096,7 +3096,7 @@
 	{
 		"Name": "client-00222",
 		"Partner": "client-00221",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3105,12 +3105,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00223",
 		"Partner": "client-00224",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3124,7 +3124,7 @@
 	{
 		"Name": "client-00224",
 		"Partner": "client-00223",
-		"Zone": "us-west1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3138,7 +3138,7 @@
 	{
 		"Name": "client-00225",
 		"Partner": "client-00226",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3152,7 +3152,7 @@
 	{
 		"Name": "client-00226",
 		"Partner": "client-00225",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3161,12 +3161,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00227",
 		"Partner": "client-00228",
-		"Zone": "asia-east2-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3180,7 +3180,7 @@
 	{
 		"Name": "client-00228",
 		"Partner": "client-00227",
-		"Zone": "australia-southeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3194,7 +3194,7 @@
 	{
 		"Name": "client-00229",
 		"Partner": "client-00230",
-		"Zone": "us-west2-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3203,12 +3203,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00230",
 		"Partner": "client-00229",
-		"Zone": "asia-northeast2-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3217,12 +3217,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00231",
 		"Partner": "client-00232",
-		"Zone": "europe-west2-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3236,7 +3236,7 @@
 	{
 		"Name": "client-00232",
 		"Partner": "client-00231",
-		"Zone": "asia-northeast1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3250,7 +3250,7 @@
 	{
 		"Name": "client-00233",
 		"Partner": "client-00234",
-		"Zone": "asia-east1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3259,12 +3259,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00234",
 		"Partner": "client-00233",
-		"Zone": "us-east4-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3278,7 +3278,7 @@
 	{
 		"Name": "client-00235",
 		"Partner": "client-00236",
-		"Zone": "asia-northeast1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3292,7 +3292,7 @@
 	{
 		"Name": "client-00236",
 		"Partner": "client-00235",
-		"Zone": "europe-west6-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3306,7 +3306,7 @@
 	{
 		"Name": "client-00237",
 		"Partner": "client-00238",
-		"Zone": "asia-south1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3320,7 +3320,7 @@
 	{
 		"Name": "client-00238",
 		"Partner": "client-00237",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3329,12 +3329,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00239",
 		"Partner": "client-00240",
-		"Zone": "us-east4-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3348,7 +3348,7 @@
 	{
 		"Name": "client-00240",
 		"Partner": "client-00239",
-		"Zone": "asia-northeast2-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3357,12 +3357,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00241",
 		"Partner": "client-00242",
-		"Zone": "asia-east2-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3376,7 +3376,7 @@
 	{
 		"Name": "client-00242",
 		"Partner": "client-00241",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3390,7 +3390,7 @@
 	{
 		"Name": "client-00243",
 		"Partner": "client-00244",
-		"Zone": "asia-east1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3404,7 +3404,7 @@
 	{
 		"Name": "client-00244",
 		"Partner": "client-00243",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3418,7 +3418,7 @@
 	{
 		"Name": "client-00245",
 		"Partner": "client-00246",
-		"Zone": "us-west2-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3427,7 +3427,7 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00246",
@@ -3446,7 +3446,7 @@
 	{
 		"Name": "client-00247",
 		"Partner": "client-00248",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3455,12 +3455,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00248",
 		"Partner": "client-00247",
-		"Zone": "europe-west1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3474,7 +3474,7 @@
 	{
 		"Name": "client-00249",
 		"Partner": "client-00250",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3488,7 +3488,7 @@
 	{
 		"Name": "client-00250",
 		"Partner": "client-00249",
-		"Zone": "asia-southeast1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3502,7 +3502,7 @@
 	{
 		"Name": "client-00251",
 		"Partner": "client-00252",
-		"Zone": "us-east1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3511,12 +3511,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00252",
 		"Partner": "client-00251",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3530,7 +3530,7 @@
 	{
 		"Name": "client-00253",
 		"Partner": "client-00254",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3544,7 +3544,7 @@
 	{
 		"Name": "client-00254",
 		"Partner": "client-00253",
-		"Zone": "asia-east1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3558,7 +3558,7 @@
 	{
 		"Name": "client-00255",
 		"Partner": "client-00256",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3567,12 +3567,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00256",
 		"Partner": "client-00255",
-		"Zone": "asia-east2-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3586,7 +3586,7 @@
 	{
 		"Name": "client-00257",
 		"Partner": "client-00258",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3600,7 +3600,7 @@
 	{
 		"Name": "client-00258",
 		"Partner": "client-00257",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3614,7 +3614,7 @@
 	{
 		"Name": "client-00259",
 		"Partner": "client-00260",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3628,7 +3628,7 @@
 	{
 		"Name": "client-00260",
 		"Partner": "client-00259",
-		"Zone": "asia-south1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3637,12 +3637,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00261",
 		"Partner": "client-00262",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3656,7 +3656,7 @@
 	{
 		"Name": "client-00262",
 		"Partner": "client-00261",
-		"Zone": "us-central1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3670,7 +3670,7 @@
 	{
 		"Name": "client-00263",
 		"Partner": "client-00264",
-		"Zone": "us-west1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3684,7 +3684,7 @@
 	{
 		"Name": "client-00264",
 		"Partner": "client-00263",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3698,7 +3698,7 @@
 	{
 		"Name": "client-00265",
 		"Partner": "client-00266",
-		"Zone": "europe-west4-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3707,12 +3707,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00266",
 		"Partner": "client-00265",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3726,21 +3726,7 @@
 	{
 		"Name": "client-00267",
 		"Partner": "client-00268",
-		"Zone": "asia-northeast2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
-		"Name": "client-00268",
-		"Partner": "client-00267",
-		"Zone": "us-east1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3752,9 +3738,23 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "client-00268",
+		"Partner": "client-00267",
+		"Zone": "asia-northeast1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
 		"Name": "client-00269",
 		"Partner": "client-00270",
-		"Zone": "us-east4-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3768,7 +3768,7 @@
 	{
 		"Name": "client-00270",
 		"Partner": "client-00269",
-		"Zone": "us-west2-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3777,12 +3777,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00271",
 		"Partner": "client-00272",
-		"Zone": "asia-northeast1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3796,7 +3796,7 @@
 	{
 		"Name": "client-00272",
 		"Partner": "client-00271",
-		"Zone": "us-west2-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3805,12 +3805,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00273",
 		"Partner": "client-00274",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3824,7 +3824,7 @@
 	{
 		"Name": "client-00274",
 		"Partner": "client-00273",
-		"Zone": "us-central1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3838,7 +3838,7 @@
 	{
 		"Name": "client-00275",
 		"Partner": "client-00276",
-		"Zone": "asia-east1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3852,7 +3852,7 @@
 	{
 		"Name": "client-00276",
 		"Partner": "client-00275",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3861,12 +3861,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00277",
 		"Partner": "client-00278",
-		"Zone": "us-east1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3880,7 +3880,7 @@
 	{
 		"Name": "client-00278",
 		"Partner": "client-00277",
-		"Zone": "us-west1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3894,7 +3894,7 @@
 	{
 		"Name": "client-00279",
 		"Partner": "client-00280",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3908,7 +3908,7 @@
 	{
 		"Name": "client-00280",
 		"Partner": "client-00279",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3922,21 +3922,7 @@
 	{
 		"Name": "client-00281",
 		"Partner": "client-00282",
-		"Zone": "europe-west1-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "client-00282",
-		"Partner": "client-00281",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3948,9 +3934,23 @@
 		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
+		"Name": "client-00282",
+		"Partner": "client-00281",
+		"Zone": "northamerica-northeast1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
 		"Name": "client-00283",
 		"Partner": "client-00284",
-		"Zone": "asia-south1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3964,7 +3964,7 @@
 	{
 		"Name": "client-00284",
 		"Partner": "client-00283",
-		"Zone": "us-east4-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3978,7 +3978,7 @@
 	{
 		"Name": "client-00285",
 		"Partner": "client-00286",
-		"Zone": "europe-north1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -3992,7 +3992,7 @@
 	{
 		"Name": "client-00286",
 		"Partner": "client-00285",
-		"Zone": "asia-east2-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4006,7 +4006,7 @@
 	{
 		"Name": "client-00287",
 		"Partner": "client-00288",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4020,7 +4020,7 @@
 	{
 		"Name": "client-00288",
 		"Partner": "client-00287",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4034,7 +4034,7 @@
 	{
 		"Name": "client-00289",
 		"Partner": "client-00290",
-		"Zone": "europe-west6-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4048,7 +4048,7 @@
 	{
 		"Name": "client-00290",
 		"Partner": "client-00289",
-		"Zone": "us-central1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4062,7 +4062,7 @@
 	{
 		"Name": "client-00291",
 		"Partner": "client-00292",
-		"Zone": "us-east4-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4076,7 +4076,7 @@
 	{
 		"Name": "client-00292",
 		"Partner": "client-00291",
-		"Zone": "us-west1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4090,7 +4090,7 @@
 	{
 		"Name": "client-00293",
 		"Partner": "client-00294",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4099,12 +4099,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00294",
 		"Partner": "client-00293",
-		"Zone": "asia-east1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4113,12 +4113,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00295",
 		"Partner": "client-00296",
-		"Zone": "asia-east2-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4132,7 +4132,7 @@
 	{
 		"Name": "client-00296",
 		"Partner": "client-00295",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4146,7 +4146,7 @@
 	{
 		"Name": "client-00297",
 		"Partner": "client-00298",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4155,12 +4155,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00298",
 		"Partner": "client-00297",
-		"Zone": "asia-southeast1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4174,7 +4174,7 @@
 	{
 		"Name": "client-00299",
 		"Partner": "client-00300",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4188,7 +4188,7 @@
 	{
 		"Name": "client-00300",
 		"Partner": "client-00299",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4202,7 +4202,7 @@
 	{
 		"Name": "client-00301",
 		"Partner": "client-00302",
-		"Zone": "europe-west2-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4216,7 +4216,7 @@
 	{
 		"Name": "client-00302",
 		"Partner": "client-00301",
-		"Zone": "europe-west1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4230,7 +4230,7 @@
 	{
 		"Name": "client-00303",
 		"Partner": "client-00304",
-		"Zone": "us-west2-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4239,12 +4239,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00304",
 		"Partner": "client-00303",
-		"Zone": "asia-south1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4258,7 +4258,7 @@
 	{
 		"Name": "client-00305",
 		"Partner": "client-00306",
-		"Zone": "europe-north1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4272,7 +4272,7 @@
 	{
 		"Name": "client-00306",
 		"Partner": "client-00305",
-		"Zone": "us-east1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4286,6 +4286,20 @@
 	{
 		"Name": "client-00307",
 		"Partner": "client-00308",
+		"Zone": "northamerica-northeast1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "client-00308",
+		"Partner": "client-00307",
 		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
@@ -4298,23 +4312,9 @@
 		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
-		"Name": "client-00308",
-		"Partner": "client-00307",
-		"Zone": "asia-east2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
 		"Name": "client-00309",
 		"Partner": "client-00310",
-		"Zone": "us-east1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4328,7 +4328,7 @@
 	{
 		"Name": "client-00310",
 		"Partner": "client-00309",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4342,7 +4342,7 @@
 	{
 		"Name": "client-00311",
 		"Partner": "client-00312",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4351,12 +4351,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00312",
 		"Partner": "client-00311",
-		"Zone": "asia-south1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4370,7 +4370,7 @@
 	{
 		"Name": "client-00313",
 		"Partner": "client-00314",
-		"Zone": "asia-northeast1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4384,7 +4384,7 @@
 	{
 		"Name": "client-00314",
 		"Partner": "client-00313",
-		"Zone": "asia-east1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4393,12 +4393,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00315",
 		"Partner": "client-00316",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4412,7 +4412,7 @@
 	{
 		"Name": "client-00316",
 		"Partner": "client-00315",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4435,12 +4435,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00318",
 		"Partner": "client-00317",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4454,7 +4454,7 @@
 	{
 		"Name": "client-00319",
 		"Partner": "client-00320",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4463,12 +4463,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00320",
 		"Partner": "client-00319",
-		"Zone": "europe-west2-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4482,7 +4482,7 @@
 	{
 		"Name": "client-00321",
 		"Partner": "client-00322",
-		"Zone": "us-east4-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4496,7 +4496,7 @@
 	{
 		"Name": "client-00322",
 		"Partner": "client-00321",
-		"Zone": "us-west1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4510,7 +4510,7 @@
 	{
 		"Name": "client-00323",
 		"Partner": "client-00324",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4524,7 +4524,7 @@
 	{
 		"Name": "client-00324",
 		"Partner": "client-00323",
-		"Zone": "australia-southeast1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4538,7 +4538,7 @@
 	{
 		"Name": "client-00325",
 		"Partner": "client-00326",
-		"Zone": "asia-east2-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4547,12 +4547,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00326",
 		"Partner": "client-00325",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4566,7 +4566,7 @@
 	{
 		"Name": "client-00327",
 		"Partner": "client-00328",
-		"Zone": "europe-north1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4580,7 +4580,7 @@
 	{
 		"Name": "client-00328",
 		"Partner": "client-00327",
-		"Zone": "australia-southeast1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4594,7 +4594,7 @@
 	{
 		"Name": "client-00329",
 		"Partner": "client-00330",
-		"Zone": "asia-east1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4608,7 +4608,7 @@
 	{
 		"Name": "client-00330",
 		"Partner": "client-00329",
-		"Zone": "us-west1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4622,7 +4622,7 @@
 	{
 		"Name": "client-00331",
 		"Partner": "client-00332",
-		"Zone": "us-east1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4636,7 +4636,7 @@
 	{
 		"Name": "client-00332",
 		"Partner": "client-00331",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4645,12 +4645,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00333",
 		"Partner": "client-00334",
-		"Zone": "us-east4-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4692,7 +4692,7 @@
 	{
 		"Name": "client-00336",
 		"Partner": "client-00335",
-		"Zone": "us-central1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4706,7 +4706,7 @@
 	{
 		"Name": "client-00337",
 		"Partner": "client-00338",
-		"Zone": "europe-west4-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4720,7 +4720,7 @@
 	{
 		"Name": "client-00338",
 		"Partner": "client-00337",
-		"Zone": "us-west2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4729,12 +4729,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00339",
 		"Partner": "client-00340",
-		"Zone": "asia-northeast2-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4748,7 +4748,7 @@
 	{
 		"Name": "client-00340",
 		"Partner": "client-00339",
-		"Zone": "asia-northeast1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4762,7 +4762,7 @@
 	{
 		"Name": "client-00341",
 		"Partner": "client-00342",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4771,12 +4771,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00342",
 		"Partner": "client-00341",
-		"Zone": "europe-west1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4790,7 +4790,7 @@
 	{
 		"Name": "client-00343",
 		"Partner": "client-00344",
-		"Zone": "asia-south1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4804,7 +4804,7 @@
 	{
 		"Name": "client-00344",
 		"Partner": "client-00343",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4818,7 +4818,7 @@
 	{
 		"Name": "client-00345",
 		"Partner": "client-00346",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4827,12 +4827,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00346",
 		"Partner": "client-00345",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4846,7 +4846,7 @@
 	{
 		"Name": "client-00347",
 		"Partner": "client-00348",
-		"Zone": "europe-west2-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4860,7 +4860,7 @@
 	{
 		"Name": "client-00348",
 		"Partner": "client-00347",
-		"Zone": "us-west2-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4869,12 +4869,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00349",
 		"Partner": "client-00350",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4888,7 +4888,7 @@
 	{
 		"Name": "client-00350",
 		"Partner": "client-00349",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4902,7 +4902,7 @@
 	{
 		"Name": "client-00351",
 		"Partner": "client-00352",
-		"Zone": "us-west1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4911,12 +4911,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00352",
 		"Partner": "client-00351",
-		"Zone": "europe-west4-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4925,12 +4925,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00353",
 		"Partner": "client-00354",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4944,7 +4944,7 @@
 	{
 		"Name": "client-00354",
 		"Partner": "client-00353",
-		"Zone": "asia-northeast1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4953,12 +4953,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00355",
 		"Partner": "client-00356",
-		"Zone": "asia-east2-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4972,7 +4972,7 @@
 	{
 		"Name": "client-00356",
 		"Partner": "client-00355",
-		"Zone": "asia-east1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -4986,7 +4986,7 @@
 	{
 		"Name": "client-00357",
 		"Partner": "client-00358",
-		"Zone": "us-east1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5000,7 +5000,7 @@
 	{
 		"Name": "client-00358",
 		"Partner": "client-00357",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5014,7 +5014,7 @@
 	{
 		"Name": "client-00359",
 		"Partner": "client-00360",
-		"Zone": "us-east4-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5028,7 +5028,7 @@
 	{
 		"Name": "client-00360",
 		"Partner": "client-00359",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5037,12 +5037,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00361",
 		"Partner": "client-00362",
-		"Zone": "us-central1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5056,21 +5056,7 @@
 	{
 		"Name": "client-00362",
 		"Partner": "client-00361",
-		"Zone": "us-west2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
-		"Name": "client-00363",
-		"Partner": "client-00364",
-		"Zone": "europe-west4-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5082,9 +5068,23 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "client-00363",
+		"Partner": "client-00364",
+		"Zone": "europe-north1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
 		"Name": "client-00364",
 		"Partner": "client-00363",
-		"Zone": "europe-north1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5098,7 +5098,7 @@
 	{
 		"Name": "client-00365",
 		"Partner": "client-00366",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5107,12 +5107,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00366",
 		"Partner": "client-00365",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5126,7 +5126,7 @@
 	{
 		"Name": "client-00367",
 		"Partner": "client-00368",
-		"Zone": "europe-west2-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5140,7 +5140,7 @@
 	{
 		"Name": "client-00368",
 		"Partner": "client-00367",
-		"Zone": "asia-east1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5154,7 +5154,7 @@
 	{
 		"Name": "client-00369",
 		"Partner": "client-00370",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5168,7 +5168,7 @@
 	{
 		"Name": "client-00370",
 		"Partner": "client-00369",
-		"Zone": "asia-east2-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5182,7 +5182,7 @@
 	{
 		"Name": "client-00371",
 		"Partner": "client-00372",
-		"Zone": "australia-southeast1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5191,12 +5191,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00372",
 		"Partner": "client-00371",
-		"Zone": "asia-south1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5205,12 +5205,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00373",
 		"Partner": "client-00374",
-		"Zone": "europe-west1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5224,7 +5224,7 @@
 	{
 		"Name": "client-00374",
 		"Partner": "client-00373",
-		"Zone": "us-east4-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5238,7 +5238,7 @@
 	{
 		"Name": "client-00375",
 		"Partner": "client-00376",
-		"Zone": "us-west1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5252,7 +5252,7 @@
 	{
 		"Name": "client-00376",
 		"Partner": "client-00375",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5266,21 +5266,7 @@
 	{
 		"Name": "client-00377",
 		"Partner": "client-00378",
-		"Zone": "asia-northeast2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
-		"Name": "client-00378",
-		"Partner": "client-00377",
-		"Zone": "us-east1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5292,9 +5278,23 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "client-00378",
+		"Partner": "client-00377",
+		"Zone": "europe-north1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
 		"Name": "client-00379",
 		"Partner": "client-00380",
-		"Zone": "us-east4-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5308,7 +5308,7 @@
 	{
 		"Name": "client-00380",
 		"Partner": "client-00379",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5317,12 +5317,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00381",
 		"Partner": "client-00382",
-		"Zone": "europe-west2-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5331,12 +5331,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00382",
 		"Partner": "client-00381",
-		"Zone": "us-east1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5350,7 +5350,7 @@
 	{
 		"Name": "client-00383",
 		"Partner": "client-00384",
-		"Zone": "asia-east1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5364,7 +5364,7 @@
 	{
 		"Name": "client-00384",
 		"Partner": "client-00383",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5373,12 +5373,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00385",
 		"Partner": "client-00386",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5392,7 +5392,7 @@
 	{
 		"Name": "client-00386",
 		"Partner": "client-00385",
-		"Zone": "europe-west6-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5406,7 +5406,7 @@
 	{
 		"Name": "client-00387",
 		"Partner": "client-00388",
-		"Zone": "us-west1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5420,7 +5420,7 @@
 	{
 		"Name": "client-00388",
 		"Partner": "client-00387",
-		"Zone": "asia-south1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5434,7 +5434,7 @@
 	{
 		"Name": "client-00389",
 		"Partner": "client-00390",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5448,7 +5448,7 @@
 	{
 		"Name": "client-00390",
 		"Partner": "client-00389",
-		"Zone": "europe-north1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5462,7 +5462,7 @@
 	{
 		"Name": "client-00391",
 		"Partner": "client-00392",
-		"Zone": "asia-northeast2-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5471,12 +5471,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00392",
 		"Partner": "client-00391",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5490,7 +5490,7 @@
 	{
 		"Name": "client-00393",
 		"Partner": "client-00394",
-		"Zone": "us-west2-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5504,7 +5504,7 @@
 	{
 		"Name": "client-00394",
 		"Partner": "client-00393",
-		"Zone": "asia-east2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5518,7 +5518,7 @@
 	{
 		"Name": "client-00395",
 		"Partner": "client-00396",
-		"Zone": "us-central1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5532,7 +5532,7 @@
 	{
 		"Name": "client-00396",
 		"Partner": "client-00395",
-		"Zone": "asia-northeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5546,7 +5546,7 @@
 	{
 		"Name": "client-00397",
 		"Partner": "client-00398",
-		"Zone": "asia-south1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5560,7 +5560,7 @@
 	{
 		"Name": "client-00398",
 		"Partner": "client-00397",
-		"Zone": "us-central1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5574,7 +5574,7 @@
 	{
 		"Name": "client-00399",
 		"Partner": "client-00400",
-		"Zone": "asia-northeast2-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5588,7 +5588,7 @@
 	{
 		"Name": "client-00400",
 		"Partner": "client-00399",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5602,7 +5602,7 @@
 	{
 		"Name": "client-00401",
 		"Partner": "client-00402",
-		"Zone": "us-east4-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5616,7 +5616,7 @@
 	{
 		"Name": "client-00402",
 		"Partner": "client-00401",
-		"Zone": "us-west2-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5625,12 +5625,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00403",
 		"Partner": "client-00404",
-		"Zone": "us-west1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5644,7 +5644,7 @@
 	{
 		"Name": "client-00404",
 		"Partner": "client-00403",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5658,7 +5658,7 @@
 	{
 		"Name": "client-00405",
 		"Partner": "client-00406",
-		"Zone": "europe-west1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5672,7 +5672,7 @@
 	{
 		"Name": "client-00406",
 		"Partner": "client-00405",
-		"Zone": "asia-east2-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5686,7 +5686,7 @@
 	{
 		"Name": "client-00407",
 		"Partner": "client-00408",
-		"Zone": "asia-east1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5700,7 +5700,7 @@
 	{
 		"Name": "client-00408",
 		"Partner": "client-00407",
-		"Zone": "europe-west4-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5709,12 +5709,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00409",
 		"Partner": "client-00410",
-		"Zone": "asia-southeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5728,7 +5728,7 @@
 	{
 		"Name": "client-00410",
 		"Partner": "client-00409",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5737,12 +5737,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00411",
 		"Partner": "client-00412",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5756,7 +5756,7 @@
 	{
 		"Name": "client-00412",
 		"Partner": "client-00411",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5770,7 +5770,7 @@
 	{
 		"Name": "client-00413",
 		"Partner": "client-00414",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5784,7 +5784,7 @@
 	{
 		"Name": "client-00414",
 		"Partner": "client-00413",
-		"Zone": "us-east1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5798,7 +5798,7 @@
 	{
 		"Name": "client-00415",
 		"Partner": "client-00416",
-		"Zone": "us-central1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5807,7 +5807,7 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00416",
@@ -5826,7 +5826,7 @@
 	{
 		"Name": "client-00417",
 		"Partner": "client-00418",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5840,6 +5840,20 @@
 	{
 		"Name": "client-00418",
 		"Partner": "client-00417",
+		"Zone": "us-west2-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+	},
+	{
+		"Name": "client-00419",
+		"Partner": "client-00420",
 		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
@@ -5852,23 +5866,9 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "client-00419",
-		"Partner": "client-00420",
-		"Zone": "northamerica-northeast1-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
 		"Name": "client-00420",
 		"Partner": "client-00419",
-		"Zone": "australia-southeast1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5882,21 +5882,7 @@
 	{
 		"Name": "client-00421",
 		"Partner": "client-00422",
-		"Zone": "us-west2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
-		"Name": "client-00422",
-		"Partner": "client-00421",
-		"Zone": "us-east1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5906,6 +5892,20 @@
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
 		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "client-00422",
+		"Partner": "client-00421",
+		"Zone": "asia-northeast1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00423",
@@ -5919,12 +5919,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00424",
 		"Partner": "client-00423",
-		"Zone": "europe-north1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5938,7 +5938,7 @@
 	{
 		"Name": "client-00425",
 		"Partner": "client-00426",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5952,7 +5952,7 @@
 	{
 		"Name": "client-00426",
 		"Partner": "client-00425",
-		"Zone": "asia-east1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5961,12 +5961,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00427",
 		"Partner": "client-00428",
-		"Zone": "asia-south1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5975,12 +5975,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00428",
 		"Partner": "client-00427",
-		"Zone": "us-west1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -5994,7 +5994,7 @@
 	{
 		"Name": "client-00429",
 		"Partner": "client-00430",
-		"Zone": "europe-west2-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6008,7 +6008,7 @@
 	{
 		"Name": "client-00430",
 		"Partner": "client-00429",
-		"Zone": "us-east4-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6022,7 +6022,7 @@
 	{
 		"Name": "client-00431",
 		"Partner": "client-00432",
-		"Zone": "europe-west4-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6036,7 +6036,7 @@
 	{
 		"Name": "client-00432",
 		"Partner": "client-00431",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6050,7 +6050,7 @@
 	{
 		"Name": "client-00433",
 		"Partner": "client-00434",
-		"Zone": "europe-north1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6064,7 +6064,7 @@
 	{
 		"Name": "client-00434",
 		"Partner": "client-00433",
-		"Zone": "us-west2-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6073,12 +6073,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00435",
 		"Partner": "client-00436",
-		"Zone": "asia-southeast1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6092,7 +6092,7 @@
 	{
 		"Name": "client-00436",
 		"Partner": "client-00435",
-		"Zone": "europe-west4-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6106,7 +6106,7 @@
 	{
 		"Name": "client-00437",
 		"Partner": "client-00438",
-		"Zone": "asia-south1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6120,7 +6120,7 @@
 	{
 		"Name": "client-00438",
 		"Partner": "client-00437",
-		"Zone": "us-central1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6134,7 +6134,7 @@
 	{
 		"Name": "client-00439",
 		"Partner": "client-00440",
-		"Zone": "europe-west2-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6148,7 +6148,7 @@
 	{
 		"Name": "client-00440",
 		"Partner": "client-00439",
-		"Zone": "us-east4-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6162,7 +6162,7 @@
 	{
 		"Name": "client-00441",
 		"Partner": "client-00442",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6171,12 +6171,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00442",
 		"Partner": "client-00441",
-		"Zone": "asia-east2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6190,7 +6190,7 @@
 	{
 		"Name": "client-00443",
 		"Partner": "client-00444",
-		"Zone": "us-west1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6204,7 +6204,7 @@
 	{
 		"Name": "client-00444",
 		"Partner": "client-00443",
-		"Zone": "europe-west6-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6218,7 +6218,7 @@
 	{
 		"Name": "client-00445",
 		"Partner": "client-00446",
-		"Zone": "asia-east1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6232,7 +6232,7 @@
 	{
 		"Name": "client-00446",
 		"Partner": "client-00445",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6246,7 +6246,7 @@
 	{
 		"Name": "client-00447",
 		"Partner": "client-00448",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6255,12 +6255,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00448",
 		"Partner": "client-00447",
-		"Zone": "asia-northeast1-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6274,7 +6274,7 @@
 	{
 		"Name": "client-00449",
 		"Partner": "client-00450",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6283,12 +6283,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00450",
 		"Partner": "client-00449",
-		"Zone": "us-east1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6302,7 +6302,7 @@
 	{
 		"Name": "client-00451",
 		"Partner": "client-00452",
-		"Zone": "us-west1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6316,7 +6316,7 @@
 	{
 		"Name": "client-00452",
 		"Partner": "client-00451",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6330,7 +6330,7 @@
 	{
 		"Name": "client-00453",
 		"Partner": "client-00454",
-		"Zone": "asia-east1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6339,12 +6339,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00454",
 		"Partner": "client-00453",
-		"Zone": "us-central1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6353,12 +6353,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00455",
 		"Partner": "client-00456",
-		"Zone": "asia-northeast1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6372,7 +6372,7 @@
 	{
 		"Name": "client-00456",
 		"Partner": "client-00455",
-		"Zone": "australia-southeast1-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6386,7 +6386,7 @@
 	{
 		"Name": "client-00457",
 		"Partner": "client-00458",
-		"Zone": "europe-west1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6400,7 +6400,7 @@
 	{
 		"Name": "client-00458",
 		"Partner": "client-00457",
-		"Zone": "asia-south1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6409,12 +6409,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00459",
 		"Partner": "client-00460",
-		"Zone": "us-east1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6428,7 +6428,7 @@
 	{
 		"Name": "client-00460",
 		"Partner": "client-00459",
-		"Zone": "us-east4-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6437,12 +6437,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00461",
 		"Partner": "client-00462",
-		"Zone": "asia-east2-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6456,7 +6456,7 @@
 	{
 		"Name": "client-00462",
 		"Partner": "client-00461",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6465,7 +6465,7 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00463",
@@ -6484,7 +6484,7 @@
 	{
 		"Name": "client-00464",
 		"Partner": "client-00463",
-		"Zone": "us-west2-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6493,12 +6493,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00465",
 		"Partner": "client-00466",
-		"Zone": "europe-west4-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6512,7 +6512,7 @@
 	{
 		"Name": "client-00466",
 		"Partner": "client-00465",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6521,12 +6521,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00467",
 		"Partner": "client-00468",
-		"Zone": "europe-north1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6540,7 +6540,7 @@
 	{
 		"Name": "client-00468",
 		"Partner": "client-00467",
-		"Zone": "europe-west2-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6554,7 +6554,7 @@
 	{
 		"Name": "client-00469",
 		"Partner": "client-00470",
-		"Zone": "europe-north1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6568,7 +6568,7 @@
 	{
 		"Name": "client-00470",
 		"Partner": "client-00469",
-		"Zone": "us-east1-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6582,7 +6582,7 @@
 	{
 		"Name": "client-00471",
 		"Partner": "client-00472",
-		"Zone": "europe-west6-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6596,7 +6596,7 @@
 	{
 		"Name": "client-00472",
 		"Partner": "client-00471",
-		"Zone": "asia-northeast2-b",
+		"Zone": "asia-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6605,12 +6605,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00473",
 		"Partner": "client-00474",
-		"Zone": "australia-southeast1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6624,7 +6624,7 @@
 	{
 		"Name": "client-00474",
 		"Partner": "client-00473",
-		"Zone": "us-west2-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6638,7 +6638,7 @@
 	{
 		"Name": "client-00475",
 		"Partner": "client-00476",
-		"Zone": "us-east4-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6647,12 +6647,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00476",
 		"Partner": "client-00475",
-		"Zone": "europe-west1-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6666,7 +6666,7 @@
 	{
 		"Name": "client-00477",
 		"Partner": "client-00478",
-		"Zone": "asia-south1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6680,7 +6680,7 @@
 	{
 		"Name": "client-00478",
 		"Partner": "client-00477",
-		"Zone": "us-central1-b",
+		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6689,12 +6689,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00479",
 		"Partner": "client-00480",
-		"Zone": "asia-northeast1-b",
+		"Zone": "australia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6708,7 +6708,7 @@
 	{
 		"Name": "client-00480",
 		"Partner": "client-00479",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6717,12 +6717,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		"NetTroublesIfApplied": "none"
 	},
 	{
 		"Name": "client-00481",
 		"Partner": "client-00482",
-		"Zone": "asia-east2-b",
+		"Zone": "us-east4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6736,7 +6736,7 @@
 	{
 		"Name": "client-00482",
 		"Partner": "client-00481",
-		"Zone": "asia-southeast1-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6750,7 +6750,7 @@
 	{
 		"Name": "client-00483",
 		"Partner": "client-00484",
-		"Zone": "us-west1-b",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6759,12 +6759,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00484",
 		"Partner": "client-00483",
-		"Zone": "europe-west4-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6773,12 +6773,12 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "client-00485",
 		"Partner": "client-00486",
-		"Zone": "europe-west2-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6806,7 +6806,7 @@
 	{
 		"Name": "client-00487",
 		"Partner": "client-00488",
-		"Zone": "asia-south1-b",
+		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6820,7 +6820,7 @@
 	{
 		"Name": "client-00488",
 		"Partner": "client-00487",
-		"Zone": "asia-southeast1-b",
+		"Zone": "asia-east2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6834,7 +6834,7 @@
 	{
 		"Name": "client-00489",
 		"Partner": "client-00490",
-		"Zone": "europe-west2-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6848,7 +6848,7 @@
 	{
 		"Name": "client-00490",
 		"Partner": "client-00489",
-		"Zone": "us-central1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6862,7 +6862,7 @@
 	{
 		"Name": "client-00491",
 		"Partner": "client-00492",
-		"Zone": "us-east1-b",
+		"Zone": "asia-south1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6876,7 +6876,7 @@
 	{
 		"Name": "client-00492",
 		"Partner": "client-00491",
-		"Zone": "asia-east1-b",
+		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6890,7 +6890,7 @@
 	{
 		"Name": "client-00493",
 		"Partner": "client-00494",
-		"Zone": "australia-southeast1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6904,7 +6904,7 @@
 	{
 		"Name": "client-00494",
 		"Partner": "client-00493",
-		"Zone": "us-west1-b",
+		"Zone": "europe-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6918,7 +6918,21 @@
 	{
 		"Name": "client-00495",
 		"Partner": "client-00496",
-		"Zone": "northamerica-northeast1-b",
+		"Zone": "asia-southeast1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "f1-micro",
+		"TypeOfNode": "client",
+		"EvaluationScript": "zeno_client_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "client-00496",
+		"Partner": "client-00495",
+		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6930,8 +6944,8 @@
 		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
-		"Name": "client-00496",
-		"Partner": "client-00495",
+		"Name": "client-00497",
+		"Partner": "client-00498",
 		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
@@ -6944,23 +6958,9 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "client-00497",
-		"Partner": "client-00498",
-		"Zone": "asia-northeast2-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "f1-micro",
-		"TypeOfNode": "client",
-		"EvaluationScript": "zeno_client_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-	},
-	{
 		"Name": "client-00498",
 		"Partner": "client-00497",
-		"Zone": "europe-west1-b",
+		"Zone": "asia-northeast2-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6974,7 +6974,7 @@
 	{
 		"Name": "client-00499",
 		"Partner": "client-00500",
-		"Zone": "europe-north1-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "f1-micro",
 		"TypeOfNode": "client",
@@ -6997,80 +6997,10 @@
 		"SourceImage": "acs",
 		"DiskType": "pd-ssd",
 		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
+		"NetTroublesIfApplied": "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 	},
 	{
 		"Name": "mixnet-00501",
-		"Partner": "irrelevant",
-		"Zone": "europe-west6-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "n1-standard-4",
-		"TypeOfNode": "mix",
-		"EvaluationScript": "zeno_mix_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "mixnet-00502",
-		"Partner": "irrelevant",
-		"Zone": "asia-east1-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "n1-standard-4",
-		"TypeOfNode": "mix",
-		"EvaluationScript": "zeno_mix_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "mixnet-00503",
-		"Partner": "irrelevant",
-		"Zone": "us-central1-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "n1-standard-4",
-		"TypeOfNode": "mix",
-		"EvaluationScript": "zeno_mix_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "mixnet-00504",
-		"Partner": "irrelevant",
-		"Zone": "europe-west1-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "n1-standard-4",
-		"TypeOfNode": "mix",
-		"EvaluationScript": "zeno_mix_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "mixnet-00505",
-		"Partner": "irrelevant",
-		"Zone": "asia-south1-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "n1-standard-4",
-		"TypeOfNode": "mix",
-		"EvaluationScript": "zeno_mix_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "mixnet-00506",
 		"Partner": "irrelevant",
 		"Zone": "asia-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
@@ -7084,9 +7014,9 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "mixnet-00507",
+		"Name": "mixnet-00502",
 		"Partner": "irrelevant",
-		"Zone": "europe-west2-b",
+		"Zone": "us-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "n1-standard-4",
 		"TypeOfNode": "mix",
@@ -7098,49 +7028,7 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "mixnet-00508",
-		"Partner": "irrelevant",
-		"Zone": "europe-north1-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "n1-standard-4",
-		"TypeOfNode": "mix",
-		"EvaluationScript": "zeno_mix_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "mixnet-00509",
-		"Partner": "irrelevant",
-		"Zone": "australia-southeast1-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "n1-standard-4",
-		"TypeOfNode": "mix",
-		"EvaluationScript": "zeno_mix_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "mixnet-00510",
-		"Partner": "irrelevant",
-		"Zone": "us-east4-b",
-		"MinCPUPlatform": "Intel Skylake",
-		"MachineType": "n1-standard-4",
-		"TypeOfNode": "mix",
-		"EvaluationScript": "zeno_mix_eval.sh",
-		"BinaryName": "zeno",
-		"SourceImage": "acs",
-		"DiskType": "pd-ssd",
-		"DiskSize": "10",
-		"NetTroublesIfApplied": "none"
-	},
-	{
-		"Name": "mixnet-00511",
+		"Name": "mixnet-00503",
 		"Partner": "irrelevant",
 		"Zone": "northamerica-northeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
@@ -7154,9 +7042,9 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "mixnet-00512",
+		"Name": "mixnet-00504",
 		"Partner": "irrelevant",
-		"Zone": "us-east1-b",
+		"Zone": "europe-north1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "n1-standard-4",
 		"TypeOfNode": "mix",
@@ -7168,7 +7056,77 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "mixnet-00513",
+		"Name": "mixnet-00505",
+		"Partner": "irrelevant",
+		"Zone": "australia-southeast1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "n1-standard-4",
+		"TypeOfNode": "mix",
+		"EvaluationScript": "zeno_mix_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "mixnet-00506",
+		"Partner": "irrelevant",
+		"Zone": "asia-east1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "n1-standard-4",
+		"TypeOfNode": "mix",
+		"EvaluationScript": "zeno_mix_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "mixnet-00507",
+		"Partner": "irrelevant",
+		"Zone": "asia-south1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "n1-standard-4",
+		"TypeOfNode": "mix",
+		"EvaluationScript": "zeno_mix_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "mixnet-00508",
+		"Partner": "irrelevant",
+		"Zone": "asia-northeast2-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "n1-standard-4",
+		"TypeOfNode": "mix",
+		"EvaluationScript": "zeno_mix_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "mixnet-00509",
+		"Partner": "irrelevant",
+		"Zone": "europe-west1-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "n1-standard-4",
+		"TypeOfNode": "mix",
+		"EvaluationScript": "zeno_mix_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "mixnet-00510",
 		"Partner": "irrelevant",
 		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
@@ -7182,9 +7140,9 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "mixnet-00514",
+		"Name": "mixnet-00511",
 		"Partner": "irrelevant",
-		"Zone": "asia-east2-b",
+		"Zone": "europe-west6-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "n1-standard-4",
 		"TypeOfNode": "mix",
@@ -7196,7 +7154,7 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "mixnet-00515",
+		"Name": "mixnet-00512",
 		"Partner": "irrelevant",
 		"Zone": "europe-west4-b",
 		"MinCPUPlatform": "Intel Skylake",
@@ -7210,7 +7168,7 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
-		"Name": "mixnet-00516",
+		"Name": "mixnet-00513",
 		"Partner": "irrelevant",
 		"Zone": "us-west2-b",
 		"MinCPUPlatform": "Intel Skylake",
@@ -7224,9 +7182,51 @@
 		"NetTroublesIfApplied": "none"
 	},
 	{
+		"Name": "mixnet-00514",
+		"Partner": "irrelevant",
+		"Zone": "us-east4-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "n1-standard-4",
+		"TypeOfNode": "mix",
+		"EvaluationScript": "zeno_mix_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "mixnet-00515",
+		"Partner": "irrelevant",
+		"Zone": "europe-west2-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "n1-standard-4",
+		"TypeOfNode": "mix",
+		"EvaluationScript": "zeno_mix_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
+		"Name": "mixnet-00516",
+		"Partner": "irrelevant",
+		"Zone": "asia-east2-b",
+		"MinCPUPlatform": "Intel Skylake",
+		"MachineType": "n1-standard-4",
+		"TypeOfNode": "mix",
+		"EvaluationScript": "zeno_mix_eval.sh",
+		"BinaryName": "zeno",
+		"SourceImage": "acs",
+		"DiskType": "pd-ssd",
+		"DiskSize": "10",
+		"NetTroublesIfApplied": "none"
+	},
+	{
 		"Name": "mixnet-00517",
 		"Partner": "irrelevant",
-		"Zone": "asia-northeast2-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "n1-standard-4",
 		"TypeOfNode": "mix",
@@ -7254,7 +7254,7 @@
 	{
 		"Name": "mixnet-00519",
 		"Partner": "irrelevant",
-		"Zone": "asia-northeast2-b",
+		"Zone": "europe-west1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "n1-standard-4",
 		"TypeOfNode": "mix",
@@ -7268,7 +7268,7 @@
 	{
 		"Name": "mixnet-00520",
 		"Partner": "irrelevant",
-		"Zone": "europe-west4-b",
+		"Zone": "asia-southeast1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "n1-standard-4",
 		"TypeOfNode": "mix",
@@ -7282,7 +7282,7 @@
 	{
 		"Name": "mixnet-00521",
 		"Partner": "irrelevant",
-		"Zone": "europe-north1-b",
+		"Zone": "us-east1-b",
 		"MinCPUPlatform": "Intel Skylake",
 		"MachineType": "n1-standard-4",
 		"TypeOfNode": "mix",

@@ -1,0 +1,213 @@
+220 - Registered with Pung server
+220 - Synchronizing with the Pung server
+
+220 - Sending 1 tuples to peer 'client-00202' for round 0
+send (1 msgs): 62772497 usec
+
+220 - Retrieving a message for round 0
+retr (1 msgs): 3809006 usec
+220 - Retrieved msg is 'client-00202=>client-0020100001All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 1
+send (1 msgs): 3738170 usec
+
+220 - Retrieving a message for round 1
+retr (1 msgs): 1413011 usec
+220 - Retrieved msg is 'client-00202=>client-0020100002All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 2
+send (1 msgs): 5775639 usec
+
+220 - Retrieving a message for round 2
+retr (1 msgs): 5493132 usec
+220 - Retrieved msg is 'client-00202=>client-0020100003All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 3
+send (1 msgs): 2506107 usec
+
+220 - Retrieving a message for round 3
+retr (1 msgs): 5517149 usec
+220 - Retrieved msg is 'client-00202=>client-0020100004All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 4
+send (1 msgs): 2511050 usec
+
+220 - Retrieving a message for round 4
+retr (1 msgs): 1415286 usec
+220 - Retrieved msg is 'client-00202=>client-0020100005All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 5
+send (1 msgs): 5737167 usec
+
+220 - Retrieving a message for round 5
+retr (1 msgs): 5522871 usec
+220 - Retrieved msg is 'client-00202=>client-0020100006All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 6
+send (1 msgs): 1800523 usec
+
+220 - Retrieving a message for round 6
+retr (1 msgs): 5508100 usec
+220 - Retrieved msg is 'client-00202=>client-0020100007All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 7
+send (1 msgs): 1683779 usec
+
+220 - Retrieving a message for round 7
+retr (1 msgs): 4414854 usec
+220 - Retrieved msg is 'client-00202=>client-0020100008All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 8
+send (1 msgs): 2673074 usec
+
+220 - Retrieving a message for round 8
+retr (1 msgs): 5502211 usec
+220 - Retrieved msg is 'client-00202=>client-0020100009All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 9
+send (1 msgs): 1629702 usec
+
+220 - Retrieving a message for round 9
+retr (1 msgs): 4920261 usec
+220 - Retrieved msg is 'client-00202=>client-0020100010All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 10
+send (1 msgs): 2203598 usec
+
+220 - Retrieving a message for round 10
+retr (1 msgs): 2794113 usec
+220 - Retrieved msg is 'client-00202=>client-0020100011All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 11
+send (1 msgs): 4369908 usec
+
+220 - Retrieving a message for round 11
+retr (1 msgs): 5536962 usec
+220 - Retrieved msg is 'client-00202=>client-0020100012All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 12
+send (1 msgs): 1611224 usec
+
+220 - Retrieving a message for round 12
+retr (1 msgs): 5557359 usec
+220 - Retrieved msg is 'client-00202=>client-0020100013All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 13
+send (1 msgs): 1678570 usec
+
+220 - Retrieving a message for round 13
+retr (1 msgs): 4460157 usec
+220 - Retrieved msg is 'client-00202=>client-0020100014All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 14
+send (1 msgs): 2703579 usec
+
+220 - Retrieving a message for round 14
+retr (1 msgs): 3664845 usec
+220 - Retrieved msg is 'client-00202=>client-0020100015All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 15
+send (1 msgs): 4139081 usec
+
+220 - Retrieving a message for round 15
+retr (1 msgs): 5227494 usec
+220 - Retrieved msg is 'client-00202=>client-0020100016All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 16
+send (1 msgs): 1968558 usec
+
+220 - Retrieving a message for round 16
+retr (1 msgs): 2837329 usec
+220 - Retrieved msg is 'client-00202=>client-0020100017All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 17
+send (1 msgs): 5218586 usec
+
+220 - Retrieving a message for round 17
+retr (1 msgs): 5525328 usec
+220 - Retrieved msg is 'client-00202=>client-0020100018All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 18
+send (1 msgs): 1674515 usec
+
+220 - Retrieving a message for round 18
+retr (1 msgs): 5517466 usec
+220 - Retrieved msg is 'client-00202=>client-0020100019All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 19
+send (1 msgs): 2550509 usec
+
+220 - Retrieving a message for round 19
+retr (1 msgs): 5513907 usec
+220 - Retrieved msg is 'client-00202=>client-0020100020All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 20
+send (1 msgs): 2574066 usec
+
+220 - Retrieving a message for round 20
+retr (1 msgs): 5471739 usec
+220 - Retrieved msg is 'client-00202=>client-0020100021All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 21
+send (1 msgs): 1708280 usec
+
+220 - Retrieving a message for round 21
+retr (1 msgs): 2171505 usec
+220 - Retrieved msg is 'client-00202=>client-0020100022All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 22
+send (1 msgs): 5156426 usec
+
+220 - Retrieving a message for round 22
+retr (1 msgs): 5533318 usec
+220 - Retrieved msg is 'client-00202=>client-0020100023All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 23
+send (1 msgs): 2510544 usec
+
+220 - Retrieving a message for round 23
+retr (1 msgs): 3150236 usec
+220 - Retrieved msg is 'client-00202=>client-0020100024All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 24
+send (1 msgs): 4933696 usec
+
+220 - Retrieving a message for round 24
+retr (1 msgs): 5710333 usec
+220 - Retrieved msg is 'client-00202=>client-0020100025All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 25
+send (1 msgs): 2517523 usec
+
+220 - Retrieving a message for round 25
+retr (1 msgs): 3122387 usec
+220 - Retrieved msg is 'client-00202=>client-0020100026All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 26
+send (1 msgs): 4081578 usec
+
+220 - Retrieving a message for round 26
+retr (1 msgs): 5558261 usec
+220 - Retrieved msg is 'client-00202=>client-0020100027All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 27
+send (1 msgs): 1785711 usec
+
+220 - Retrieving a message for round 27
+retr (1 msgs): 5631112 usec
+220 - Retrieved msg is 'client-00202=>client-0020100028All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 28
+send (1 msgs): 2552872 usec
+
+220 - Retrieving a message for round 28
+retr (1 msgs): 5214433 usec
+220 - Retrieved msg is 'client-00202=>client-0020100029All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+
+220 - Sending 1 tuples to peer 'client-00202' for round 29
+send (1 msgs): 2509400 usec
+
+220 - Retrieving a message for round 29
+retr (1 msgs): 5533334 usec
+220 - Retrieved msg is 'client-00202=>client-0020100030All human beings are born free and equal in dignity and rights. They are endowed with reason and conscience and should act towards one another in a spirit of brotherhood. Everyone is entitled to all the rights and freedoms se'
+processed 30 rounds in 286525281 usec
