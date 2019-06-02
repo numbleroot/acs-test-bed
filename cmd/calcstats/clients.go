@@ -218,7 +218,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 
 func (set *Setting) LatenciesToFile(path string) error {
 
-	clientsLatenciesFile, err := os.OpenFile(filepath.Join(path, "msg-latencies_lowest-to-highest_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsLatenciesFile, err := os.OpenFile(filepath.Join(path, "msg-latencies_lowest-to-highest.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}

@@ -29,13 +29,13 @@ type MetricLatency struct {
 type Run struct {
 	TimestampLowest            int64
 	TimestampHighest           int64
-	ClientsSentKiBytesHighest  []float64
-	ClientsRecvdKiBytesHighest []float64
+	ClientsSentMiBytesHighest  []float64
+	ClientsRecvdMiBytesHighest []float64
 	ClientsCPULoad             []float64
 	ClientsMemLoad             []float64
 	Latencies                  [][]*MetricLatency
-	ServersSentKiBytesHighest  []float64
-	ServersRecvdKiBytesHighest []float64
+	ServersSentMiBytesHighest  []float64
+	ServersRecvdMiBytesHighest []float64
 	ServersCPULoad             []float64
 	ServersMemLoad             []float64
 	Mixes                      []string
@@ -58,12 +58,12 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 	run := &Run{
 		TimestampLowest:            (1 << 63) - 1,
 		TimestampHighest:           0,
-		ClientsSentKiBytesHighest:  make([]float64, 0, 1000),
-		ClientsRecvdKiBytesHighest: make([]float64, 0, 1000),
+		ClientsSentMiBytesHighest:  make([]float64, 0, 1000),
+		ClientsRecvdMiBytesHighest: make([]float64, 0, 1000),
 		ClientsCPULoad:             make([]float64, 0, 50000),
 		ClientsMemLoad:             make([]float64, 0, 50000),
-		ServersSentKiBytesHighest:  make([]float64, 0, 50),
-		ServersRecvdKiBytesHighest: make([]float64, 0, 50),
+		ServersSentMiBytesHighest:  make([]float64, 0, 50),
+		ServersRecvdMiBytesHighest: make([]float64, 0, 50),
 		ServersCPULoad:             make([]float64, 0, 50000),
 		ServersMemLoad:             make([]float64, 0, 50000),
 	}
@@ -85,7 +85,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 	// Read into memory system metrics from clients.
 	err = run.AddSentBytes(clientsPath, true)
 	if err != nil {
-		fmt.Printf("Ingesting clients sent kibytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting clients sent mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -93,7 +93,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	err = run.AddRecvdBytes(clientsPath, true)
 	if err != nil {
-		fmt.Printf("Ingesting client received kibytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting client received mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -118,7 +118,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 	// Read into memory system metrics from servers.
 	err = run.AddSentBytes(serversPath, false)
 	if err != nil {
-		fmt.Printf("Ingesting servers sent kibytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting servers sent mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -126,7 +126,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	err = run.AddRecvdBytes(serversPath, false)
 	if err != nil {
-		fmt.Printf("Ingesting servers received kibytes metrics failed: %v\n", err)
+		fmt.Printf("Ingesting servers received mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
@@ -196,7 +196,7 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	fmt.Printf("Done writing messages per mix to files for %s\n\n", settingsPath)
+	fmt.Printf("Done writing messages per mix to files for %s\n", settingsPath)
 
 	return nil
 }

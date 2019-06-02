@@ -114,8 +114,6 @@ func (set *Setting) MsgsPerMixToFile(path string) error {
 
 				fmt.Fprintf(msgsPerMixFile, "\n")
 			}
-
-			fmt.Fprintf(msgsPerMixFile, "\n")
 		}
 	}
 

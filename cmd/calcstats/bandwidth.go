@@ -6,7 +6,6 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"sort"
 	"strconv"
 	"strings"
 )
@@ -73,12 +72,12 @@ func (run *Run) AddSentBytes(runNodesPath string, isClientMetric bool) error {
 				highestValue = lastValue
 			}
 
-			// Append as reduced and KiB-normalized highest
+			// Append as reduced and MiB-normalized highest
 			// value to run-global sent bytes slice.
 			if isClientMetric {
-				run.ClientsSentKiBytesHighest = append(run.ClientsSentKiBytesHighest, (float64((highestValue - reduceBy)) / 1024.0))
+				run.ClientsSentMiBytesHighest = append(run.ClientsSentMiBytesHighest, (float64((highestValue - reduceBy)) / (1024.0 * 1024.0)))
 			} else {
-				run.ServersSentKiBytesHighest = append(run.ServersSentKiBytesHighest, (float64((highestValue - reduceBy)) / 1024.0))
+				run.ServersSentMiBytesHighest = append(run.ServersSentMiBytesHighest, (float64((highestValue - reduceBy)) / (1024.0 * 1024.0)))
 			}
 		}
 
@@ -150,12 +149,12 @@ func (run *Run) AddRecvdBytes(runNodesPath string, isClientMetric bool) error {
 				highestValue = lastValue
 			}
 
-			// Append as reduced and KiB-normalized highest
+			// Append as reduced and MiB-normalized highest
 			// value to run-global sent bytes slice.
 			if isClientMetric {
-				run.ClientsRecvdKiBytesHighest = append(run.ClientsRecvdKiBytesHighest, (float64((highestValue - reduceBy)) / 1024.0))
+				run.ClientsRecvdMiBytesHighest = append(run.ClientsRecvdMiBytesHighest, (float64((highestValue - reduceBy)) / (1024.0 * 1024.0)))
 			} else {
-				run.ServersRecvdKiBytesHighest = append(run.ServersRecvdKiBytesHighest, (float64((highestValue - reduceBy)) / 1024.0))
+				run.ServersRecvdMiBytesHighest = append(run.ServersRecvdMiBytesHighest, (float64((highestValue - reduceBy)) / (1024.0 * 1024.0)))
 			}
 		}
 
@@ -170,33 +169,18 @@ func (set *Setting) BandwidthToFiles(path string) error {
 	// Calculate combined bandwidth average
 	// and median values for clients.
 	var clientsBandwidthAvg float64
-	var clientsBandwidthMed float64
 
-	var numMetrics float64
-	var allMetricsSum float64
-	allMetrics := make([]float64, 0, (len(set.Runs) * len(set.Runs[0].ClientsSentKiBytesHighest)))
+	allMetricsSum := float64(0.0)
+	numMetrics := float64(len(set.Runs))
 
 	for i := range set.Runs {
 
-		for j := range set.Runs[i].ClientsSentKiBytesHighest {
-			allMetrics = append(allMetrics, (set.Runs[i].ClientsSentKiBytesHighest[j] + set.Runs[i].ClientsRecvdKiBytesHighest[j]))
+		for j := range set.Runs[i].ClientsSentMiBytesHighest {
+			allMetricsSum = allMetricsSum + (set.Runs[i].ClientsSentMiBytesHighest[j] + set.Runs[i].ClientsRecvdMiBytesHighest[j])
 		}
-
-		numMetrics += float64(len(set.Runs[i].ClientsSentKiBytesHighest))
-	}
-
-	// Sort slice holding all metrics for clients
-	// by size for median determination.
-	sort.Slice(allMetrics, func(i, j int) bool {
-		return allMetrics[i] < allMetrics[j]
-	})
-
-	for i := range allMetrics {
-		allMetricsSum += allMetrics[i]
 	}
 
 	clientsBandwidthAvg = float64(allMetricsSum / numMetrics)
-	clientsBandwidthMed = allMetrics[(len(allMetrics) / 2)]
 
 	clientsBandwidthAvgFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_avg_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
@@ -205,47 +189,24 @@ func (set *Setting) BandwidthToFiles(path string) error {
 	defer clientsBandwidthAvgFile.Close()
 	defer clientsBandwidthAvgFile.Sync()
 
-	clientsBandwidthMedFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_med_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
-	if err != nil {
-		return err
-	}
-	defer clientsBandwidthMedFile.Close()
-	defer clientsBandwidthMedFile.Sync()
-
 	// Write values to files for clients.
 	fmt.Fprintf(clientsBandwidthAvgFile, "%.5f\n", clientsBandwidthAvg)
-	fmt.Fprintf(clientsBandwidthMedFile, "%.5f\n", clientsBandwidthMed)
 
 	// Calculate combined bandwidth average
 	// and median values for servers.
 	var serversBandwidthAvg float64
-	var serversBandwidthMed float64
 
-	numMetrics = 0.0
 	allMetricsSum = 0.0
-	allMetrics = make([]float64, 0, (len(set.Runs) * len(set.Runs[0].ServersSentKiBytesHighest)))
+	numMetrics = float64(len(set.Runs))
 
 	for i := range set.Runs {
 
-		for j := range set.Runs[i].ServersSentKiBytesHighest {
-			allMetrics = append(allMetrics, (set.Runs[i].ServersSentKiBytesHighest[j] + set.Runs[i].ServersRecvdKiBytesHighest[j]))
+		for j := range set.Runs[i].ServersSentMiBytesHighest {
+			allMetricsSum = allMetricsSum + (set.Runs[i].ServersSentMiBytesHighest[j] + set.Runs[i].ServersRecvdMiBytesHighest[j])
 		}
-
-		numMetrics += float64(len(set.Runs[i].ServersSentKiBytesHighest))
-	}
-
-	// Sort slice holding all metrics for servers
-	// by size for median determination.
-	sort.Slice(allMetrics, func(i, j int) bool {
-		return allMetrics[i] < allMetrics[j]
-	})
-
-	for i := range allMetrics {
-		allMetricsSum += allMetrics[i]
 	}
 
 	serversBandwidthAvg = float64(allMetricsSum / numMetrics)
-	serversBandwidthMed = allMetrics[(len(allMetrics) / 2)]
 
 	serversBandwidthAvgFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_avg_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
@@ -254,16 +215,8 @@ func (set *Setting) BandwidthToFiles(path string) error {
 	defer serversBandwidthAvgFile.Close()
 	defer serversBandwidthAvgFile.Sync()
 
-	serversBandwidthMedFile, err := os.OpenFile(filepath.Join(path, "bandwidth_highest_med_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
-	if err != nil {
-		return err
-	}
-	defer serversBandwidthMedFile.Close()
-	defer serversBandwidthMedFile.Sync()
-
 	// Write values to files for servers.
 	fmt.Fprintf(serversBandwidthAvgFile, "%.5f\n", serversBandwidthAvg)
-	fmt.Fprintf(serversBandwidthMedFile, "%.5f\n", serversBandwidthMed)
 
 	return nil
 }
