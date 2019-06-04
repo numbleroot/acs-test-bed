@@ -757,17 +757,19 @@ def compileLoadClients():
     setp(set01_pung03['boxes'], color='black')
     setp(set01_pung03['boxes'], facecolor='steelblue')
     setp(set01_pung03['boxes'], hatch='\\')
-
-    ax1.yaxis.grid(True, linestyle='-', which='major',
-                   color='lightgrey', alpha=0.5)
+    
+    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax1.set_axisbelow(True)
 
     ax1.set_xlim([0, 22])
     ax1.set_ylim([0.0, 100.0])
-    # ax2.set_ylim([0.0, 100.0])
+
     ax1.set_xticks((5.5, 16.5))
+    ax1.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     ax1.set_xticklabels(('500 clients', '1000 clients'))
     ax1.set_ylabel("Busy CPU (percentage)")
+
+    ax2.set_yticks([0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500])
     ax2.set_ylabel("Used memory (MB)")
 
    # Add a legend.
@@ -989,16 +991,18 @@ def compileLoadServers():
     setp(set01_pung03['boxes'], facecolor='steelblue')
     setp(set01_pung03['boxes'], hatch='\\')
 
-    ax1.yaxis.grid(True, linestyle='-', which='major',
-                   color='lightgrey', alpha=0.5)
+    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax1.set_axisbelow(True)
 
     ax1.set_xlim([0, 22])
     ax1.set_ylim([0.0, 100.0])
-    # ax2.set_ylim([0.0, 100.0])
+
     ax1.set_xticks((5.5, 16.5))
     ax1.set_xticklabels(('500 clients', '1000 clients'))
+    ax1.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
     ax1.set_ylabel("Busy CPU (percentage)")
+
+    ax2.set_yticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
     ax2.set_ylabel("Used memory (GB)")
 
    # Add a legend.
