@@ -381,6 +381,11 @@ def compileTrafficClients():
            edgecolor='black', color='gold', hatch='+')
     ax.bar(11, set01_pung_1000_Bandwidth_Clients_Avg, width,
            edgecolor='black', color='steelblue', hatch='\\')
+    
+    # Add line representing the number of MiB
+    # of theoretical goodput.
+    goodput = (((25.0 * 2.0) * 256.0) / 1024.0) / 1024.0
+    plt.axhline(y=goodput, xmin=0, xmax=1, linewidth=1.0, linestyle='--', color='crimson')
 
     # Show a light horizontal grid.
     ax.yaxis.grid(True, linestyle='-', which='major',
@@ -392,16 +397,18 @@ def compileTrafficClients():
     ax.set_ylim([0, y_max])
     ax.set_xticks((3, 9))
     ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_yticks((0.0, 0.5, 1.0, 5.0, 10.0, 15.0))
 
     # Add a legend.
     ax.legend(loc='upper left')
 
+    plt.yscale('symlog')
     plt.tight_layout()
     plt.xlabel("Number of clients")
-    plt.ylabel("Bandwidth usage (MiB)")
+    plt.ylabel("Bandwidth usage (MiB) [log.]")
 
     plt.savefig(os.path.join(
-        sys.argv[1], "bandwidth-usage_clients.png"), bbox_inches='tight', dpi=400)
+        sys.argv[1], "bandwidth-usage_clients.png"), bbox_inches='tight', dpi=150)
 
 
 def compileTrafficServers():
@@ -546,10 +553,10 @@ def compileTrafficServers():
     plt.ylabel("Bandwidth usage (MiB)")
 
     plt.savefig(os.path.join(
-        sys.argv[1], "bandwidth-usage_servers.png"), bbox_inches='tight', dpi=400)
+        sys.argv[1], "bandwidth-usage_servers.png"), bbox_inches='tight', dpi=150)
 
 
-def compileLoadClients():
+def compileLoadCPUClients():
 
     global metrics
 
@@ -562,20 +569,12 @@ def compileLoadClients():
             for item in row:
                 set01_zeno_0500_Load_CPU.append(float(item))
 
-    set01_zeno_0500_Load_Mem = 0.0
-    with open(metrics["01"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set01_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
-
     set01_pung_0500_Load_CPU = []
     with open(metrics["01"]["pung"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set01_pung_0500_Load_CPU.append(float(item))
-
-    set01_pung_0500_Load_Mem = 0.0
-    with open(metrics["01"]["pung"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set01_pung_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
 
     set01_zeno_1000_Load_CPU = []
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
@@ -584,20 +583,12 @@ def compileLoadClients():
             for item in row:
                 set01_zeno_1000_Load_CPU.append(float(item))
 
-    set01_zeno_1000_Load_Mem = 0.0
-    with open(metrics["01"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set01_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
-
     set01_pung_1000_Load_CPU = []
     with open(metrics["01"]["pung"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set01_pung_1000_Load_CPU.append(float(item))
-
-    set01_pung_1000_Load_Mem = 0.0
-    with open(metrics["01"]["pung"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set01_pung_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
 
     set02_zeno_0500_Load_CPU = []
     with open(metrics["02"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
@@ -606,20 +597,12 @@ def compileLoadClients():
             for item in row:
                 set02_zeno_0500_Load_CPU.append(float(item))
 
-    set02_zeno_0500_Load_Mem = 0.0
-    with open(metrics["02"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set02_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
-
     set02_zeno_1000_Load_CPU = []
     with open(metrics["02"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set02_zeno_1000_Load_CPU.append(float(item))
-
-    set02_zeno_1000_Load_Mem = 0.0
-    with open(metrics["02"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set02_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
 
     set03_zeno_0500_Load_CPU = []
     with open(metrics["03"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
@@ -628,20 +611,12 @@ def compileLoadClients():
             for item in row:
                 set03_zeno_0500_Load_CPU.append(float(item))
 
-    set03_zeno_0500_Load_Mem = 0.0
-    with open(metrics["03"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set03_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
-
     set03_zeno_1000_Load_CPU = []
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set03_zeno_1000_Load_CPU.append(float(item))
-
-    set03_zeno_1000_Load_Mem = 0.0
-    with open(metrics["03"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set03_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
 
     set04_zeno_0500_Load_CPU = []
     with open(metrics["04"]["zeno"]["0500"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
@@ -650,10 +625,6 @@ def compileLoadClients():
             for item in row:
                 set04_zeno_0500_Load_CPU.append(float(item))
 
-    set04_zeno_0500_Load_Mem = 0.0
-    with open(metrics["04"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set04_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
-
     set04_zeno_1000_Load_CPU = []
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
@@ -661,61 +632,32 @@ def compileLoadClients():
             for item in row:
                 set04_zeno_1000_Load_CPU.append(float(item))
 
-    set04_zeno_1000_Load_Mem = 0.0
-    with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
-        set04_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
-
     # Draw plots.
 
     width = 0.9
 
-    _, ax1 = plt.subplots(figsize=(10, 5))
-    ax2 = ax1.twinx()
+    _, ax = plt.subplots()
 
-    set01_zeno01 = ax1.boxplot(set01_zeno_0500_Load_CPU, positions=[
+    set01_zeno01 = ax.boxplot(set01_zeno_0500_Load_CPU, positions=[
         1], widths=width, patch_artist=True, whis='range')
-    ax2.bar(2, set01_zeno_0500_Load_Mem, width,
-            label='zeno (tc off, no failures)', color='gold', hatch='/')
-
-    set02_zeno01 = ax1.boxplot(set02_zeno_0500_Load_CPU, positions=[
+    set02_zeno01 = ax.boxplot(set02_zeno_0500_Load_CPU, positions=[
+        2], widths=width, patch_artist=True, whis='range')
+    set03_zeno01 = ax.boxplot(set03_zeno_0500_Load_CPU, positions=[
         3], widths=width, patch_artist=True, whis='range')
-    ax2.bar(4, set02_zeno_0500_Load_Mem, width,
-            label='zeno (tc on, no failures)', color='gold', hatch='x')
-
-    set03_zeno01 = ax1.boxplot(set03_zeno_0500_Load_CPU, positions=[
+    set04_zeno01 = ax.boxplot(set04_zeno_0500_Load_CPU, positions=[
+        4], widths=width, patch_artist=True, whis='range')
+    set01_pung01 = ax.boxplot(set01_pung_0500_Load_CPU, positions=[
         5], widths=width, patch_artist=True, whis='range')
-    ax2.bar(6, set03_zeno_0500_Load_Mem, width,
-            label='zeno (tc off, mix failure)', color='gold', hatch='o')
-
-    set04_zeno01 = ax1.boxplot(set04_zeno_0500_Load_CPU, positions=[
+    set01_zeno03 = ax.boxplot(set01_zeno_1000_Load_CPU, positions=[
         7], widths=width, patch_artist=True, whis='range')
-    ax2.bar(8, set04_zeno_0500_Load_Mem, width,
-            label='zeno (tc on, mix failure)', color='gold', hatch='+')
-
-    set01_pung01 = ax1.boxplot(set01_pung_0500_Load_CPU, positions=[
+    set02_zeno03 = ax.boxplot(set02_zeno_1000_Load_CPU, positions=[
+        8], widths=width, patch_artist=True, whis='range')
+    set03_zeno03 = ax.boxplot(set03_zeno_1000_Load_CPU, positions=[
         9], widths=width, patch_artist=True, whis='range')
-    ax2.bar(10, set01_pung_0500_Load_Mem, width,
-            label='pung (tc off, no failures)', color='steelblue', hatch='\\')
-
-    set01_zeno03 = ax1.boxplot(set01_zeno_1000_Load_CPU, positions=[
-        12], widths=width, patch_artist=True, whis='range')
-    ax2.bar(13, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
-
-    set02_zeno03 = ax1.boxplot(set02_zeno_1000_Load_CPU, positions=[
-        14], widths=width, patch_artist=True, whis='range')
-    ax2.bar(15, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
-
-    set03_zeno03 = ax1.boxplot(set03_zeno_1000_Load_CPU, positions=[
-        16], widths=width, patch_artist=True, whis='range')
-    ax2.bar(17, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
-
-    set04_zeno03 = ax1.boxplot(set04_zeno_1000_Load_CPU, positions=[
-        18], widths=width, patch_artist=True, whis='range')
-    ax2.bar(19, set04_zeno_1000_Load_Mem, width, color='gold', hatch='+')
-
-    set01_pung03 = ax1.boxplot(set01_pung_1000_Load_CPU, positions=[
-        20], widths=width, patch_artist=True, whis='range')
-    ax2.bar(21, set01_pung_1000_Load_Mem, width, color='steelblue', hatch='\\')
+    set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_CPU, positions=[
+        10], widths=width, patch_artist=True, whis='range')
+    set01_pung03 = ax.boxplot(set01_pung_1000_Load_CPU, positions=[
+        11], widths=width, patch_artist=True, whis='range')
 
     # Color boxplots.
     setp(set01_zeno01['boxes'], color='black')
@@ -758,31 +700,117 @@ def compileLoadClients():
     setp(set01_pung03['boxes'], facecolor='steelblue')
     setp(set01_pung03['boxes'], hatch='\\')
     
-    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
-    ax1.set_axisbelow(True)
+    ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    ax.set_axisbelow(True)
 
-    ax1.set_xlim([0, 22])
-    ax1.set_ylim([0.0, 100.0])
+    ax.set_xlim([0, 12])
+    ax.set_ylim([0.0, 100.0])
+    ax.set_xticks((3.5, 9.5))
+    ax.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    ax.set_xticklabels(('500 clients', '1000 clients'))
 
-    ax1.set_xticks((5.5, 16.5))
-    ax1.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-    ax1.set_xticklabels(('500 clients', '1000 clients'))
-    ax1.set_ylabel("Busy CPU (percentage)")
-
-    ax2.set_yticks([0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500])
-    ax2.set_ylabel("Used memory (MB)")
-
-   # Add a legend.
-    ax2.legend(loc='upper left')
+    # Add a legend.
+    ax.legend([set01_zeno01['boxes'][0], set02_zeno01['boxes'][0], set03_zeno01['boxes'][0],
+        set04_zeno01['boxes'][0], set01_pung01['boxes'][0]], ['zeno (tc off, no failures)',
+        'zeno (tc on, no failures)', 'zeno (tc off, mix failure)', 'zeno (tc on, mix failure)',
+        'pung (tc off, no failures)'], loc='upper left')
 
     plt.tight_layout()
     plt.xlabel("Number of clients")
+    plt.ylabel("Busy CPU (percentage)")
 
     plt.savefig(os.path.join(
-        sys.argv[1], "load_clients.png"), bbox_inches='tight', dpi=400)
+        sys.argv[1], "load_clients_cpu.png"), bbox_inches='tight', dpi=150)
 
 
-def compileLoadServers():
+def compileLoadMemClients():
+
+    global metrics
+
+    # Ingest data.
+
+    set01_zeno_0500_Load_Mem = 0.0
+    with open(metrics["01"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set01_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set01_pung_0500_Load_Mem = 0.0
+    with open(metrics["01"]["pung"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set01_pung_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set01_zeno_1000_Load_Mem = 0.0
+    with open(metrics["01"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set01_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set01_pung_1000_Load_Mem = 0.0
+    with open(metrics["01"]["pung"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set01_pung_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set02_zeno_0500_Load_Mem = 0.0
+    with open(metrics["02"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set02_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set02_zeno_1000_Load_Mem = 0.0
+    with open(metrics["02"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set02_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set03_zeno_0500_Load_Mem = 0.0
+    with open(metrics["03"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set03_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set03_zeno_1000_Load_Mem = 0.0
+    with open(metrics["03"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set03_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set04_zeno_0500_Load_Mem = 0.0
+    with open(metrics["04"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set04_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    set04_zeno_1000_Load_Mem = 0.0
+    with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
+        set04_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+
+    # Draw plots.
+
+    width = 0.9
+
+    _, ax = plt.subplots()
+
+    ax.bar(1, set01_zeno_0500_Load_Mem, width,
+            label='zeno (tc off, no failures)', color='gold', hatch='/')
+    ax.bar(2, set02_zeno_0500_Load_Mem, width,
+            label='zeno (tc on, no failures)', color='gold', hatch='x')
+    ax.bar(3, set03_zeno_0500_Load_Mem, width,
+            label='zeno (tc off, mix failure)', color='gold', hatch='o')
+    ax.bar(4, set04_zeno_0500_Load_Mem, width,
+            label='zeno (tc on, mix failure)', color='gold', hatch='+')
+    ax.bar(5, set01_pung_0500_Load_Mem, width,
+            label='pung (tc off, no failures)', color='steelblue', hatch='\\')
+    ax.bar(7, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
+    ax.bar(8, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
+    ax.bar(9, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
+    ax.bar(10, set04_zeno_1000_Load_Mem, width, color='gold', hatch='+')
+    ax.bar(11, set01_pung_1000_Load_Mem, width, color='steelblue', hatch='\\')
+    
+    ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    ax.set_axisbelow(True)
+
+    ax.set_xlim([0, 12])
+    ax.set_xticks((3.5, 9.5))
+    ax.set_yticks([0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500])
+    ax.set_xticklabels(('500 clients', '1000 clients'))
+
+   # Add a legend.
+    ax.legend(loc='upper left')
+
+    plt.tight_layout()
+    plt.xlabel("Number of clients")
+    plt.ylabel("Used memory (MB)")
+
+    plt.savefig(os.path.join(
+        sys.argv[1], "load_clients_mem.png"), bbox_inches='tight', dpi=150)
+
+
+def compileLoadCPUServers():
 
     global metrics
 
@@ -795,20 +823,12 @@ def compileLoadServers():
             for item in row:
                 set01_zeno_0500_Load_CPU.append(float(item))
 
-    set01_zeno_0500_Load_Mem = 0.0
-    with open(metrics["01"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set01_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
-
     set01_pung_0500_Load_CPU = []
     with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set01_pung_0500_Load_CPU.append(float(item))
-
-    set01_pung_0500_Load_Mem = 0.0
-    with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set01_pung_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
 
     set01_zeno_1000_Load_CPU = []
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
@@ -817,20 +837,12 @@ def compileLoadServers():
             for item in row:
                 set01_zeno_1000_Load_CPU.append(float(item))
 
-    set01_zeno_1000_Load_Mem = 0.0
-    with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set01_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
-
     set01_pung_1000_Load_CPU = []
     with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set01_pung_1000_Load_CPU.append(float(item))
-
-    set01_pung_1000_Load_Mem = 0.0
-    with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set01_pung_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
 
     set02_zeno_0500_Load_CPU = []
     with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
@@ -839,20 +851,12 @@ def compileLoadServers():
             for item in row:
                 set02_zeno_0500_Load_CPU.append(float(item))
 
-    set02_zeno_0500_Load_Mem = 0.0
-    with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set02_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
-
     set02_zeno_1000_Load_CPU = []
     with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set02_zeno_1000_Load_CPU.append(float(item))
-
-    set02_zeno_1000_Load_Mem = 0.0
-    with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set02_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
 
     set03_zeno_0500_Load_CPU = []
     with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
@@ -861,20 +865,12 @@ def compileLoadServers():
             for item in row:
                 set03_zeno_0500_Load_CPU.append(float(item))
 
-    set03_zeno_0500_Load_Mem = 0.0
-    with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set03_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
-
     set03_zeno_1000_Load_CPU = []
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set03_zeno_1000_Load_CPU.append(float(item))
-
-    set03_zeno_1000_Load_Mem = 0.0
-    with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set03_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
 
     set04_zeno_0500_Load_CPU = []
     with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
@@ -883,10 +879,6 @@ def compileLoadServers():
             for item in row:
                 set04_zeno_0500_Load_CPU.append(float(item))
 
-    set04_zeno_0500_Load_Mem = 0.0
-    with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set04_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
-
     set04_zeno_1000_Load_CPU = []
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
@@ -894,61 +886,32 @@ def compileLoadServers():
             for item in row:
                 set04_zeno_1000_Load_CPU.append(float(item))
 
-    set04_zeno_1000_Load_Mem = 0.0
-    with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        set04_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
-
     # Draw plots.
 
     width = 0.9
 
-    _, ax1 = plt.subplots(figsize=(10, 5))
-    ax2 = ax1.twinx()
+    _, ax = plt.subplots()
 
-    set01_zeno01 = ax1.boxplot(set01_zeno_0500_Load_CPU, positions=[
+    set01_zeno01 = ax.boxplot(set01_zeno_0500_Load_CPU, positions=[
         1], widths=width, patch_artist=True, whis='range')
-    ax2.bar(2, set01_zeno_0500_Load_Mem, width,
-            label='zeno (tc off, no failures)', color='gold', hatch='/')
-
-    set02_zeno01 = ax1.boxplot(set02_zeno_0500_Load_CPU, positions=[
+    set02_zeno01 = ax.boxplot(set02_zeno_0500_Load_CPU, positions=[
+        2], widths=width, patch_artist=True, whis='range')
+    set03_zeno01 = ax.boxplot(set03_zeno_0500_Load_CPU, positions=[
         3], widths=width, patch_artist=True, whis='range')
-    ax2.bar(4, set02_zeno_0500_Load_Mem, width,
-            label='zeno (tc on, no failures)', color='gold', hatch='x')
-
-    set03_zeno01 = ax1.boxplot(set03_zeno_0500_Load_CPU, positions=[
+    set04_zeno01 = ax.boxplot(set04_zeno_0500_Load_CPU, positions=[
+        4], widths=width, patch_artist=True, whis='range')
+    set01_pung01 = ax.boxplot(set01_pung_0500_Load_CPU, positions=[
         5], widths=width, patch_artist=True, whis='range')
-    ax2.bar(6, set03_zeno_0500_Load_Mem, width,
-            label='zeno (tc off, mix failure)', color='gold', hatch='o')
-
-    set04_zeno01 = ax1.boxplot(set04_zeno_0500_Load_CPU, positions=[
+    set01_zeno03 = ax.boxplot(set01_zeno_1000_Load_CPU, positions=[
         7], widths=width, patch_artist=True, whis='range')
-    ax2.bar(8, set04_zeno_0500_Load_Mem, width,
-            label='zeno (tc on, mix failure)', color='gold', hatch='+')
-
-    set01_pung01 = ax1.boxplot(set01_pung_0500_Load_CPU, positions=[
+    set02_zeno03 = ax.boxplot(set02_zeno_1000_Load_CPU, positions=[
+        8], widths=width, patch_artist=True, whis='range')
+    set03_zeno03 = ax.boxplot(set03_zeno_1000_Load_CPU, positions=[
         9], widths=width, patch_artist=True, whis='range')
-    ax2.bar(10, set01_pung_0500_Load_Mem, width,
-            label='pung (tc off, no failures)', color='steelblue', hatch='\\')
-
-    set01_zeno03 = ax1.boxplot(set01_zeno_1000_Load_CPU, positions=[
-        12], widths=width, patch_artist=True, whis='range')
-    ax2.bar(13, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
-
-    set02_zeno03 = ax1.boxplot(set02_zeno_1000_Load_CPU, positions=[
-        14], widths=width, patch_artist=True, whis='range')
-    ax2.bar(15, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
-
-    set03_zeno03 = ax1.boxplot(set03_zeno_1000_Load_CPU, positions=[
-        16], widths=width, patch_artist=True, whis='range')
-    ax2.bar(17, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
-
-    set04_zeno03 = ax1.boxplot(set04_zeno_1000_Load_CPU, positions=[
-        18], widths=width, patch_artist=True, whis='range')
-    ax2.bar(19, set04_zeno_1000_Load_Mem, width, color='gold', hatch='+')
-
-    set01_pung03 = ax1.boxplot(set01_pung_1000_Load_CPU, positions=[
-        20], widths=width, patch_artist=True, whis='range')
-    ax2.bar(21, set01_pung_1000_Load_Mem, width, color='steelblue', hatch='\\')
+    set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_CPU, positions=[
+        10], widths=width, patch_artist=True, whis='range')
+    set01_pung03 = ax.boxplot(set01_pung_1000_Load_CPU, positions=[
+        11], widths=width, patch_artist=True, whis='range')
 
     # Color boxplots.
     setp(set01_zeno01['boxes'], color='black')
@@ -991,28 +954,114 @@ def compileLoadServers():
     setp(set01_pung03['boxes'], facecolor='steelblue')
     setp(set01_pung03['boxes'], hatch='\\')
 
-    ax1.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
-    ax1.set_axisbelow(True)
+    ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    ax.set_axisbelow(True)
 
-    ax1.set_xlim([0, 22])
-    ax1.set_ylim([0.0, 100.0])
+    ax.set_xlim([0, 12])
+    ax.set_ylim([0.0, 100.0])
+    ax.set_xticks((3.5, 9.5))
+    ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 
-    ax1.set_xticks((5.5, 16.5))
-    ax1.set_xticklabels(('500 clients', '1000 clients'))
-    ax1.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
-    ax1.set_ylabel("Busy CPU (percentage)")
-
-    ax2.set_yticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
-    ax2.set_ylabel("Used memory (GB)")
-
-   # Add a legend.
-    ax2.legend(loc='upper left')
+    # Add a legend.
+    ax.legend([set01_zeno01['boxes'][0], set02_zeno01['boxes'][0], set03_zeno01['boxes'][0],
+        set04_zeno01['boxes'][0], set01_pung01['boxes'][0]], ['zeno (tc off, no failures)',
+        'zeno (tc on, no failures)', 'zeno (tc off, mix failure)', 'zeno (tc on, mix failure)',
+        'pung (tc off, no failures)'], loc='upper left')
 
     plt.tight_layout()
     plt.xlabel("Number of clients")
+    plt.ylabel("Busy CPU (percentage)")
 
     plt.savefig(os.path.join(
-        sys.argv[1], "load_servers.png"), bbox_inches='tight', dpi=400)
+        sys.argv[1], "load_servers_cpu.png"), bbox_inches='tight', dpi=150)
+
+
+def compileLoadMemServers():
+
+    global metrics
+
+    # Ingest data.
+
+    set01_zeno_0500_Load_Mem = 0.0
+    with open(metrics["01"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set01_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set01_pung_0500_Load_Mem = 0.0
+    with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set01_pung_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set01_zeno_1000_Load_Mem = 0.0
+    with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set01_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set01_pung_1000_Load_Mem = 0.0
+    with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set01_pung_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set02_zeno_0500_Load_Mem = 0.0
+    with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set02_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set02_zeno_1000_Load_Mem = 0.0
+    with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set02_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set03_zeno_0500_Load_Mem = 0.0
+    with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set03_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set03_zeno_1000_Load_Mem = 0.0
+    with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set03_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set04_zeno_0500_Load_Mem = 0.0
+    with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set04_zeno_0500_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    set04_zeno_1000_Load_Mem = 0.0
+    with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        set04_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+
+    # Draw plots.
+
+    width = 0.9
+
+    _, ax = plt.subplots()
+
+    ax.bar(1, set01_zeno_0500_Load_Mem, width,
+            label='zeno (tc off, no failures)', color='gold', hatch='/')
+    ax.bar(2, set02_zeno_0500_Load_Mem, width,
+            label='zeno (tc on, no failures)', color='gold', hatch='x')
+    ax.bar(3, set03_zeno_0500_Load_Mem, width,
+            label='zeno (tc off, mix failure)', color='gold', hatch='o')
+    ax.bar(4, set04_zeno_0500_Load_Mem, width,
+            label='zeno (tc on, mix failure)', color='gold', hatch='+')
+    ax.bar(5, set01_pung_0500_Load_Mem, width,
+            label='pung (tc off, no failures)', color='steelblue', hatch='\\')
+    ax.bar(7, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
+    ax.bar(8, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
+    ax.bar(9, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
+    ax.bar(10, set04_zeno_1000_Load_Mem, width, color='gold', hatch='+')
+    ax.bar(11, set01_pung_1000_Load_Mem, width, color='steelblue', hatch='\\')
+
+    ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    ax.set_axisbelow(True)
+
+    ax.set_xlim([0, 12])
+    ax.set_xticks((3.5, 9.5))
+    ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_yticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+   # Add a legend.
+    ax.legend(loc='upper left')
+
+    plt.tight_layout()
+    plt.xlabel("Number of clients")
+    plt.ylabel("Used memory (GB)")
+
+    plt.savefig(os.path.join(
+        sys.argv[1], "load_servers_mem.png"), bbox_inches='tight', dpi=150)
 
 
 def compileLatencies():
@@ -1127,16 +1176,16 @@ def compileLatencies():
 
     _, ax = plt.subplots(figsize=(9, 5))
     
-    ax.plot(set01_zeno_0500_Latencies, set01_zeno_0500_CDF, label='zeno, 500 clients (tc off, no failures)')
-    ax.plot(set02_zeno_0500_Latencies, set02_zeno_0500_CDF, label='zeno, 500 clients (tc on, no failures)')
-    ax.plot(set03_zeno_0500_Latencies, set03_zeno_0500_CDF, label='zeno, 500 clients (tc off, mix failure)')
-    ax.plot(set04_zeno_0500_Latencies, set04_zeno_0500_CDF, label='zeno, 500 clients (tc on, mix failure)')
     ax.plot(set01_pung_0500_Latencies, set01_pung_0500_CDF, label='pung, 500 clients (tc off, no failures)')
-    ax.plot(set01_zeno_1000_Latencies, set01_zeno_1000_CDF, label='zeno, 1000 clients (tc off, no failures)')
-    ax.plot(set02_zeno_1000_Latencies, set02_zeno_1000_CDF, label='zeno, 1000 clients (tc on, no failures)')
-    ax.plot(set03_zeno_1000_Latencies, set03_zeno_1000_CDF, label='zeno, 1000 clients (tc off, mix failure)')
-    ax.plot(set04_zeno_1000_Latencies, set04_zeno_1000_CDF, label='zeno, 1000 clients (tc on, mix failure)')
     ax.plot(set01_pung_1000_Latencies, set01_pung_1000_CDF, label='pung, 1000 clients (tc off, no failures)')
+    ax.plot(set02_zeno_1000_Latencies, set02_zeno_1000_CDF, label='zeno, 1000 clients (tc on, no failures)')
+    ax.plot(set02_zeno_0500_Latencies, set02_zeno_0500_CDF, label='zeno, 500 clients (tc on, no failures)')
+    ax.plot(set01_zeno_0500_Latencies, set01_zeno_0500_CDF, label='zeno, 500 clients (tc off, no failures)')
+    ax.plot(set04_zeno_1000_Latencies, set04_zeno_1000_CDF, label='zeno, 1000 clients (tc on, mix failure)')
+    ax.plot(set01_zeno_1000_Latencies, set01_zeno_1000_CDF, label='zeno, 1000 clients (tc off, no failures)')
+    ax.plot(set03_zeno_1000_Latencies, set03_zeno_1000_CDF, label='zeno, 1000 clients (tc off, mix failure)')
+    ax.plot(set04_zeno_0500_Latencies, set04_zeno_0500_CDF, label='zeno, 500 clients (tc on, mix failure)')
+    ax.plot(set03_zeno_0500_Latencies, set03_zeno_0500_CDF, label='zeno, 500 clients (tc off, mix failure)')
 
     ax.xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
@@ -1153,7 +1202,7 @@ def compileLatencies():
     plt.xlabel("End-to-end transmission latency (seconds)")
     plt.ylabel("Fraction of messages transmitted")
 
-    plt.savefig(os.path.join(sys.argv[1], "msg-latencies.png"), bbox_inches='tight', dpi=400)
+    plt.savefig(os.path.join(sys.argv[1], "msg-latencies.png"), bbox_inches='tight', dpi=150)
 
 
 def compileMessagesPerMix():
@@ -1208,7 +1257,7 @@ def compileMessagesPerMix():
                 plt.xlabel("Round number")
                 plt.ylabel("Messages in all pools (count)")
 
-                plt.savefig(outputFile, bbox_inches='tight', dpi=400)
+                plt.savefig(outputFile, bbox_inches='tight', dpi=150)
 
 # Create all figures.
 
@@ -1217,8 +1266,10 @@ compileTrafficClients()
 compileTrafficServers()
 
 # Build load usage figures.
-compileLoadClients()
-compileLoadServers()
+compileLoadCPUClients()
+compileLoadCPUServers()
+compileLoadMemClients()
+compileLoadMemServers()
 
 # Build message latencies figure.
 compileLatencies()
