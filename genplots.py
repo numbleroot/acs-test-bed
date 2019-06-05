@@ -720,7 +720,7 @@ def compileLoadCPUClients():
     plt.ylabel("Busy CPU (percentage)")
 
     plt.savefig(os.path.join(
-        sys.argv[1], "load_clients_cpu.png"), bbox_inches='tight', dpi=150)
+        sys.argv[1], "load-cpu_clients.png"), bbox_inches='tight', dpi=150)
 
 
 def compileLoadMemClients():
@@ -807,7 +807,7 @@ def compileLoadMemClients():
     plt.ylabel("Used memory (MB)")
 
     plt.savefig(os.path.join(
-        sys.argv[1], "load_clients_mem.png"), bbox_inches='tight', dpi=150)
+        sys.argv[1], "load-mem_clients.png"), bbox_inches='tight', dpi=150)
 
 
 def compileLoadCPUServers():
@@ -974,7 +974,7 @@ def compileLoadCPUServers():
     plt.ylabel("Busy CPU (percentage)")
 
     plt.savefig(os.path.join(
-        sys.argv[1], "load_servers_cpu.png"), bbox_inches='tight', dpi=150)
+        sys.argv[1], "load-cpu_servers.png"), bbox_inches='tight', dpi=150)
 
 
 def compileLoadMemServers():
@@ -1061,7 +1061,7 @@ def compileLoadMemServers():
     plt.ylabel("Used memory (GB)")
 
     plt.savefig(os.path.join(
-        sys.argv[1], "load_servers_mem.png"), bbox_inches='tight', dpi=150)
+        sys.argv[1], "load-mem_servers.png"), bbox_inches='tight', dpi=150)
 
 
 def compileLatencies():
