@@ -704,9 +704,9 @@ def compileLoadCPUClients():
     ax.set_axisbelow(True)
 
     ax.set_xlim([0, 12])
-    ax.set_ylim([0.0, 100.0])
+    ax.set_ylim([0.0, 50.0])
     ax.set_xticks((3.5, 9.5))
-    ax.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
+    ax.set_yticks([0, 10, 20, 30, 40, 50, 50])
     ax.set_xticklabels(('500 clients', '1000 clients'))
 
     # Add a legend.
@@ -799,7 +799,7 @@ def compileLoadMemClients():
     ax.set_yticks([0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500])
     ax.set_xticklabels(('500 clients', '1000 clients'))
 
-   # Add a legend.
+    # Add a legend.
     ax.legend(loc='upper left')
 
     plt.tight_layout()
@@ -958,10 +958,10 @@ def compileLoadCPUServers():
     ax.set_axisbelow(True)
 
     ax.set_xlim([0, 12])
-    ax.set_ylim([0.0, 100.0])
+    ax.set_ylim([0.0, 50.0])
     ax.set_xticks((3.5, 9.5))
+    ax.set_yticks([0, 10, 20, 30, 40, 50])
     ax.set_xticklabels(('500 clients', '1000 clients'))
-    ax.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 
     # Add a legend.
     ax.legend([set01_zeno01['boxes'][0], set02_zeno01['boxes'][0], set03_zeno01['boxes'][0],
@@ -1053,7 +1053,7 @@ def compileLoadMemServers():
     ax.set_xticklabels(('500 clients', '1000 clients'))
     ax.set_yticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
-   # Add a legend.
+    # Add a legend.
     ax.legend(loc='upper left')
 
     plt.tight_layout()
@@ -1194,9 +1194,8 @@ def compileLatencies():
     ax.set_ylim([0.0, 1.0])
     ax.set_yticks((0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0))
 
-    boxOfPlot = ax.get_position()
-    ax.set_position([boxOfPlot.x0, boxOfPlot.y0, (boxOfPlot.width * 0.8), boxOfPlot.height])
-    ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+    # Add a legend.
+    ax.legend(loc='lower right')
 
     plt.tight_layout()
     plt.xlabel("End-to-end transmission latency (seconds)")
