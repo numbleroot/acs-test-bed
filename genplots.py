@@ -1229,18 +1229,18 @@ def compileMessagesPerMix():
 # Create all figures.
 
 # Build bandwidth figures.
-# compileTrafficClients()
+compileTrafficClients()
 compileTrafficServers()
 
 # Build load usage figures.
-# compileLoadCPUClients()
-# compileLoadCPUServers()
-# compileLoadMemClients()
-# compileLoadMemServers()
+compileLoadCPUClients()
+compileLoadCPUServers()
+compileLoadMemClients()
+compileLoadMemServers()
 
 # Build message latencies figure.
-# compileLatencies()
+compileLatencies()
 
 # Build figures describing the number of
 # messages in each mix server over rounds.
-# compileMessagesPerMix()
+compileMessagesPerMix()
