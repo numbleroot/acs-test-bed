@@ -8,7 +8,26 @@ import matplotlib
 
 from matplotlib import pyplot as plt
 from matplotlib import patches as mpatches
+from matplotlib import ticker as ticker
 from pylab import setp
+
+matplotlib.use("pgf")
+plt.rcParams.update({
+    "font.family": "serif",
+    "text.usetex": True,
+    "pgf.rcfonts": False,
+    "pgf.preamble": [
+        "\\usepackage{units}",
+        "\\usepackage{metalogo}",
+        "\\usepackage{amsfonts}",
+        "\\usepackage{amsmath}",
+        "\\usepackage{amssymb}",
+        "\\usepackage{amsthm}",
+        "\\usepackage{mathtools}",
+        "\\usepackage{paratype}",
+        "\\usepackage{FiraMono}",
+    ]
+})
 
 # Load all measurement files.
 metrics = {
@@ -349,47 +368,39 @@ def compileTrafficClients():
             dataFile.read().strip())
     set04_zeno_1000_Bandwidth_Clients_Avg = set04_zeno_1000_Bandwidth_Clients_AvgAll / 1000.0
 
-    bandwidthAvg = [set01_zeno_0500_Bandwidth_Clients_Avg, set01_zeno_1000_Bandwidth_Clients_Avg, set01_pung_0500_Bandwidth_Clients_Avg, set01_pung_1000_Bandwidth_Clients_Avg, set02_zeno_0500_Bandwidth_Clients_Avg,
-                    set02_zeno_1000_Bandwidth_Clients_Avg, set03_zeno_0500_Bandwidth_Clients_Avg, set03_zeno_1000_Bandwidth_Clients_Avg, set04_zeno_0500_Bandwidth_Clients_Avg, set04_zeno_1000_Bandwidth_Clients_Avg]
+    bandwidthAvg = [set01_zeno_0500_Bandwidth_Clients_Avg, set02_zeno_0500_Bandwidth_Clients_Avg,
+                    set03_zeno_0500_Bandwidth_Clients_Avg, set04_zeno_0500_Bandwidth_Clients_Avg,
+                    set01_pung_0500_Bandwidth_Clients_Avg, set01_zeno_1000_Bandwidth_Clients_Avg,
+                    set02_zeno_1000_Bandwidth_Clients_Avg, set03_zeno_1000_Bandwidth_Clients_Avg,
+                    set04_zeno_1000_Bandwidth_Clients_Avg, set01_pung_1000_Bandwidth_Clients_Avg]
 
     # Draw plots.
 
     width = 1.0
-    y_max = np.ceil((max(bandwidthAvg) + 1.0))
+    y_max = np.ceil((max(bandwidthAvg) + 10.0))
 
     _, ax = plt.subplots()
 
     # Draw all bars.
 
-    ax.bar(1, set01_zeno_0500_Bandwidth_Clients_Avg, width,
-           label='zeno (tc off, no failures)', edgecolor='black', color='gold', hatch='/')
-    ax.bar(2, set02_zeno_0500_Bandwidth_Clients_Avg, width,
-           label='zeno (tc on, no failures)', edgecolor='black', color='gold', hatch='x')
-    ax.bar(3, set03_zeno_0500_Bandwidth_Clients_Avg, width,
-           label='zeno (tc off, mix failure)', edgecolor='black', color='gold', hatch='o')
-    ax.bar(4, set04_zeno_0500_Bandwidth_Clients_Avg, width,
-           label='zeno (tc on, mix failure)', edgecolor='black', color='gold', hatch='+')
-    ax.bar(5, set01_pung_0500_Bandwidth_Clients_Avg, width,
-           label='pung (tc off, no failures)', edgecolor='black', color='steelblue', hatch='\\')
-    ax.bar(7, set01_zeno_1000_Bandwidth_Clients_Avg, width,
-           edgecolor='black', color='gold', hatch='/')
-    ax.bar(8, set02_zeno_1000_Bandwidth_Clients_Avg, width,
-           edgecolor='black', color='gold', hatch='x')
-    ax.bar(9, set03_zeno_1000_Bandwidth_Clients_Avg, width,
-           edgecolor='black', color='gold', hatch='o')
-    ax.bar(10, set04_zeno_1000_Bandwidth_Clients_Avg, width,
-           edgecolor='black', color='gold', hatch='+')
-    ax.bar(11, set01_pung_1000_Bandwidth_Clients_Avg, width,
-           edgecolor='black', color='steelblue', hatch='\\')
-    
-    # Add line representing the number of MiB
-    # of theoretical goodput.
-    goodput = (((25.0 * 2.0) * 256.0) / 1024.0) / 1024.0
-    plt.axhline(y=goodput, xmin=0, xmax=1, linewidth=1.0, linestyle='--', color='crimson')
+    ax.bar(1, set01_zeno_0500_Bandwidth_Clients_Avg, width, label='zeno (tc off, no failures)', edgecolor='black', color='gold', hatch='/')
+    ax.bar(2, set02_zeno_0500_Bandwidth_Clients_Avg, width, label='zeno (tc on, no failures)', edgecolor='black', color='gold', hatch='x')
+    ax.bar(3, set03_zeno_0500_Bandwidth_Clients_Avg, width, label='zeno (tc off, mix failure)', edgecolor='black', color='gold', hatch='o')
+    ax.bar(4, set04_zeno_0500_Bandwidth_Clients_Avg, width, label='zeno (tc on, mix failure)', edgecolor='black', color='gold', hatch='+')
+    ax.bar(5, set01_pung_0500_Bandwidth_Clients_Avg, width, label='pung (tc off, no failures)', edgecolor='black', color='steelblue', hatch='\\')
+    ax.bar(7, set01_zeno_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='/')
+    ax.bar(8, set02_zeno_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='x')
+    ax.bar(9, set03_zeno_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='o')
+    ax.bar(10, set04_zeno_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='+')
+    ax.bar(11, set01_pung_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='steelblue', hatch='\\')
+
+    labels = ["%.2f" % avg for avg in bandwidthAvg]
+
+    for bar, label in zip(ax.patches, labels):
+        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() * 1.05), label, ha='center', va='bottom')
 
     # Show a light horizontal grid.
-    ax.yaxis.grid(True, linestyle='-', which='major',
-                  color='lightgrey', alpha=0.5)
+    ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
     # Limit x and y axes and configure ticks and labels.
@@ -397,7 +408,6 @@ def compileTrafficClients():
     ax.set_ylim([0, y_max])
     ax.set_xticks((3, 9))
     ax.set_xticklabels(('500 clients', '1000 clients'))
-    ax.set_yticks((0.0, 0.5, 1.0, 5.0, 10.0, 15.0))
 
     # Add a legend.
     ax.legend(loc='upper left')
@@ -407,8 +417,8 @@ def compileTrafficClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Bandwidth usage (MiB) [log.]")
 
-    plt.savefig(os.path.join(
-        sys.argv[1], "bandwidth-usage_clients.png"), bbox_inches='tight', dpi=150)
+    plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_clients.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_clients.pgf"), bbox_inches='tight')
 
 
 def compileTrafficServers():
@@ -475,8 +485,11 @@ def compileTrafficServers():
             dataFile.read().strip())
     set04_zeno_1000_Bandwidth_Servers_Avg = set04_zeno_1000_Bandwidth_Servers_AvgAll / 21.0
 
-    bandwidthAvg = [set01_zeno_0500_Bandwidth_Servers_AvgAll, set01_zeno_1000_Bandwidth_Servers_AvgAll, set01_pung_0500_Bandwidth_Servers_AvgAll, set01_pung_1000_Bandwidth_Servers_AvgAll, set02_zeno_0500_Bandwidth_Servers_AvgAll,
-                    set02_zeno_1000_Bandwidth_Servers_AvgAll, set03_zeno_0500_Bandwidth_Servers_AvgAll, set03_zeno_1000_Bandwidth_Servers_AvgAll, set04_zeno_0500_Bandwidth_Servers_AvgAll, set04_zeno_1000_Bandwidth_Servers_AvgAll]
+    bandwidthAvg = [set01_zeno_0500_Bandwidth_Servers_AvgAll, set02_zeno_0500_Bandwidth_Servers_AvgAll,
+                    set03_zeno_0500_Bandwidth_Servers_AvgAll, set04_zeno_0500_Bandwidth_Servers_AvgAll,
+                    set01_pung_0500_Bandwidth_Servers_AvgAll, set01_zeno_1000_Bandwidth_Servers_AvgAll,
+                    set02_zeno_1000_Bandwidth_Servers_AvgAll, set03_zeno_1000_Bandwidth_Servers_AvgAll,
+                    set04_zeno_1000_Bandwidth_Servers_AvgAll, set01_pung_1000_Bandwidth_Servers_AvgAll]
 
     # Draw plots.
 
@@ -488,55 +501,41 @@ def compileTrafficServers():
 
     # Draw all bars and corresponding average lines.
 
-    ax.bar(1, set01_zeno_0500_Bandwidth_Servers_AvgAll, width,
-           label='zeno (tc off, no failures)', edgecolor='black', color='gold', hatch='/')
-    plt.axhline(y=set01_zeno_0500_Bandwidth_Servers_Avg,
-                xmin=(0.5 * barWidth), xmax=(1.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(1, set01_zeno_0500_Bandwidth_Servers_AvgAll, width, label='zeno (tc off, no failures)', edgecolor='black', color='gold', hatch='/')
+    plt.axhline(y=set01_zeno_0500_Bandwidth_Servers_Avg, xmin=(0.5 * barWidth), xmax=(1.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(2, set02_zeno_0500_Bandwidth_Servers_AvgAll, width,
-           label='zeno (tc on, no failures)', edgecolor='black', color='gold', hatch='x')
-    plt.axhline(y=set02_zeno_0500_Bandwidth_Servers_Avg,
-                xmin=(1.5 * barWidth), xmax=(2.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(2, set02_zeno_0500_Bandwidth_Servers_AvgAll, width, label='zeno (tc on, no failures)', edgecolor='black', color='gold', hatch='x')
+    plt.axhline(y=set02_zeno_0500_Bandwidth_Servers_Avg, xmin=(1.5 * barWidth), xmax=(2.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(3, set03_zeno_0500_Bandwidth_Servers_AvgAll, width,
-           label='zeno (tc off, mix failure)', edgecolor='black', color='gold', hatch='o')
-    plt.axhline(y=set03_zeno_0500_Bandwidth_Servers_Avg,
-                xmin=(2.5 * barWidth), xmax=(3.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(3, set03_zeno_0500_Bandwidth_Servers_AvgAll, width, label='zeno (tc off, mix failure)', edgecolor='black', color='gold', hatch='o')
+    plt.axhline(y=set03_zeno_0500_Bandwidth_Servers_Avg, xmin=(2.5 * barWidth), xmax=(3.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(4, set04_zeno_0500_Bandwidth_Servers_AvgAll, width,
-           label='zeno (tc on, mix failure)', edgecolor='black', color='gold', hatch='+')
-    plt.axhline(y=set04_zeno_0500_Bandwidth_Servers_Avg,
-                xmin=(3.5 * barWidth), xmax=(4.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(4, set04_zeno_0500_Bandwidth_Servers_AvgAll, width, label='zeno (tc on, mix failure)', edgecolor='black', color='gold', hatch='+')
+    plt.axhline(y=set04_zeno_0500_Bandwidth_Servers_Avg, xmin=(3.5 * barWidth), xmax=(4.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(5, set01_pung_0500_Bandwidth_Servers_AvgAll, width,
-           label='pung (tc off, no failures)', edgecolor='black', color='steelblue', hatch='\\')
+    ax.bar(5, set01_pung_0500_Bandwidth_Servers_AvgAll, width, label='pung (tc off, no failures)', edgecolor='black', color='steelblue', hatch='\\')
 
-    ax.bar(7, set01_zeno_1000_Bandwidth_Servers_AvgAll,
-           width, edgecolor='black', color='gold', hatch='/')
-    plt.axhline(y=set01_zeno_1000_Bandwidth_Servers_Avg,
-                xmin=(6.5 * barWidth), xmax=(7.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(7, set01_zeno_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='/')
+    plt.axhline(y=set01_zeno_1000_Bandwidth_Servers_Avg, xmin=(6.5 * barWidth), xmax=(7.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(8, set02_zeno_1000_Bandwidth_Servers_AvgAll,
-           width, edgecolor='black', color='gold', hatch='x')
-    plt.axhline(y=set02_zeno_1000_Bandwidth_Servers_Avg,
-                xmin=(7.5 * barWidth), xmax=(8.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(8, set02_zeno_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='x')
+    plt.axhline(y=set02_zeno_1000_Bandwidth_Servers_Avg, xmin=(7.5 * barWidth), xmax=(8.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(9, set03_zeno_1000_Bandwidth_Servers_AvgAll,
-           width, edgecolor='black', color='gold', hatch='o')
-    plt.axhline(y=set03_zeno_1000_Bandwidth_Servers_Avg,
-                xmin=(8.5 * barWidth), xmax=(9.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(9, set03_zeno_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='o')
+    plt.axhline(y=set03_zeno_1000_Bandwidth_Servers_Avg, xmin=(8.5 * barWidth), xmax=(9.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(10, set04_zeno_1000_Bandwidth_Servers_AvgAll,
-           width, edgecolor='black', color='gold', hatch='+')
-    plt.axhline(y=set04_zeno_1000_Bandwidth_Servers_Avg,
-                xmin=(9.5 * barWidth), xmax=(10.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(10, set04_zeno_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='+')
+    plt.axhline(y=set04_zeno_1000_Bandwidth_Servers_Avg, xmin=(9.5 * barWidth), xmax=(10.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(11, set01_pung_1000_Bandwidth_Servers_AvgAll, width,
-           edgecolor='black', color='steelblue', hatch='\\')
+    ax.bar(11, set01_pung_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='steelblue', hatch='\\')
+    
+    labels = ["%.2f" % avg for avg in bandwidthAvg]
+
+    for bar, label in zip(ax.patches, labels):
+        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() + 200), label, ha='center', va='bottom')
 
     # Show a light horizontal grid.
-    ax.yaxis.grid(True, linestyle='-', which='major',
-                  color='lightgrey', alpha=0.5)
+    ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
     # Limit x and y axes and configure ticks and labels.
@@ -552,8 +551,8 @@ def compileTrafficServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Bandwidth usage (MiB)")
 
-    plt.savefig(os.path.join(
-        sys.argv[1], "bandwidth-usage_servers.png"), bbox_inches='tight', dpi=150)
+    plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_servers.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_servers.pgf"), bbox_inches='tight')
 
 
 def compileLoadCPUClients():
@@ -638,26 +637,16 @@ def compileLoadCPUClients():
 
     _, ax = plt.subplots()
 
-    set01_zeno01 = ax.boxplot(set01_zeno_0500_Load_CPU, positions=[
-        1], widths=width, patch_artist=True, whis='range')
-    set02_zeno01 = ax.boxplot(set02_zeno_0500_Load_CPU, positions=[
-        2], widths=width, patch_artist=True, whis='range')
-    set03_zeno01 = ax.boxplot(set03_zeno_0500_Load_CPU, positions=[
-        3], widths=width, patch_artist=True, whis='range')
-    set04_zeno01 = ax.boxplot(set04_zeno_0500_Load_CPU, positions=[
-        4], widths=width, patch_artist=True, whis='range')
-    set01_pung01 = ax.boxplot(set01_pung_0500_Load_CPU, positions=[
-        5], widths=width, patch_artist=True, whis='range')
-    set01_zeno03 = ax.boxplot(set01_zeno_1000_Load_CPU, positions=[
-        7], widths=width, patch_artist=True, whis='range')
-    set02_zeno03 = ax.boxplot(set02_zeno_1000_Load_CPU, positions=[
-        8], widths=width, patch_artist=True, whis='range')
-    set03_zeno03 = ax.boxplot(set03_zeno_1000_Load_CPU, positions=[
-        9], widths=width, patch_artist=True, whis='range')
-    set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_CPU, positions=[
-        10], widths=width, patch_artist=True, whis='range')
-    set01_pung03 = ax.boxplot(set01_pung_1000_Load_CPU, positions=[
-        11], widths=width, patch_artist=True, whis='range')
+    set01_zeno01 = ax.boxplot(set01_zeno_0500_Load_CPU, positions=[1], widths=width, patch_artist=True, whis='range')
+    set02_zeno01 = ax.boxplot(set02_zeno_0500_Load_CPU, positions=[2], widths=width, patch_artist=True, whis='range')
+    set03_zeno01 = ax.boxplot(set03_zeno_0500_Load_CPU, positions=[3], widths=width, patch_artist=True, whis='range')
+    set04_zeno01 = ax.boxplot(set04_zeno_0500_Load_CPU, positions=[4], widths=width, patch_artist=True, whis='range')
+    set01_pung01 = ax.boxplot(set01_pung_0500_Load_CPU, positions=[5], widths=width, patch_artist=True, whis='range')
+    set01_zeno03 = ax.boxplot(set01_zeno_1000_Load_CPU, positions=[7], widths=width, patch_artist=True, whis='range')
+    set02_zeno03 = ax.boxplot(set02_zeno_1000_Load_CPU, positions=[8], widths=width, patch_artist=True, whis='range')
+    set03_zeno03 = ax.boxplot(set03_zeno_1000_Load_CPU, positions=[9], widths=width, patch_artist=True, whis='range')
+    set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_CPU, positions=[10], widths=width, patch_artist=True, whis='range')
+    set01_pung03 = ax.boxplot(set01_pung_1000_Load_CPU, positions=[11], widths=width, patch_artist=True, whis='range')
 
     # Color boxplots.
     setp(set01_zeno01['boxes'], color='black')
@@ -719,8 +708,8 @@ def compileLoadCPUClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Busy CPU (percentage)")
 
-    plt.savefig(os.path.join(
-        sys.argv[1], "load-cpu_clients.png"), bbox_inches='tight', dpi=150)
+    plt.savefig(os.path.join(sys.argv[1], "load-cpu_clients.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "load-cpu_clients.pgf"), bbox_inches='tight')
 
 
 def compileLoadMemClients():
@@ -775,16 +764,11 @@ def compileLoadMemClients():
 
     _, ax = plt.subplots()
 
-    ax.bar(1, set01_zeno_0500_Load_Mem, width,
-            label='zeno (tc off, no failures)', color='gold', hatch='/')
-    ax.bar(2, set02_zeno_0500_Load_Mem, width,
-            label='zeno (tc on, no failures)', color='gold', hatch='x')
-    ax.bar(3, set03_zeno_0500_Load_Mem, width,
-            label='zeno (tc off, mix failure)', color='gold', hatch='o')
-    ax.bar(4, set04_zeno_0500_Load_Mem, width,
-            label='zeno (tc on, mix failure)', color='gold', hatch='+')
-    ax.bar(5, set01_pung_0500_Load_Mem, width,
-            label='pung (tc off, no failures)', color='steelblue', hatch='\\')
+    ax.bar(1, set01_zeno_0500_Load_Mem, width, label='zeno (tc off, no failures)', color='gold', hatch='/')
+    ax.bar(2, set02_zeno_0500_Load_Mem, width, label='zeno (tc on, no failures)', color='gold', hatch='x')
+    ax.bar(3, set03_zeno_0500_Load_Mem, width, label='zeno (tc off, mix failure)', color='gold', hatch='o')
+    ax.bar(4, set04_zeno_0500_Load_Mem, width, label='zeno (tc on, mix failure)', color='gold', hatch='+')
+    ax.bar(5, set01_pung_0500_Load_Mem, width, label='pung (tc off, no failures)', color='steelblue', hatch='\\')
     ax.bar(7, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
     ax.bar(8, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
     ax.bar(9, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
@@ -806,8 +790,8 @@ def compileLoadMemClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Used memory (MB)")
 
-    plt.savefig(os.path.join(
-        sys.argv[1], "load-mem_clients.png"), bbox_inches='tight', dpi=150)
+    plt.savefig(os.path.join(sys.argv[1], "load-mem_clients.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "load-mem_clients.pgf"), bbox_inches='tight')
 
 
 def compileLoadCPUServers():
@@ -892,26 +876,16 @@ def compileLoadCPUServers():
 
     _, ax = plt.subplots()
 
-    set01_zeno01 = ax.boxplot(set01_zeno_0500_Load_CPU, positions=[
-        1], widths=width, patch_artist=True, whis='range')
-    set02_zeno01 = ax.boxplot(set02_zeno_0500_Load_CPU, positions=[
-        2], widths=width, patch_artist=True, whis='range')
-    set03_zeno01 = ax.boxplot(set03_zeno_0500_Load_CPU, positions=[
-        3], widths=width, patch_artist=True, whis='range')
-    set04_zeno01 = ax.boxplot(set04_zeno_0500_Load_CPU, positions=[
-        4], widths=width, patch_artist=True, whis='range')
-    set01_pung01 = ax.boxplot(set01_pung_0500_Load_CPU, positions=[
-        5], widths=width, patch_artist=True, whis='range')
-    set01_zeno03 = ax.boxplot(set01_zeno_1000_Load_CPU, positions=[
-        7], widths=width, patch_artist=True, whis='range')
-    set02_zeno03 = ax.boxplot(set02_zeno_1000_Load_CPU, positions=[
-        8], widths=width, patch_artist=True, whis='range')
-    set03_zeno03 = ax.boxplot(set03_zeno_1000_Load_CPU, positions=[
-        9], widths=width, patch_artist=True, whis='range')
-    set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_CPU, positions=[
-        10], widths=width, patch_artist=True, whis='range')
-    set01_pung03 = ax.boxplot(set01_pung_1000_Load_CPU, positions=[
-        11], widths=width, patch_artist=True, whis='range')
+    set01_zeno01 = ax.boxplot(set01_zeno_0500_Load_CPU, positions=[1], widths=width, patch_artist=True, whis='range')
+    set02_zeno01 = ax.boxplot(set02_zeno_0500_Load_CPU, positions=[2], widths=width, patch_artist=True, whis='range')
+    set03_zeno01 = ax.boxplot(set03_zeno_0500_Load_CPU, positions=[3], widths=width, patch_artist=True, whis='range')
+    set04_zeno01 = ax.boxplot(set04_zeno_0500_Load_CPU, positions=[4], widths=width, patch_artist=True, whis='range')
+    set01_pung01 = ax.boxplot(set01_pung_0500_Load_CPU, positions=[5], widths=width, patch_artist=True, whis='range')
+    set01_zeno03 = ax.boxplot(set01_zeno_1000_Load_CPU, positions=[7], widths=width, patch_artist=True, whis='range')
+    set02_zeno03 = ax.boxplot(set02_zeno_1000_Load_CPU, positions=[8], widths=width, patch_artist=True, whis='range')
+    set03_zeno03 = ax.boxplot(set03_zeno_1000_Load_CPU, positions=[9], widths=width, patch_artist=True, whis='range')
+    set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_CPU, positions=[10], widths=width, patch_artist=True, whis='range')
+    set01_pung03 = ax.boxplot(set01_pung_1000_Load_CPU, positions=[11], widths=width, patch_artist=True, whis='range')
 
     # Color boxplots.
     setp(set01_zeno01['boxes'], color='black')
@@ -973,8 +947,8 @@ def compileLoadCPUServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Busy CPU (percentage)")
 
-    plt.savefig(os.path.join(
-        sys.argv[1], "load-cpu_servers.png"), bbox_inches='tight', dpi=150)
+    plt.savefig(os.path.join(sys.argv[1], "load-cpu_servers.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "load-cpu_servers.pgf"), bbox_inches='tight')
 
 
 def compileLoadMemServers():
@@ -1029,16 +1003,11 @@ def compileLoadMemServers():
 
     _, ax = plt.subplots()
 
-    ax.bar(1, set01_zeno_0500_Load_Mem, width,
-            label='zeno (tc off, no failures)', color='gold', hatch='/')
-    ax.bar(2, set02_zeno_0500_Load_Mem, width,
-            label='zeno (tc on, no failures)', color='gold', hatch='x')
-    ax.bar(3, set03_zeno_0500_Load_Mem, width,
-            label='zeno (tc off, mix failure)', color='gold', hatch='o')
-    ax.bar(4, set04_zeno_0500_Load_Mem, width,
-            label='zeno (tc on, mix failure)', color='gold', hatch='+')
-    ax.bar(5, set01_pung_0500_Load_Mem, width,
-            label='pung (tc off, no failures)', color='steelblue', hatch='\\')
+    ax.bar(1, set01_zeno_0500_Load_Mem, width, label='zeno (tc off, no failures)', color='gold', hatch='/')
+    ax.bar(2, set02_zeno_0500_Load_Mem, width, label='zeno (tc on, no failures)', color='gold', hatch='x')
+    ax.bar(3, set03_zeno_0500_Load_Mem, width, label='zeno (tc off, mix failure)', color='gold', hatch='o')
+    ax.bar(4, set04_zeno_0500_Load_Mem, width, label='zeno (tc on, mix failure)', color='gold', hatch='+')
+    ax.bar(5, set01_pung_0500_Load_Mem, width, label='pung (tc off, no failures)', color='steelblue', hatch='\\')
     ax.bar(7, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
     ax.bar(8, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
     ax.bar(9, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
@@ -1060,8 +1029,8 @@ def compileLoadMemServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Used memory (GB)")
 
-    plt.savefig(os.path.join(
-        sys.argv[1], "load-mem_servers.png"), bbox_inches='tight', dpi=150)
+    plt.savefig(os.path.join(sys.argv[1], "load-mem_servers.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "load-mem_servers.pgf"), bbox_inches='tight')
 
 
 def compileLatencies():
@@ -1201,7 +1170,8 @@ def compileLatencies():
     plt.xlabel("End-to-end transmission latency (seconds)")
     plt.ylabel("Fraction of messages transmitted")
 
-    plt.savefig(os.path.join(sys.argv[1], "msg-latencies.png"), bbox_inches='tight', dpi=150)
+    plt.savefig(os.path.join(sys.argv[1], "msg-latencies.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "msg-latencies.pgf"), bbox_inches='tight')
 
 
 def compileMessagesPerMix():
@@ -1214,8 +1184,8 @@ def compileMessagesPerMix():
 
             for run in {"Run01", "Run02", "Run03"}:
 
-                outputFile = os.path.join(os.path.dirname(
-                    metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "msgs-per-mix_first-to-last-round.png")
+                outputFilePDF = os.path.join(os.path.dirname(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "msgs-per-mix_first-to-last-round.pdf")
+                outputFilePGF = os.path.join(os.path.dirname(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "msgs-per-mix_first-to-last-round.pgf")
 
                 labels = []
                 data = []
@@ -1241,14 +1211,11 @@ def compileMessagesPerMix():
                 ax.set_ylim([0, y_max])
 
                 for idx, msgCounts in enumerate(data):
-                    plt.plot(
-                        msgCounts, "-", label=labels[idx], markersize=2.0, color=np.random.rand(3,))
+                    plt.plot(msgCounts, "-", label=labels[idx], markersize=2.0, color=np.random.rand(3,))
 
                 boxOfPlot = ax.get_position()
-                ax.set_position([boxOfPlot.x0, boxOfPlot.y0,
-                                 (boxOfPlot.width * 0.8), boxOfPlot.height])
-                ax.legend(loc='center left', bbox_to_anchor=(
-                    1, 0.5), fontsize='small')
+                ax.set_position([boxOfPlot.x0, boxOfPlot.y0, (boxOfPlot.width * 0.8), boxOfPlot.height])
+                ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize='small')
 
                 plt.grid()
                 plt.tight_layout()
@@ -1256,23 +1223,24 @@ def compileMessagesPerMix():
                 plt.xlabel("Round number")
                 plt.ylabel("Messages in all pools (count)")
 
-                plt.savefig(outputFile, bbox_inches='tight', dpi=150)
+                plt.savefig(outputFilePDF, bbox_inches='tight')
+                plt.savefig(outputFilePGF, bbox_inches='tight')
 
 # Create all figures.
 
 # Build bandwidth figures.
-compileTrafficClients()
+# compileTrafficClients()
 compileTrafficServers()
 
 # Build load usage figures.
-compileLoadCPUClients()
-compileLoadCPUServers()
-compileLoadMemClients()
-compileLoadMemServers()
+# compileLoadCPUClients()
+# compileLoadCPUServers()
+# compileLoadMemClients()
+# compileLoadMemServers()
 
 # Build message latencies figure.
-compileLatencies()
+# compileLatencies()
 
 # Build figures describing the number of
 # messages in each mix server over rounds.
-compileMessagesPerMix()
+# compileMessagesPerMix()
