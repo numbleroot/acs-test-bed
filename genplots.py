@@ -8,7 +8,6 @@ import matplotlib
 
 from matplotlib import pyplot as plt
 from matplotlib import patches as mpatches
-from matplotlib import ticker as ticker
 from pylab import setp
 
 matplotlib.use("pgf")
@@ -19,11 +18,9 @@ plt.rcParams.update({
     "pgf.preamble": [
         "\\usepackage{units}",
         "\\usepackage{metalogo}",
-        "\\usepackage{amsfonts}",
         "\\usepackage{amsmath}",
         "\\usepackage{amssymb}",
         "\\usepackage{amsthm}",
-        "\\usepackage{mathtools}",
         "\\usepackage{paratype}",
         "\\usepackage{FiraMono}",
     ]
@@ -417,7 +414,6 @@ def compileTrafficClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Bandwidth usage (MiB) [log.]")
 
-    plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_clients.pdf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_clients.pgf"), bbox_inches='tight')
 
 
@@ -551,7 +547,6 @@ def compileTrafficServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Bandwidth usage (MiB)")
 
-    plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_servers.pdf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_servers.pgf"), bbox_inches='tight')
 
 
@@ -708,7 +703,6 @@ def compileLoadCPUClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Busy CPU (percentage)")
 
-    plt.savefig(os.path.join(sys.argv[1], "load-cpu_clients.pdf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "load-cpu_clients.pgf"), bbox_inches='tight')
 
 
@@ -764,16 +758,16 @@ def compileLoadMemClients():
 
     _, ax = plt.subplots()
 
-    ax.bar(1, set01_zeno_0500_Load_Mem, width, label='zeno (tc off, no failures)', color='gold', hatch='/')
-    ax.bar(2, set02_zeno_0500_Load_Mem, width, label='zeno (tc on, no failures)', color='gold', hatch='x')
-    ax.bar(3, set03_zeno_0500_Load_Mem, width, label='zeno (tc off, mix failure)', color='gold', hatch='o')
-    ax.bar(4, set04_zeno_0500_Load_Mem, width, label='zeno (tc on, mix failure)', color='gold', hatch='+')
-    ax.bar(5, set01_pung_0500_Load_Mem, width, label='pung (tc off, no failures)', color='steelblue', hatch='\\')
-    ax.bar(7, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
-    ax.bar(8, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
-    ax.bar(9, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
-    ax.bar(10, set04_zeno_1000_Load_Mem, width, color='gold', hatch='+')
-    ax.bar(11, set01_pung_1000_Load_Mem, width, color='steelblue', hatch='\\')
+    ax.bar(1, set01_zeno_0500_Load_Mem, width, label='zeno (tc off, no failures)', edgecolor='black', color='gold', hatch='/')
+    ax.bar(2, set02_zeno_0500_Load_Mem, width, label='zeno (tc on, no failures)', edgecolor='black', color='gold', hatch='x')
+    ax.bar(3, set03_zeno_0500_Load_Mem, width, label='zeno (tc off, mix failure)', edgecolor='black', color='gold', hatch='o')
+    ax.bar(4, set04_zeno_0500_Load_Mem, width, label='zeno (tc on, mix failure)', edgecolor='black', color='gold', hatch='+')
+    ax.bar(5, set01_pung_0500_Load_Mem, width, label='pung (tc off, no failures)', edgecolor='black', color='steelblue', hatch='\\')
+    ax.bar(7, set01_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='/')
+    ax.bar(8, set02_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='x')
+    ax.bar(9, set03_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='o')
+    ax.bar(10, set04_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='+')
+    ax.bar(11, set01_pung_1000_Load_Mem, width, edgecolor='black', color='steelblue', hatch='\\')
     
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
@@ -790,7 +784,6 @@ def compileLoadMemClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Used memory (MB)")
 
-    plt.savefig(os.path.join(sys.argv[1], "load-mem_clients.pdf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "load-mem_clients.pgf"), bbox_inches='tight')
 
 
@@ -947,7 +940,6 @@ def compileLoadCPUServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Busy CPU (percentage)")
 
-    plt.savefig(os.path.join(sys.argv[1], "load-cpu_servers.pdf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "load-cpu_servers.pgf"), bbox_inches='tight')
 
 
@@ -1003,16 +995,16 @@ def compileLoadMemServers():
 
     _, ax = plt.subplots()
 
-    ax.bar(1, set01_zeno_0500_Load_Mem, width, label='zeno (tc off, no failures)', color='gold', hatch='/')
-    ax.bar(2, set02_zeno_0500_Load_Mem, width, label='zeno (tc on, no failures)', color='gold', hatch='x')
-    ax.bar(3, set03_zeno_0500_Load_Mem, width, label='zeno (tc off, mix failure)', color='gold', hatch='o')
-    ax.bar(4, set04_zeno_0500_Load_Mem, width, label='zeno (tc on, mix failure)', color='gold', hatch='+')
-    ax.bar(5, set01_pung_0500_Load_Mem, width, label='pung (tc off, no failures)', color='steelblue', hatch='\\')
-    ax.bar(7, set01_zeno_1000_Load_Mem, width, color='gold', hatch='/')
-    ax.bar(8, set02_zeno_1000_Load_Mem, width, color='gold', hatch='x')
-    ax.bar(9, set03_zeno_1000_Load_Mem, width, color='gold', hatch='o')
-    ax.bar(10, set04_zeno_1000_Load_Mem, width, color='gold', hatch='+')
-    ax.bar(11, set01_pung_1000_Load_Mem, width, color='steelblue', hatch='\\')
+    ax.bar(1, set01_zeno_0500_Load_Mem, width, label='zeno (tc off, no failures)', edgecolor='black', color='gold', hatch='/')
+    ax.bar(2, set02_zeno_0500_Load_Mem, width, label='zeno (tc on, no failures)', edgecolor='black', color='gold', hatch='x')
+    ax.bar(3, set03_zeno_0500_Load_Mem, width, label='zeno (tc off, mix failure)', edgecolor='black', color='gold', hatch='o')
+    ax.bar(4, set04_zeno_0500_Load_Mem, width, label='zeno (tc on, mix failure)', edgecolor='black', color='gold', hatch='+')
+    ax.bar(5, set01_pung_0500_Load_Mem, width, label='pung (tc off, no failures)', edgecolor='black', color='steelblue', hatch='\\')
+    ax.bar(7, set01_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='/')
+    ax.bar(8, set02_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='x')
+    ax.bar(9, set03_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='o')
+    ax.bar(10, set04_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='+')
+    ax.bar(11, set01_pung_1000_Load_Mem, width, edgecolor='black', color='steelblue', hatch='\\')
 
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
@@ -1029,7 +1021,6 @@ def compileLoadMemServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Used memory (GB)")
 
-    plt.savefig(os.path.join(sys.argv[1], "load-mem_servers.pdf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "load-mem_servers.pgf"), bbox_inches='tight')
 
 
@@ -1170,7 +1161,6 @@ def compileLatencies():
     plt.xlabel("End-to-end transmission latency (seconds)")
     plt.ylabel("Fraction of messages transmitted")
 
-    plt.savefig(os.path.join(sys.argv[1], "msg-latencies.pdf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "msg-latencies.pgf"), bbox_inches='tight')
 
 
@@ -1184,8 +1174,7 @@ def compileMessagesPerMix():
 
             for run in {"Run01", "Run02", "Run03"}:
 
-                outputFilePDF = os.path.join(os.path.dirname(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "msgs-per-mix_first-to-last-round.pdf")
-                outputFilePGF = os.path.join(os.path.dirname(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "msgs-per-mix_first-to-last-round.pgf")
+                outputFile = os.path.join(os.path.dirname(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "msgs-per-mix_first-to-last-round.pgf")
 
                 labels = []
                 data = []
@@ -1223,8 +1212,7 @@ def compileMessagesPerMix():
                 plt.xlabel("Round number")
                 plt.ylabel("Messages in all pools (count)")
 
-                plt.savefig(outputFilePDF, bbox_inches='tight')
-                plt.savefig(outputFilePGF, bbox_inches='tight')
+                plt.savefig(outputFile, bbox_inches='tight')
 
 # Create all figures.
 
