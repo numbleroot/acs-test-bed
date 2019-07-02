@@ -282,6 +282,9 @@ func main() {
 			zone = GCloudZones[zoneIdx]
 		}
 
+		// TODO: Correct this. Should be system-local map,
+		//       because otherwise zeno reaching the limit
+		//       will prevent vuvuzela from placing nodes here.
 		// Increment local map counter if this is a zone
 		// constrained with persistent disk space.
 		if GCloudZonesLowStorage[zone] == 290 {
@@ -310,6 +313,13 @@ func main() {
 		})
 	}
 
+	// TODO: Replace the following code to assign vuvuzela
+	//       mixes to zones, and simply copy the zones from
+	//       zeno's first cascade. Should make it more
+	//       comparable, maybe.
+	//       Quotas should not be a problem, because both
+	//       systems will never be deployed at the same time.
+	shuffleZones()
 	zoneIdx = 0
 
 	for i := numClientsToGen; i < (numClientsToGen + numVuvuzelaMixesToGen); i++ {
@@ -327,6 +337,9 @@ func main() {
 			zone = GCloudZones[zoneIdx]
 		}
 
+		// TODO: Correct this. Should be system-local map,
+		//       because otherwise zeno reaching the limit
+		//       will prevent vuvuzela from placing nodes here.
 		if GCloudZonesLowStorage[zone] == 290 {
 			gcloudZonesLowStorage[zone]++
 		}
