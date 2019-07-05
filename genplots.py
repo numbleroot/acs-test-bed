@@ -525,7 +525,7 @@ def compileTrafficServers():
 
     ax.bar(11, set01_pung_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='steelblue', hatch='\\')
     
-    labels = ["%.2f" % avg for avg in bandwidthAvg]
+    labels = ["%.0f" % avg for avg in bandwidthAvg]
 
     for bar, label in zip(ax.patches, labels):
         ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() + 200), label, ha='center', va='bottom')
@@ -689,7 +689,7 @@ def compileLoadCPUClients():
 
     ax.set_xlim([0, 12])
     ax.set_ylim([0.0, 50.0])
-    ax.set_xticks((3.5, 9.5))
+    ax.set_xticks((3, 9))
     ax.set_yticks([0, 10, 20, 30, 40, 50, 50])
     ax.set_xticklabels(('500 clients', '1000 clients'))
 
@@ -751,10 +751,16 @@ def compileLoadMemClients():
     set04_zeno_1000_Load_Mem = 0.0
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         set04_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000.0
+    
+    loadMemAvg = [set01_zeno_0500_Load_Mem, set02_zeno_0500_Load_Mem,
+                  set03_zeno_0500_Load_Mem, set04_zeno_0500_Load_Mem,
+                  set01_pung_0500_Load_Mem, set01_zeno_1000_Load_Mem,
+                  set02_zeno_1000_Load_Mem, set03_zeno_1000_Load_Mem,
+                  set04_zeno_1000_Load_Mem, set01_pung_1000_Load_Mem]
 
     # Draw plots.
 
-    width = 0.9
+    width = 1.0
 
     _, ax = plt.subplots()
 
@@ -768,13 +774,19 @@ def compileLoadMemClients():
     ax.bar(9, set03_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='o')
     ax.bar(10, set04_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='+')
     ax.bar(11, set01_pung_1000_Load_Mem, width, edgecolor='black', color='steelblue', hatch='\\')
+
+    labels = ["%.0f" % avg for avg in loadMemAvg]
+
+    for bar, label in zip(ax.patches, labels):
+        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() + 7), label, ha='center', va='bottom')
     
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
     ax.set_xlim([0, 12])
-    ax.set_xticks((3.5, 9.5))
-    ax.set_yticks([0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500])
+    ax.set_xticks((3, 9))
+    ax.set_ylim([0, 600])
+    ax.set_yticks([0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600])
     ax.set_xticklabels(('500 clients', '1000 clients'))
 
     # Add a legend.
@@ -926,7 +938,7 @@ def compileLoadCPUServers():
 
     ax.set_xlim([0, 12])
     ax.set_ylim([0.0, 50.0])
-    ax.set_xticks((3.5, 9.5))
+    ax.set_xticks((3, 9))
     ax.set_yticks([0, 10, 20, 30, 40, 50])
     ax.set_xticklabels(('500 clients', '1000 clients'))
 
@@ -988,10 +1000,16 @@ def compileLoadMemServers():
     set04_zeno_1000_Load_Mem = 0.0
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         set04_zeno_1000_Load_Mem = float(dataFile.read().strip()) / 1000000.0
+    
+    loadMemAvg = [set01_zeno_0500_Load_Mem, set02_zeno_0500_Load_Mem,
+                  set03_zeno_0500_Load_Mem, set04_zeno_0500_Load_Mem,
+                  set01_pung_0500_Load_Mem, set01_zeno_1000_Load_Mem,
+                  set02_zeno_1000_Load_Mem, set03_zeno_1000_Load_Mem,
+                  set04_zeno_1000_Load_Mem, set01_pung_1000_Load_Mem]
 
     # Draw plots.
 
-    width = 0.9
+    width = 1.0
 
     _, ax = plt.subplots()
 
@@ -1006,11 +1024,16 @@ def compileLoadMemServers():
     ax.bar(10, set04_zeno_1000_Load_Mem, width, edgecolor='black', color='gold', hatch='+')
     ax.bar(11, set01_pung_1000_Load_Mem, width, edgecolor='black', color='steelblue', hatch='\\')
 
+    labels = ["%.2f" % avg for avg in loadMemAvg]
+
+    for bar, label in zip(ax.patches, labels):
+        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() + 0.15), label, ha='center', va='bottom')
+
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
     ax.set_xlim([0, 12])
-    ax.set_xticks((3.5, 9.5))
+    ax.set_xticks((3, 9))
     ax.set_xticklabels(('500 clients', '1000 clients'))
     ax.set_yticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
