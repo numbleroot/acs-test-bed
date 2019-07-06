@@ -1233,7 +1233,7 @@ def compileMessagesPerMix():
                 plt.tight_layout()
 
                 plt.xlabel("Round number")
-                plt.ylabel("Messages in all pools (count)")
+                plt.ylabel("Message count")
 
                 plt.savefig(outputFile, bbox_inches='tight')
 
