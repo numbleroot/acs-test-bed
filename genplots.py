@@ -801,6 +801,20 @@ def compileLoadMemClients():
     set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_Mem, positions=[10], widths=width, patch_artist=True, whis='range')
     set01_pung03 = ax.boxplot(set01_pung_1000_Load_Mem, positions=[11], widths=width, patch_artist=True, whis='range')
 
+    # Log values for text mention.
+
+    print("\nClients:\n")
+    for scenData in [set01_zeno01, set02_zeno01, set03_zeno01, set04_zeno01, set01_pung01, set01_zeno03, set02_zeno03, set03_zeno03, set04_zeno03, set01_pung03]:
+
+        for whis in scenData['whiskers']:
+            print("whis=", whis.get_ydata()[1])
+        
+        for med in scenData['medians']:
+            print(" med=", med.get_ydata()[1])
+        
+        print("")
+    print("")
+    
     # Color boxplots.
     
     setp(set01_zeno01['boxes'], color='black')
@@ -1115,6 +1129,19 @@ def compileLoadMemServers():
     set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_Mem, positions=[10], widths=width, patch_artist=True, whis='range')
     set01_pung03 = ax.boxplot(set01_pung_1000_Load_Mem, positions=[11], widths=width, patch_artist=True, whis='range')
 
+    # Log values for text mention.
+    
+    print("Servers:\n")
+    for scenData in [set01_zeno01, set02_zeno01, set03_zeno01, set04_zeno01, set01_pung01, set01_zeno03, set02_zeno03, set03_zeno03, set04_zeno03, set01_pung03]:
+
+        for whis in scenData['whiskers']:
+            print("whis=", whis.get_ydata()[1])
+        
+        for med in scenData['medians']:
+            print(" med=", med.get_ydata()[1])
+        
+        print("")
+    
     # Color boxplots.
 
     setp(set01_zeno01['boxes'], color='black')
