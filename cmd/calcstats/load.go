@@ -146,7 +146,7 @@ func (run *Run) AddMemLoad(runNodesPath string, isClientMetric bool) error {
 
 func (set *Setting) LoadToFiles(path string) error {
 
-	clientsCPULoadFile, err := os.OpenFile(filepath.Join(path, "load_cpu_lowest-to-highest_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsCPULoadFile, err := os.OpenFile(filepath.Join(path, "cpu_percentage-busy_all-values-in-time-window_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -169,34 +169,54 @@ func (set *Setting) LoadToFiles(path string) error {
 
 	fmt.Fprintf(clientsCPULoadFile, "\n")
 
-	// Calculate average memory usage for clients.
-	var clientsMemLoadAvg float64
+	/*
+		// Calculate average memory usage for clients.
+		var clientsMemLoadAvg float64
 
-	allMetricsSum := float64(0.0)
-	numMetrics := float64(0.0)
+		allMetricsSum := float64(0.0)
+		numMetrics := float64(0.0)
 
-	for i := range set.Runs {
+		for i := range set.Runs {
 
-		for j := range set.Runs[i].ClientsMemLoad {
-			allMetricsSum = allMetricsSum + set.Runs[i].ClientsMemLoad[j]
+			for j := range set.Runs[i].ClientsMemLoad {
+				allMetricsSum = allMetricsSum + set.Runs[i].ClientsMemLoad[j]
+			}
+
+			numMetrics = numMetrics + float64(len(set.Runs[i].ClientsMemLoad))
 		}
 
-		numMetrics = numMetrics + float64(len(set.Runs[i].ClientsMemLoad))
-	}
+		clientsMemLoadAvg = float64(allMetricsSum / numMetrics)
+	*/
 
-	clientsMemLoadAvg = float64(allMetricsSum / numMetrics)
-
-	clientsMemLoadFile, err := os.OpenFile(filepath.Join(path, "load_mem_avg_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsMemLoadFile, err := os.OpenFile(filepath.Join(path, "memory_kilobytes-used_all-values-in-time-window_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
 	defer clientsMemLoadFile.Close()
 	defer clientsMemLoadFile.Sync()
 
-	// Write values to files for clients.
-	fmt.Fprintf(clientsMemLoadFile, "%.5f\n", clientsMemLoadAvg)
+	fmt.Fprintf(clientsMemLoadFile, "%.5f", set.Runs[0].ClientsMemLoad[0])
 
-	serversCPULoadFile, err := os.OpenFile(filepath.Join(path, "load_cpu_lowest-to-highest_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	for i := range set.Runs {
+
+		for j := range set.Runs[i].ClientsMemLoad {
+
+			if i == 0 && j == 0 {
+				continue
+			}
+
+			fmt.Fprintf(clientsMemLoadFile, ",%.5f", set.Runs[i].ClientsMemLoad[j])
+		}
+	}
+
+	fmt.Fprintf(clientsMemLoadFile, "\n")
+
+	/*
+		// Write values to files for clients.
+		fmt.Fprintf(clientsMemLoadFile, "%.5f\n", clientsMemLoadAvg)
+	*/
+
+	serversCPULoadFile, err := os.OpenFile(filepath.Join(path, "cpu_percentage-busy_all-values-in-time-window_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -219,32 +239,52 @@ func (set *Setting) LoadToFiles(path string) error {
 
 	fmt.Fprintf(serversCPULoadFile, "\n")
 
-	// Calculate average memory usage for servers.
-	var serversMemLoadAvg float64
+	/*
+		// Calculate average memory usage for servers.
+		var serversMemLoadAvg float64
 
-	allMetricsSum = float64(0.0)
-	numMetrics = float64(0.0)
+		allMetricsSum = float64(0.0)
+		numMetrics = float64(0.0)
 
-	for i := range set.Runs {
+		for i := range set.Runs {
 
-		for j := range set.Runs[i].ServersMemLoad {
-			allMetricsSum = allMetricsSum + set.Runs[i].ServersMemLoad[j]
+			for j := range set.Runs[i].ServersMemLoad {
+				allMetricsSum = allMetricsSum + set.Runs[i].ServersMemLoad[j]
+			}
+
+			numMetrics = numMetrics + float64(len(set.Runs[i].ServersMemLoad))
 		}
 
-		numMetrics = numMetrics + float64(len(set.Runs[i].ServersMemLoad))
-	}
+		serversMemLoadAvg = float64(allMetricsSum / numMetrics)
+	*/
 
-	serversMemLoadAvg = float64(allMetricsSum / numMetrics)
-
-	serversMemLoadFile, err := os.OpenFile(filepath.Join(path, "load_mem_avg_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	serversMemLoadFile, err := os.OpenFile(filepath.Join(path, "memory_kilobytes-used_all-values-in-time-window_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
 	defer serversMemLoadFile.Close()
 	defer serversMemLoadFile.Sync()
 
-	// Write values to files for servers.
-	fmt.Fprintf(serversMemLoadFile, "%.5f\n", serversMemLoadAvg)
+	fmt.Fprintf(serversMemLoadFile, "%.5f", set.Runs[0].ServersMemLoad[0])
+
+	for i := range set.Runs {
+
+		for j := range set.Runs[i].ServersMemLoad {
+
+			if i == 0 && j == 0 {
+				continue
+			}
+
+			fmt.Fprintf(serversMemLoadFile, ",%.5f", set.Runs[i].ServersMemLoad[j])
+		}
+	}
+
+	fmt.Fprintf(serversMemLoadFile, "\n")
+
+	/*
+		// Write values to files for servers.
+		fmt.Fprintf(serversMemLoadFile, "%.5f\n", serversMemLoadAvg)
+	*/
 
 	return nil
 }

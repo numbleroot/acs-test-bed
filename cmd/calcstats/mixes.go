@@ -90,7 +90,7 @@ func (set *Setting) MsgsPerMixToFile(path string) error {
 
 		for i := range set.Runs {
 
-			runPlotPath := filepath.Join(path, (fmt.Sprintf("run-%02d", (i + 1))), "msgs-per-mix_first-to-last-round.data")
+			runPlotPath := filepath.Join(path, (fmt.Sprintf("run-%02d", (i + 1))), "message-count-per-mix_first-to-last-round.data")
 
 			msgsPerMixFile, err := os.OpenFile(runPlotPath, (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 			if err != nil {

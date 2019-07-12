@@ -165,8 +165,8 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 func (set *Setting) MetricsToFiles(settingsPath string) error {
 
-	// Write bandwidth data for clients and servers.
-	err := set.BandwidthToFiles(settingsPath)
+	// Write traffic data for clients and servers.
+	err := set.TrafficToFiles(settingsPath)
 	if err != nil {
 		return err
 	}
