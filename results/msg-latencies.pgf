@@ -7574,15 +7574,15 @@
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetstrokeopacity{0.800000}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.166111in}{0.584444in}}%
+\pgfpathmoveto{\pgfqpoint{6.127500in}{0.584444in}}%
 \pgfpathlineto{\pgfqpoint{8.884861in}{0.584444in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{8.912639in}{0.584444in}}{\pgfqpoint{8.912639in}{0.612222in}}%
 \pgfpathlineto{\pgfqpoint{8.912639in}{2.681663in}}%
 \pgfpathquadraticcurveto{\pgfqpoint{8.912639in}{2.709441in}}{\pgfqpoint{8.884861in}{2.709441in}}%
-\pgfpathlineto{\pgfqpoint{6.166111in}{2.709441in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{6.138333in}{2.709441in}}{\pgfqpoint{6.138333in}{2.681663in}}%
-\pgfpathlineto{\pgfqpoint{6.138333in}{0.612222in}}%
-\pgfpathquadraticcurveto{\pgfqpoint{6.138333in}{0.584444in}}{\pgfqpoint{6.166111in}{0.584444in}}%
+\pgfpathlineto{\pgfqpoint{6.127500in}{2.709441in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{6.099722in}{2.709441in}}{\pgfqpoint{6.099722in}{2.681663in}}%
+\pgfpathlineto{\pgfqpoint{6.099722in}{0.612222in}}%
+\pgfpathquadraticcurveto{\pgfqpoint{6.099722in}{0.584444in}}{\pgfqpoint{6.127500in}{0.584444in}}%
 \pgfpathclose%
 \pgfusepath{stroke,fill}%
 \end{pgfscope}%
@@ -7593,15 +7593,15 @@
 \definecolor{currentstroke}{rgb}{0.121569,0.466667,0.705882}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{2.598330in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{2.598330in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{2.598330in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{2.598330in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=2.549719in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont pung, 500 clients (tc off, no failures)}%
+\pgftext[x=6.544166in,y=2.549719in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont pung, 500 clients (tc off, no failures)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7610,15 +7610,15 @@
 \definecolor{currentstroke}{rgb}{1.000000,0.498039,0.054902}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{2.389997in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{2.389997in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{2.389997in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{2.389997in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=2.341386in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont pung, 1000 clients (tc off, no failures)}%
+\pgftext[x=6.544166in,y=2.341386in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont pung, 1,000 clients (tc off, no failures)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7627,15 +7627,15 @@
 \definecolor{currentstroke}{rgb}{0.172549,0.627451,0.172549}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{2.181664in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{2.181664in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{2.181664in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{2.181664in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=2.133053in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 1000 clients (tc on, no failures)}%
+\pgftext[x=6.544166in,y=2.133053in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 1,000 clients (tc on, no failures)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7644,15 +7644,15 @@
 \definecolor{currentstroke}{rgb}{0.839216,0.152941,0.156863}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{1.973331in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{1.973331in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{1.973331in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{1.973331in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=1.924720in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 500 clients (tc on, no failures)}%
+\pgftext[x=6.544166in,y=1.924720in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 500 clients (tc on, no failures)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7661,15 +7661,15 @@
 \definecolor{currentstroke}{rgb}{0.580392,0.403922,0.741176}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{1.764998in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{1.764998in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{1.764998in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{1.764998in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=1.716387in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 500 clients (tc off, no failures)}%
+\pgftext[x=6.544166in,y=1.716387in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 500 clients (tc off, no failures)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7678,15 +7678,15 @@
 \definecolor{currentstroke}{rgb}{0.549020,0.337255,0.294118}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{1.556665in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{1.556665in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{1.556665in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{1.556665in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=1.508054in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 1000 clients (tc on, mix failure)}%
+\pgftext[x=6.544166in,y=1.508054in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 1,000 clients (tc on, mix failure)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7695,15 +7695,15 @@
 \definecolor{currentstroke}{rgb}{0.890196,0.466667,0.760784}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{1.348332in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{1.348332in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{1.348332in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{1.348332in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=1.299721in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 1000 clients (tc off, no failures)}%
+\pgftext[x=6.544166in,y=1.299721in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 1,000 clients (tc off, no failures)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7712,15 +7712,15 @@
 \definecolor{currentstroke}{rgb}{0.498039,0.498039,0.498039}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{1.139999in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{1.139999in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{1.139999in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{1.139999in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=1.091388in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 1000 clients (tc off, mix failure)}%
+\pgftext[x=6.544166in,y=1.091388in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 1,000 clients (tc off, mix failure)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7729,15 +7729,15 @@
 \definecolor{currentstroke}{rgb}{0.737255,0.741176,0.133333}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{0.931666in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{0.931666in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{0.931666in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{0.931666in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=0.883055in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 500 clients (tc on, mix failure)}%
+\pgftext[x=6.544166in,y=0.883055in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 500 clients (tc on, mix failure)}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \pgfsetrectcap%
@@ -7746,15 +7746,15 @@
 \definecolor{currentstroke}{rgb}{0.090196,0.745098,0.811765}%
 \pgfsetstrokecolor{currentstroke}%
 \pgfsetdash{}{0pt}%
-\pgfpathmoveto{\pgfqpoint{6.193888in}{0.723333in}}%
-\pgfpathlineto{\pgfqpoint{6.471666in}{0.723333in}}%
+\pgfpathmoveto{\pgfqpoint{6.155277in}{0.723333in}}%
+\pgfpathlineto{\pgfqpoint{6.433055in}{0.723333in}}%
 \pgfusepath{stroke}%
 \end{pgfscope}%
 \begin{pgfscope}%
 \definecolor{textcolor}{rgb}{0.000000,0.000000,0.000000}%
 \pgfsetstrokecolor{textcolor}%
 \pgfsetfillcolor{textcolor}%
-\pgftext[x=6.582777in,y=0.674722in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 500 clients (tc off, mix failure)}%
+\pgftext[x=6.544166in,y=0.674722in,left,base]{\color{textcolor}\rmfamily\fontsize{10.000000}{12.000000}\selectfont zeno, 500 clients (tc off, mix failure)}%
 \end{pgfscope}%
 \end{pgfpicture}%
 \makeatother%

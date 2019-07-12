@@ -404,7 +404,7 @@ def compileTrafficClients():
     ax.set_xlim([0, 12])
     ax.set_ylim([0, y_max])
     ax.set_xticks((3, 9))
-    ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_xticklabels(('500 clients', '1,000 clients'))
 
     # Add a legend.
     ax.legend(loc='upper left')
@@ -412,9 +412,9 @@ def compileTrafficClients():
     plt.yscale('symlog')
     plt.tight_layout()
     plt.xlabel("Number of clients")
-    plt.ylabel("Bandwidth usage (MiB) [log.]")
+    plt.ylabel("Traffic volume (MiB) [log.]")
 
-    plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_clients.pgf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pgf"), bbox_inches='tight')
 
 
 def compileTrafficServers():
@@ -525,7 +525,7 @@ def compileTrafficServers():
 
     ax.bar(11, set01_pung_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='steelblue', hatch='\\')
     
-    labels = ["%.0f" % avg for avg in bandwidthAvg]
+    labels = ['{:,.0f}'.format(avg) for avg in bandwidthAvg]
 
     for bar, label in zip(ax.patches, labels):
         ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() + 200), label, ha='center', va='bottom')
@@ -538,16 +538,17 @@ def compileTrafficServers():
     ax.set_xlim([0, 12])
     ax.set_ylim([0, y_max])
     ax.set_xticks((3, 9))
-    ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_xticklabels(('500 clients', '1,000 clients'))
+    ax.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     # Add a legend.
     ax.legend(loc='upper left')
 
     plt.tight_layout()
     plt.xlabel("Number of clients")
-    plt.ylabel("Bandwidth usage (MiB)")
+    plt.ylabel("Traffic volume (MiB)")
 
-    plt.savefig(os.path.join(sys.argv[1], "bandwidth-usage_servers.pgf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pgf"), bbox_inches='tight')
 
 
 def compileLoadCPUClients():
@@ -691,7 +692,7 @@ def compileLoadCPUClients():
     ax.set_ylim([0.0, 50.0])
     ax.set_xticks((3, 9))
     ax.set_yticks([0, 10, 20, 30, 40, 50, 50])
-    ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_xticklabels(('500 clients', '1,000 clients'))
 
     # Add a legend.
     ax.legend([set01_zeno01['boxes'][0], set02_zeno01['boxes'][0], set03_zeno01['boxes'][0],
@@ -787,7 +788,7 @@ def compileLoadMemClients():
     ax.set_xticks((3, 9))
     ax.set_ylim([0, 600])
     ax.set_yticks([0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600])
-    ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_xticklabels(('500 clients', '1,000 clients'))
 
     # Add a legend.
     ax.legend(loc='upper left')
@@ -940,7 +941,7 @@ def compileLoadCPUServers():
     ax.set_ylim([0.0, 50.0])
     ax.set_xticks((3, 9))
     ax.set_yticks([0, 10, 20, 30, 40, 50])
-    ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_xticklabels(('500 clients', '1,000 clients'))
 
     # Add a legend.
     ax.legend([set01_zeno01['boxes'][0], set02_zeno01['boxes'][0], set03_zeno01['boxes'][0],
@@ -1034,7 +1035,7 @@ def compileLoadMemServers():
 
     ax.set_xlim([0, 12])
     ax.set_xticks((3, 9))
-    ax.set_xticklabels(('500 clients', '1000 clients'))
+    ax.set_xticklabels(('500 clients', '1,000 clients'))
     ax.set_yticks([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 
     # Add a legend.
@@ -1160,13 +1161,13 @@ def compileLatencies():
     _, ax = plt.subplots(figsize=(9, 5))
     
     ax.plot(set01_pung_0500_Latencies, set01_pung_0500_CDF, label='pung, 500 clients (tc off, no failures)')
-    ax.plot(set01_pung_1000_Latencies, set01_pung_1000_CDF, label='pung, 1000 clients (tc off, no failures)')
-    ax.plot(set02_zeno_1000_Latencies, set02_zeno_1000_CDF, label='zeno, 1000 clients (tc on, no failures)')
+    ax.plot(set01_pung_1000_Latencies, set01_pung_1000_CDF, label='pung, 1,000 clients (tc off, no failures)')
+    ax.plot(set02_zeno_1000_Latencies, set02_zeno_1000_CDF, label='zeno, 1,000 clients (tc on, no failures)')
     ax.plot(set02_zeno_0500_Latencies, set02_zeno_0500_CDF, label='zeno, 500 clients (tc on, no failures)')
     ax.plot(set01_zeno_0500_Latencies, set01_zeno_0500_CDF, label='zeno, 500 clients (tc off, no failures)')
-    ax.plot(set04_zeno_1000_Latencies, set04_zeno_1000_CDF, label='zeno, 1000 clients (tc on, mix failure)')
-    ax.plot(set01_zeno_1000_Latencies, set01_zeno_1000_CDF, label='zeno, 1000 clients (tc off, no failures)')
-    ax.plot(set03_zeno_1000_Latencies, set03_zeno_1000_CDF, label='zeno, 1000 clients (tc off, mix failure)')
+    ax.plot(set04_zeno_1000_Latencies, set04_zeno_1000_CDF, label='zeno, 1,000 clients (tc on, mix failure)')
+    ax.plot(set01_zeno_1000_Latencies, set01_zeno_1000_CDF, label='zeno, 1,000 clients (tc off, no failures)')
+    ax.plot(set03_zeno_1000_Latencies, set03_zeno_1000_CDF, label='zeno, 1,000 clients (tc off, mix failure)')
     ax.plot(set04_zeno_0500_Latencies, set04_zeno_0500_CDF, label='zeno, 500 clients (tc on, mix failure)')
     ax.plot(set03_zeno_0500_Latencies, set03_zeno_0500_CDF, label='zeno, 500 clients (tc off, mix failure)')
 
@@ -1228,6 +1229,8 @@ def compileMessagesPerMix():
                 boxOfPlot = ax.get_position()
                 ax.set_position([boxOfPlot.x0, boxOfPlot.y0, (boxOfPlot.width * 0.8), boxOfPlot.height])
                 ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize='small')
+
+                ax.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
                 plt.grid()
                 plt.tight_layout()
