@@ -27,7 +27,3 @@ syncbucket:
 	gsutil cp ~/Rust/pung/target/release/client gs://acs-eval/pung-client
 	gsutil cp ~/Rust/pung/target/release/server gs://acs-eval/pung-server
 	gsutil cp ${GOPATH}/src/github.com/numbleroot/zeno-eval/collector gs://acs-eval/collector
-
-cleanplots:
-	rm -rf results/*/clients/*.png
-	rm -rf results/*/servers/*.png
