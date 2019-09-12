@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -21,8 +20,10 @@ type Operator struct {
 
 	InternalListenAddr string
 	PublicListenAddr   string
+	GCloudBucket       string
 
-	GCloudBucket string
+	PublicSrv   *restful.WebService
+	InternalSrv *restful.WebService
 
 	Exps map[string]Exp
 }
@@ -72,17 +73,6 @@ func (op *Operator) GetTLSMaterial() error {
 	return nil
 }
 
-// HandlerGetNew creates a new experiment, if possible.
-func HandlerGetNew(req *restful.Request, resp *restful.Response) {
-	io.WriteString(resp, "world\n")
-}
-
-// HandlerGetExpStatus returns the current
-// state of an ongoing experiment.
-func HandlerGetExpStatus(req *restful.Request, resp *restful.Response) {
-	io.WriteString(resp, "rofl\n")
-}
-
 func main() {
 
 	// Command-line options.
@@ -100,8 +90,7 @@ func main() {
 	op := &Operator{
 		InternalListenAddr: *internalListenAddrFlag,
 		PublicListenAddr:   *publicListenAddrFlag,
-
-		GCloudBucket: *gcloudBucketFlag,
+		GCloudBucket:       *gcloudBucketFlag,
 
 		Exps: make(map[string]Exp),
 	}
@@ -114,34 +103,19 @@ func main() {
 		os.Exit(1)
 	}
 
-	// TODO: Start listening for API calls on the
+	// Prepare and listen for API calls on the
 	// internal network endpoint (worker nodes).
+	op.PrepareInternalSrv()
+	fmt.Printf("Listening on %s for API calls regarding experiments...\n", op.InternalListenAddr)
 
-	// Start listening for API calls on the
+	// TODO: Implement listen.
+
+	// Prepare and listen for API calls on the
 	// Internet-facing endpoint (start experiments).
-	publicSrv := new(restful.WebService)
-
-	publicSrv.Path("/experiments").
-		Consumes(restful.MIME_JSON).
-		Produces(restful.MIME_JSON)
-
-	publicSrv.Route(publicSrv.GET("/new/{systemID}").
-		To(HandlerGetNew).
-		Doc("Trigger the start of a new experiment, if possible.").
-		Param(publicSrv.PathParameter("systemID", "Identifier of the ACS to evaluate.").DataType("string")).
-		Writes(Exp{}))
-	publicSrv.Route(publicSrv.GET("/{expID}/status").
-		To(HandlerGetExpStatus).
-		Doc("Return the current state of an ongoing experiment.").
-		Param(publicSrv.PathParameter("expID", "Identifier of the experiment.").DataType("string")).
-		Writes(Exp{}))
-
-	restful.Add(publicSrv)
+	op.PreparePublicSrv()
 
 	fmt.Printf("Listening on %s for API calls regarding experiments...\n", op.PublicListenAddr)
 
-	// Listen on TLS endpoint for experiment
-	// API calls from the public Internet.
 	err = http.ListenAndServeTLS(op.PublicListenAddr, "operator-cert.pem", "operator-key.pem", nil)
 	if err != nil {
 		fmt.Printf("Failed handling public experiment requests: %v\n", err)
