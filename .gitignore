@@ -123,4 +123,6 @@ gcloud-configs_*/
 calcstats
 collector
 genconfigs
+operator
 runexperiments
+*.pem
