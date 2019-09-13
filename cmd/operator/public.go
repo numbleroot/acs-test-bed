@@ -2,13 +2,76 @@ package main
 
 import (
 	"io"
+	"net/http"
+	"time"
 
 	"github.com/emicklei/go-restful"
+	uuid "github.com/satori/go.uuid"
 )
 
-// HandlerGetNew creates a new experiment, if possible.
-func (op *Operator) HandlerGetNew(req *restful.Request, resp *restful.Response) {
-	io.WriteString(resp, "world\n")
+// PublicAuth augments all routes by requiring an
+// Authorization header in order for continuation.
+func (op *Operator) PublicAuth(req *restful.Request, resp *restful.Response, chain *restful.FilterChain) {
+
+	authHeader := req.HeaderParameter("Authorization")
+
+	// Expect correct (static) password.
+	if authHeader != "UniverseOfLoopholes" {
+		resp.WriteError(http.StatusUnauthorized, nil)
+		return
+	}
+
+	// Possibly move to next filter.
+	chain.ProcessFilter(req, resp)
+}
+
+// HandlerPutNew creates a new experiment, if possible.
+func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) {
+
+	op.Lock()
+	defer op.Unlock()
+
+	// If an experiment is already running,
+	// no further one is allowed to run.
+	if op.ExpInProgress != "" {
+		resp.WriteErrorString(http.StatusConflict, "An experiment is already being conducted at the moment.")
+		return
+	}
+
+	exp := &Exp{}
+
+	// Read values regarding evaluation system
+	// and result folder from received request.
+	err := req.ReadEntity(exp)
+	if err != nil {
+		resp.WriteError(http.StatusInternalServerError, nil)
+		return
+	}
+
+	// Generate new random UUID.
+	id, err := uuid.NewV4()
+	if err != nil {
+		resp.WriteError(http.StatusInternalServerError, nil)
+		return
+	}
+
+	// Fill in or overwrite remaining
+	// fields of experiment struct.
+	exp.ID = id.String()
+	exp.InitTime = time.Now()
+	exp.Concluded = false
+	exp.Progress = make([]string, 0, 50)
+
+	// Add experiment to map of all experiments.
+	op.Exps[exp.ID] = exp
+
+	// Signal goroutine conducting the
+	// experiments availability of the new one.
+	// TODO: add.
+
+	// Send experiment information up to this
+	// point back to client.
+	resp.WriteHeaderAndEntity(http.StatusCreated, exp)
 }
 
 // HandlerGetExpStatus returns the current
@@ -28,12 +91,14 @@ func (op *Operator) PreparePublicSrv() {
 		Consumes(restful.MIME_JSON).
 		Produces(restful.MIME_JSON)
 
-	op.PublicSrv.Route(op.PublicSrv.GET("/new/{systemID}").
-		To(op.HandlerGetNew).
+	op.PublicSrv.Route(op.PublicSrv.PUT("/new").
+		Filter(op.PublicAuth).
+		To(op.HandlerPutNew).
 		Doc("Trigger the start of a new experiment, if possible.").
-		Param(op.PublicSrv.PathParameter("systemID", "Identifier of the ACS to evaluate.").DataType("string")).
+		Reads(Exp{}).
 		Writes(Exp{}))
 	op.PublicSrv.Route(op.PublicSrv.GET("/{expID}/status").
+		Filter(op.PublicAuth).
 		To(op.HandlerGetExpStatus).
 		Doc("Return the current state of an ongoing experiment.").
 		Param(op.PublicSrv.PathParameter("expID", "Identifier of the experiment.").DataType("string")).

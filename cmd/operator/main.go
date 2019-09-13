@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/exec"
 	"sync"
+	"time"
 
 	"github.com/emicklei/go-restful"
 )
@@ -25,13 +26,16 @@ type Operator struct {
 	PublicSrv   *restful.WebService
 	InternalSrv *restful.WebService
 
-	Exps map[string]Exp
+	ExpInProgress string
+	Exps          map[string]*Exp
 }
 
 // Exp contains all information relevant
 // to monitoring an experiment.
 type Exp struct {
 	ID           string
+	InitTime     time.Time
+	System       string
 	Concluded    bool
 	ResultFolder string
 	Progress     []string
@@ -92,7 +96,8 @@ func main() {
 		PublicListenAddr:   *publicListenAddrFlag,
 		GCloudBucket:       *gcloudBucketFlag,
 
-		Exps: make(map[string]Exp),
+		ExpInProgress: "",
+		Exps:          make(map[string]*Exp),
 	}
 
 	// Download TLS certificate and key from
