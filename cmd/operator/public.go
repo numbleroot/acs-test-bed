@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"time"
@@ -30,6 +31,8 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 
 	op.Lock()
 	defer op.Unlock()
+
+	fmt.Printf("\n[PUT /experiments/new] Handling new request from %s\n", req.Request.RemoteAddr)
 
 	// If an experiment is already running,
 	// no further one is allowed to run.
@@ -69,6 +72,8 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	// experiments availability of the new one.
 	// TODO: add.
 
+	fmt.Printf("[PUT /experiments/new] Successfully added new experiment from %s\n", req.Request.RemoteAddr)
+
 	// Send experiment information up to this
 	// point back to client.
 	resp.WriteHeaderAndEntity(http.StatusCreated, exp)
@@ -87,22 +92,17 @@ func (op *Operator) PreparePublicSrv() {
 
 	op.PublicSrv = new(restful.WebService)
 
-	op.PublicSrv.Path("/experiments").
+	op.PublicSrv.Path("/public/experiments").
 		Consumes(restful.MIME_JSON).
 		Produces(restful.MIME_JSON)
 
 	op.PublicSrv.Route(op.PublicSrv.PUT("/new").
 		Filter(op.PublicAuth).
-		To(op.HandlerPutNew).
-		Doc("Trigger the start of a new experiment, if possible.").
-		Reads(Exp{}).
-		Writes(Exp{}))
+		To(op.HandlerPutNew))
+
 	op.PublicSrv.Route(op.PublicSrv.GET("/{expID}/status").
 		Filter(op.PublicAuth).
-		To(op.HandlerGetExpStatus).
-		Doc("Return the current state of an ongoing experiment.").
-		Param(op.PublicSrv.PathParameter("expID", "Identifier of the experiment.").DataType("string")).
-		Writes(Exp{}))
+		To(op.HandlerGetExpStatus))
 
 	restful.Add(op.PublicSrv)
 }

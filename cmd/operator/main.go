@@ -33,12 +33,12 @@ type Operator struct {
 // Exp contains all information relevant
 // to monitoring an experiment.
 type Exp struct {
-	ID           string
-	InitTime     time.Time
-	System       string
-	Concluded    bool
-	ResultFolder string
-	Progress     []string
+	ID           string    `json:"id"`
+	InitTime     time.Time `json:"initTime"`
+	System       string    `json:"system"`
+	Concluded    bool      `json:"concluded"`
+	ResultFolder string    `json:"resultFolder"`
+	Progress     []string  `json:"progress"`
 }
 
 // Enable TLS 1.3.
@@ -108,18 +108,19 @@ func main() {
 		os.Exit(1)
 	}
 
+	// TODO: Create goroutine that completely
+	//       handles experiment procedure.
+
 	// Prepare and listen for API calls on the
 	// internal network endpoint (worker nodes).
 	op.PrepareInternalSrv()
-	fmt.Printf("Listening on %s for API calls regarding experiments...\n", op.InternalListenAddr)
-
-	// TODO: Implement listen.
+	go op.RunInternalSrv()
 
 	// Prepare and listen for API calls on the
 	// Internet-facing endpoint (start experiments).
 	op.PreparePublicSrv()
 
-	fmt.Printf("Listening on %s for API calls regarding experiments...\n", op.PublicListenAddr)
+	fmt.Printf("[PUBLIC] Listening on https://%s/public/experiments for API calls regarding experiments...\n", op.PublicListenAddr)
 
 	err = http.ListenAndServeTLS(op.PublicListenAddr, "operator-cert.pem", "operator-key.pem", nil)
 	if err != nil {
