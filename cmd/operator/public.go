@@ -1,13 +1,13 @@
 package main
 
 import (
+	"crypto/rand"
 	"fmt"
 	"io"
 	"net/http"
 	"time"
 
 	"github.com/emicklei/go-restful"
-	uuid "github.com/satori/go.uuid"
 )
 
 // PublicAuth augments all routes by requiring an
@@ -51,8 +51,9 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 		return
 	}
 
-	// Generate new random UUID.
-	id, err := uuid.NewV4()
+	// Generate new random id.
+	id := make([]byte, 8)
+	_, err = rand.Read(id)
 	if err != nil {
 		resp.WriteError(http.StatusInternalServerError, nil)
 		return
@@ -60,7 +61,7 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 
 	// Fill in or overwrite remaining
 	// fields of experiment struct.
-	exp.ID = id.String()
+	exp.ID = fmt.Sprintf("%x", id)
 	exp.InitTime = time.Now()
 	exp.Concluded = false
 	exp.Progress = make([]string, 0, 50)
@@ -76,7 +77,7 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	// experiments availability of the new one.
 	op.PublicChan <- exp.ID
 
-	fmt.Printf("[PUT /experiments/new] Successfully added new experiment from %s.\n", req.Request.RemoteAddr)
+	fmt.Printf("[PUT /experiments/new] Successfully added new experiment %s from %s.\n", exp.ID, req.Request.RemoteAddr)
 
 	// Send experiment information up to this
 	// point back to client.
