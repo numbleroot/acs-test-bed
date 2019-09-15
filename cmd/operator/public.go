@@ -32,7 +32,7 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	op.Lock()
 	defer op.Unlock()
 
-	fmt.Printf("\n[PUT /experiments/new] Handling new request from %s\n", req.Request.RemoteAddr)
+	fmt.Printf("\n[PUT /experiments/new] Handling new request from %s.\n", req.Request.RemoteAddr)
 
 	// If an experiment is already running,
 	// no further one is allowed to run.
@@ -64,15 +64,19 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	exp.InitTime = time.Now()
 	exp.Concluded = false
 	exp.Progress = make([]string, 0, 50)
+	exp.ServersSpawned = make(map[string]*Worker)
+	exp.ServersUsed = make(map[string]*Worker)
+	exp.ClientsSpawned = make(map[string]*Worker)
+	exp.ClientsUsed = make(map[string]*Worker)
 
 	// Add experiment to map of all experiments.
 	op.Exps[exp.ID] = exp
 
 	// Signal goroutine conducting the
 	// experiments availability of the new one.
-	// TODO: add.
+	op.PublicChan <- exp.ID
 
-	fmt.Printf("[PUT /experiments/new] Successfully added new experiment from %s\n", req.Request.RemoteAddr)
+	fmt.Printf("[PUT /experiments/new] Successfully added new experiment from %s.\n", req.Request.RemoteAddr)
 
 	// Send experiment information up to this
 	// point back to client.

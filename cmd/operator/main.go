@@ -19,12 +19,15 @@ import (
 type Operator struct {
 	sync.Mutex
 
-	InternalListenAddr string
-	PublicListenAddr   string
-	GCloudBucket       string
+	GCloudBucket string
 
-	PublicSrv   *restful.WebService
-	InternalSrv *restful.WebService
+	InternalListenAddr string
+	InternalSrv        *restful.WebService
+	InternalChan       chan string
+
+	PublicListenAddr string
+	PublicSrv        *restful.WebService
+	PublicChan       chan string
 
 	ExpInProgress string
 	Exps          map[string]*Exp
@@ -39,6 +42,12 @@ type Exp struct {
 	Concluded    bool      `json:"concluded"`
 	ResultFolder string    `json:"resultFolder"`
 	Progress     []string  `json:"progress"`
+
+	ServersSpawned map[string]*Worker `json:"serversSpawned"`
+	ServersUsed    map[string]*Worker `json:"serversUsed"`
+
+	ClientsSpawned map[string]*Worker `json:"clientsSpawned"`
+	ClientsUsed    map[string]*Worker `json:"clientsUsed"`
 }
 
 // Enable TLS 1.3.
@@ -92,9 +101,13 @@ func main() {
 	}
 
 	op := &Operator{
+		GCloudBucket: *gcloudBucketFlag,
+
 		InternalListenAddr: *internalListenAddrFlag,
-		PublicListenAddr:   *publicListenAddrFlag,
-		GCloudBucket:       *gcloudBucketFlag,
+		InternalChan:       make(chan string),
+
+		PublicListenAddr: *publicListenAddrFlag,
+		PublicChan:       make(chan string),
 
 		ExpInProgress: "",
 		Exps:          make(map[string]*Exp),
@@ -108,8 +121,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	// TODO: Create goroutine that completely
-	//       handles experiment procedure.
+	// Create goroutine that completely
+	// handles experiment procedure.
+	go op.RunExperiments()
 
 	// Prepare and listen for API calls on the
 	// internal network endpoint (worker nodes).
