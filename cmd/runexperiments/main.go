@@ -47,6 +47,16 @@ var tmplInstancePublicIP = `
         }
       ],`
 
+func init() {
+
+	// Enable TLS 1.3.
+	if os.Getenv("GODEBUG") == "" {
+		os.Setenv("GODEBUG", "tls13=1")
+	} else {
+		os.Setenv("GODEBUG", fmt.Sprintf("%s,tls13=1", os.Getenv("GODEBUG")))
+	}
+}
+
 func spawnInstance(config *Config, proj string, serviceAcc string, accessToken string, bucket string,
 	resultFolder string, pkiIP string, tag string, accessConfig string, tcEmulNetTroubles bool, killZenoMixesInRound int) string {
 

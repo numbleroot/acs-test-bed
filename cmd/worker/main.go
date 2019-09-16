@@ -30,6 +30,16 @@ type Worker struct {
 	PipeReader     *bufio.Reader
 }
 
+func init() {
+
+	// Enable TLS 1.3.
+	if os.Getenv("GODEBUG") == "" {
+		os.Setenv("GODEBUG", "tls13=1")
+	} else {
+		os.Setenv("GODEBUG", fmt.Sprintf("%s,tls13=1", os.Getenv("GODEBUG")))
+	}
+}
+
 func (col *Worker) prepareMetricsFiles(metricsPath string) error {
 
 	var err error
