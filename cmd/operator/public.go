@@ -3,12 +3,21 @@ package main
 import (
 	"crypto/rand"
 	"fmt"
-	"io"
 	"net/http"
 	"time"
 
 	"github.com/emicklei/go-restful"
 )
+
+// ExpReq is supplied by the client talking to the
+// public endpoint of the operator and specifies the
+// execution details of one experiment in full.
+type ExpReq struct {
+	System       string    `json:"system"`
+	ResultFolder string    `json:"resultFolder"`
+	Servers      []*Worker `json:"servers"`
+	Clients      []*Worker `json:"clients"`
+}
 
 // PublicAuth augments all routes by requiring an
 // Authorization header in order for continuation.
@@ -29,23 +38,24 @@ func (op *Operator) PublicAuth(req *restful.Request, resp *restful.Response, cha
 // HandlerPutNew creates a new experiment, if possible.
 func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) {
 
-	op.Lock()
-	defer op.Unlock()
-
 	fmt.Printf("\n[PUT /experiments/new] Handling new request from %s.\n", req.Request.RemoteAddr)
+
+	op.Lock()
+	inProg := op.ExpInProgress
+	op.Unlock()
 
 	// If an experiment is already running,
 	// no further one is allowed to run.
-	if op.ExpInProgress != "" {
+	if inProg != "" {
 		resp.WriteErrorString(http.StatusConflict, "An experiment is already being conducted at the moment.")
 		return
 	}
 
 	exp := &Exp{}
+	expReq := &ExpReq{}
 
-	// Read values regarding evaluation system
-	// and result folder from received request.
-	err := req.ReadEntity(exp)
+	// Extract experiment details from request.
+	err := req.ReadEntity(expReq)
 	if err != nil {
 		resp.WriteError(http.StatusInternalServerError, nil)
 		return
@@ -59,16 +69,26 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 		return
 	}
 
-	// Fill in or overwrite remaining
-	// fields of experiment struct.
+	// Fill in complete experiment specification.
 	exp.ID = fmt.Sprintf("%x", id)
-	exp.InitTime = time.Now()
+	exp.Created = time.Now()
+	exp.System = expReq.System
 	exp.Concluded = false
+	exp.ResultFolder = expReq.ResultFolder
 	exp.Progress = make([]string, 0, 50)
+
 	exp.ServersSpawned = make(map[string]*Worker)
 	exp.ServersUsed = make(map[string]*Worker)
 	exp.ClientsSpawned = make(map[string]*Worker)
 	exp.ClientsUsed = make(map[string]*Worker)
+
+	for i := range expReq.Servers {
+		exp.ServersSpawned[expReq.Servers[i].Name] = expReq.Servers[i]
+	}
+
+	for i := range expReq.Clients {
+		exp.ClientsSpawned[expReq.Clients[i].Name] = expReq.Clients[i]
+	}
 
 	// Add experiment to map of all experiments.
 	op.Exps[exp.ID] = exp
@@ -84,10 +104,22 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	resp.WriteHeaderAndEntity(http.StatusCreated, exp)
 }
 
-// HandlerGetExpStatus returns the current
-// state of an ongoing experiment.
+// HandlerGetExpStatus returns the
+// state of the specified experiment.
 func (op *Operator) HandlerGetExpStatus(req *restful.Request, resp *restful.Response) {
-	io.WriteString(resp, "test\n")
+
+	expID := req.PathParameter("expID")
+
+	fmt.Printf("\n[GET /experiments/%s/status] Returning experiment status to %s.\n", expID, req.Request.RemoteAddr)
+
+	// If experiment exists, return its status.
+	exp, found := op.Exps[expID]
+	if !found {
+		resp.WriteErrorString(http.StatusInternalServerError, fmt.Sprintf("Experiment %s does not exist.", expID))
+		return
+	}
+
+	resp.WriteHeaderAndEntity(http.StatusOK, exp)
 }
 
 // PreparePublicSrv initializes all API-related

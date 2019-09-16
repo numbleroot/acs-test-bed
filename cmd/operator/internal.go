@@ -27,11 +27,11 @@ type Worker struct {
 	ZenoMixKilledIfApplied string `json:"zenoMixKilledIfApplied"`
 }
 
-// RegisterResp contains all experiment setup
+// RegResp contains all experiment setup
 // instructions relevant for a machine that
 // has booted and attempts to complete setup.
 // Sent as response to register call.
-type RegisterResp struct {
+type RegResp struct {
 	Partner              string `json:"partner"`
 	TypeOfNode           string `json:"typeOfNode"`
 	ResultFolder         string `json:"resultFolder"`
@@ -52,7 +52,7 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 
 	fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Handling registration intent.\n", exp, workerName)
 
-	regResp := &RegisterResp{}
+	regResp := &RegResp{}
 
 	// Figure out whether calling node is a server
 	// or a client in the current experiment.
@@ -94,7 +94,7 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 		return
 	}
 
-	fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Registration successful.\n", exp, workerName)
+	fmt.Printf("[PUT /experiments/%s/workers/%s/register] Registration successful.\n", exp, workerName)
 
 	// Respond to worker node.
 	resp.WriteHeaderAndEntity(http.StatusOK, regResp)
@@ -104,12 +104,32 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 // worker as prepared for experiment execution.
 // The worker has finished all initialization
 // steps before calling this endpoint.
-func (op *Operator) HandlerGetReady(req *restful.Request, resp *restful.Response) {}
+func (op *Operator) HandlerGetReady(req *restful.Request, resp *restful.Response) {
+
+	exp := req.PathParameter("expID")
+	workerName := req.PathParameter("worker")
+
+	fmt.Printf("\n[GET /experiments/%s/workers/%s/ready] Handling ready signal.\n", exp, workerName)
+
+	fmt.Printf("[GET /experiments/%s/workers/%s/ready] Worker marked as ready.\n", exp, workerName)
+
+	resp.WriteHeader(http.StatusOK)
+}
 
 // HandlerPutFinished signals the operator that
 // the specified worker has completed all actions
 // designated for it in the running experiment.
-func (op *Operator) HandlerPutFinished(req *restful.Request, resp *restful.Response) {}
+func (op *Operator) HandlerPutFinished(req *restful.Request, resp *restful.Response) {
+
+	exp := req.PathParameter("expID")
+	workerName := req.PathParameter("worker")
+
+	fmt.Printf("\n[GET /experiments/%s/workers/%s/finished] Handling finished signal.\n", exp, workerName)
+
+	fmt.Printf("[GET /experiments/%s/workers/%s/finished] Worker marked as finished.\n", exp, workerName)
+
+	resp.WriteHeader(http.StatusOK)
+}
 
 // PrepareInternalSrv initializes all API-related
 // things in order to expose an internal-facing

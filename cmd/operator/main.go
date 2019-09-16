@@ -37,7 +37,7 @@ type Operator struct {
 // to monitoring an experiment.
 type Exp struct {
 	ID           string    `json:"id"`
-	InitTime     time.Time `json:"initTime"`
+	Created      time.Time `json:"created"`
 	System       string    `json:"system"`
 	Concluded    bool      `json:"concluded"`
 	ResultFolder string    `json:"resultFolder"`
@@ -50,9 +50,14 @@ type Exp struct {
 	ClientsUsed    map[string]*Worker `json:"clientsUsed"`
 }
 
-// Enable TLS 1.3.
 func init() {
-	os.Setenv("GODEBUG", fmt.Sprintf("%s,tls13=1", os.Getenv("GODEBUG")))
+
+	// Enable TLS 1.3.
+	if os.Getenv("GODEBUG") == "" {
+		os.Setenv("GODEBUG", "tls13=1")
+	} else {
+		os.Setenv("GODEBUG", fmt.Sprintf("%s,tls13=1", os.Getenv("GODEBUG")))
+	}
 }
 
 // GetTLSMaterial downloads the TLS certificate
@@ -112,6 +117,12 @@ func main() {
 		ExpInProgress: "",
 		Exps:          make(map[string]*Exp),
 	}
+
+	// TODO: Generate proper certificates for GCP
+	//       internal and external IP of operator
+	//       node with validity of 120 days and
+	//       upload to Storage as well as save into
+	//       acs-eval machine image.
 
 	// Download TLS certificate and key from
 	// supplied GCP storage bucket.
