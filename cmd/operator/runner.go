@@ -128,6 +128,7 @@ func (op *Operator) SpawnInstance(worker *Worker, resultFolder string, publiclyR
 	}
 
 	// TODO: Replace all metadata placeholders with actual values.
+	// TODO: Especially make sure to add PUNG_SERVER_IP.
 
 	// Create HTTP POST request.
 	request, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(reqBody))
