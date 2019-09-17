@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/emicklei/go-restful"
+	"github.com/numbleroot/acs-test-bed/cmd/operator/zenopki"
 )
 
 // Operator describes the node in the
@@ -31,6 +32,8 @@ type Operator struct {
 
 	ExpInProgress string
 	Exps          map[string]*Exp
+
+	ZenoPKI *zenopki.PKI
 }
 
 // Exp contains all information relevant
@@ -95,7 +98,7 @@ func main() {
 
 	// Command-line options.
 	publicListenAddrFlag := flag.String("publicAddr", "0.0.0.0:26345", "Specify HTTPS address for receiving experiment instructions.")
-	internalListenAddrFlag := flag.String("internalAddr", "0.0.0.0:33000", "Specify HTTPS address for administrating experiments.")
+	internalListenAddrFlag := flag.String("internalAddr", "0.0.0.0:44000", "Specify HTTPS address for administrating experiments.")
 	gcloudBucketFlag := flag.String("gcloudBucket", "", "Supply the GCloud Storage Bucket to use for the experiments.")
 
 	flag.Parse()

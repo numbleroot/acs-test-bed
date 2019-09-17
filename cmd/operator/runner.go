@@ -1,5 +1,12 @@
 package main
 
+import (
+	"strings"
+	"sync"
+
+	"github.com/numbleroot/acs-test-bed/cmd/operator/zenopki"
+)
+
 var tmplInstanceCreate = `{
   "kind": "compute#instance",
   "name": "ACS_EVAL_INSERT_GCP_MACHINE_NAME",
@@ -137,10 +144,25 @@ func (op *Operator) RunExperiments() {
 
 		op.Unlock()
 
+		// Prepare zeno evaluation control channel in
+		// case it is needed later on.
+		zenoEvalCtrlChan := make(chan struct{})
+
 		if exp.System == "zeno" {
 
-			// If zeno is being evaluated, first start
-			// the PKI process in background.
+			// If zeno is being evaluated, initialize
+			// a PKI struct and have it listen in background.
+			op.ZenoPKI = &zenopki.PKI{
+				LisAddr:          strings.Split(op.InternalListenAddr, ":")[0],
+				EvalCtrlChan:     zenoEvalCtrlChan,
+				AcceptMixRegs:    0,
+				AcceptClientRegs: 0,
+				MuNodes:          &sync.RWMutex{},
+				Nodes:            make(map[string]*zenopki.Endpoint),
+			}
+
+			// Run zeno PKI process in background.
+			go op.ZenoPKI.Run("operator-cert.pem", "operator-key.pem")
 		}
 
 		// TODO: Spawn all server machines.
