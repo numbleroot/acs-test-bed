@@ -27,92 +27,42 @@ type Worker struct {
 	ZenoMixKilledIfApplied string `json:"zenoMixKilledIfApplied"`
 }
 
-// RegResp contains all experiment setup
-// instructions relevant for a machine that
-// has booted and attempts to complete setup.
-// Sent as response to register call.
-type RegResp struct {
-	Partner              string `json:"partner"`
-	TypeOfNode           string `json:"typeOfNode"`
-	ResultFolder         string `json:"resultFolder"`
-	PKI                  string `json:"pki"`
-	EvaluationScript     string `json:"evaluationScript"`
-	BinaryName           string `json:"binaryName"`
-	TCConfig             string `json:"tcConfig"`
-	KillZenoMixesInRound string `json:"killZenoMixesInRound"`
-}
-
 // HandlerPutRegister accepts a newly booted
 // machine as a new worker for the specified
 // experiment to be conducted.
 func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Response) {
 
-	exp := req.PathParameter("expID")
+	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
 
-	fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Handling registration intent.\n", exp, workerName)
+	fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Handling registration intent.\n", expID, workerName)
 
-	regResp := &RegResp{}
+	// Signal runner which worker intends to register.
+	op.InternalRegisterChan <- workerName
 
-	// Figure out whether calling node is a server
-	// or a client in the current experiment.
-	_, foundAsServer := op.Exps[exp].ServersSpawned[workerName]
-	if foundAsServer {
-
-		op.Exps[exp].ServersSpawned[workerName].Status = "registered"
-
-		regResp.Partner = op.Exps[exp].ServersSpawned[workerName].Partner
-		regResp.TypeOfNode = op.Exps[exp].ServersSpawned[workerName].TypeOfNode
-		regResp.ResultFolder = op.Exps[exp].ResultFolder
-		regResp.EvaluationScript = op.Exps[exp].ServersSpawned[workerName].EvaluationScript
-		regResp.BinaryName = op.Exps[exp].ServersSpawned[workerName].BinaryName
-
-		regResp.PKI = "TODO"
-		regResp.TCConfig = "TODO"
-		regResp.KillZenoMixesInRound = "TODO"
-	}
-
-	_, foundAsClient := op.Exps[exp].ClientsSpawned[workerName]
-	if foundAsClient {
-
-		op.Exps[exp].ClientsSpawned[workerName].Status = "registered"
-
-		regResp.Partner = op.Exps[exp].ClientsSpawned[workerName].Partner
-		regResp.TypeOfNode = op.Exps[exp].ClientsSpawned[workerName].TypeOfNode
-		regResp.ResultFolder = op.Exps[exp].ResultFolder
-		regResp.EvaluationScript = op.Exps[exp].ClientsSpawned[workerName].EvaluationScript
-		regResp.BinaryName = op.Exps[exp].ClientsSpawned[workerName].BinaryName
-
-		regResp.PKI = "TODO"
-		regResp.TCConfig = "TODO"
-		regResp.KillZenoMixesInRound = "TODO"
-	}
-
-	if !foundAsServer && !foundAsClient {
-		fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Neither server nor client: %s.\n", exp, workerName, workerName)
-		resp.WriteErrorString(http.StatusInternalServerError, "Neither server nor client.")
-		return
-	}
-
-	fmt.Printf("[PUT /experiments/%s/workers/%s/register] Registration successful.\n", exp, workerName)
+	fmt.Printf("[PUT /experiments/%s/workers/%s/register] Registration successful.\n", expID, workerName)
 
 	// Respond to worker node.
-	resp.WriteHeaderAndEntity(http.StatusOK, regResp)
+	resp.WriteHeader(http.StatusOK)
 }
 
-// HandlerGetReady marks an previously registered
+// HandlerPutReady marks an previously registered
 // worker as prepared for experiment execution.
 // The worker has finished all initialization
 // steps before calling this endpoint.
-func (op *Operator) HandlerGetReady(req *restful.Request, resp *restful.Response) {
+func (op *Operator) HandlerPutReady(req *restful.Request, resp *restful.Response) {
 
-	exp := req.PathParameter("expID")
+	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
 
-	fmt.Printf("\n[GET /experiments/%s/workers/%s/ready] Handling ready signal.\n", exp, workerName)
+	fmt.Printf("\n[PUT /experiments/%s/workers/%s/ready] Handling ready signal.\n", expID, workerName)
 
-	fmt.Printf("[GET /experiments/%s/workers/%s/ready] Worker marked as ready.\n", exp, workerName)
+	// Signal runner which worker is ready.
+	op.InternalReadyChan <- workerName
 
+	fmt.Printf("[PUT /experiments/%s/workers/%s/ready] Worker marked as ready.\n", expID, workerName)
+
+	// Respond to worker node.
 	resp.WriteHeader(http.StatusOK)
 }
 
@@ -121,12 +71,15 @@ func (op *Operator) HandlerGetReady(req *restful.Request, resp *restful.Response
 // designated for it in the running experiment.
 func (op *Operator) HandlerPutFinished(req *restful.Request, resp *restful.Response) {
 
-	exp := req.PathParameter("expID")
+	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
 
-	fmt.Printf("\n[GET /experiments/%s/workers/%s/finished] Handling finished signal.\n", exp, workerName)
+	fmt.Printf("\n[PUT /experiments/%s/workers/%s/finished] Handling finished signal.\n", expID, workerName)
 
-	fmt.Printf("[GET /experiments/%s/workers/%s/finished] Worker marked as finished.\n", exp, workerName)
+	// Signal runner which worker has finished.
+	op.InternalFinishedChan <- workerName
+
+	fmt.Printf("[PUT /experiments/%s/workers/%s/finished] Worker marked as finished.\n", expID, workerName)
 
 	resp.WriteHeader(http.StatusOK)
 }
@@ -145,8 +98,8 @@ func (op *Operator) PrepareInternalSrv() {
 	op.InternalSrv.Route(op.InternalSrv.PUT("/{expID}/workers/{worker}/register").
 		To(op.HandlerPutRegister))
 
-	op.InternalSrv.Route(op.InternalSrv.GET("/{expID}/workers/{worker}/ready").
-		To(op.HandlerGetReady))
+	op.InternalSrv.Route(op.InternalSrv.PUT("/{expID}/workers/{worker}/ready").
+		To(op.HandlerPutReady))
 
 	op.InternalSrv.Route(op.InternalSrv.PUT("/{expID}/workers/{worker}/finished").
 		To(op.HandlerPutFinished))
@@ -160,7 +113,7 @@ func (op *Operator) RunInternalSrv() {
 
 	fmt.Printf("[INTERNAL] Listening on https://%s/internal/experiments for API calls regarding experiments...\n", op.InternalListenAddr)
 
-	err := http.ListenAndServeTLS(op.InternalListenAddr, "operator-cert.pem", "operator-key.pem", nil)
+	err := http.ListenAndServeTLS(op.InternalListenAddr, op.TLSCertPath, op.TLSKeyPath, nil)
 	if err != nil {
 		fmt.Printf("Failed handling internal experiment requests: %v\n", err)
 		os.Exit(1)

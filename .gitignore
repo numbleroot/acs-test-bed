@@ -121,7 +121,7 @@ venv.bak/
 gcloud-configs/
 gcloud-configs_*/
 calcstats
-worker
+collector
 genconfigs
 operator
 runexperiments

@@ -11,10 +11,10 @@ import (
 	"time"
 )
 
-// Worker comprises all flags and values
+// Collector comprises all flags and values
 // required for the metrics collector of our
 // ACS evaluation to work correctly.
-type Worker struct {
+type Collector struct {
 	shutdownChan   chan struct{}
 	System         string
 	IsClient       bool
@@ -40,7 +40,7 @@ func init() {
 	}
 }
 
-func (col *Worker) prepareMetricsFiles(metricsPath string) error {
+func (col *Collector) prepareMetricsFiles(metricsPath string) error {
 
 	var err error
 
@@ -94,7 +94,7 @@ func (col *Worker) prepareMetricsFiles(metricsPath string) error {
 	return nil
 }
 
-func (col *Worker) collectSystemMetrics() {
+func (col *Collector) collectSystemMetrics() {
 
 	// Receive tick every second.
 	secTicker := time.NewTicker(time.Second)
@@ -223,7 +223,7 @@ func (col *Worker) collectSystemMetrics() {
 	}
 }
 
-func (col *Worker) collectTimingMetrics() {
+func (col *Collector) collectTimingMetrics() {
 
 	// Receive timing values come in two parts,
 	// first the time for the subsequently
@@ -262,7 +262,7 @@ func (col *Worker) collectTimingMetrics() {
 	}
 }
 
-func (col *Worker) collectPoolSizesMetrics() {
+func (col *Collector) collectPoolSizesMetrics() {
 
 	for metric := range col.MetricsChan {
 
@@ -276,8 +276,8 @@ func main() {
 
 	// Allow some command-line arguments.
 	systemFlag := flag.String("system", "", "Specify system that is being evaluated ('zeno', 'vuvuzela', or 'pung').")
-	isClientFlag := flag.Bool("client", false, "Append this flag if the worker is gathering metrics for a client that is being evaluated.")
-	isServerFlag := flag.Bool("server", false, "Append this flag if the worker is gathering metrics for a server that is being evaluated.")
+	isClientFlag := flag.Bool("client", false, "Append this flag if the collector is gathering metrics for a client that is being evaluated.")
+	isServerFlag := flag.Bool("server", false, "Append this flag if the collector is gathering metrics for a server that is being evaluated.")
 	pipeNameFlag := flag.String("pipe", "/tmp/collect", "Specify the named pipe to use for IPC with system being evaluated.")
 	metricsPathFlag := flag.String("metricsPath", "./", "Specify the file system folder where the various metric files generated here should be placed.")
 	flag.Parse()
@@ -300,8 +300,8 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Initialize worker struct.
-	col := &Worker{
+	// Initialize collector struct.
+	col := &Collector{
 		shutdownChan: make(chan struct{}),
 		System:       strings.ToLower(*systemFlag),
 		IsClient:     *isClientFlag,
@@ -333,7 +333,7 @@ func main() {
 	// received bytes values to file every second.
 	go col.collectSystemMetrics()
 
-	defer func(col *Worker) {
+	defer func(col *Collector) {
 
 		// Clean up when we leave this program.
 
