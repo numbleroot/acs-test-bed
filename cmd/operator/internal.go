@@ -27,6 +27,13 @@ type Worker struct {
 	ZenoMixKilledIfApplied string `json:"zenoMixKilledIfApplied"`
 }
 
+// FailedReq captures all information taken
+// from a failure signal from a worker.
+type FailedReq struct {
+	Worker string `json:"-"`
+	Reason string `json:"failure"`
+}
+
 // HandlerPutRegister accepts a newly booted
 // machine as a new worker for the specified
 // experiment to be conducted.
@@ -84,6 +91,34 @@ func (op *Operator) HandlerPutFinished(req *restful.Request, resp *restful.Respo
 	resp.WriteHeader(http.StatusOK)
 }
 
+// HandlerPutFailed sends a failure signal and
+// message from a failed worker to the operator.
+func (op *Operator) HandlerPutFailed(req *restful.Request, resp *restful.Response) {
+
+	expID := req.PathParameter("expID")
+	workerName := req.PathParameter("worker")
+
+	fmt.Printf("\n[PUT /experiments/%s/workers/%s/failed] Handling failed signal.\n", expID, workerName)
+
+	// Read failure information from request.
+	failedReq := &FailedReq{}
+	err := req.ReadEntity(&failedReq)
+	if err != nil {
+		fmt.Printf("\n[PUT /experiments/%s/workers/%s/failed] Failed to extract payload containing error message: %v.\n", expID, workerName, err)
+		resp.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	failedReq.Worker = workerName
+
+	// Signal runner which worker has failed.
+	op.InternalFailedChan <- failedReq
+
+	fmt.Printf("[PUT /experiments/%s/workers/%s/failed] Worker marked as failed.\n", expID, workerName)
+
+	resp.WriteHeader(http.StatusOK)
+}
+
 // PrepareInternalSrv initializes all API-related
 // things in order to expose an internal-facing
 // API endpoint for conducting experiments.
@@ -103,6 +138,9 @@ func (op *Operator) PrepareInternalSrv() {
 
 	op.InternalSrv.Route(op.InternalSrv.PUT("/{expID}/workers/{worker}/finished").
 		To(op.HandlerPutFinished))
+
+	op.InternalSrv.Route(op.InternalSrv.PUT("/{expID}/workers/{worker}/failed").
+		To(op.HandlerPutFailed))
 
 	restful.Add(op.InternalSrv)
 }

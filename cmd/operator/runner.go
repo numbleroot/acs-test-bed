@@ -225,9 +225,30 @@ func (op *Operator) RunExperiments() {
 
 			workerName := <-op.InternalRegisterChan
 
-			_, foundAsServer := exp.ServersSpawned[workerName]
-			if foundAsServer {
+			_, found := exp.ServersSpawned[workerName]
+			if found {
 				exp.ServersSpawned[workerName].Status = "registered"
+			}
+		}
+
+		// Handle incoming ready or failed requests.
+		for range exp.ServersSpawned {
+
+			select {
+
+			case workerName := <-op.InternalReadyChan:
+
+				_, found := exp.ServersSpawned[workerName]
+				if found {
+					exp.ServersSpawned[workerName].Status = "ready"
+				}
+
+			case failedReq := <-op.InternalFailedChan:
+
+				_, found := exp.ServersSpawned[failedReq.Worker]
+				if found {
+					exp.ServersSpawned[failedReq.Worker].Status = fmt.Sprintf("failed with: '%s'", failedReq.Reason)
+				}
 			}
 		}
 

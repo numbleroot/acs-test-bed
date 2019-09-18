@@ -80,8 +80,8 @@ if [ "${tried}" -eq 20 ]; then
 
     # Inform operator about failure to initialize.
     curl --cacert /root/operator-cert.pem --request PUT --data-binary "{
-        \"Failure\": \"Waited 20 seconds for required experiment files to be downloaded from Storage bucket, no success, shutting down\"
-    }" https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${WORKER_NAME}/failure
+        \"Failure\": \"waited 20 seconds for required experiment files to be downloaded from Storage bucket, no success, shutting down\"
+    }" https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${WORKER_NAME}/failed
 
     poweroff
 fi

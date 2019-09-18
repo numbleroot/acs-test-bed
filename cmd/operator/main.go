@@ -31,6 +31,7 @@ type Operator struct {
 	InternalRegisterChan chan string
 	InternalReadyChan    chan string
 	InternalFinishedChan chan string
+	InternalFailedChan   chan *FailedReq
 
 	PublicListenAddr string
 	PublicSrv        *restful.WebService
@@ -99,6 +100,7 @@ func main() {
 		InternalRegisterChan: make(chan string),
 		InternalReadyChan:    make(chan string),
 		InternalFinishedChan: make(chan string),
+		InternalFailedChan:   make(chan *FailedReq),
 
 		PublicListenAddr: *publicListenAddrFlag,
 		PublicChan:       make(chan string),
