@@ -120,6 +120,25 @@ func main() {
 	numVuvuzelaMixesToGen := *numVuvuzelaMixesToGenFlag
 	numZenoCascades := *numZenoCascadesFlag
 
+	clients := make([]Config, numClientsToGen)
+	zenoServers := make([]Config, (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1)))
+	pungServers := make([]Config, 1)
+	vuvuzelaServers := make([]Config, numVuvuzelaMixesToGen)
+
+	for i := range clients {
+		clients[i].Name = fmt.Sprintf("client-%05d", (i + 1))
+	}
+
+	for i := range zenoServers {
+		zenoServers[i].Name = fmt.Sprintf("server-%05d", (i + 1))
+	}
+
+	pungServers[0].Name = "server-00001"
+
+	for i := range vuvuzelaServers {
+		vuvuzelaServers[i].Name = fmt.Sprintf("server-%05d", (i + 1))
+	}
+
 	// Create local map that tracks how many
 	// instances have already been assigned
 	// to each of the low storage zones.
