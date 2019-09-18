@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
 # Run metrics collector sidecar in background.
-/root/collector -system zeno -client -pipe ${METRICS_PIPE} -metricsPath ${METRICS_PATH}/ &
+/root/collector -system zeno -client -pipe ${METRICS_PIPE} -metricsPath ${CLIENT_PATH}/ &
 
 # Run zeno as client.
 /root/zeno -eval -numMsgToRecv 25 -metricsPipe ${METRICS_PIPE} -client -name ${CLIENT} -partner ${PARTNER} \
     -msgPublicAddr ${LISTEN_IP}:33000 -msgLisAddr ${LISTEN_IP}:33000 -pkiLisAddr ${LISTEN_IP}:44000 \
-    -pki ${OPERATOR_IP}:33000 -pkiCertPath /root/operator-cert.pem > ${METRICS_PATH}/log.evaluation
+    -pki ${ZENO_PKI_IP}:33000 -pkiCertPath /root/operator-cert.pem > ${CLIENT_PATH}/log.evaluation
 
 # Wait for metrics collector to exit.
 wait

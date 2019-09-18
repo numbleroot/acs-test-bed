@@ -9,6 +9,7 @@ sysctl -w fs.file-max=1048575
 sysctl -w net.core.somaxconn=8192
 ulimit -n 1048575
 
+
 # Retrieve metadata required for operation.
 LISTEN_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip -H "Metadata-Flavor: Google")
 OPERATOR_IP=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/operatorIP -H "Metadata-Flavor: Google")
@@ -41,12 +42,14 @@ PARTNER_7=$(curl http://metadata.google.internal/computeMetadata/v1/instance/att
 CLIENT_8=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/client8 -H "Metadata-Flavor: Google")
 PARTNER_8=$(curl http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner8 -H "Metadata-Flavor: Google")
 
+
 # Prepare FIFO pipes for system and collector IPC.
 mkfifo /tmp/collect1 /tmp/collect2 /tmp/collect3 /tmp/collect4 /tmp/collect5 /tmp/collect6 /tmp/collect7 /tmp/collect8
 chmod 0600 /tmp/collect1 /tmp/collect2 /tmp/collect3 /tmp/collect4 /tmp/collect5 /tmp/collect6 /tmp/collect7 /tmp/collect8
 
 # Prepare metric paths for each client.
 mkdir -p /root/${CLIENT_1} /root/${CLIENT_2} /root/${CLIENT_3} /root/${CLIENT_4} /root/${CLIENT_5} /root/${CLIENT_6} /root/${CLIENT_7} /root/${CLIENT_8}
+
 
 # Register with operator for current experiment.
 curl --cacert /root/operator-cert.pem --request PUT https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${WORKER_NAME}/register
@@ -72,7 +75,14 @@ while ([ ! -e /root/${EVAL_SCRIPT_TO_PULL} ] || [ ! -e /root/${BINARY_TO_PULL} ]
 done
 
 if [ "${tried}" -eq 20 ]; then
+
     printf "Waited 20 seconds for required experiment files to be downloaded, no success, shutting down\n"
+
+    # Inform operator about failure to initialize.
+    curl --cacert /root/operator-cert.pem --request PUT --data-binary "{
+        \"Failure\": \"Waited 20 seconds for required experiment files to be downloaded from Storage bucket, no success, shutting down\"
+    }" https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${WORKER_NAME}/failure
+
     poweroff
 fi
 
@@ -106,43 +116,59 @@ iptables -Z -t filter -L OUTPUT
 # Start all collectors and clients.
 
 if [ "${CLIENT_1}" != "" ]; then
-    LISTEN_IP=${LISTEN_IP} OPERATOR_IP=${OPERATOR_IP} SERVER_IP=${PUNG_SERVER_IP} METRICS_PIPE=/tmp/collect1 METRICS_PATH=/root/${CLIENT_1} \
-        CLIENT=${CLIENT_1} PARTNER=${PARTNER_1} SHARED_SECRET=${WORKER_NAME}_${LISTEN_IP}_12 /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+    LISTEN_IP=${LISTEN_IP} CLIENT=${CLIENT_1} PARTNER=${PARTNER_1} METRICS_PIPE=/tmp/collect1 \
+        CLIENT_PATH=/root/${CLIENT_1} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_IP=${PUNG_SERVER_IP} \
+        KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${WORKER_NAME}${LISTEN_IP}12 \
+        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
 fi
 
 if [ "${CLIENT_2}" != "" ]; then
-    LISTEN_IP=${LISTEN_IP} OPERATOR_IP=${OPERATOR_IP} SERVER_IP=${PUNG_SERVER_IP} METRICS_PIPE=/tmp/collect2 METRICS_PATH=/root/${CLIENT_2} \
-        CLIENT=${CLIENT_2} PARTNER=${PARTNER_2} SHARED_SECRET=${WORKER_NAME}_${LISTEN_IP}_12 /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+    LISTEN_IP=${LISTEN_IP} CLIENT=${CLIENT_2} PARTNER=${PARTNER_2} METRICS_PIPE=/tmp/collect2 \
+        CLIENT_PATH=/root/${CLIENT_2} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_IP=${PUNG_SERVER_IP} \
+        KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${WORKER_NAME}${LISTEN_IP}12 \
+        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
 fi
 
 if [ "${CLIENT_3}" != "" ]; then
-    LISTEN_IP=${LISTEN_IP} OPERATOR_IP=${OPERATOR_IP} SERVER_IP=${PUNG_SERVER_IP} METRICS_PIPE=/tmp/collect3 METRICS_PATH=/root/${CLIENT_3} \
-        CLIENT=${CLIENT_3} PARTNER=${PARTNER_3} SHARED_SECRET=${WORKER_NAME}_${LISTEN_IP}_34 /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+    LISTEN_IP=${LISTEN_IP} CLIENT=${CLIENT_3} PARTNER=${PARTNER_3} METRICS_PIPE=/tmp/collect3 \
+        CLIENT_PATH=/root/${CLIENT_3} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_IP=${PUNG_SERVER_IP} \
+        KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${WORKER_NAME}${LISTEN_IP}34 \
+        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
 fi
 
 if [ "${CLIENT_4}" != "" ]; then
-    LISTEN_IP=${LISTEN_IP} OPERATOR_IP=${OPERATOR_IP} SERVER_IP=${PUNG_SERVER_IP} METRICS_PIPE=/tmp/collect4 METRICS_PATH=/root/${CLIENT_4} \
-        CLIENT=${CLIENT_4} PARTNER=${PARTNER_4} SHARED_SECRET=${WORKER_NAME}_${LISTEN_IP}_34 /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+    LISTEN_IP=${LISTEN_IP} CLIENT=${CLIENT_4} PARTNER=${PARTNER_4} METRICS_PIPE=/tmp/collect4 \
+        CLIENT_PATH=/root/${CLIENT_4} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_IP=${PUNG_SERVER_IP} \
+        KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${WORKER_NAME}${LISTEN_IP}34 \
+        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
 fi
 
 if [ "${CLIENT_5}" != "" ]; then
-    LISTEN_IP=${LISTEN_IP} OPERATOR_IP=${OPERATOR_IP} SERVER_IP=${PUNG_SERVER_IP} METRICS_PIPE=/tmp/collect5 METRICS_PATH=/root/${CLIENT_5} \
-        CLIENT=${CLIENT_5} PARTNER=${PARTNER_5} SHARED_SECRET=${WORKER_NAME}_${LISTEN_IP}_56 /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+    LISTEN_IP=${LISTEN_IP} CLIENT=${CLIENT_5} PARTNER=${PARTNER_5} METRICS_PIPE=/tmp/collect5 \
+        CLIENT_PATH=/root/${CLIENT_5} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_IP=${PUNG_SERVER_IP} \
+        KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${WORKER_NAME}${LISTEN_IP}56 \
+        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
 fi
 
 if [ "${CLIENT_6}" != "" ]; then
-    LISTEN_IP=${LISTEN_IP} OPERATOR_IP=${OPERATOR_IP} SERVER_IP=${PUNG_SERVER_IP} METRICS_PIPE=/tmp/collect6 METRICS_PATH=/root/${CLIENT_6} \
-        CLIENT=${CLIENT_6} PARTNER=${PARTNER_6} SHARED_SECRET=${WORKER_NAME}_${LISTEN_IP}_56 /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+    LISTEN_IP=${LISTEN_IP} CLIENT=${CLIENT_6} PARTNER=${PARTNER_6} METRICS_PIPE=/tmp/collect6 \
+        CLIENT_PATH=/root/${CLIENT_6} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_IP=${PUNG_SERVER_IP} \
+        KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${WORKER_NAME}${LISTEN_IP}56 \
+        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
 fi
 
 if [ "${CLIENT_7}" != "" ]; then
-    LISTEN_IP=${LISTEN_IP} OPERATOR_IP=${OPERATOR_IP} SERVER_IP=${PUNG_SERVER_IP} METRICS_PIPE=/tmp/collect7 METRICS_PATH=/root/${CLIENT_7} \
-        CLIENT=${CLIENT_7} PARTNER=${PARTNER_7} SHARED_SECRET=${WORKER_NAME}_${LISTEN_IP}_78 /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+    LISTEN_IP=${LISTEN_IP} CLIENT=${CLIENT_7} PARTNER=${PARTNER_7} METRICS_PIPE=/tmp/collect7 \
+        CLIENT_PATH=/root/${CLIENT_7} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_IP=${PUNG_SERVER_IP} \
+        KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${WORKER_NAME}${LISTEN_IP}78 \
+        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
 fi
 
 if [ "${CLIENT_8}" != "" ]; then
-    LISTEN_IP=${LISTEN_IP} OPERATOR_IP=${OPERATOR_IP} SERVER_IP=${PUNG_SERVER_IP} METRICS_PIPE=/tmp/collect8 METRICS_PATH=/root/${CLIENT_8} \
-        CLIENT=${CLIENT_8} PARTNER=${PARTNER_8} SHARED_SECRET=${WORKER_NAME}_${LISTEN_IP}_78 /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
+    LISTEN_IP=${LISTEN_IP} CLIENT=${CLIENT_8} PARTNER=${PARTNER_8} METRICS_PIPE=/tmp/collect8 \
+        CLIENT_PATH=/root/${CLIENT_8} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_IP=${PUNG_SERVER_IP} \
+        KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${WORKER_NAME}${LISTEN_IP}78 \
+        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
 fi
 
 
