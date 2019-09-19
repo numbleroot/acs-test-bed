@@ -41,7 +41,6 @@ CLIENT_01_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_01_ADDR1="${LISTEN_IP}:33001"
 CLIENT_01_ADDR2="${LISTEN_IP}:44001"
 CLIENT_01_PATH="/root/${CLIENT_01}"
-CLIENT_01_METRICS_PIPE=/tmp/collect01
 CLIENT_01_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33001"
 CLIENT_01_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}12"
 
@@ -50,7 +49,6 @@ CLIENT_02_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_02_ADDR1="${LISTEN_IP}:33002"
 CLIENT_02_ADDR2="${LISTEN_IP}:44002"
 CLIENT_02_PATH="/root/${CLIENT_02}"
-CLIENT_02_METRICS_PIPE=/tmp/collect02
 CLIENT_02_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33001"
 CLIENT_02_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}12"
 
@@ -59,7 +57,6 @@ CLIENT_03_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_03_ADDR1="${LISTEN_IP}:33003"
 CLIENT_03_ADDR2="${LISTEN_IP}:44003"
 CLIENT_03_PATH="/root/${CLIENT_03}"
-CLIENT_03_METRICS_PIPE=/tmp/collect03
 CLIENT_03_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33002"
 CLIENT_03_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}34"
 
@@ -68,7 +65,6 @@ CLIENT_04_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_04_ADDR1="${LISTEN_IP}:33004"
 CLIENT_04_ADDR2="${LISTEN_IP}:44004"
 CLIENT_04_PATH="/root/${CLIENT_04}"
-CLIENT_04_METRICS_PIPE=/tmp/collect04
 CLIENT_04_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33002"
 CLIENT_04_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}34"
 
@@ -77,7 +73,6 @@ CLIENT_05_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_05_ADDR1="${LISTEN_IP}:33005"
 CLIENT_05_ADDR2="${LISTEN_IP}:44005"
 CLIENT_05_PATH="/root/${CLIENT_05}"
-CLIENT_05_METRICS_PIPE=/tmp/collect05
 CLIENT_05_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33003"
 CLIENT_05_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}56"
 
@@ -86,7 +81,6 @@ CLIENT_06_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_06_ADDR1="${LISTEN_IP}:33006"
 CLIENT_06_ADDR2="${LISTEN_IP}:44006"
 CLIENT_06_PATH="/root/${CLIENT_06}"
-CLIENT_06_METRICS_PIPE=/tmp/collect06
 CLIENT_06_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33003"
 CLIENT_06_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}56"
 
@@ -95,7 +89,6 @@ CLIENT_07_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_07_ADDR1="${LISTEN_IP}:33007"
 CLIENT_07_ADDR2="${LISTEN_IP}:44007"
 CLIENT_07_PATH="/root/${CLIENT_07}"
-CLIENT_07_METRICS_PIPE=/tmp/collect07
 CLIENT_07_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33004"
 CLIENT_07_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}78"
 
@@ -104,7 +97,6 @@ CLIENT_08_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_08_ADDR1="${LISTEN_IP}:33008"
 CLIENT_08_ADDR2="${LISTEN_IP}:44008"
 CLIENT_08_PATH="/root/${CLIENT_08}"
-CLIENT_08_METRICS_PIPE=/tmp/collect08
 CLIENT_08_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33004"
 CLIENT_08_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}78"
 
@@ -113,7 +105,6 @@ CLIENT_09_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_09_ADDR1="${LISTEN_IP}:33009"
 CLIENT_09_ADDR2="${LISTEN_IP}:44009"
 CLIENT_09_PATH="/root/${CLIENT_09}"
-CLIENT_09_METRICS_PIPE=/tmp/collect09
 CLIENT_09_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33005"
 CLIENT_09_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}910"
 
@@ -122,16 +113,13 @@ CLIENT_10_PARTNER=$(curl http://metadata.google.internal/computeMetadata/v1/inst
 CLIENT_10_ADDR1="${LISTEN_IP}:33010"
 CLIENT_10_ADDR2="${LISTEN_IP}:44010"
 CLIENT_10_PATH="/root/${CLIENT_10}"
-CLIENT_10_METRICS_PIPE=/tmp/collect10
 CLIENT_10_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33005"
 CLIENT_10_PUNG_SHARED_SECRET="${WORKER_NAME}${LISTEN_IP}910"
 
 
-# Prepare FIFO pipes for system and collector IPC.
-mkfifo ${CLIENT_01_METRICS_PIPE} ${CLIENT_02_METRICS_PIPE} ${CLIENT_03_METRICS_PIPE} ${CLIENT_04_METRICS_PIPE} ${CLIENT_05_METRICS_PIPE} \
-    ${CLIENT_06_METRICS_PIPE} ${CLIENT_07_METRICS_PIPE} ${CLIENT_08_METRICS_PIPE} ${CLIENT_09_METRICS_PIPE} ${CLIENT_10_METRICS_PIPE}
-chmod 0600 ${CLIENT_01_METRICS_PIPE} ${CLIENT_02_METRICS_PIPE} ${CLIENT_03_METRICS_PIPE} ${CLIENT_04_METRICS_PIPE} ${CLIENT_05_METRICS_PIPE} \
-    ${CLIENT_06_METRICS_PIPE} ${CLIENT_07_METRICS_PIPE} ${CLIENT_08_METRICS_PIPE} ${CLIENT_09_METRICS_PIPE} ${CLIENT_10_METRICS_PIPE}
+# Prepare FIFO pipe for system and collector IPC.
+mkfifo /tmp/collect
+chmod 0600 /tmp/collect
 
 # Prepare data paths for each client.
 mkdir -p ${CLIENT_01_PATH} ${CLIENT_02_PATH} ${CLIENT_03_PATH} ${CLIENT_04_PATH} ${CLIENT_05_PATH} \
@@ -225,162 +213,240 @@ if [ "${TC_CONFIG}" != "none" ]; then
 fi
 
 
+# Add iptables rules to count network volume.
+
+iptables -t filter -A INPUT -p tcp --sport 33001
+iptables -t filter -A INPUT -p tcp --dport 33001
+iptables -t filter -A OUTPUT -p tcp --sport 33001
+iptables -t filter -A OUTPUT -p tcp --dport 33001
+
+iptables -t filter -A INPUT -p tcp --sport 33002
+iptables -t filter -A INPUT -p tcp --dport 33002
+iptables -t filter -A OUTPUT -p tcp --sport 33002
+iptables -t filter -A OUTPUT -p tcp --dport 33002
+
+iptables -t filter -A INPUT -p tcp --sport 33003
+iptables -t filter -A INPUT -p tcp --dport 33003
+iptables -t filter -A OUTPUT -p tcp --sport 33003
+iptables -t filter -A OUTPUT -p tcp --dport 33003
+
+iptables -t filter -A INPUT -p tcp --sport 33004
+iptables -t filter -A INPUT -p tcp --dport 33004
+iptables -t filter -A OUTPUT -p tcp --sport 33004
+iptables -t filter -A OUTPUT -p tcp --dport 33004
+
+iptables -t filter -A INPUT -p tcp --sport 33005
+iptables -t filter -A INPUT -p tcp --dport 33005
+iptables -t filter -A OUTPUT -p tcp --sport 33005
+iptables -t filter -A OUTPUT -p tcp --dport 33005
+
+iptables -t filter -A INPUT -p tcp --sport 33006
+iptables -t filter -A INPUT -p tcp --dport 33006
+iptables -t filter -A OUTPUT -p tcp --sport 33006
+iptables -t filter -A OUTPUT -p tcp --dport 33006
+
+iptables -t filter -A INPUT -p tcp --sport 33007
+iptables -t filter -A INPUT -p tcp --dport 33007
+iptables -t filter -A OUTPUT -p tcp --sport 33007
+iptables -t filter -A OUTPUT -p tcp --dport 33007
+
+iptables -t filter -A INPUT -p tcp --sport 33008
+iptables -t filter -A INPUT -p tcp --dport 33008
+iptables -t filter -A OUTPUT -p tcp --sport 33008
+iptables -t filter -A OUTPUT -p tcp --dport 33008
+
+iptables -t filter -A INPUT -p tcp --sport 33009
+iptables -t filter -A INPUT -p tcp --dport 33009
+iptables -t filter -A OUTPUT -p tcp --sport 33009
+iptables -t filter -A OUTPUT -p tcp --dport 33009
+
+iptables -t filter -A INPUT -p tcp --sport 33010
+iptables -t filter -A INPUT -p tcp --dport 33010
+iptables -t filter -A OUTPUT -p tcp --sport 33010
+iptables -t filter -A OUTPUT -p tcp --dport 33010
+
+iptables -t filter -A INPUT -p tcp --sport 44001
+iptables -t filter -A INPUT -p tcp --dport 44001
+iptables -t filter -A OUTPUT -p tcp --sport 44001
+iptables -t filter -A OUTPUT -p tcp --dport 44001
+
+iptables -t filter -A INPUT -p tcp --sport 44002
+iptables -t filter -A INPUT -p tcp --dport 44002
+iptables -t filter -A OUTPUT -p tcp --sport 44002
+iptables -t filter -A OUTPUT -p tcp --dport 44002
+
+iptables -t filter -A INPUT -p tcp --sport 44003
+iptables -t filter -A INPUT -p tcp --dport 44003
+iptables -t filter -A OUTPUT -p tcp --sport 44003
+iptables -t filter -A OUTPUT -p tcp --dport 44003
+
+iptables -t filter -A INPUT -p tcp --sport 44004
+iptables -t filter -A INPUT -p tcp --dport 44004
+iptables -t filter -A OUTPUT -p tcp --sport 44004
+iptables -t filter -A OUTPUT -p tcp --dport 44004
+
+iptables -t filter -A INPUT -p tcp --sport 44005
+iptables -t filter -A INPUT -p tcp --dport 44005
+iptables -t filter -A OUTPUT -p tcp --sport 44005
+iptables -t filter -A OUTPUT -p tcp --dport 44005
+
+iptables -t filter -A INPUT -p tcp --sport 44006
+iptables -t filter -A INPUT -p tcp --dport 44006
+iptables -t filter -A OUTPUT -p tcp --sport 44006
+iptables -t filter -A OUTPUT -p tcp --dport 44006
+
+iptables -t filter -A INPUT -p tcp --sport 44007
+iptables -t filter -A INPUT -p tcp --dport 44007
+iptables -t filter -A OUTPUT -p tcp --sport 44007
+iptables -t filter -A OUTPUT -p tcp --dport 44007
+
+iptables -t filter -A INPUT -p tcp --sport 44008
+iptables -t filter -A INPUT -p tcp --dport 44008
+iptables -t filter -A OUTPUT -p tcp --sport 44008
+iptables -t filter -A OUTPUT -p tcp --dport 44008
+
+iptables -t filter -A INPUT -p tcp --sport 44009
+iptables -t filter -A INPUT -p tcp --dport 44009
+iptables -t filter -A OUTPUT -p tcp --sport 44009
+iptables -t filter -A OUTPUT -p tcp --dport 44009
+
+iptables -t filter -A INPUT -p tcp --sport 44010
+iptables -t filter -A INPUT -p tcp --dport 44010
+iptables -t filter -A OUTPUT -p tcp --sport 44010
+iptables -t filter -A OUTPUT -p tcp --dport 44010
+
+iptables -Z -t filter -L INPUT
+iptables -Z -t filter -L OUTPUT
+
+
+# Run metrics collector sidecar in background.
+/root/collector -system ${EVAL_SYSTEM} -${TYPE_OF_NODE} -pipe /tmp/collect -metricsPath ${CLIENT_01_PATH}/ &
+
+
 if [ "${TYPE_OF_NODE}" == "server" ]; then
 
     if [ "${EVAL_SYSTEM}" == "zeno" ]; then
 
-        # Add iptables rules to count network volume.
-        iptables -A INPUT -p tcp --dport 33001
-        iptables -A INPUT -p tcp --dport 44001
-        iptables -A OUTPUT -p tcp --sport 33001
-        iptables -A OUTPUT -p tcp --sport 44001
-        iptables -Z -t filter -L INPUT
-        iptables -Z -t filter -L OUTPUT
-
-        # Run metrics collector sidecar in background.
-        /root/collector -system zeno -server -pipe ${CLIENT_01_METRICS_PIPE} -metricsPath ${CLIENT_01_PATH}/ &
-
         # Run zeno as mix.
-        /root/zeno -eval -killMixesInRound ${KILL_ZENO_MIXES_IN_ROUND} -metricsPipe ${CLIENT_01_METRICS_PIPE} -mix -name ${CLIENT_01} \
+        /root/zeno -eval -killMixesInRound ${KILL_ZENO_MIXES_IN_ROUND} -metricsPipe /tmp/collect -mix -name ${CLIENT_01} \
             -partner ${CLIENT_01_PARTNER} -msgPublicAddr ${CLIENT_01_ADDR1} -msgLisAddr ${CLIENT_01_ADDR1} -pkiLisAddr ${CLIENT_01_ADDR2} \
-            -pki ${ZENO_PKI_IP}:33001 -pkiCertPath /root/operator-cert.pem > ${CLIENT_01_PATH}/log.evaluation
-        
-        # Wait for metrics collector to exit.
-        wait
+            -pki ${ZENO_PKI_IP}:44001 -pkiCertPath /root/operator-cert.pem > ${CLIENT_01_PATH}/log.evaluation
 
     else if [ "${EVAL_SYSTEM}" == "pung" ]; then
 
-        iptables -A INPUT -p tcp --dport 33001
-        iptables -A OUTPUT -p tcp --sport 33001
-        iptables -Z -t filter -L INPUT
-        iptables -Z -t filter -L OUTPUT
-
-        /root/collector -system pung -server -pipe ${CLIENT_01_METRICS_PIPE} -metricsPath ${CLIENT_01_PATH}/ &
-
+        # Run Pung's server.
         /root/pung-server -e 30 -i ${LISTEN_IP} -s 33001 -n 5 -w 1 -p 0 -k 1 -t e -d 2 -b 0 -m ${PUNG_CLIENTS_PER_PROC} > ${CLIENT_01_PATH}/log.evaluation
-
-        wait
 
     else if [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
 
-        iptables -A INPUT -p tcp --dport 33001
-        iptables -A OUTPUT -p tcp --sport 33001
-        iptables -Z -t filter -L INPUT
-        iptables -Z -t filter -L OUTPUT
-
-        /root/collector -system vuvuzela -server -pipe ${CLIENT_01_METRICS_PIPE} -metricsPath ${CLIENT_01_PATH}/ &
-
-        /root/vuvuzela-mix -eval -metricsPipe ${CLIENT_01_METRICS_PIPE} -addr ${CLIENT_01_ADDR1} -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
+        # Run mix component of Vuvuzela.
+        /root/vuvuzela-mix -eval -metricsPipe /tmp/collect -addr ${CLIENT_01_ADDR1} -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
             -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_01_PATH}/log.evaluation
-
-        wait
 
     fi
 
 else if [ "${TYPE_OF_NODE}" == "coordinator" ]; then
 
-    iptables -A INPUT -p tcp --dport 33001
-    iptables -A OUTPUT -p tcp --sport 33001
-    iptables -Z -t filter -L INPUT
-    iptables -Z -t filter -L OUTPUT
-
-    /root/collector -system vuvuzela -server -pipe ${CLIENT_01_METRICS_PIPE} -metricsPath ${CLIENT_01_PATH}/ &
-
-    /root/vuvuzela-coordinator -eval -metricsPipe ${CLIENT_01_METRICS_PIPE} -addr ${ADDR1} \
+    # Run coordinator component of Vuvuzela.
+    /root/vuvuzela-coordinator -eval -metricsPipe /tmp/collect -addr ${ADDR1} \
         -wait 10s -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_01_PATH}/log.evaluation
-
-    wait
 
 else if [ "${TYPE_OF_NODE}" == "client" ]; then
 
     if [ "${EVAL_SYSTEM}" == "zeno" ]; then
 
+        # Run ten zeno clients.
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_01} -partner ${CLIENT_01_PARTNER} \
+            -msgPublicAddr ${CLIENT_01_ADDR1} -msgLisAddr ${CLIENT_01_ADDR1} -pkiLisAddr ${CLIENT_01_ADDR2} -pki ${ZENO_PKI_IP}:44001 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_01_PATH}/log.evaluation
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_02} -partner ${CLIENT_02_PARTNER} \
+            -msgPublicAddr ${CLIENT_02_ADDR1} -msgLisAddr ${CLIENT_02_ADDR1} -pkiLisAddr ${CLIENT_02_ADDR2} -pki ${ZENO_PKI_IP}:44002 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_02_PATH}/log.evaluation
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_03} -partner ${CLIENT_03_PARTNER} \
+            -msgPublicAddr ${CLIENT_03_ADDR1} -msgLisAddr ${CLIENT_03_ADDR1} -pkiLisAddr ${CLIENT_03_ADDR2} -pki ${ZENO_PKI_IP}:44003 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_03_PATH}/log.evaluation
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_04} -partner ${CLIENT_04_PARTNER} \
+            -msgPublicAddr ${CLIENT_04_ADDR1} -msgLisAddr ${CLIENT_04_ADDR1} -pkiLisAddr ${CLIENT_04_ADDR2} -pki ${ZENO_PKI_IP}:44004 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_04_PATH}/log.evaluation
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_05} -partner ${CLIENT_05_PARTNER} \
+            -msgPublicAddr ${CLIENT_05_ADDR1} -msgLisAddr ${CLIENT_05_ADDR1} -pkiLisAddr ${CLIENT_05_ADDR2} -pki ${ZENO_PKI_IP}:44005 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_05_PATH}/log.evaluation
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_06} -partner ${CLIENT_06_PARTNER} \
+            -msgPublicAddr ${CLIENT_06_ADDR1} -msgLisAddr ${CLIENT_06_ADDR1} -pkiLisAddr ${CLIENT_06_ADDR2} -pki ${ZENO_PKI_IP}:44006 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_06_PATH}/log.evaluation
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_07} -partner ${CLIENT_07_PARTNER} \
+            -msgPublicAddr ${CLIENT_07_ADDR1} -msgLisAddr ${CLIENT_07_ADDR1} -pkiLisAddr ${CLIENT_07_ADDR2} -pki ${ZENO_PKI_IP}:44007 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_07_PATH}/log.evaluation
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_08} -partner ${CLIENT_08_PARTNER} \
+            -msgPublicAddr ${CLIENT_08_ADDR1} -msgLisAddr ${CLIENT_08_ADDR1} -pkiLisAddr ${CLIENT_08_ADDR2} -pki ${ZENO_PKI_IP}:44008 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_08_PATH}/log.evaluation
 
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_09} -partner ${CLIENT_09_PARTNER} \
+            -msgPublicAddr ${CLIENT_09_ADDR1} -msgLisAddr ${CLIENT_09_ADDR1} -pkiLisAddr ${CLIENT_09_ADDR2} -pki ${ZENO_PKI_IP}:44009 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_09_PATH}/log.evaluation
+        
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_10} -partner ${CLIENT_10_PARTNER} \
+            -msgPublicAddr ${CLIENT_10_ADDR1} -msgLisAddr ${CLIENT_10_ADDR1} -pkiLisAddr ${CLIENT_10_ADDR2} -pki ${ZENO_PKI_IP}:44010 \
+            -pkiCertPath /root/operator-cert.pem > ${CLIENT_10_PATH}/log.evaluation
 
     else if [ "${EVAL_SYSTEM}" == "pung" ]; then
 
+        # Run ten Pung clients.
 
+        /root/pung-client -e /tmp/collect -n ${CLIENT_01} -p ${CLIENT_01_PARTNER} -x ${CLIENT_01_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_01_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_01_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_02} -p ${CLIENT_02_PARTNER} -x ${CLIENT_02_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_02_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_02_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_03} -p ${CLIENT_03_PARTNER} -x ${CLIENT_03_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_03_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_03_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_04} -p ${CLIENT_04_PARTNER} -x ${CLIENT_04_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_04_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_04_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_05} -p ${CLIENT_05_PARTNER} -x ${CLIENT_05_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_05_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_05_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_06} -p ${CLIENT_06_PARTNER} -x ${CLIENT_06_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_06_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_06_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_07} -p ${CLIENT_07_PARTNER} -x ${CLIENT_07_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_07_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_07_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_08} -p ${CLIENT_08_PARTNER} -x ${CLIENT_08_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_08_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_08_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_09} -p ${CLIENT_09_PARTNER} -x ${CLIENT_09_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_09_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_09_PATH}/log.evaluation
+        
+        /root/pung-client -e /tmp/collect -n ${CLIENT_10} -p ${CLIENT_10_PARTNER} -x ${CLIENT_10_PUNG_SHARED_SECRET} \
+            -h ${CLIENT_10_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 > ${CLIENT_10_PATH}/log.evaluation
 
-    else
+    else if [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
 
+        # Run ten client components of Vuvuzela.
 
+        # TODO: MAKE IT 10.
+
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
+            -peer ${CLIENT_01_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_01_PATH}/log.evaluation
 
     fi
 
 fi
 
 
-# Start all collectors and clients.
-
-if [ "${CLIENT_01}" != "" ]; then
-    CLIENT=${CLIENT_01} PARTNER=${CLIENT_01_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_01_ADDR1} ADDR2=${CLIENT_01_ADDR2} \
-        CLIENT_PATH=${CLIENT_01_PATH} METRICS_PIPE=${CLIENT_01_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_01_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_01_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_02}" != "" ]; then
-    CLIENT=${CLIENT_02} PARTNER=${CLIENT_02_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_02_ADDR1} ADDR2=${CLIENT_02_ADDR2} \
-        CLIENT_PATH=${CLIENT_02_PATH} METRICS_PIPE=${CLIENT_02_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_02_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_02_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_03}" != "" ]; then
-    CLIENT=${CLIENT_03} PARTNER=${CLIENT_03_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_03_ADDR1} ADDR2=${CLIENT_03_ADDR2} \
-        CLIENT_PATH=${CLIENT_03_PATH} METRICS_PIPE=${CLIENT_03_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_03_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_03_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_04}" != "" ]; then
-    CLIENT=${CLIENT_04} PARTNER=${CLIENT_04_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_04_ADDR1} ADDR2=${CLIENT_04_ADDR2} \
-        CLIENT_PATH=${CLIENT_04_PATH} METRICS_PIPE=${CLIENT_04_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_04_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_04_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_05}" != "" ]; then
-    CLIENT=${CLIENT_05} PARTNER=${CLIENT_05_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_05_ADDR1} ADDR2=${CLIENT_05_ADDR2} \
-        CLIENT_PATH=${CLIENT_05_PATH} METRICS_PIPE=${CLIENT_05_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_05_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_05_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_06}" != "" ]; then
-    CLIENT=${CLIENT_06} PARTNER=${CLIENT_06_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_06_ADDR1} ADDR2=${CLIENT_06_ADDR2} \
-        CLIENT_PATH=${CLIENT_06_PATH} METRICS_PIPE=${CLIENT_06_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_06_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_06_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_07}" != "" ]; then
-    CLIENT=${CLIENT_07} PARTNER=${CLIENT_07_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_07_ADDR1} ADDR2=${CLIENT_07_ADDR2} \
-        CLIENT_PATH=${CLIENT_07_PATH} METRICS_PIPE=${CLIENT_07_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_07_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_07_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_08}" != "" ]; then
-    CLIENT=${CLIENT_08} PARTNER=${CLIENT_08_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_08_ADDR1} ADDR2=${CLIENT_08_ADDR2} \
-        CLIENT_PATH=${CLIENT_08_PATH} METRICS_PIPE=${CLIENT_08_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_08_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_08_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_09}" != "" ]; then
-    CLIENT=${CLIENT_09} PARTNER=${CLIENT_09_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_09_ADDR1} ADDR2=${CLIENT_09_ADDR2} \
-        CLIENT_PATH=${CLIENT_09_PATH} METRICS_PIPE=${CLIENT_09_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_09_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_09_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
-
-if [ "${CLIENT_10}" != "" ]; then
-    CLIENT=${CLIENT_10} PARTNER=${CLIENT_10_PARTNER} LISTEN_IP=${LISTEN_IP} ADDR1=${CLIENT_10_ADDR1} ADDR2=${CLIENT_10_ADDR2} \
-        CLIENT_PATH=${CLIENT_10_PATH} METRICS_PIPE=${CLIENT_10_METRICS_PIPE} ZENO_PKI_IP=${OPERATOR_IP} PUNG_SERVER_ADDR=${CLIENT_10_PUNG_SERVER_ADDR} \
-        PUNG_CLIENTS_PER_PROC=${PUNG_CLIENTS_PER_PROC} KILL_ZENO_MIXES_IN_ROUND=${KILL_ZENO_MIXES_IN_ROUND} PUNG_SHARED_SECRET=${CLIENT_10_PUNG_SHARED_SECRET} \
-        /bin/bash /root/${EVAL_SCRIPT_TO_PULL}
-fi
+# Wait for metrics collector to exit.
+wait
 
 
 # Reset tc configuration.
@@ -391,46 +457,24 @@ fi
 
 # Upload result files to GCloud bucket.
 
-if [ "${CLIENT_01}" != "" ]; then
+if ([ "${TYPE_OF_NODE}" == "server" ] || [ "${TYPE_OF_NODE}" == "coordinator" ]); then
+
+    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_01}/
+
+else if [ "${TYPE_OF_NODE}" == "client" ]; then
+
     /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_01}/
-fi
-
-if [ "${CLIENT_02}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_02_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_02}/
-fi
-
-if [ "${CLIENT_03}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_03_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_03}/
-fi
-
-if [ "${CLIENT_04}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_04_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_04}/
-fi
-
-if [ "${CLIENT_05}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_05_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_05}/
-fi
-
-if [ "${CLIENT_06}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_06_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_06}/
-fi
-
-if [ "${CLIENT_07}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_07_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_07}/
-fi
-
-if [ "${CLIENT_08}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_08_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_08}/
-fi
-
-if [ "${CLIENT_09}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_09_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_09}/
-fi
-
-if [ "${CLIENT_10}" != "" ]; then
     /usr/bin/gsutil -m cp ${CLIENT_10_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_10}/
-fi
 
+fi
 
 # Mark worker as finished at operator.
 curl --cacert /root/operator-cert.pem --request PUT https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${WORKER_NAME}/finished

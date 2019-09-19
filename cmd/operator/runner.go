@@ -203,7 +203,7 @@ func (op *Operator) RunExperiments() {
 			// If zeno is being evaluated, initialize
 			// a PKI struct and have it listen in background.
 			op.ZenoPKI = &zenopki.PKI{
-				LisAddr:          fmt.Sprintf("%s:33001", strings.Split(op.InternalListenAddr, ":")[0]),
+				LisAddr:          fmt.Sprintf("%s:44001", strings.Split(op.InternalListenAddr, ":")[0]),
 				EvalCtrlChan:     zenoEvalCtrlChan,
 				AcceptMixRegs:    0,
 				AcceptClientRegs: 0,
