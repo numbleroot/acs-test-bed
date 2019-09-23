@@ -8,26 +8,6 @@ import (
 	"github.com/emicklei/go-restful"
 )
 
-// Worker describes one compute instance
-// exhaustively for reproducibility.
-type Worker struct {
-	Name                   string `json:"name"`
-	Address                string `json:"address"`
-	Status                 string `json:"status"`
-	Partner                string `json:"partner"`
-	Zone                   string `json:"zone"`
-	MinCPUPlatform         string `json:"minCPUPlatform"`
-	MachineType            string `json:"machineType"`
-	TypeOfNode             string `json:"typeOfNode"`
-	EvaluationScript       string `json:"evaluationScript"`
-	BinaryName             string `json:"binaryName"`
-	SourceImage            string `json:"sourceImage"`
-	DiskType               string `json:"diskType"`
-	DiskSize               string `json:"diskSize"`
-	NetTroublesIfApplied   string `json:"netTroublesIfApplied"`
-	ZenoMixKilledIfApplied string `json:"zenoMixKilledIfApplied"`
-}
-
 // RegisterReq transports the address information
 // of the first logical node on a worker instance
 // to the operator.

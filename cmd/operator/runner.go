@@ -14,7 +14,6 @@ import (
 	"github.com/numbleroot/acs-test-bed/cmd/operator/zenopki"
 )
 
-// TODO: Add all necessary metadata.
 var tmplInstanceCreate = `{
 	"kind": "compute#instance",
 	"name": "ACS_EVAL_INSERT_GCP_MACHINE_NAME",
@@ -28,12 +27,132 @@ var tmplInstanceCreate = `{
 		"kind": "compute#metadata",
 		"items": [
 			{
+				"key": "operatorIP",
+				"value": "ACS_EVAL_INSERT_META_OPERATOR_IP"
+			},
+			{
+				"key": "expID",
+				"value": "ACS_EVAL_INSERT_META_EXP_ID"
+			},
+			{
 				"key": "nameOfNode",
-				"value": "ACS_EVAL_INSERT_NAME"
+				"value": "ACS_EVAL_INSERT_META_NAME_OF_NODE"
+			},
+			{
+				"key": "evalSystem",
+				"value": "ACS_EVAL_INSERT_META_EVAL_SYSTEM"
+			},
+			{
+				"key": "numClients",
+				"value": "ACS_EVAL_INSERT_META_NUM_CLIENTS"
+			},
+			{
+				"key": "resultFolder",
+				"value": "ACS_EVAL_INSERT_META_RESULT_FOLDER"
+			},
+			{
+				"key": "typeOfNode",
+				"value": "ACS_EVAL_INSERT_META_TYPE_OF_NODE"
+			},
+			{
+				"key": "binaryToPull",
+				"value": "ACS_EVAL_INSERT_META_BINARY_TO_PULL"
+			},
+			{
+				"key": "pungServerIP",
+				"value": "ACS_EVAL_INSERT_META_PUNG_SERVER_IP"
+			},
+			{
+				"key": "tcConfig",
+				"value": "ACS_EVAL_INSERT_META_TC_CONFIG"
+			},
+			{
+				"key": "killZenoMixesInRound",
+				"value": "ACS_EVAL_INSERT_META_KILL_ZENO_MIXES_IN_ROUND"
+			},
+			{
+				"key": "client01",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_01"
+			},
+			{
+				"key": "partner01",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_01_PARTNER"
+			},
+			{
+				"key": "client02",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_02"
+			},
+			{
+				"key": "partner02",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_02_PARTNER"
+			},
+			{
+				"key": "client03",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_03"
+			},
+			{
+				"key": "partner03",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_03_PARTNER"
+			},
+			{
+				"key": "client04",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_04"
+			},
+			{
+				"key": "partner04",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_04_PARTNER"
+			},
+			{
+				"key": "client05",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_05"
+			},
+			{
+				"key": "partner05",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_05_PARTNER"
+			},
+			{
+				"key": "client06",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_06"
+			},
+			{
+				"key": "partner06",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_06_PARTNER"
+			},
+			{
+				"key": "client07",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_07"
+			},
+			{
+				"key": "partner07",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_07_PARTNER"
+			},
+			{
+				"key": "client08",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_08"
+			},
+			{
+				"key": "partner08",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_08_PARTNER"
+			},
+			{
+				"key": "client09",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_09"
+			},
+			{
+				"key": "partner09",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_09_PARTNER"
+			},
+			{
+				"key": "client10",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_10"
+			},
+			{
+				"key": "partner10",
+				"value": "ACS_EVAL_INSERT_META_CLIENT_10_PARTNER"
 			},
 			{
 				"key": "startup-script-url",
-				"value": "ACS_EVAL_INSERT_STARTUP_SCRIPT"
+				"value": "ACS_EVAL_INSERT_META_STARTUP_SCRIPT"
 			}
 		]
 	},
@@ -101,27 +220,85 @@ var tmplInstancePublicIP = `
 
 // SpawnInstance provisions a compute instance with
 // the characteristics from supplied worker struct.
-func (op *Operator) SpawnInstance(worker *Worker, resultFolder string, publiclyReachable bool) {
+func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bool) {
+
+	lastClient := worker.ID * 10
+	firstClient := lastClient - 10
+	clientIDs := make(map[int]string)
+
+	for i := 1; i <= 10; i++ {
+
+		if worker.TypeOfNode == "client" {
+			clientIDs[i] = fmt.Sprintf("client-%05d", (firstClient + i))
+		} else {
+			clientIDs[i] = fmt.Sprintf("server-%05d", (firstClient + i))
+		}
+	}
+
+	for i := 1; i <= 10; i++ {
+		fmt.Printf("clientIDs[%d] = %s\n", i, clientIDs[i])
+	}
 
 	// Customize API endpoint to send request to.
 	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances", op.GCloudProject, worker.Zone)
 
 	// Prepare request body.
-	reqBody := strings.ReplaceAll(tmplInstanceCreate, "ACS_EVAL_INSERT_GCP_MACHINE_NAME", fmt.Sprintf("%s-%s", worker.Name, resultFolder))
+	reqBody := strings.ReplaceAll(tmplInstanceCreate, "ACS_EVAL_INSERT_GCP_MACHINE_NAME", fmt.Sprintf("%s-%s", worker.Name, exp.ResultFolder))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ZONE", fmt.Sprintf("projects/%s/zones/%s", op.GCloudProject, worker.Zone))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MIN_CPU_PLATFORM", worker.MinCPUPlatform)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MACHINE_TYPE", fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", op.GCloudProject,
 		worker.Zone, worker.MachineType))
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_NAME", worker.Name)
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_STARTUP_SCRIPT", fmt.Sprintf("gs://%s/startup.sh", op.GCloudBucket))
+
+	// Replace placeholders in metadata.
+	// These are used by the startup script.
+
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_OPERATOR_IP", strings.Split(op.InternalListenAddr, ":")[0])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_EXP_ID", exp.ID)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_NAME_OF_NODE", worker.Name)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_EVAL_SYSTEM", exp.System)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_NUM_CLIENTS", fmt.Sprintf("%d", len(exp.Clients)))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_RESULT_FOLDER", exp.ResultFolder)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_TYPE_OF_NODE", worker.TypeOfNode)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_BINARY_TO_PULL", worker.BinaryName)
+
+	if (exp.System == "pung") && (worker.TypeOfNode == "client") {
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_PUNG_SERVER_IP", exp.Servers["server-00001"].Address)
+	} else {
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_PUNG_SERVER_IP", "irrelevant")
+	}
+
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_TC_CONFIG", exp.NetTroublesIfApplied)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_KILL_ZENO_MIXES_IN_ROUND", exp.ZenoMixKilledIfApplied)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_01", clientIDs[1])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_01_PARTNER", clientIDs[2])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_02", clientIDs[2])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_02_PARTNER", clientIDs[1])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_03", clientIDs[3])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_03_PARTNER", clientIDs[4])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_04", clientIDs[4])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_04_PARTNER", clientIDs[3])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_05", clientIDs[5])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_05_PARTNER", clientIDs[6])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_06", clientIDs[6])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_06_PARTNER", clientIDs[5])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_07", clientIDs[7])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_07_PARTNER", clientIDs[8])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_08", clientIDs[8])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_08_PARTNER", clientIDs[7])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_09", clientIDs[9])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_09_PARTNER", clientIDs[10])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_10", clientIDs[10])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_10_PARTNER", clientIDs[9])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_STARTUP_SCRIPT", fmt.Sprintf("gs://%s/startup.sh", op.GCloudBucket))
+
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SOURCE_IMAGE", fmt.Sprintf("projects/%s/global/images/%s", op.GCloudProject,
 		worker.SourceImage))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_DISK_TYPE", fmt.Sprintf("projects/%s/zones/%s/diskTypes/%s", op.GCloudProject,
 		worker.Zone, worker.DiskType))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_DISK_SIZE", worker.DiskSize)
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SUBNETWORK", fmt.Sprintf("projects/%s/regions/%s/subnetworks/default", op.GCloudProject,
-		strings.TrimSuffix(worker.Zone, "-b")))
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SERVICE_ACCOUNT", op.GCloudServiceAcc)
+
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SUBNETWORK", fmt.Sprintf("projects/%s/regions/%s/subnetworks/default",
+		op.GCloudProject, strings.TrimSuffix(worker.Zone, "-b")))
 
 	if publiclyReachable {
 		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ACCESS_CONFIG", tmplInstancePublicIP)
@@ -129,8 +306,7 @@ func (op *Operator) SpawnInstance(worker *Worker, resultFolder string, publiclyR
 		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ACCESS_CONFIG", "")
 	}
 
-	// TODO: Replace all metadata placeholders with actual values.
-	// TODO: Especially make sure to add PUNG_SERVER_IP.
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_SERVICE_ACCOUNT", op.GCloudServiceAcc)
 
 	// Create HTTP POST request.
 	request, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(reqBody))
@@ -229,7 +405,7 @@ func (op *Operator) RunExperiments() {
 		// Mark this experiment as in progress.
 		op.ExpInProgress = expID
 
-		// Stash all experiment data.
+		// Retrieve experiment data.
 		exp := op.Exps[expID]
 
 		op.Unlock()
@@ -257,7 +433,7 @@ func (op *Operator) RunExperiments() {
 
 		// Spawn all server machines.
 		for i := range exp.Servers {
-			go op.SpawnInstance(exp.Servers[i], exp.ResultFolder, true)
+			go op.SpawnInstance(exp, exp.Servers[i], true)
 		}
 
 		// Handle incoming registration requests.
@@ -299,7 +475,12 @@ func (op *Operator) RunExperiments() {
 
 				_, found := exp.Servers[failedReq.Worker]
 				if found {
+
 					exp.Servers[failedReq.Worker].Status = fmt.Sprintf("failed with: '%s'", failedReq.Reason)
+
+					// Also append failure to this
+					// experiment's progress.
+					exp.Progress = append(exp.Progress, fmt.Sprintf("Instance %s failed with: '%s'", failedReq.Worker, failedReq.Reason))
 				}
 			}
 		}
