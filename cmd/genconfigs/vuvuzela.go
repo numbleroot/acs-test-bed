@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/numbleroot/vuvuzela"
 )
@@ -29,6 +30,22 @@ type ClientConf struct {
 	MyName       string           `json:"MyName"`
 	MyPublicKey  *vuvuzela.BoxKey `json:"MyPublicKey"`
 	MyPrivateKey *vuvuzela.BoxKey `json:"MyPrivateKey"`
+}
+
+// PKIServer holds all information relevant
+// for contacting a server found in the PKI file.
+type PKIServer struct {
+	Address   string `json:"Address"`
+	PublicKey string `json:"PublicKey"`
+}
+
+// PKI will get written to a file and thus
+// replace an actual node being a PKI.
+type PKI struct {
+	People      map[string]string    `json:"People"`
+	Servers     map[string]PKIServer `json:"Servers"`
+	ServerOrder []string             `json:"ServerOrder"`
+	EntryServer string               `json:"EntryServer"`
 }
 
 func generateVuvuzelaMixConfs(mixes []Config, confsPath string) error {
@@ -106,6 +123,92 @@ func generateVuvuzelaClientConfs(clients []Config, confsPath string) error {
 		if err != nil {
 			return fmt.Errorf("could not write out marshalled client config: %v", err)
 		}
+	}
+
+	return nil
+}
+
+func preparePKIFile(confsPath string) error {
+
+	pki := &PKI{
+		People:      make(map[string]string),
+		Servers:     make(map[string]PKIServer),
+		ServerOrder: make([]string, 0, 3),
+	}
+
+	// Walk configurations path and read files.
+	err := filepath.Walk(confsPath, func(path string, info os.FileInfo, err error) error {
+
+		if err != nil {
+			return err
+		}
+
+		if !strings.Contains(path, ".conf") || strings.Contains(path, "pki.conf") {
+			return nil
+		}
+
+		// Prepare machine name.
+		nodeName := strings.Split(filepath.Base(path), ".conf")[0]
+
+		// Read content of machine configuration.
+		data, err := ioutil.ReadFile(path)
+		if err != nil {
+			return err
+		}
+
+		if strings.Contains(nodeName, "client") {
+
+			// Extract public key from file.
+			configSplit := strings.Split(string(data), "\"MyPublicKey\": \"")
+			pubKey := strings.Split(configSplit[1], "\",")[0]
+
+			// Add client to People list of PKI.
+			pki.People[nodeName] = pubKey
+
+		} else {
+
+			// Extract public key from file.
+			configSplit := strings.Split(string(data), "\"PublicKey\": \"")
+			pubKey := strings.Split(configSplit[1], "\",")[0]
+
+			if strings.Contains(nodeName, "00001") {
+
+				// The first server will be used as the
+				// coordinator of the Vuvuzela deployment.
+				pki.EntryServer = fmt.Sprintf("ACS_EVAL_INSERT_%s_ADDRESS", nodeName)
+
+			} else {
+
+				// Each other server is a regular,
+				// in-order Vuvuzela mix.
+				pki.Servers[nodeName] = PKIServer{
+					Address:   fmt.Sprintf("ACS_EVAL_INSERT_%s_ADDRESS", nodeName),
+					PublicKey: pubKey,
+				}
+
+				pki.ServerOrder = append(pki.ServerOrder, nodeName)
+			}
+		}
+
+		return nil
+	})
+	if err != nil {
+		fmt.Printf("Walking Vuvuzela configurations path failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Marshal PKI structure to JSON.
+	pkiJSON, err := json.MarshalIndent(pki, "", "  ")
+	if err != nil {
+		fmt.Printf("Marshaling PKI structure to JSON failed: %v\n", err)
+		os.Exit(1)
+	}
+
+	// Write preliminary PKI structure to file.
+	err = ioutil.WriteFile(filepath.Join(confsPath, "pki.conf"), pkiJSON, 0644)
+	if err != nil {
+		fmt.Printf("Writing marshaled PKI structure to file failed: %v\n", err)
+		os.Exit(1)
 	}
 
 	return nil
