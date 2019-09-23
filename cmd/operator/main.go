@@ -28,14 +28,14 @@ type Operator struct {
 
 	InternalListenAddr   string
 	InternalSrv          *restful.WebService
-	InternalRegisterChan chan string
+	InternalRegisterChan chan *RegisterReq
 	InternalReadyChan    chan string
 	InternalFinishedChan chan string
 	InternalFailedChan   chan *FailedReq
 
 	PublicListenAddr string
 	PublicSrv        *restful.WebService
-	PublicChan       chan string
+	PublicNewChan    chan string
 
 	ExpInProgress string
 	Exps          map[string]*Exp
@@ -46,18 +46,14 @@ type Operator struct {
 // Exp contains all information relevant
 // for monitoring an experiment.
 type Exp struct {
-	ID           string    `json:"id"`
-	Created      time.Time `json:"created"`
-	System       string    `json:"system"`
-	Concluded    bool      `json:"concluded"`
-	ResultFolder string    `json:"resultFolder"`
-	Progress     []string  `json:"progress"`
-
-	ServersSpawned map[string]*Worker `json:"serversSpawned"`
-	ServersUsed    map[string]*Worker `json:"serversUsed"`
-
-	ClientsSpawned map[string]*Worker `json:"clientsSpawned"`
-	ClientsUsed    map[string]*Worker `json:"clientsUsed"`
+	ID           string             `json:"id"`
+	Created      time.Time          `json:"created"`
+	System       string             `json:"system"`
+	Concluded    bool               `json:"concluded"`
+	ResultFolder string             `json:"resultFolder"`
+	Progress     []string           `json:"progress"`
+	Servers      map[string]*Worker `json:"servers"`
+	Clients      map[string]*Worker `json:"clients"`
 }
 
 func init() {
@@ -97,13 +93,13 @@ func main() {
 		TLSKeyPath:  *keyPathFlag,
 
 		InternalListenAddr:   *internalListenAddrFlag,
-		InternalRegisterChan: make(chan string),
+		InternalRegisterChan: make(chan *RegisterReq),
 		InternalReadyChan:    make(chan string),
 		InternalFinishedChan: make(chan string),
 		InternalFailedChan:   make(chan *FailedReq),
 
 		PublicListenAddr: *publicListenAddrFlag,
-		PublicChan:       make(chan string),
+		PublicNewChan:    make(chan string),
 
 		ExpInProgress: "",
 		Exps:          make(map[string]*Exp),

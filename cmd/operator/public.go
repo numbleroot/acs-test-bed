@@ -76,18 +76,15 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	exp.Concluded = false
 	exp.ResultFolder = expReq.ResultFolder
 	exp.Progress = make([]string, 0, 50)
-
-	exp.ServersSpawned = make(map[string]*Worker)
-	exp.ServersUsed = make(map[string]*Worker)
-	exp.ClientsSpawned = make(map[string]*Worker)
-	exp.ClientsUsed = make(map[string]*Worker)
+	exp.Servers = make(map[string]*Worker)
+	exp.Clients = make(map[string]*Worker)
 
 	for i := range expReq.Servers {
-		exp.ServersSpawned[expReq.Servers[i].Name] = expReq.Servers[i]
+		exp.Servers[expReq.Servers[i].Name] = expReq.Servers[i]
 	}
 
 	for i := range expReq.Clients {
-		exp.ClientsSpawned[expReq.Clients[i].Name] = expReq.Clients[i]
+		exp.Clients[expReq.Clients[i].Name] = expReq.Clients[i]
 	}
 
 	// Add experiment to map of all experiments.
@@ -95,7 +92,7 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 
 	// Signal goroutine conducting the
 	// experiments availability of the new one.
-	op.PublicChan <- exp.ID
+	op.PublicNewChan <- exp.ID
 
 	fmt.Printf("[PUT /experiments/new] Successfully added new experiment %s from %s.\n", exp.ID, req.Request.RemoteAddr)
 

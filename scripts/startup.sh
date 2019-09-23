@@ -136,25 +136,6 @@ curl --cacert /root/operator-cert.pem --request PUT --data-binary "{
 /usr/bin/gsutil cp gs://acs-eval/${BINARY_TO_PULL} /root/${BINARY_TO_PULL}
 /usr/bin/gsutil cp gs://acs-eval/collector /root/collector
 
-if [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
-    
-    sleep 10
-
-    printf "This is a Vuvuzela experiment, pull 'gs://acs-eval/vuvuzela-confs/pki.conf' as well\n"
-    /usr/bin/gsutil cp gs://acs-eval/vuvuzela-confs/pki.conf /root/vuvuzela-confs/pki.conf
-
-    while [ ! -e /root/vuvuzela-confs/pki.conf ]; do
-
-        printf "Download of 'gs://acs-eval/vuvuzela-confs/pki.conf' unsuccessful, trying again...\n"
-        ls -lah /root/
-        ls -lah /root/vuvuzela-confs/
-
-        sleep 1
-
-        /usr/bin/gsutil cp gs://acs-eval/vuvuzela-confs/pki.conf /root/vuvuzela-confs/pki.conf
-    done
-fi
-
 tried=0
 while ([ ! -e /root/${BINARY_TO_PULL} ] || [ ! -e /root/collector ]) && [ "${tried}" -lt 20 ]; do
 
@@ -180,6 +161,25 @@ if [ "${tried}" -eq 20 ]; then
     }" https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${WORKER_NAME}/failed
 
     poweroff
+fi
+
+if [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
+    
+    sleep 10
+
+    printf "This is a Vuvuzela experiment, pull 'gs://acs-eval/vuvuzela-confs/pki.conf' as well\n"
+    /usr/bin/gsutil cp gs://acs-eval/vuvuzela-confs/pki.conf /root/vuvuzela-confs/pki.conf
+
+    while [ ! -e /root/vuvuzela-confs/pki.conf ]; do
+
+        printf "Download of 'gs://acs-eval/vuvuzela-confs/pki.conf' unsuccessful, trying again...\n"
+        ls -lah /root/
+        ls -lah /root/vuvuzela-confs/
+
+        sleep 1
+
+        /usr/bin/gsutil cp gs://acs-eval/vuvuzela-confs/pki.conf /root/vuvuzela-confs/pki.conf
+    done
 fi
 
 # Make the downloaded binaries executable.

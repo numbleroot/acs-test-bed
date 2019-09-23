@@ -12,6 +12,7 @@ import (
 // exhaustively for reproducibility.
 type Worker struct {
 	Name                   string `json:"name"`
+	Address                string `json:"address"`
 	Status                 string `json:"status"`
 	Partner                string `json:"partner"`
 	Zone                   string `json:"zone"`
@@ -25,6 +26,14 @@ type Worker struct {
 	DiskSize               string `json:"diskSize"`
 	NetTroublesIfApplied   string `json:"netTroublesIfApplied"`
 	ZenoMixKilledIfApplied string `json:"zenoMixKilledIfApplied"`
+}
+
+// RegisterReq transports the address information
+// of the first logical node on a worker instance
+// to the operator.
+type RegisterReq struct {
+	Worker  string `json:"-"`
+	Address string `json:"address"`
 }
 
 // FailedReq captures all information taken
@@ -44,8 +53,19 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 
 	fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Handling registration intent.\n", expID, workerName)
 
+	// Read address information from request.
+	regReq := &RegisterReq{}
+	err := req.ReadEntity(&regReq)
+	if err != nil {
+		fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Failed to extract payload containing address: %v.\n", expID, workerName, err)
+		resp.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	regReq.Worker = workerName
+
 	// Signal runner which worker intends to register.
-	op.InternalRegisterChan <- workerName
+	op.InternalRegisterChan <- regReq
 
 	fmt.Printf("[PUT /experiments/%s/workers/%s/register] Registration successful.\n", expID, workerName)
 

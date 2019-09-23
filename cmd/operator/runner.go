@@ -1,10 +1,12 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
+	"os/exec"
 	"strings"
 	"sync"
 	"time"
@@ -174,6 +176,44 @@ func (op *Operator) SpawnInstance(worker *Worker, resultFolder string, publiclyR
 	}
 }
 
+// VuvuzelaProducePKI writes out the collected server
+// addresses into the otherwise prepared pki.conf file
+// that all Vuvuzela nodes use instead of an actual
+// PKI node.
+func (exp *Exp) VuvuzelaProducePKI() error {
+
+	// Read preliminary PKI file into memory.
+	pki, err := ioutil.ReadFile("/root/vuvuzela-confs/pki.conf")
+	if err != nil {
+		return err
+	}
+
+	// Replace all placeholders for a server's
+	// address with its registered address in
+	// this experiment.
+	for i := range exp.Servers {
+		pki = bytes.ReplaceAll(pki, []byte(fmt.Sprintf("ACS_EVAL_INSERT_%s_ADDRESS", exp.Servers[i].Name)), []byte(exp.Servers[i].Address))
+	}
+
+	// Write out final pki.conf.
+	err = ioutil.WriteFile("/root/vuvuzela-confs/pki.conf", pki, 0644)
+	if err != nil {
+		return err
+	}
+
+	// Upload pki.conf to GCloud bucket.
+	out, err := exec.Command("/usr/bin/gsutil", "cp", "/root/vuvuzela-confs/pki.conf", "gs://acs-eval/vuvuzela-confs/pki.conf").CombinedOutput()
+	if err != nil {
+		return err
+	}
+
+	if !bytes.Contains(out, []byte("completed")) {
+		return fmt.Errorf("uploading final pki.conf to GCloud bucket unsuccessful")
+	}
+
+	return nil
+}
+
 // RunExperiments is the authoritative goroutine
 // for provisioning machines and conducting all
 // experiments queued in the Operator.
@@ -182,7 +222,7 @@ func (op *Operator) RunExperiments() {
 	for {
 
 		// Wait for new experiment to be queued.
-		expID := <-op.PublicChan
+		expID := <-op.PublicNewChan
 
 		op.Lock()
 
@@ -216,38 +256,50 @@ func (op *Operator) RunExperiments() {
 		}
 
 		// Spawn all server machines.
-		for i := range exp.ServersSpawned {
-			go op.SpawnInstance(exp.ServersSpawned[i], exp.ResultFolder, true)
+		for i := range exp.Servers {
+			go op.SpawnInstance(exp.Servers[i], exp.ResultFolder, true)
 		}
 
 		// Handle incoming registration requests.
-		for range exp.ServersSpawned {
+		for range exp.Servers {
 
-			workerName := <-op.InternalRegisterChan
+			workerReg := <-op.InternalRegisterChan
 
-			_, found := exp.ServersSpawned[workerName]
+			_, found := exp.Servers[workerReg.Worker]
 			if found {
-				exp.ServersSpawned[workerName].Status = "registered"
+				exp.Servers[workerReg.Worker].Address = workerReg.Address
+				exp.Servers[workerReg.Worker].Status = "registered"
+			}
+		}
+
+		if exp.System == "vuvuzela" {
+
+			// If Vuvuzela is being evaluated, we need to
+			// quickly produce an appropriate pki.conf file.
+			err := exp.VuvuzelaProducePKI()
+			if err != nil {
+				fmt.Printf("Failed to produce final pki.conf file: %v", err)
+				os.Exit(1)
 			}
 		}
 
 		// Handle incoming ready or failed requests.
-		for range exp.ServersSpawned {
+		for range exp.Servers {
 
 			select {
 
 			case workerName := <-op.InternalReadyChan:
 
-				_, found := exp.ServersSpawned[workerName]
+				_, found := exp.Servers[workerName]
 				if found {
-					exp.ServersSpawned[workerName].Status = "ready"
+					exp.Servers[workerName].Status = "ready"
 				}
 
 			case failedReq := <-op.InternalFailedChan:
 
-				_, found := exp.ServersSpawned[failedReq.Worker]
+				_, found := exp.Servers[failedReq.Worker]
 				if found {
-					exp.ServersSpawned[failedReq.Worker].Status = fmt.Sprintf("failed with: '%s'", failedReq.Reason)
+					exp.Servers[failedReq.Worker].Status = fmt.Sprintf("failed with: '%s'", failedReq.Reason)
 				}
 			}
 		}
@@ -257,13 +309,13 @@ func (op *Operator) RunExperiments() {
 		// TODO: Spawn all client machines.
 
 		// Handle incoming client registration requests.
-		for range exp.ClientsSpawned {
+		for range exp.Clients {
 
-			workerName := <-op.InternalRegisterChan
+			workerReg := <-op.InternalRegisterChan
 
-			_, foundAsClient := exp.ClientsSpawned[workerName]
+			_, foundAsClient := exp.Clients[workerReg.Worker]
 			if foundAsClient {
-				exp.ClientsSpawned[workerName].Status = "registered"
+				exp.Clients[workerReg.Worker].Status = "registered"
 			}
 		}
 
