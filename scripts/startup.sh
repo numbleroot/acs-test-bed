@@ -128,18 +128,7 @@ mkdir -p ${CLIENT_01_PATH} ${CLIENT_02_PATH} ${CLIENT_03_PATH} ${CLIENT_04_PATH}
 
 # Register with operator for current experiment.
 curl --cacert /root/operator-cert.pem --request PUT --data-binary "{
-    \"addresses\": [
-        \"${CLIENT_01}\": \"${CLIENT_01_ADDR1}\",
-        \"${CLIENT_02}\": \"${CLIENT_02_ADDR1}\",
-        \"${CLIENT_03}\": \"${CLIENT_03_ADDR1}\",
-        \"${CLIENT_04}\": \"${CLIENT_04_ADDR1}\",
-        \"${CLIENT_05}\": \"${CLIENT_05_ADDR1}\",
-        \"${CLIENT_06}\": \"${CLIENT_06_ADDR1}\",
-        \"${CLIENT_07}\": \"${CLIENT_07_ADDR1}\",
-        \"${CLIENT_08}\": \"${CLIENT_08_ADDR1}\",
-        \"${CLIENT_09}\": \"${CLIENT_09_ADDR1}\",
-        \"${CLIENT_10}\": \"${CLIENT_10_ADDR1}\"
-    ]
+    \"address\": \"${CLIENT_01_ADDR1}\"
 }" https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${WORKER_NAME}/register
 
 
@@ -156,7 +145,7 @@ if [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
 
     while [ ! -e /root/vuvuzela-confs/pki.conf ]; do
 
-        printf "Downloading 'gs://acs-eval/vuvuzela-confs/pki.conf' unsuccessful, trying again...\n"
+        printf "Download of 'gs://acs-eval/vuvuzela-confs/pki.conf' unsuccessful, trying again...\n"
         ls -lah /root/
         ls -lah /root/vuvuzela-confs/
 
@@ -320,7 +309,7 @@ iptables -Z -t filter -L OUTPUT
 
 
 # Run metrics collector sidecar in background.
-/root/collector -system ${EVAL_SYSTEM} -${TYPE_OF_NODE} -pipe /tmp/collect -metricsPath ${CLIENT_01_PATH}/ &
+/root/collector -system ${EVAL_SYSTEM} -typeOfNode ${TYPE_OF_NODE} -pipe /tmp/collect -metricsPath /root/ &
 
 
 if [ "${TYPE_OF_NODE}" == "server" ]; then
@@ -330,7 +319,7 @@ if [ "${TYPE_OF_NODE}" == "server" ]; then
         # Run zeno as mix.
         /root/zeno -eval -killMixesInRound ${KILL_ZENO_MIXES_IN_ROUND} -metricsPipe /tmp/collect -mix -name ${CLIENT_01} \
             -partner ${CLIENT_01_PARTNER} -msgPublicAddr ${CLIENT_01_ADDR1} -msgLisAddr ${CLIENT_01_ADDR1} -pkiLisAddr ${CLIENT_01_ADDR2} \
-            -pki ${ZENO_PKI_IP}:44001 -pkiCertPath /root/operator-cert.pem > ${CLIENT_01_PATH}/log.evaluation
+            -pki ${OPERATOR_IP}:44001 -pkiCertPath /root/operator-cert.pem > ${CLIENT_01_PATH}/log.evaluation
 
     else if [ "${EVAL_SYSTEM}" == "pung" ]; then
 
@@ -348,7 +337,7 @@ if [ "${TYPE_OF_NODE}" == "server" ]; then
 else if [ "${TYPE_OF_NODE}" == "coordinator" ]; then
 
     # Run coordinator component of Vuvuzela.
-    /root/vuvuzela-coordinator -eval -metricsPipe /tmp/collect -addr ${ADDR1} \
+    /root/vuvuzela-coordinator -eval -metricsPipe /tmp/collect -addr ${CLIENT_01_ADDR1} \
         -wait 10s -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_01_PATH}/log.evaluation
 
 else if [ "${TYPE_OF_NODE}" == "client" ]; then
@@ -358,43 +347,43 @@ else if [ "${TYPE_OF_NODE}" == "client" ]; then
         # Run ten zeno clients.
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_01} -partner ${CLIENT_01_PARTNER} \
-            -msgPublicAddr ${CLIENT_01_ADDR1} -msgLisAddr ${CLIENT_01_ADDR1} -pkiLisAddr ${CLIENT_01_ADDR2} -pki ${ZENO_PKI_IP}:44001 \
+            -msgPublicAddr ${CLIENT_01_ADDR1} -msgLisAddr ${CLIENT_01_ADDR1} -pkiLisAddr ${CLIENT_01_ADDR2} -pki ${OPERATOR_IP}:44001 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_01_PATH}/log.evaluation
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_02} -partner ${CLIENT_02_PARTNER} \
-            -msgPublicAddr ${CLIENT_02_ADDR1} -msgLisAddr ${CLIENT_02_ADDR1} -pkiLisAddr ${CLIENT_02_ADDR2} -pki ${ZENO_PKI_IP}:44002 \
+            -msgPublicAddr ${CLIENT_02_ADDR1} -msgLisAddr ${CLIENT_02_ADDR1} -pkiLisAddr ${CLIENT_02_ADDR2} -pki ${OPERATOR_IP}:44002 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_02_PATH}/log.evaluation
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_03} -partner ${CLIENT_03_PARTNER} \
-            -msgPublicAddr ${CLIENT_03_ADDR1} -msgLisAddr ${CLIENT_03_ADDR1} -pkiLisAddr ${CLIENT_03_ADDR2} -pki ${ZENO_PKI_IP}:44003 \
+            -msgPublicAddr ${CLIENT_03_ADDR1} -msgLisAddr ${CLIENT_03_ADDR1} -pkiLisAddr ${CLIENT_03_ADDR2} -pki ${OPERATOR_IP}:44003 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_03_PATH}/log.evaluation
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_04} -partner ${CLIENT_04_PARTNER} \
-            -msgPublicAddr ${CLIENT_04_ADDR1} -msgLisAddr ${CLIENT_04_ADDR1} -pkiLisAddr ${CLIENT_04_ADDR2} -pki ${ZENO_PKI_IP}:44004 \
+            -msgPublicAddr ${CLIENT_04_ADDR1} -msgLisAddr ${CLIENT_04_ADDR1} -pkiLisAddr ${CLIENT_04_ADDR2} -pki ${OPERATOR_IP}:44004 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_04_PATH}/log.evaluation
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_05} -partner ${CLIENT_05_PARTNER} \
-            -msgPublicAddr ${CLIENT_05_ADDR1} -msgLisAddr ${CLIENT_05_ADDR1} -pkiLisAddr ${CLIENT_05_ADDR2} -pki ${ZENO_PKI_IP}:44005 \
+            -msgPublicAddr ${CLIENT_05_ADDR1} -msgLisAddr ${CLIENT_05_ADDR1} -pkiLisAddr ${CLIENT_05_ADDR2} -pki ${OPERATOR_IP}:44005 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_05_PATH}/log.evaluation
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_06} -partner ${CLIENT_06_PARTNER} \
-            -msgPublicAddr ${CLIENT_06_ADDR1} -msgLisAddr ${CLIENT_06_ADDR1} -pkiLisAddr ${CLIENT_06_ADDR2} -pki ${ZENO_PKI_IP}:44006 \
+            -msgPublicAddr ${CLIENT_06_ADDR1} -msgLisAddr ${CLIENT_06_ADDR1} -pkiLisAddr ${CLIENT_06_ADDR2} -pki ${OPERATOR_IP}:44006 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_06_PATH}/log.evaluation
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_07} -partner ${CLIENT_07_PARTNER} \
-            -msgPublicAddr ${CLIENT_07_ADDR1} -msgLisAddr ${CLIENT_07_ADDR1} -pkiLisAddr ${CLIENT_07_ADDR2} -pki ${ZENO_PKI_IP}:44007 \
+            -msgPublicAddr ${CLIENT_07_ADDR1} -msgLisAddr ${CLIENT_07_ADDR1} -pkiLisAddr ${CLIENT_07_ADDR2} -pki ${OPERATOR_IP}:44007 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_07_PATH}/log.evaluation
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_08} -partner ${CLIENT_08_PARTNER} \
-            -msgPublicAddr ${CLIENT_08_ADDR1} -msgLisAddr ${CLIENT_08_ADDR1} -pkiLisAddr ${CLIENT_08_ADDR2} -pki ${ZENO_PKI_IP}:44008 \
+            -msgPublicAddr ${CLIENT_08_ADDR1} -msgLisAddr ${CLIENT_08_ADDR1} -pkiLisAddr ${CLIENT_08_ADDR2} -pki ${OPERATOR_IP}:44008 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_08_PATH}/log.evaluation
 
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_09} -partner ${CLIENT_09_PARTNER} \
-            -msgPublicAddr ${CLIENT_09_ADDR1} -msgLisAddr ${CLIENT_09_ADDR1} -pkiLisAddr ${CLIENT_09_ADDR2} -pki ${ZENO_PKI_IP}:44009 \
+            -msgPublicAddr ${CLIENT_09_ADDR1} -msgLisAddr ${CLIENT_09_ADDR1} -pkiLisAddr ${CLIENT_09_ADDR2} -pki ${OPERATOR_IP}:44009 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_09_PATH}/log.evaluation
         
         /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_10} -partner ${CLIENT_10_PARTNER} \
-            -msgPublicAddr ${CLIENT_10_ADDR1} -msgLisAddr ${CLIENT_10_ADDR1} -pkiLisAddr ${CLIENT_10_ADDR2} -pki ${ZENO_PKI_IP}:44010 \
+            -msgPublicAddr ${CLIENT_10_ADDR1} -msgLisAddr ${CLIENT_10_ADDR1} -pkiLisAddr ${CLIENT_10_ADDR2} -pki ${OPERATOR_IP}:44010 \
             -pkiCertPath /root/operator-cert.pem > ${CLIENT_10_PATH}/log.evaluation
 
     else if [ "${EVAL_SYSTEM}" == "pung" ]; then
@@ -435,10 +424,35 @@ else if [ "${TYPE_OF_NODE}" == "client" ]; then
 
         # Run ten client components of Vuvuzela.
 
-        # TODO: MAKE IT 10.
-
         /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
             -peer ${CLIENT_01_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_01_PATH}/log.evaluation
+        
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_02}.conf \
+            -peer ${CLIENT_02_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_02_PATH}/log.evaluation
+        
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_03}.conf \
+            -peer ${CLIENT_03_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_03_PATH}/log.evaluation
+        
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_04}.conf \
+            -peer ${CLIENT_04_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_04_PATH}/log.evaluation
+        
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_05}.conf \
+            -peer ${CLIENT_05_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_05_PATH}/log.evaluation
+        
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_06}.conf \
+            -peer ${CLIENT_06_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_06_PATH}/log.evaluation
+        
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_07}.conf \
+            -peer ${CLIENT_07_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_07_PATH}/log.evaluation
+        
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_08}.conf \
+            -peer ${CLIENT_08_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_08_PATH}/log.evaluation
+
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_09}.conf \
+            -peer ${CLIENT_09_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_09_PATH}/log.evaluation
+        
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_10}.conf \
+            -peer ${CLIENT_10_PARTNER} -pki /root/vuvuzela-confs/pki.conf > ${CLIENT_10_PATH}/log.evaluation
 
     fi
 
@@ -459,20 +473,22 @@ fi
 
 if ([ "${TYPE_OF_NODE}" == "server" ] || [ "${TYPE_OF_NODE}" == "coordinator" ]); then
 
-    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_01}/
+    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_01}.evaluation
+    /usr/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${WORKER_NAME}_${LISTEN_IP}/
 
 else if [ "${TYPE_OF_NODE}" == "client" ]; then
 
-    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_01}/
-    /usr/bin/gsutil -m cp ${CLIENT_02_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_02}/
-    /usr/bin/gsutil -m cp ${CLIENT_03_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_03}/
-    /usr/bin/gsutil -m cp ${CLIENT_04_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_04}/
-    /usr/bin/gsutil -m cp ${CLIENT_05_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_05}/
-    /usr/bin/gsutil -m cp ${CLIENT_06_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_06}/
-    /usr/bin/gsutil -m cp ${CLIENT_07_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_07}/
-    /usr/bin/gsutil -m cp ${CLIENT_08_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_08}/
-    /usr/bin/gsutil -m cp ${CLIENT_09_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_09}/
-    /usr/bin/gsutil -m cp ${CLIENT_10_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/${CLIENT_10}/
+    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_01}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_02_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_02}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_03_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_03}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_04_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_04}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_05_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_05}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_06_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_06}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_07_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_07}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_08_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_08}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_09_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_09}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_10_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${WORKER_NAME}_${LISTEN_IP}/log_${CLIENT_10}.evaluation
+    /usr/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${WORKER_NAME}_${LISTEN_IP}/
 
 fi
 
