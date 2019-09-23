@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/emicklei/go-restful"
 	"github.com/numbleroot/acs-test-bed/cmd/operator/zenopki"
@@ -47,13 +46,14 @@ type Operator struct {
 // for monitoring an experiment.
 type Exp struct {
 	ID                     string             `json:"id"`
-	Created                time.Time          `json:"created"`
+	Created                string             `json:"created"`
 	System                 string             `json:"system"`
 	Concluded              bool               `json:"concluded"`
 	ResultFolder           string             `json:"resultFolder"`
 	NetTroublesIfApplied   string             `json:"netTroublesIfApplied"`
 	ZenoMixKilledIfApplied string             `json:"zenoMixKilledIfApplied"`
 	Progress               []string           `json:"progress"`
+	ProgressChan           chan string        `json:"-"`
 	Servers                map[string]*Worker `json:"servers"`
 	Clients                map[string]*Worker `json:"clients"`
 }

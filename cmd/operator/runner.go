@@ -311,7 +311,7 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 	// Create HTTP POST request.
 	request, err := http.NewRequest(http.MethodPost, endpoint, strings.NewReader(reqBody))
 	if err != nil {
-		fmt.Printf("[RUNNER.SPAWNINSTANCE] Failed creating HTTP API request: %v\n", err)
+		exp.ProgressChan <- fmt.Sprintf("Failed creating HTTP API request to spawn %s: %v", worker.Name, err)
 		os.Exit(1)
 	}
 	request.Header.Set(http.CanonicalHeaderKey("content-type"), "application/json")
@@ -322,21 +322,21 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 	for err != nil && tried < 10 {
 
 		tried++
-		fmt.Printf("[RUNNER.SPAWNINSTANCE] Create API request failed (will try again): %v\n", err)
+		exp.ProgressChan <- fmt.Sprintf("Create API request for %s failed (will try again): %v\n", worker.Name, err)
 		time.Sleep(1 * time.Second)
 
 		resp, err = http.DefaultClient.Do(request)
 	}
 
 	if tried >= 10 {
-		fmt.Printf("[RUNNER.SPAWNINSTANCE] Create API request failed permanently: %v\n", err)
+		exp.ProgressChan <- fmt.Sprintf("Create API request for %s failed permanently: %v\n", worker.Name, err)
 		os.Exit(1)
 	}
 
 	// Read the response.
 	outRaw, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Printf("[RUNNER.SPAWNINSTANCE] Failed reading from instance create response body: %v\n", err)
+		exp.ProgressChan <- fmt.Sprintf("Failed reading from instance create response body for %s: %v\n", worker.Name, err)
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
@@ -345,10 +345,21 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 
 	// Verify successful machine creation.
 	if strings.Contains(out, "RUNNING") || strings.Contains(out, "DONE") {
-		fmt.Printf("[RUNNER.SPAWNINSTANCE] Instance %s running, waiting for initialization to finish...\n", worker.Name)
+		exp.ProgressChan <- fmt.Sprintf("Instance %s running, waiting for initialization to finish.", worker.Name)
 	} else {
-		fmt.Printf("[RUNNER.SPAWNINSTANCE] Spawning instance %s returned failure message:\n%s\n", worker.Name, out)
+		exp.ProgressChan <- fmt.Sprintf("Spawning instance %s returned failure message: '%s'", worker.Name, out)
 		os.Exit(1)
+	}
+}
+
+// ProgressWriter is the only routine allowed to append
+// time-stamped log lines to the progress slice of its
+// experiment. New lines are sent to it via the experiment's
+// progress channel.
+func (exp *Exp) ProgressWriter() {
+
+	for line := range exp.ProgressChan {
+		exp.Progress = append(exp.Progress, fmt.Sprintf("[%s] %s", time.Now().Format("2006-02-03 15:04:05"), line))
 	}
 }
 
@@ -410,6 +421,14 @@ func (op *Operator) RunExperiments() {
 
 		op.Unlock()
 
+		// Launch progress writing routine.
+		go exp.ProgressWriter()
+
+		exp.ProgressChan <- fmt.Sprintf("Commencing experiment %s with %d server and %d client instances.",
+			expID, len(exp.Servers), len(exp.Clients))
+		exp.ProgressChan <- fmt.Sprintf("Experiment settings: System='%s', TC config='%s', zeno mixes killed in round='%s'",
+			exp.System, exp.NetTroublesIfApplied, exp.ZenoMixKilledIfApplied)
+
 		// Prepare zeno evaluation control channel in
 		// case it is needed later on.
 		zenoEvalCtrlChan := make(chan struct{})
@@ -427,6 +446,8 @@ func (op *Operator) RunExperiments() {
 				Nodes:            make(map[string]*zenopki.Endpoint),
 			}
 
+			exp.ProgressChan <- fmt.Sprintf("Launching zeno PKI process at %s.", op.ZenoPKI.LisAddr)
+
 			// Run zeno PKI process in background.
 			go op.ZenoPKI.Run(op.TLSCertPath, op.TLSKeyPath)
 		}
@@ -435,6 +456,8 @@ func (op *Operator) RunExperiments() {
 		for i := range exp.Servers {
 			go op.SpawnInstance(exp, exp.Servers[i], true)
 		}
+
+		exp.ProgressChan <- "All servers instructed to spawn, waiting for registration requests."
 
 		// Handle incoming registration requests.
 		for range exp.Servers {
@@ -445,6 +468,7 @@ func (op *Operator) RunExperiments() {
 			if found {
 				exp.Servers[workerReg.Worker].Address = workerReg.Address
 				exp.Servers[workerReg.Worker].Status = "registered"
+				exp.ProgressChan <- fmt.Sprintf("Server %s at %s marked as registered.", workerReg.Worker, workerReg.Address)
 			}
 		}
 
@@ -454,9 +478,11 @@ func (op *Operator) RunExperiments() {
 			// quickly produce an appropriate pki.conf file.
 			err := exp.VuvuzelaProducePKI()
 			if err != nil {
-				fmt.Printf("Failed to produce final pki.conf file: %v", err)
+				exp.ProgressChan <- fmt.Sprintf("Failed to produce final pki.conf file for Vuvuzela: %v", err)
 				os.Exit(1)
 			}
+
+			exp.ProgressChan <- "pki.conf for Vuvuzela created and uploaded."
 		}
 
 		// Handle incoming ready or failed requests.
@@ -469,23 +495,29 @@ func (op *Operator) RunExperiments() {
 				_, found := exp.Servers[workerName]
 				if found {
 					exp.Servers[workerName].Status = "ready"
+					exp.ProgressChan <- fmt.Sprintf("Server %s marked as ready.", workerName)
 				}
 
 			case failedReq := <-op.InternalFailedChan:
 
 				_, found := exp.Servers[failedReq.Worker]
 				if found {
-
-					exp.Servers[failedReq.Worker].Status = fmt.Sprintf("failed with: '%s'", failedReq.Reason)
-
-					// Also append failure to this
-					// experiment's progress.
-					exp.Progress = append(exp.Progress, fmt.Sprintf("Instance %s failed with: '%s'", failedReq.Worker, failedReq.Reason))
+					exp.Servers[failedReq.Worker].Status = "failed"
+					exp.ProgressChan <- fmt.Sprintf("Server %s failed with: %s", failedReq.Worker, failedReq.Reason)
 				}
 			}
 		}
 
-		// TODO: Verify enough servers ready.
+		// Verify all servers ready.
+		for i := range exp.Servers {
+
+			if exp.Servers[i].Status == "failed" {
+				exp.ProgressChan <- fmt.Sprintf("At least one server failed, ending experiment %s.", expID)
+				goto END
+			}
+		}
+
+		exp.ProgressChan <- fmt.Sprintf("All %d servers spawned and ready, launching clients.", len(exp.Servers))
 
 		// TODO: Spawn all client machines.
 
@@ -500,7 +532,7 @@ func (op *Operator) RunExperiments() {
 			}
 		}
 
-		// TODO: Verify enough clients ready.
+		// TODO: Verify all clients ready.
 
 		// TODO: Conduct experiment.
 
@@ -513,7 +545,9 @@ func (op *Operator) RunExperiments() {
 
 		// TODO: Wait for all clients to signal completion.
 
+	END:
 		exp.Concluded = true
+		close(exp.ProgressChan)
 
 		op.Lock()
 

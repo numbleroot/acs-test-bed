@@ -71,11 +71,12 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 
 	// Fill in complete experiment specification.
 	exp.ID = fmt.Sprintf("%x", id)
-	exp.Created = time.Now()
+	exp.Created = time.Now().Format("2006-02-03_15:04:05")
 	exp.System = expReq.System
 	exp.Concluded = false
 	exp.ResultFolder = expReq.ResultFolder
 	exp.Progress = make([]string, 0, 50)
+	exp.ProgressChan = make(chan string)
 	exp.Servers = make(map[string]*Worker)
 	exp.Clients = make(map[string]*Worker)
 
