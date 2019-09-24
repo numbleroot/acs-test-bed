@@ -77,15 +77,19 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	exp.ResultFolder = expReq.ResultFolder
 	exp.Progress = make([]string, 0, 50)
 	exp.ProgressChan = make(chan string)
-	exp.Servers = make(map[string]*Worker)
-	exp.Clients = make(map[string]*Worker)
+	exp.Servers = make([]*Worker, len(expReq.Servers))
+	exp.ServersMap = make(map[string]*Worker)
+	exp.Clients = make([]*Worker, len(expReq.Clients))
+	exp.ClientsMap = make(map[string]*Worker)
 
 	for i := range expReq.Servers {
-		exp.Servers[expReq.Servers[i].Name] = expReq.Servers[i]
+		exp.Servers[i] = expReq.Servers[i]
+		exp.ServersMap[expReq.Servers[i].Name] = expReq.Servers[i]
 	}
 
 	for i := range expReq.Clients {
-		exp.Clients[expReq.Clients[i].Name] = expReq.Clients[i]
+		exp.Clients[i] = expReq.Clients[i]
+		exp.ClientsMap[expReq.Clients[i].Name] = expReq.Clients[i]
 	}
 
 	// Add experiment to map of all experiments.

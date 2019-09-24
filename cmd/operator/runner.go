@@ -262,7 +262,7 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_BINARY_TO_PULL", worker.BinaryName)
 
 	if (exp.System == "pung") && (worker.TypeOfNode == "client") {
-		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_PUNG_SERVER_IP", exp.Servers["server-00001"].Address)
+		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_PUNG_SERVER_IP", exp.ServersMap["server-00001"].Address)
 	} else {
 		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_PUNG_SERVER_IP", "irrelevant")
 	}
@@ -379,7 +379,12 @@ func (exp *Exp) VuvuzelaProducePKI() error {
 	// address with its registered address in
 	// this experiment.
 	for i := range exp.Servers {
-		pki = bytes.ReplaceAll(pki, []byte(fmt.Sprintf("ACS_EVAL_INSERT_%s_ADDRESS", exp.Servers[i].Name)), []byte(exp.Servers[i].Address))
+
+		if exp.Servers[i].ID == 1 {
+			pki = bytes.ReplaceAll(pki, []byte(fmt.Sprintf("ACS_EVAL_INSERT_%s_ADDRESS", exp.Servers[i].Name)), []byte(fmt.Sprintf("ws://%s", exp.Servers[i].Address)))
+		} else {
+			pki = bytes.ReplaceAll(pki, []byte(fmt.Sprintf("ACS_EVAL_INSERT_%s_ADDRESS", exp.Servers[i].Name)), []byte(exp.Servers[i].Address))
+		}
 	}
 
 	// Write out final pki.conf.
@@ -452,22 +457,25 @@ func (op *Operator) RunExperiments() {
 			go op.ZenoPKI.Run(op.TLSCertPath, op.TLSKeyPath)
 		}
 
-		// Spawn all server machines.
-		for i := range exp.Servers {
-			go op.SpawnInstance(exp, exp.Servers[i], true)
+		// Spawn all server machines in reverse order.
+		// This hopefully enables Vuvuzela mixes to connect
+		// to their successor on first try.
+		for i := (len(exp.Servers) - 1); i >= 0; i-- {
+			op.SpawnInstance(exp, exp.Servers[i], true)
+			time.Sleep(1 * time.Second)
 		}
 
-		exp.ProgressChan <- "All servers instructed to spawn, waiting for registration requests."
+		exp.ProgressChan <- fmt.Sprintf("All %d servers instructed to spawn, waiting for registration requests.", len(exp.Servers))
 
 		// Handle incoming registration requests.
 		for range exp.Servers {
 
 			workerReg := <-op.InternalRegisterChan
 
-			_, found := exp.Servers[workerReg.Worker]
+			_, found := exp.ServersMap[workerReg.Worker]
 			if found {
-				exp.Servers[workerReg.Worker].Address = workerReg.Address
-				exp.Servers[workerReg.Worker].Status = "registered"
+				exp.ServersMap[workerReg.Worker].Address = workerReg.Address
+				exp.ServersMap[workerReg.Worker].Status = "registered"
 				exp.ProgressChan <- fmt.Sprintf("Server %s at %s marked as registered.", workerReg.Worker, workerReg.Address)
 			}
 		}
@@ -492,17 +500,17 @@ func (op *Operator) RunExperiments() {
 
 			case workerName := <-op.InternalReadyChan:
 
-				_, found := exp.Servers[workerName]
+				_, found := exp.ServersMap[workerName]
 				if found {
-					exp.Servers[workerName].Status = "ready"
+					exp.ServersMap[workerName].Status = "ready"
 					exp.ProgressChan <- fmt.Sprintf("Server %s marked as ready.", workerName)
 				}
 
 			case failedReq := <-op.InternalFailedChan:
 
-				_, found := exp.Servers[failedReq.Worker]
+				_, found := exp.ServersMap[failedReq.Worker]
 				if found {
-					exp.Servers[failedReq.Worker].Status = "failed"
+					exp.ServersMap[failedReq.Worker].Status = "failed"
 					exp.ProgressChan <- fmt.Sprintf("Server %s failed with: %s", failedReq.Worker, failedReq.Reason)
 				}
 			}
@@ -511,30 +519,66 @@ func (op *Operator) RunExperiments() {
 		// Verify all servers ready.
 		for i := range exp.Servers {
 
-			if exp.Servers[i].Status == "failed" {
-				exp.ProgressChan <- fmt.Sprintf("At least one server failed, ending experiment %s.", expID)
+			if exp.Servers[i].Status != "ready" {
+				exp.ProgressChan <- fmt.Sprintf("At least one server (%s) failed to initialize, ending experiment %s.",
+					exp.Servers[i].Name, expID)
 				goto END
 			}
 		}
 
 		exp.ProgressChan <- fmt.Sprintf("All %d servers spawned and ready, launching clients.", len(exp.Servers))
 
-		// TODO: Spawn all client machines.
+		// Spawn all client machines.
+		for i := range exp.Clients {
+			go op.SpawnInstance(exp, exp.Clients[i], false)
+		}
+
+		exp.ProgressChan <- fmt.Sprintf("All %d clients instructed to spawn, waiting for registration requests.", len(exp.Clients))
 
 		// Handle incoming client registration requests.
 		for range exp.Clients {
 
 			workerReg := <-op.InternalRegisterChan
 
-			_, foundAsClient := exp.Clients[workerReg.Worker]
-			if foundAsClient {
-				exp.Clients[workerReg.Worker].Status = "registered"
+			_, found := exp.ClientsMap[workerReg.Worker]
+			if found {
+				exp.ClientsMap[workerReg.Worker].Status = "registered"
+				exp.ProgressChan <- fmt.Sprintf("Client %s marked as registered.", workerReg.Worker)
 			}
 		}
 
-		// TODO: Verify all clients ready.
+		// Handle incoming ready or failed requests.
+		for range exp.Clients {
 
-		// TODO: Conduct experiment.
+			select {
+
+			case workerName := <-op.InternalReadyChan:
+
+				_, found := exp.ClientsMap[workerName]
+				if found {
+					exp.ClientsMap[workerName].Status = "ready"
+					exp.ProgressChan <- fmt.Sprintf("Client %s marked as ready.", workerName)
+				}
+
+			case failedReq := <-op.InternalFailedChan:
+
+				_, found := exp.ClientsMap[failedReq.Worker]
+				if found {
+					exp.ClientsMap[failedReq.Worker].Status = "failed"
+					exp.ProgressChan <- fmt.Sprintf("Client %s failed with: %s", failedReq.Worker, failedReq.Reason)
+				}
+			}
+		}
+
+		// Verify all clients ready.
+		for i := range exp.Clients {
+
+			if exp.Clients[i].Status != "ready" {
+				exp.ProgressChan <- fmt.Sprintf("At least one client (%s) failed to initialize, ending experiment %s.",
+					exp.Clients[i].Name, expID)
+				goto END
+			}
+		}
 
 		if exp.System == "zeno" {
 
@@ -543,9 +587,30 @@ func (op *Operator) RunExperiments() {
 			zenoEvalCtrlChan <- struct{}{}
 		}
 
-		// TODO: Wait for all clients to signal completion.
+		// Wait for all clients to signal completion.
+		for range exp.Clients {
+
+			workerName := <-op.InternalFinishedChan
+
+			_, found := exp.ClientsMap[workerName]
+			if found {
+				exp.ClientsMap[workerName].Status = "finished"
+				exp.ProgressChan <- fmt.Sprintf("Client %s marked as finished.", workerName)
+			}
+		}
+
+		// Verify all clients completed.
+		for i := range exp.Clients {
+
+			if exp.Clients[i].Status != "finished" {
+				exp.ProgressChan <- fmt.Sprintf("At least one client (%s) did not finish in experiment %s.",
+					exp.Clients[i].Name, expID)
+			}
+		}
 
 	END:
+		// TODO: Shut down all machines.
+
 		exp.Concluded = true
 		close(exp.ProgressChan)
 

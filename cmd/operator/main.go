@@ -54,8 +54,10 @@ type Exp struct {
 	ZenoMixKilledIfApplied string             `json:"zenoMixKilledIfApplied"`
 	Progress               []string           `json:"progress"`
 	ProgressChan           chan string        `json:"-"`
-	Servers                map[string]*Worker `json:"servers"`
-	Clients                map[string]*Worker `json:"clients"`
+	Servers                []*Worker          `json:"servers"`
+	ServersMap             map[string]*Worker `json:"serversMap"`
+	Clients                []*Worker          `json:"clients"`
+	ClientsMap             map[string]*Worker `json:"clientsMap"`
 }
 
 // Worker describes one compute instance
