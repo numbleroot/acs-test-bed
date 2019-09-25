@@ -124,6 +124,24 @@ func (op *Operator) HandlerGetExpStatus(req *restful.Request, resp *restful.Resp
 	resp.WriteHeaderAndEntity(http.StatusOK, exp)
 }
 
+// HandlerGetExpTerminate terminates an
+// experiment, causing all machines to be
+// shut down and deleted.
+func (op *Operator) HandlerGetExpTerminate(req *restful.Request, resp *restful.Response) {
+
+	expID := req.PathParameter("expID")
+
+	fmt.Printf("\n[GET /experiments/%s/terminate] Received signal from %s to terminate.\n", expID, req.Request.RemoteAddr)
+
+	// If experiment exists, signal to terminate it.
+	_, found := op.Exps[expID]
+	if found {
+		op.PublicTerminateChan <- struct{}{}
+	}
+
+	resp.WriteHeader(http.StatusOK)
+}
+
 // PreparePublicSrv initializes all API-related
 // things in order to expose an Internet-facing
 // API endpoint for conducting experiments.
@@ -142,6 +160,10 @@ func (op *Operator) PreparePublicSrv() {
 	op.PublicSrv.Route(op.PublicSrv.GET("/{expID}/status").
 		Filter(op.PublicAuth).
 		To(op.HandlerGetExpStatus))
+
+	op.PublicSrv.Route(op.PublicSrv.GET("/{expID}/terminate").
+		Filter(op.PublicAuth).
+		To(op.HandlerGetExpTerminate))
 
 	restful.Add(op.PublicSrv)
 }

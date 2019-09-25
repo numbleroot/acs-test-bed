@@ -239,6 +239,8 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 		fmt.Printf("clientIDs[%d] = %s\n", i, clientIDs[i])
 	}
 
+	exp.ProgressChan <- fmt.Sprintf("Spawning %s.", worker.Name)
+
 	// Customize API endpoint to send request to.
 	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances", op.GCloudProject, worker.Zone)
 
@@ -349,6 +351,51 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 	} else {
 		exp.ProgressChan <- fmt.Sprintf("Spawning instance %s returned failure message: '%s'", worker.Name, out)
 		os.Exit(1)
+	}
+}
+
+// ShutdownInstance instructs GCP to shut down and
+// subsequently delete an instance.
+func (op *Operator) ShutdownInstance(wg *sync.WaitGroup, exp *Exp, worker *Worker) {
+
+	defer wg.Done()
+
+	exp.ProgressChan <- fmt.Sprintf("Deleting %s.", worker.Name)
+
+	instName := fmt.Sprintf("%s-%s", worker.Name, exp.ResultFolder)
+	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", op.GCloudProject, worker.Zone, instName)
+
+	// Create HTTP DELETE request.
+	request, err := http.NewRequest(http.MethodDelete, endpoint, nil)
+	if err != nil {
+		exp.ProgressChan <- fmt.Sprintf("Failed creating HTTP API request for %s: %v", worker.Name, err)
+		os.Exit(1)
+	}
+
+	// Send the request to GCP.
+	resp, err := http.DefaultClient.Do(request)
+	for err != nil {
+
+		exp.ProgressChan <- fmt.Sprintf("Delete API request for %s failed (will try again): %v", worker.Name, err)
+		time.Sleep(1 * time.Second)
+
+		resp, err = http.DefaultClient.Do(request)
+	}
+
+	// Read the response.
+	outRaw, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		exp.ProgressChan <- fmt.Sprintf("Failed reading from delete response body for %s: %v", worker.Name, err)
+		return
+	}
+	defer resp.Body.Close()
+	out := string(outRaw)
+
+	// Verify successful machine deletion.
+	if strings.Contains(out, "RUNNING") || strings.Contains(out, "DONE") {
+		exp.ProgressChan <- fmt.Sprintf("Successfully deleted %s.", worker.Name)
+	} else {
+		exp.ProgressChan <- fmt.Sprintf("Failed deleting %s.", worker.Name)
 	}
 }
 
@@ -609,8 +656,38 @@ func (op *Operator) RunExperiments() {
 		}
 
 	END:
-		// TODO: Shut down all machines.
+		exp.ProgressChan <- fmt.Sprintf("Experiment %s reached end, awaiting shutdown confirmation.", expID)
 
+		// Wait for explicit shutdown confirmation.
+		<-op.PublicTerminateChan
+
+		exp.ProgressChan <- fmt.Sprintf("Shutdown confirmation for experiment %s received.", expID)
+
+		// Shut down all client machines.
+		wg := &sync.WaitGroup{}
+
+		for i := 0; i < len(exp.Clients); i++ {
+			wg.Add(1)
+			go op.ShutdownInstance(wg, exp, exp.Clients[i])
+		}
+
+		wg.Wait()
+
+		exp.ProgressChan <- fmt.Sprintf("All %d clients successfully shut down.", len(exp.Clients))
+
+		// Shut down all server machines.
+		wg = &sync.WaitGroup{}
+
+		for i := 0; i < len(exp.Servers); i++ {
+			wg.Add(1)
+			go op.ShutdownInstance(wg, exp, exp.Servers[i])
+		}
+
+		wg.Wait()
+
+		exp.ProgressChan <- fmt.Sprintf("All %d servers successfully shut down.", len(exp.Servers))
+
+		// Mark experiment as done.
 		exp.Concluded = true
 		close(exp.ProgressChan)
 

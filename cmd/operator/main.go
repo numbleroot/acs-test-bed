@@ -32,9 +32,10 @@ type Operator struct {
 	InternalFinishedChan chan string
 	InternalFailedChan   chan *FailedReq
 
-	PublicListenAddr string
-	PublicSrv        *restful.WebService
-	PublicNewChan    chan string
+	PublicListenAddr    string
+	PublicSrv           *restful.WebService
+	PublicNewChan       chan string
+	PublicTerminateChan chan struct{}
 
 	ExpInProgress string
 	Exps          map[string]*Exp
@@ -119,8 +120,9 @@ func main() {
 		InternalFinishedChan: make(chan string),
 		InternalFailedChan:   make(chan *FailedReq),
 
-		PublicListenAddr: *publicListenAddrFlag,
-		PublicNewChan:    make(chan string),
+		PublicListenAddr:    *publicListenAddrFlag,
+		PublicNewChan:       make(chan string),
+		PublicTerminateChan: make(chan struct{}),
 
 		ExpInProgress: "",
 		Exps:          make(map[string]*Exp),
