@@ -56,9 +56,9 @@ type Exp struct {
 	Progress               []string           `json:"progress"`
 	ProgressChan           chan string        `json:"-"`
 	Servers                []*Worker          `json:"servers"`
-	ServersMap             map[string]*Worker `json:"serversMap"`
+	ServersMap             map[string]*Worker `json:"-"`
 	Clients                []*Worker          `json:"clients"`
-	ClientsMap             map[string]*Worker `json:"clientsMap"`
+	ClientsMap             map[string]*Worker `json:"-"`
 }
 
 // Worker describes one compute instance
