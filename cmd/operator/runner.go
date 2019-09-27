@@ -192,6 +192,9 @@ var tmplInstanceCreate = `{
 		"nodeAffinities": []
 	},
 	"deletionProtection": false,
+	"reservationAffinity": {
+		"consumeReservationType": "NO_RESERVATION"
+	},
 	"serviceAccounts": [
 		{
 			"email": "ACS_EVAL_INSERT_SERVICE_ACCOUNT",

@@ -186,6 +186,93 @@ fi
 chmod 0700 /root/${BINARY_TO_PULL}
 chmod 0700 /root/collector
 
+
+# Prepare some surroundings logging.
+echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_01_PATH}/log.evaluation
+echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_01_PATH}/log.evaluation
+echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_01_PATH}/log.evaluation
+echo "System info: '$(uname -a)'\n" >> ${CLIENT_01_PATH}/log.evaluation
+echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_01_PATH}/log.evaluation
+echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_01_PATH}/log.evaluation
+echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_01_PATH}/log.evaluation
+
+if [ "${TYPE_OF_NODE}" == "client" ]; then
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_02_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_02_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_02_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_02_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_02_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_02_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_02_PATH}/log.evaluation
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_03_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_03_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_03_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_03_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_03_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_03_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_03_PATH}/log.evaluation
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_04_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_04_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_04_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_04_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_04_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_04_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_04_PATH}/log.evaluation
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_05_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_05_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_05_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_05_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_05_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_05_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_05_PATH}/log.evaluation
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_06_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_06_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_06_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_06_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_06_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_06_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_06_PATH}/log.evaluation
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_07_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_07_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_07_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_07_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_07_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_07_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_07_PATH}/log.evaluation
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_08_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_08_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_08_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_08_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_08_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_08_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_08_PATH}/log.evaluation
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_09_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_09_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_09_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_09_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_09_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_09_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_09_PATH}/log.evaluation
+
+    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_10_PATH}/log.evaluation
+    echo "Result folder: '${RESULT_FOLDER}'\n" >> ${CLIENT_10_PATH}/log.evaluation
+    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_10_PATH}/log.evaluation
+    echo "System info: '$(uname -a)'\n" >> ${CLIENT_10_PATH}/log.evaluation
+    echo "CPU: $(grep ^cpu\\scores /proc/cpuinfo | uniq | awk '{print $4}') cores ($(grep -c ^processor /proc/cpuinfo) threads) as part of $(lscpu --json | grep "Model name" | awk -F \" '{print $8}')\n" >> ${CLIENT_10_PATH}/log.evaluation
+    echo "Memory: $(lsmem | grep "Total online memory" | awk '{print $4}')\n" >> ${CLIENT_10_PATH}/log.evaluation
+    echo "Storage: $(lsblk -o TYPE,SIZE,MODEL | grep disk | awk '{print $2,$3}')\n" >> ${CLIENT_10_PATH}/log.evaluation
+
+fi
+
+
 sleep 5
 
 # Signal readiness of process to experiment script.
@@ -314,9 +401,6 @@ iptables -Z -t filter -L OUTPUT
 
 if [ "${TYPE_OF_NODE}" == "server" ]; then
 
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_01_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_01_PATH}/log.evaluation
-
     if [ "${EVAL_SYSTEM}" == "zeno" ]; then
 
         echo "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_01_PATH}/log.evaluation
@@ -345,8 +429,6 @@ if [ "${TYPE_OF_NODE}" == "server" ]; then
 
 else if [ "${TYPE_OF_NODE}" == "coordinator" ]; then
 
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_01_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_01_PATH}/log.evaluation
     echo "\n" >> ${CLIENT_01_PATH}/log.evaluation
 
     # Run coordinator component of Vuvuzela.
@@ -354,36 +436,6 @@ else if [ "${TYPE_OF_NODE}" == "coordinator" ]; then
         -wait 10s -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_01_PATH}/log.evaluation
 
 else if [ "${TYPE_OF_NODE}" == "client" ]; then
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_01_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_01_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_02_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_02_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_03_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_03_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_04_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_04_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_05_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_05_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_06_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_06_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_07_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_07_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_08_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_08_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_09_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_09_PATH}/log.evaluation
-
-    echo "Evaluating a '${TYPE_OF_NODE}' for system '${EVAL_SYSTEM}' as part of experiment '${EXP_ID}' on machine '${NAME_OF_NODE}'.\n" > ${CLIENT_10_PATH}/log.evaluation
-    echo "${NUM_CLIENTS} clients will participate, TC parameters set to: '${TC_CONFIG}'.\n" >> ${CLIENT_10_PATH}/log.evaluation
 
     if [ "${EVAL_SYSTEM}" == "zeno" ]; then
 
