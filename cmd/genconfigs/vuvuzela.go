@@ -48,7 +48,7 @@ type PKI struct {
 	EntryServer string               `json:"EntryServer"`
 }
 
-func generateVuvuzelaMixConfs(mixes []Config, confsPath string) error {
+func generateVuvuzelaMixConfs(mixes []Worker, confsPath string) error {
 
 	// Create configuration files folder
 	// if it does not exist.
@@ -89,7 +89,7 @@ func generateVuvuzelaMixConfs(mixes []Config, confsPath string) error {
 	return nil
 }
 
-func generateVuvuzelaClientConfs(clients []Config, confsPath string) error {
+func generateVuvuzelaClientConfs(clients []Worker, confsPath string) error {
 
 	// Create configuration files folder
 	// if it does not exist.

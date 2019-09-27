@@ -11,21 +11,28 @@ import (
 	"path/filepath"
 )
 
-// Config describes one compute instance
+// Exp contains all information relevant
+// for monitoring an experiment.
+type Exp struct {
+	System                 string          `json:"system"`
+	ZonesNetTroublesIfUsed map[string]bool `json:"zonesNetTroublesIfUsed"`
+	Servers                []Worker        `json:"servers"`
+	Clients                []Worker        `json:"clients"`
+}
+
+// Worker describes one compute instance
 // exhaustively for reproducibility.
-type Config struct {
-	Name                 string `json:"Name"`
-	Partner              string `json:"Partner"`
-	Zone                 string `json:"Zone"`
-	MinCPUPlatform       string `json:"MinCPUPlatform"`
-	MachineType          string `json:"MachineType"`
-	TypeOfNode           string `json:"TypeOfNode"`
-	EvaluationScript     string `json:"EvaluationScript"`
-	BinaryName           string `json:"BinaryName"`
-	SourceImage          string `json:"SourceImage"`
-	DiskType             string `json:"DiskType"`
-	DiskSize             string `json:"DiskSize"`
-	NetTroublesIfApplied string `json:"NetTroublesIfApplied"`
+type Worker struct {
+	ID             int    `json:"id"`
+	Name           string `json:"name"`
+	Zone           string `json:"zone"`
+	MinCPUPlatform string `json:"minCPUPlatform"`
+	MachineType    string `json:"machineType"`
+	TypeOfNode     string `json:"typeOfNode"`
+	BinaryName     string `json:"binaryName"`
+	SourceImage    string `json:"sourceImage"`
+	DiskType       string `json:"diskType"`
+	DiskSize       string `json:"diskSize"`
 }
 
 // GCloudZones holds all but two GCloud zones.
@@ -87,16 +94,54 @@ func shuffleZones() {
 	}
 }
 
+func pickZone(zoneIdx int, gcloudZonesLowStorage map[string]int, GCloudZonesLowStorage map[string]int) (string, int) {
+
+	// Pick next zone from randomized zones array.
+	zone := GCloudZones[zoneIdx]
+
+	// In case the storage quota for this zone has
+	// been reached, pick the next zone.
+	for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
+
+		// Increment counter. If we traversed zones array
+		// once, shuffle it again and reset index.
+		zoneIdx++
+		if zoneIdx == len(GCloudZones) {
+			shuffleZones()
+			zoneIdx = 0
+		}
+
+		zone = GCloudZones[zoneIdx]
+	}
+
+	// Increment local map counter if this is a zone
+	// constrained with persistent disk space.
+	if GCloudZonesLowStorage[zone] == 290 {
+		gcloudZonesLowStorage[zone]++
+	}
+
+	zoneIdx++
+	if zoneIdx == len(GCloudZones) {
+		shuffleZones()
+		zoneIdx = 0
+	}
+
+	return zone, zoneIdx
+}
+
 func main() {
 
 	// Allow for control via command-line flags.
 	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify file system location where GCloud Compute configurations are supposed to be saved.")
-	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate. Has to be an even number.")
+	numClientsToGenFlag := flag.Int("numClientsToGen", 1000, "Specify the number of client nodes to generate. Number of conversing clients will be ten times as much.")
 	numVuvuzelaMixesToGenFlag := flag.Int("numVuvuzelaMixesToGen", 7, "Specify the number of vuvuzela mix nodes to generate (number of zeno mixes is twice this number minus 1).")
 	numZenoCascadesFlag := flag.Int("numZenoCascades", 1, "Specify the number of cascades in zeno to generate.")
 	flag.Parse()
 
-	// Extract parsed flag values.
+	numClientsToGen := *numClientsToGenFlag
+	numVuvuzelaMixesToGen := *numVuvuzelaMixesToGenFlag
+	numZenoCascades := *numZenoCascadesFlag
+
 	configsPath, err := filepath.Abs(*configsPathFlag)
 	if err != nil {
 		fmt.Printf("Provided path to configuration files '%s' could not be converted to absolute path: %v\n", *configsPathFlag, err)
@@ -109,34 +154,6 @@ func main() {
 	if err != nil {
 		fmt.Printf("Failed to create configurations folder %s: %v\n", configsPath, err)
 		os.Exit(1)
-	}
-
-	if ((*numClientsToGenFlag % 2) != 0) || (*numClientsToGenFlag < 2) {
-		fmt.Printf("Number of clients to generate has to be an even number > 1.\n")
-		os.Exit(1)
-	}
-
-	numClientsToGen := *numClientsToGenFlag
-	numVuvuzelaMixesToGen := *numVuvuzelaMixesToGenFlag
-	numZenoCascades := *numZenoCascadesFlag
-
-	clients := make([]Config, numClientsToGen)
-	zenoServers := make([]Config, (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1)))
-	pungServers := make([]Config, 1)
-	vuvuzelaServers := make([]Config, numVuvuzelaMixesToGen)
-
-	for i := range clients {
-		clients[i].Name = fmt.Sprintf("client-%05d", (i + 1))
-	}
-
-	for i := range zenoServers {
-		zenoServers[i].Name = fmt.Sprintf("server-%05d", (i + 1))
-	}
-
-	pungServers[0].Name = "server-00001"
-
-	for i := range vuvuzelaServers {
-		vuvuzelaServers[i].Name = fmt.Sprintf("server-%05d", (i + 1))
 	}
 
 	// Create local map that tracks how many
@@ -154,12 +171,6 @@ func main() {
 		"us-west2-b":                0,
 	}
 
-	// Prepare slices for respective client
-	// compute node configurations.
-	zenoConfigs := make([]Config, 0, (numClientsToGen + (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))))
-	vuvuzelaConfigs := make([]Config, 0, (numClientsToGen + numVuvuzelaMixesToGen))
-	pungConfigs := make([]Config, 0, numClientsToGen)
-
 	// Shuffle zones array.
 	shuffleZones()
 	zoneIdx := 0
@@ -175,315 +186,132 @@ func main() {
 	fmt.Printf("If applied during runexperiments, these zones will experience network troubles: %s, %s, %s\n",
 		GCloudZones[0], GCloudZones[1], GCloudZones[2])
 
-	for i := 0; i < numClientsToGen; i++ {
+	// Prepare structures for each system.
 
-		name := fmt.Sprintf("client-%05d", (i + 1))
+	zenoExp := &Exp{
+		System:                 "zeno",
+		ZonesNetTroublesIfUsed: netTroubleZones,
+		Servers:                make([]Worker, (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))),
+		Clients:                make([]Worker, numClientsToGen),
+	}
 
-		// Determine partner client of this client.
-		var partner string
-		if (i % 2) == 0 {
-			partner = fmt.Sprintf("client-%05d", (i + 2))
+	vuvuzelaExp := &Exp{
+		System:                 "vuvuzela",
+		ZonesNetTroublesIfUsed: netTroubleZones,
+		Servers:                make([]Worker, numVuvuzelaMixesToGen),
+		Clients:                make([]Worker, numClientsToGen),
+	}
+
+	pungExp := &Exp{
+		System:                 "pung",
+		ZonesNetTroublesIfUsed: netTroubleZones,
+		Servers:                make([]Worker, 1),
+		Clients:                make([]Worker, numClientsToGen),
+	}
+
+	for i := range zenoExp.Clients {
+
+		zone := ""
+		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage, GCloudZonesLowStorage)
+
+		zenoExp.Clients[i] = Worker{
+			ID:             (i + 1),
+			Name:           fmt.Sprintf("client-%05d", (i + 1)),
+			Zone:           zone,
+			MinCPUPlatform: "Intel Skylake",
+			MachineType:    "n1-standard-4",
+			TypeOfNode:     "client",
+			BinaryName:     "zeno",
+			SourceImage:    "acs-eval",
+			DiskType:       "pd-ssd",
+			DiskSize:       "10",
+		}
+	}
+
+	for i := range zenoExp.Servers {
+
+		zone := ""
+		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage, GCloudZonesLowStorage)
+
+		zenoExp.Servers[i] = Worker{
+			ID:             (i + 1),
+			Name:           fmt.Sprintf("server-%05d", (i + 1)),
+			Zone:           zone,
+			MinCPUPlatform: "Intel Skylake",
+			MachineType:    "n1-standard-4",
+			TypeOfNode:     "server",
+			BinaryName:     "zeno",
+			SourceImage:    "acs-eval",
+			DiskType:       "pd-ssd",
+			DiskSize:       "10",
+		}
+	}
+
+	copy(vuvuzelaExp.Clients, zenoExp.Clients)
+	for i := range vuvuzelaExp.Clients {
+		vuvuzelaExp.Clients[i].BinaryName = "vuvuzela-client"
+	}
+
+	copy(pungExp.Clients, zenoExp.Clients)
+	for i := range vuvuzelaExp.Clients {
+		vuvuzelaExp.Clients[i].BinaryName = "pung-client"
+	}
+
+	copy(vuvuzelaExp.Servers, zenoExp.Servers[:numVuvuzelaMixesToGen])
+	for i := range vuvuzelaExp.Servers {
+
+		if i == 0 {
+			vuvuzelaExp.Servers[i].TypeOfNode = "coordinator"
+			vuvuzelaExp.Servers[i].BinaryName = "vuvuzela-coordinator"
 		} else {
-			partner = fmt.Sprintf("client-%05d", i)
-		}
-
-		// Pick next zone from randomized zones array.
-		zone := GCloudZones[zoneIdx]
-
-		// In case the storage quota for this zone has
-		// been reached, pick the next zone.
-		for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
-
-			// Increment counter. If we traversed zones array
-			// once, shuffle it again and reset index.
-			zoneIdx++
-			if zoneIdx == len(GCloudZones) {
-				shuffleZones()
-				zoneIdx = 0
-			}
-
-			zone = GCloudZones[zoneIdx]
-		}
-
-		// Increment local map counter if this is a zone
-		// constrained with persistent disk space.
-		if GCloudZonesLowStorage[zone] == 290 {
-			gcloudZonesLowStorage[zone]++
-		}
-
-		zoneIdx++
-		if zoneIdx == len(GCloudZones) {
-			shuffleZones()
-			zoneIdx = 0
-		}
-
-		// If chosen zone is among the ones supposed
-		// to experience network troubles if runexperiments
-		// is instructed accordingly, change the tc config.
-		netTroubles := "none"
-		if netTroubleZones[zone] {
-			netTroubles = "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
-		}
-
-		// Specify machine type.
-		machineType := "f1-micro"
-
-		// Prefill all configurations.
-		zenoConfigs = append(zenoConfigs, Config{
-			Name:                 name,
-			Partner:              partner,
-			Zone:                 zone,
-			MinCPUPlatform:       "Intel Skylake",
-			MachineType:          machineType,
-			TypeOfNode:           "client",
-			EvaluationScript:     "zeno_client_eval.sh",
-			BinaryName:           "zeno",
-			SourceImage:          "acs",
-			DiskType:             "pd-ssd",
-			DiskSize:             "10",
-			NetTroublesIfApplied: netTroubles,
-		})
-
-		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
-			Name:                 name,
-			Partner:              partner,
-			Zone:                 zone,
-			MinCPUPlatform:       "Intel Skylake",
-			MachineType:          machineType,
-			TypeOfNode:           "client",
-			EvaluationScript:     "vuvuzela-client_eval.sh",
-			BinaryName:           "vuvuzela-client",
-			SourceImage:          "acs",
-			DiskType:             "pd-ssd",
-			DiskSize:             "10",
-			NetTroublesIfApplied: netTroubles,
-		})
-
-		pungConfigs = append(pungConfigs, Config{
-			Name:                 name,
-			Partner:              partner,
-			Zone:                 zone,
-			MinCPUPlatform:       "Intel Skylake",
-			MachineType:          machineType,
-			TypeOfNode:           "client",
-			EvaluationScript:     "pung_client_eval.sh",
-			BinaryName:           "pung-client",
-			SourceImage:          "acs",
-			DiskType:             "pd-ssd",
-			DiskSize:             "10",
-			NetTroublesIfApplied: netTroubles,
-		})
-	}
-
-	// Reset zones array and counter.
-	shuffleZones()
-	zoneIdx = 0
-
-	// Also generate the specified number
-	// of mix or server nodes.
-	for i := numClientsToGen; i < (numClientsToGen + (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))); i++ {
-
-		// Pick next zone from randomized zones array.
-		zone := GCloudZones[zoneIdx]
-
-		// In case the storage quota for this zone has
-		// been reached, pick the next zone.
-		for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
-
-			// Increment counter. If we traversed zones array
-			// once, shuffle it again and reset index.
-			zoneIdx++
-			if zoneIdx == len(GCloudZones) {
-				shuffleZones()
-				zoneIdx = 0
-			}
-
-			zone = GCloudZones[zoneIdx]
-		}
-
-		// TODO: Correct this. Should be system-local map,
-		//       because otherwise zeno reaching the limit
-		//       will prevent vuvuzela from placing nodes here.
-		// Increment local map counter if this is a zone
-		// constrained with persistent disk space.
-		if GCloudZonesLowStorage[zone] == 290 {
-			gcloudZonesLowStorage[zone]++
-		}
-
-		zoneIdx++
-		if zoneIdx == len(GCloudZones) {
-			shuffleZones()
-			zoneIdx = 0
-		}
-
-		zenoConfigs = append(zenoConfigs, Config{
-			Name:                 fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Partner:              "irrelevant",
-			Zone:                 zone,
-			MinCPUPlatform:       "Intel Skylake",
-			MachineType:          "n1-standard-4",
-			TypeOfNode:           "mix",
-			EvaluationScript:     "zeno_mix_eval.sh",
-			BinaryName:           "zeno",
-			SourceImage:          "acs",
-			DiskType:             "pd-ssd",
-			DiskSize:             "10",
-			NetTroublesIfApplied: "none",
-		})
-	}
-
-	// TODO: Replace the following code to assign vuvuzela
-	//       mixes to zones, and simply copy the zones from
-	//       zeno's first cascade. Should make it more
-	//       comparable, maybe.
-	//       Quotas should not be a problem, because both
-	//       systems will never be deployed at the same time.
-	shuffleZones()
-	zoneIdx = 0
-
-	for i := numClientsToGen; i < (numClientsToGen + numVuvuzelaMixesToGen); i++ {
-
-		zone := GCloudZones[zoneIdx]
-
-		for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
-
-			zoneIdx++
-			if zoneIdx == len(GCloudZones) {
-				shuffleZones()
-				zoneIdx = 0
-			}
-
-			zone = GCloudZones[zoneIdx]
-		}
-
-		// TODO: Correct this. Should be system-local map,
-		//       because otherwise zeno reaching the limit
-		//       will prevent vuvuzela from placing nodes here.
-		if GCloudZonesLowStorage[zone] == 290 {
-			gcloudZonesLowStorage[zone]++
-		}
-
-		zoneIdx++
-		if zoneIdx == len(GCloudZones) {
-			shuffleZones()
-			zoneIdx = 0
-		}
-
-		vuvuzelaConfigs = append(vuvuzelaConfigs, Config{
-			Name:                 fmt.Sprintf("mixnet-%05d", (i + 1)),
-			Partner:              "irrelevant",
-			Zone:                 zone,
-			MinCPUPlatform:       "Intel Skylake",
-			MachineType:          "n1-standard-4",
-			TypeOfNode:           "vuvuzela-mixer",
-			EvaluationScript:     "vuvuzela-mixer_eval.sh",
-			BinaryName:           "vuvuzela-mixer",
-			SourceImage:          "acs",
-			DiskType:             "pd-ssd",
-			DiskSize:             "10",
-			NetTroublesIfApplied: "none",
-		})
-
-		if i == numClientsToGen {
-			vuvuzelaConfigs[i].TypeOfNode = "vuvuzela-coordinator"
-			vuvuzelaConfigs[i].EvaluationScript = "vuvuzela-coordinator_eval.sh"
-			vuvuzelaConfigs[i].BinaryName = "vuvuzela-coordinator_eval.sh"
+			vuvuzelaExp.Servers[i].BinaryName = "vuvuzela-mix"
 		}
 	}
 
-	// Marshal slice of zeno configs to JSON.
-	zenoConfigsJSON, err := json.MarshalIndent(zenoConfigs, "", "\t")
+	copy(pungExp.Servers, zenoExp.Servers[:1])
+	for i := range pungExp.Servers {
+		pungExp.Servers[i].BinaryName = "pung-server"
+	}
+
+	// Marshal slice of zeno experiment to JSON.
+	zenoExpJSON, err := json.MarshalIndent(zenoExp, "", "  ")
 	if err != nil {
-		fmt.Printf("Failed to marshal zeno configurations to JSON: %v\n", err)
+		fmt.Printf("Failed to marshal zeno experiment to JSON: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Write zeno configs to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-zeno.json"), zenoConfigsJSON, 0644)
+	// Write zeno experiment to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "zeno.json"), zenoExpJSON, 0644)
 	if err != nil {
-		fmt.Printf("Error writing zeno configurations in JSON format to file: %v\n", err)
+		fmt.Printf("Error writing zeno experiment in JSON format to file: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Marshal slice of Vuvuzela configs to JSON.
-	vuvuzelaConfigsJSON, err := json.MarshalIndent(vuvuzelaConfigs, "", "\t")
+	// Marshal slice of Vuvuzela experiment to JSON.
+	vuvuzelaExpJSON, err := json.MarshalIndent(vuvuzelaExp, "", "  ")
 	if err != nil {
-		fmt.Printf("Failed to marshal vuvuzela configurations to JSON: %v\n", err)
+		fmt.Printf("Failed to marshal Vuvuzela experiment to JSON: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Write vuvuzela configs to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-vuvuzela.json"), vuvuzelaConfigsJSON, 0644)
+	// Write Vuvuzela experiment to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "vuvuzela.json"), vuvuzelaExpJSON, 0644)
 	if err != nil {
-		fmt.Printf("Error writing vuvuzela configurations in JSON format to file: %v\n", err)
+		fmt.Printf("Error writing Vuvuzela experiment in JSON format to file: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Marshal slice of pung configs to JSON.
-	pungConfigsJSON, err := json.MarshalIndent(pungConfigs, "", "\t")
+	// Marshal slice of pung experiment to JSON.
+	pungExpJSON, err := json.MarshalIndent(pungExp, "", "  ")
 	if err != nil {
-		fmt.Printf("Failed to marshal pung configurations to JSON: %v\n", err)
+		fmt.Printf("Failed to marshal Pung experiment to JSON: %v\n", err)
 		os.Exit(1)
 	}
 
-	// Write pung configs to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-pung.json"), pungConfigsJSON, 0644)
+	// Write pung experiment to file.
+	err = ioutil.WriteFile(filepath.Join(configsPath, "pung.json"), pungExpJSON, 0644)
 	if err != nil {
-		fmt.Printf("Error writing pung configurations in JSON format to file: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Additionally, create configuration for zeno's PKI node.
-	zenoPKIConfigsJSON, err := json.MarshalIndent(Config{
-		Name:                 "zeno-pki",
-		Partner:              "irrelevant",
-		Zone:                 "europe-west3-b",
-		MinCPUPlatform:       "Intel Skylake",
-		MachineType:          "n1-standard-8",
-		TypeOfNode:           "zeno-pki",
-		EvaluationScript:     "zeno-pki_eval.sh",
-		BinaryName:           "zeno-pki",
-		SourceImage:          "acs",
-		DiskType:             "pd-ssd",
-		DiskSize:             "10",
-		NetTroublesIfApplied: "none",
-	}, "", "\t")
-	if err != nil {
-		fmt.Printf("Failed to marshal configuration for zeno's PKI to JSON: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Write PKI configuration for zeno to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-zeno-pki.json"), zenoPKIConfigsJSON, 0644)
-	if err != nil {
-		fmt.Printf("Error writing configuration for zeno's PKI in JSON format to file: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Prepare server configuration for pung.
-	pungServerJSON, err := json.MarshalIndent(Config{
-		Name:                 fmt.Sprintf("mixnet-%05d", (numClientsToGen + 1)),
-		Partner:              "irrelevant",
-		Zone:                 GCloudZones[0],
-		MinCPUPlatform:       "Intel Skylake",
-		MachineType:          "n1-highmem-16",
-		TypeOfNode:           "server",
-		EvaluationScript:     "pung_server_eval.sh",
-		BinaryName:           "pung-server",
-		SourceImage:          "acs",
-		DiskType:             "pd-ssd",
-		DiskSize:             "10",
-		NetTroublesIfApplied: "none",
-	}, "", "\t")
-	if err != nil {
-		fmt.Printf("Failed to marshal configuration for pung's server to JSON: %v\n", err)
-		os.Exit(1)
-	}
-
-	// Write pung's server configuration to file.
-	err = ioutil.WriteFile(filepath.Join(configsPath, "gcloud-pung-server.json"), pungServerJSON, 0644)
-	if err != nil {
-		fmt.Printf("Error writing configuration for pung's server in JSON format to file: %v\n", err)
+		fmt.Printf("Error writing Pung experiment in JSON format to file: %v\n", err)
 		os.Exit(1)
 	}
 
