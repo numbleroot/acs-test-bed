@@ -46,36 +46,36 @@ type Operator struct {
 // Exp contains all information relevant
 // for monitoring an experiment.
 type Exp struct {
-	ID                     string             `json:"id"`
-	Created                string             `json:"created"`
-	System                 string             `json:"system"`
-	Concluded              bool               `json:"concluded"`
-	ResultFolder           string             `json:"resultFolder"`
-	NetTroublesIfApplied   string             `json:"netTroublesIfApplied"`
-	ZenoMixKilledIfApplied string             `json:"zenoMixKilledIfApplied"`
-	Progress               []string           `json:"progress"`
-	ProgressChan           chan string        `json:"-"`
-	Servers                []*Worker          `json:"servers"`
-	ServersMap             map[string]*Worker `json:"-"`
-	Clients                []*Worker          `json:"clients"`
-	ClientsMap             map[string]*Worker `json:"-"`
+	ID           string             `json:"id"`
+	Created      string             `json:"created"`
+	System       string             `json:"system"`
+	Concluded    bool               `json:"concluded"`
+	ResultFolder string             `json:"resultFolder"`
+	Progress     []string           `json:"progress"`
+	ProgressChan chan string        `json:"-"`
+	Servers      []*Worker          `json:"servers"`
+	ServersMap   map[string]*Worker `json:"-"`
+	Clients      []*Worker          `json:"clients"`
+	ClientsMap   map[string]*Worker `json:"-"`
 }
 
 // Worker describes one compute instance
 // exhaustively for reproducibility.
 type Worker struct {
-	ID             int    `json:"id"`
-	Name           string `json:"name"`
-	Address        string `json:"address"`
-	Status         string `json:"status"`
-	Zone           string `json:"zone"`
-	MinCPUPlatform string `json:"minCPUPlatform"`
-	MachineType    string `json:"machineType"`
-	TypeOfNode     string `json:"typeOfNode"`
-	BinaryName     string `json:"binaryName"`
-	SourceImage    string `json:"sourceImage"`
-	DiskType       string `json:"diskType"`
-	DiskSize       string `json:"diskSize"`
+	ID              int    `json:"id"`
+	Name            string `json:"name"`
+	Address         string `json:"address"`
+	Status          string `json:"status"`
+	Zone            string `json:"zone"`
+	MinCPUPlatform  string `json:"minCPUPlatform"`
+	MachineType     string `json:"machineType"`
+	TypeOfNode      string `json:"typeOfNode"`
+	BinaryName      string `json:"binaryName"`
+	SourceImage     string `json:"sourceImage"`
+	DiskType        string `json:"diskType"`
+	DiskSize        string `json:"diskSize"`
+	NetTroubles     string `json:"netTroubles"`
+	ZenoMixesKilled int    `json:"zenoMixesKilled"`
 }
 
 func init() {

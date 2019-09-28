@@ -94,7 +94,7 @@ func shuffleZones() {
 	}
 }
 
-func pickZone(zoneIdx int, gcloudZonesLowStorage map[string]int, GCloudZonesLowStorage map[string]int) (string, int) {
+func pickZone(zoneIdx int, gcloudZonesLowStorage map[string]int) (string, int) {
 
 	// Pick next zone from randomized zones array.
 	zone := GCloudZones[zoneIdx]
@@ -183,9 +183,6 @@ func main() {
 	netTroubleZones[GCloudZones[1]] = true
 	netTroubleZones[GCloudZones[2]] = true
 
-	fmt.Printf("If applied during runexperiments, these zones will experience network troubles: %s, %s, %s\n",
-		GCloudZones[0], GCloudZones[1], GCloudZones[2])
-
 	// Prepare structures for each system.
 
 	zenoExp := &Exp{
@@ -212,7 +209,7 @@ func main() {
 	for i := range zenoExp.Clients {
 
 		zone := ""
-		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage, GCloudZonesLowStorage)
+		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage)
 
 		zenoExp.Clients[i] = Worker{
 			ID:             (i + 1),
@@ -231,7 +228,7 @@ func main() {
 	for i := range zenoExp.Servers {
 
 		zone := ""
-		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage, GCloudZonesLowStorage)
+		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage)
 
 		zenoExp.Servers[i] = Worker{
 			ID:             (i + 1),

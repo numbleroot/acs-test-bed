@@ -272,8 +272,8 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 		reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_PUNG_SERVER_IP", "irrelevant")
 	}
 
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_TC_CONFIG", exp.NetTroublesIfApplied)
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_KILL_ZENO_MIXES_IN_ROUND", exp.ZenoMixKilledIfApplied)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_TC_CONFIG", worker.NetTroubles)
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_KILL_ZENO_MIXES_IN_ROUND", fmt.Sprintf("%d", worker.ZenoMixesKilled))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_01", clientIDs[1])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_01_PARTNER", clientIDs[2])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_02", clientIDs[2])
@@ -479,10 +479,8 @@ func (op *Operator) RunExperiments() {
 		// Launch progress writing routine.
 		go exp.ProgressWriter()
 
-		exp.ProgressChan <- fmt.Sprintf("Commencing experiment %s with %d server and %d client instances.",
-			expID, len(exp.Servers), len(exp.Clients))
-		exp.ProgressChan <- fmt.Sprintf("Experiment settings: System='%s', TC config='%s', zeno mixes killed in round='%s'",
-			exp.System, exp.NetTroublesIfApplied, exp.ZenoMixKilledIfApplied)
+		exp.ProgressChan <- fmt.Sprintf("Commencing experiment %s for system %s with %d server and %d client instances.",
+			expID, exp.System, len(exp.Servers), len(exp.Clients))
 
 		// Prepare zeno evaluation control channel in
 		// case it is needed later on.

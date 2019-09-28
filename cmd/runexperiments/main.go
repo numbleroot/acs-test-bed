@@ -17,68 +17,57 @@ import (
 	"time"
 )
 
-// Config describes one compute instance
-// exhaustively for reproducibility.
-//
-// TODO: Adjust content after genconfigs is fixed.
-type Config struct {
-	Name                   string `json:"Name"`
-	Partner                string `json:"Partner"`
-	Zone                   string `json:"Zone"`
-	MinCPUPlatform         string `json:"MinCPUPlatform"`
-	MachineType            string `json:"MachineType"`
-	TypeOfNode             string `json:"TypeOfNode"`
-	EvaluationScript       string `json:"EvaluationScript"`
-	BinaryName             string `json:"BinaryName"`
-	SourceImage            string `json:"SourceImage"`
-	DiskType               string `json:"DiskType"`
-	DiskSize               string `json:"DiskSize"`
-	NetTroublesIfApplied   string `json:"NetTroublesIfApplied"`
-	ZenoMixKilledIfApplied string `json:"ZenoMixKilledIfApplied"`
-}
-
 // Exp contains all experiment information
 // the operator uses to manage experiments.
 type Exp struct {
-	ID                     string    `json:"id"`
-	Created                string    `json:"created"`
-	System                 string    `json:"system"`
-	Concluded              bool      `json:"concluded"`
-	ResultFolder           string    `json:"resultFolder"`
-	NetTroublesIfApplied   string    `json:"netTroublesIfApplied"`
-	ZenoMixKilledIfApplied string    `json:"zenoMixKilledIfApplied"`
-	Progress               []string  `json:"progress"`
-	Servers                []*Worker `json:"servers"`
-	Clients                []*Worker `json:"clients"`
+	ID           string   `json:"id"`
+	Created      string   `json:"created"`
+	System       string   `json:"system"`
+	Concluded    bool     `json:"concluded"`
+	ResultFolder string   `json:"resultFolder"`
+	Progress     []string `json:"progress"`
+	Servers      []Worker `json:"servers"`
+	Clients      []Worker `json:"clients"`
+}
+
+// ExpFile represents the in-file representation
+// of an experiment.
+type ExpFile struct {
+	System                 string          `json:"system"`
+	ZonesNetTroublesIfUsed map[string]bool `json:"zonesNetTroublesIfUsed"`
+	Servers                []Worker        `json:"servers"`
+	Clients                []Worker        `json:"clients"`
 }
 
 // Worker describes one compute instance
 // exhaustively for reproducibility.
 type Worker struct {
-	ID             int    `json:"id"`
-	Name           string `json:"name"`
-	Address        string `json:"address"`
-	Status         string `json:"status"`
-	Zone           string `json:"zone"`
-	MinCPUPlatform string `json:"minCPUPlatform"`
-	MachineType    string `json:"machineType"`
-	TypeOfNode     string `json:"typeOfNode"`
-	BinaryName     string `json:"binaryName"`
-	SourceImage    string `json:"sourceImage"`
-	DiskType       string `json:"diskType"`
-	DiskSize       string `json:"diskSize"`
+	ID              int    `json:"id"`
+	Name            string `json:"name"`
+	Address         string `json:"address"`
+	Status          string `json:"status"`
+	Zone            string `json:"zone"`
+	MinCPUPlatform  string `json:"minCPUPlatform"`
+	MachineType     string `json:"machineType"`
+	TypeOfNode      string `json:"typeOfNode"`
+	BinaryName      string `json:"binaryName"`
+	SourceImage     string `json:"sourceImage"`
+	DiskType        string `json:"diskType"`
+	DiskSize        string `json:"diskSize"`
+	NetTroubles     string `json:"netTroubles"`
+	ZenoMixesKilled int    `json:"zenoMixesKilled"`
 }
 
 // PrettyPrint writes the experiment
 // human-readable to STDOUT.
 func (exp *Exp) PrettyPrint() {
 
-	fmt.Printf("---\nExperiment for system %s with ID %s, created at %s:\n", exp.System, exp.ID, exp.Created)
-	fmt.Printf("\tConcluded? %v\n", exp.Concluded)
+	fmt.Printf("---\n")
+	fmt.Printf("Experiment for system '%s' with ID '%s', created at '%s':\n", exp.System, exp.ID, exp.Created)
+	fmt.Printf("\tConcluded? '%v'\n", exp.Concluded)
+	fmt.Printf("\tResultFolder: '%s'\n", exp.ResultFolder)
 	fmt.Printf("\tServers: %d\n", len(exp.Servers))
 	fmt.Printf("\tClients: %d\n", len(exp.Clients))
-	fmt.Printf("\tTC parameters (applied, if non-empty): '%s'\n", exp.NetTroublesIfApplied)
-	fmt.Printf("\tRound in which zeno mixes will be terminated (applied, if non-empty): '%s'\n", exp.ZenoMixKilledIfApplied)
 
 	fmt.Printf("\n\tPROGRESS:\n")
 	for i := range exp.Progress {
@@ -86,6 +75,63 @@ func (exp *Exp) PrettyPrint() {
 	}
 
 	fmt.Printf("---\n")
+}
+
+// CustomizedExp prepares a new experiment
+// ready to be sent to the operator that is
+// customized to the specified flags of this run.
+func CustomizedExp(expFile *ExpFile, applyNetTroubles bool, killZenoMixesInRound int) *Exp {
+
+	exp := &Exp{}
+
+	exp.System = expFile.System
+	exp.Servers = make([]Worker, len(expFile.Servers))
+	exp.Clients = make([]Worker, len(expFile.Clients))
+
+	copy(exp.Servers, expFile.Servers)
+	copy(exp.Clients, expFile.Clients)
+
+	for i := range exp.Servers {
+
+		// Only if this run was set to apply the
+		// TC configurations that cause the network
+		// to simulate trouble and this node is in
+		// one of the zones selected to experience
+		// them, enable them.
+		if applyNetTroubles && expFile.ZonesNetTroublesIfUsed[exp.Servers[i].Zone] {
+			exp.Servers[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		} else {
+			exp.Servers[i].NetTroubles = "none"
+		}
+
+		// Only an actual round has been specified
+		// in which specific zeno mixes will be
+		// terminated, add the setting.
+		if killZenoMixesInRound > 0 {
+			exp.Servers[i].ZenoMixesKilled = killZenoMixesInRound
+		} else {
+			exp.Servers[i].ZenoMixesKilled = -1
+		}
+	}
+
+	for i := range exp.Clients {
+
+		// Only if this run was set to apply the
+		// TC configurations that cause the network
+		// to simulate trouble and this node is in
+		// one of the zones selected to experience
+		// them, enable them.
+		if applyNetTroubles && expFile.ZonesNetTroublesIfUsed[exp.Clients[i].Zone] {
+			exp.Clients[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		} else {
+			exp.Clients[i].NetTroubles = "none"
+		}
+
+		// Disable for clients.
+		exp.Clients[i].ZenoMixesKilled = -1
+	}
+
+	return exp
 }
 
 func init() {
@@ -107,7 +153,7 @@ func main() {
 	certFileFlag := flag.String("certFile", "./operator-cert.pem", "Specify the file system location of the self-signed TLS certificate of the operator.")
 	resultsPathFlag := flag.String("resultsPath", "./results/", "Specify the file system location of the top-level results directory to create a new results folder under.")
 	gcloudBucketFlag := flag.String("gcloudBucket", "", "Supply the GCloud Storage Bucket to use for the experiments.")
-	tcEmulNetTroublesFlag := flag.Bool("tcEmulNetTroubles", false, "Append this flag to emulate a network trouble in 3 out of all zones.")
+	applyNetTroublesFlag := flag.Bool("applyNetTroubles", false, "Append this flag to emulate a network trouble in 3 out of all zones.")
 	killZenoMixesInRoundFlag := flag.Int("killZenoMixesInRound", -1, "If specific mix nodes in all but one zeno cascade are supposed to crash, specify the round in which that shall happen.")
 	flag.Parse()
 
@@ -119,7 +165,6 @@ func main() {
 
 	system := strings.ToLower(*systemFlag)
 	gcloudBucket := *gcloudBucketFlag
-	tcEmulNetTroubles := *tcEmulNetTroublesFlag
 	killZenoMixesInRound := *killZenoMixesInRoundFlag
 
 	// System flag has to be one of three values.
@@ -144,7 +189,7 @@ func main() {
 	if system == "zeno" {
 
 		// Prepare zeno configurations file for ingestion.
-		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-zeno.json")
+		configsFileRel := filepath.Join(*configsPathFlag, "zeno.json")
 		configsFile, err = filepath.Abs(configsFileRel)
 		if err != nil {
 			fmt.Printf("Unable to obtain absolute path to zeno configurations file '%s': %v\n", configsFileRel, err)
@@ -154,7 +199,7 @@ func main() {
 	} else if system == "vuvuzela" {
 
 		// Prepare vuvuzela configurations file for ingestion.
-		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-vuvuzela.json")
+		configsFileRel := filepath.Join(*configsPathFlag, "vuvuzela.json")
 		configsFile, err = filepath.Abs(configsFileRel)
 		if err != nil {
 			fmt.Printf("Unable to obtain absolute path to vuvuzela configurations file '%s': %v\n", configsFileRel, err)
@@ -164,7 +209,7 @@ func main() {
 	} else if system == "pung" {
 
 		// Prepare pung configurations file for ingestion.
-		configsFileRel := filepath.Join(*configsPathFlag, "gcloud-pung.json")
+		configsFileRel := filepath.Join(*configsPathFlag, "pung.json")
 		configsFile, err = filepath.Abs(configsFileRel)
 		if err != nil {
 			fmt.Printf("Unable to obtain absolute path to pung configurations file '%s': %v\n", configsFileRel, err)
@@ -213,17 +258,21 @@ func main() {
 	}
 
 	// Unmarshal JSON.
-	var configs []Config
-	err = json.Unmarshal(configsJSON, &configs)
+	reqExpFile := &ExpFile{}
+	err = json.Unmarshal(configsJSON, reqExpFile)
 	if err != nil {
 		fmt.Printf("Error while trying to unmarshal JSON-encoded GCloud configuration: %v\n", err)
 		os.Exit(1)
 	}
 
+	// Manipulate experiment data according
+	// to supplied flags.
+	reqExp := CustomizedExp(reqExpFile, *applyNetTroublesFlag, *killZenoMixesInRoundFlag)
+
 	// Prepare buffer of JSON payload to be
 	// attached to the HTTPS request.
 	reqBodyBuf := new(bytes.Buffer)
-	err = json.NewEncoder(reqBodyBuf).Encode(configs)
+	err = json.NewEncoder(reqBodyBuf).Encode(reqExp)
 	if err != nil {
 		fmt.Printf("Failed to encode JSON payload for new experiment into buffer: %v\n", err)
 		os.Exit(1)
@@ -247,8 +296,8 @@ func main() {
 	}
 
 	// Read the response.
-	exp := &Exp{}
-	err = json.NewDecoder(resp.Body).Decode(exp)
+	respExp := &Exp{}
+	err = json.NewDecoder(resp.Body).Decode(respExp)
 	if err != nil {
 		fmt.Printf("Failed decoding response from HTTPS API request for new experiment to JSON: %v\n", err)
 		os.Exit(1)
@@ -256,7 +305,7 @@ func main() {
 	defer resp.Body.Close()
 
 	fmt.Printf("Operator responded to request for new experiment with:\n")
-	exp.PrettyPrint()
+	respExp.PrettyPrint()
 
 	// Loop over user input. Await either status
 	// request or experiment termination input.
@@ -273,7 +322,7 @@ func main() {
 		if strings.TrimSpace(input) == "s" {
 
 			// Request current status of experiment.
-			req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s/public/experiments/%s/status", *operatorAddrFlag, exp.ID), nil)
+			req, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s/public/experiments/%s/status", *operatorAddrFlag, respExp.ID), nil)
 			if err != nil {
 				fmt.Printf("Failed creating HTTPS API request for status of experiment: %v\n", err)
 				os.Exit(1)
@@ -297,7 +346,7 @@ func main() {
 			}
 			defer resp.Body.Close()
 
-			fmt.Printf("\nStatus of experiment %s:\n", exp.ID)
+			fmt.Printf("\nStatus of experiment %s:\n", respExp.ID)
 			expStatus.PrettyPrint()
 		}
 
@@ -307,7 +356,7 @@ func main() {
 	fmt.Printf("\nWill instruct operator to terminate experiment...")
 
 	// Request termination of experiment.
-	req, err = http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s/public/experiments/%s/terminate", *operatorAddrFlag, exp.ID), nil)
+	req, err = http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s/public/experiments/%s/terminate", *operatorAddrFlag, respExp.ID), nil)
 	if err != nil {
 		fmt.Printf("Failed creating HTTPS API request to terminate experiment: %v\n", err)
 		os.Exit(1)
@@ -346,7 +395,7 @@ func main() {
 
 	fmt.Printf(" done!\n")
 
-	if !tcEmulNetTroubles {
+	if !*applyNetTroublesFlag {
 
 		if killZenoMixesInRound == -1 {
 			fmt.Printf("\nEvaluation run %s for 01_tc-off_proc-off completed\n", resultFolder)
