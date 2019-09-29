@@ -17,9 +17,9 @@ GCLOUD_PROJECT=$(curl -s "http://metadata.google.internal/computeMetadata/v1/ins
 GCLOUD_BUCKET=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/gcloudBucket" -H "Metadata-Flavor: Google")
 
 # Pull operator binary from GCloud bucket.
-# /usr/bin/gsutil cp gs://acs-eval/operator /root/operator
-# chmod 0700 /root/operator
+/usr/bin/gsutil cp gs://acs-eval/operator /root/operator
+chmod 0700 /root/operator
 
 # Launch operator binary.
-# /root/operator -publicAddr ${PUBLIC_IP}:443 -internalAddr ${INTERNAL_IP}:443 -gcloudServiceAcc ${GCLOUD_SERVICE_ACC} \
-#     -gcloudProject ${GCLOUD_PROJECT} -gcloudBucket ${GCLOUD_BUCKET} -certPath /root/operator-cert.pem -keyPath /root/operator-key.pem
+/root/operator -publicAddr ${PUBLIC_IP}:443 -internalAddr ${INTERNAL_IP}:443 -gcloudServiceAcc ${GCLOUD_SERVICE_ACC} \
+    -gcloudProject ${GCLOUD_PROJECT} -gcloudBucket ${GCLOUD_BUCKET} -certPath /root/operator-cert.pem -keyPath /root/operator-key.pem

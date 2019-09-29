@@ -206,25 +206,6 @@ func main() {
 		Clients:                make([]Worker, numClientsToGen),
 	}
 
-	for i := range zenoExp.Clients {
-
-		zone := ""
-		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage)
-
-		zenoExp.Clients[i] = Worker{
-			ID:             (i + 1),
-			Name:           fmt.Sprintf("client-%05d", (i + 1)),
-			Zone:           zone,
-			MinCPUPlatform: "Intel Skylake",
-			MachineType:    "n1-standard-4",
-			TypeOfNode:     "client",
-			BinaryName:     "zeno",
-			SourceImage:    "acs-eval",
-			DiskType:       "pd-ssd",
-			DiskSize:       "10",
-		}
-	}
-
 	for i := range zenoExp.Servers {
 
 		zone := ""
@@ -244,14 +225,23 @@ func main() {
 		}
 	}
 
-	copy(vuvuzelaExp.Clients, zenoExp.Clients)
-	for i := range vuvuzelaExp.Clients {
-		vuvuzelaExp.Clients[i].BinaryName = "vuvuzela-client"
-	}
+	for i := range zenoExp.Clients {
 
-	copy(pungExp.Clients, zenoExp.Clients)
-	for i := range vuvuzelaExp.Clients {
-		vuvuzelaExp.Clients[i].BinaryName = "pung-client"
+		zone := ""
+		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage)
+
+		zenoExp.Clients[i] = Worker{
+			ID:             (i + 1),
+			Name:           fmt.Sprintf("client-%05d", (i + 1)),
+			Zone:           zone,
+			MinCPUPlatform: "Intel Skylake",
+			MachineType:    "n1-standard-4",
+			TypeOfNode:     "client",
+			BinaryName:     "zeno",
+			SourceImage:    "acs-eval",
+			DiskType:       "pd-ssd",
+			DiskSize:       "10",
+		}
 	}
 
 	copy(vuvuzelaExp.Servers, zenoExp.Servers[:numVuvuzelaMixesToGen])
@@ -267,7 +257,18 @@ func main() {
 
 	copy(pungExp.Servers, zenoExp.Servers[:1])
 	for i := range pungExp.Servers {
+		pungExp.Servers[i].MachineType = "n1-highmem-16"
 		pungExp.Servers[i].BinaryName = "pung-server"
+	}
+
+	copy(vuvuzelaExp.Clients, zenoExp.Clients)
+	for i := range vuvuzelaExp.Clients {
+		vuvuzelaExp.Clients[i].BinaryName = "vuvuzela-client"
+	}
+
+	copy(pungExp.Clients, zenoExp.Clients)
+	for i := range pungExp.Clients {
+		pungExp.Clients[i].BinaryName = "pung-client"
 	}
 
 	// Marshal slice of zeno experiment to JSON.
