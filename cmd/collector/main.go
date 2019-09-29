@@ -7,6 +7,8 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
+	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -66,6 +68,10 @@ func (col *Collector) collectSystemMetrics() {
 		os.Exit(1)
 	}
 
+	// Prepare regular expression matching sent
+	// and received bytes values.
+	bytesRegexp := regexp.MustCompile(`(spt|dpt)\:(33|44)0((0\d)|10)`)
+
 	// Receive tick every second.
 	secTicker := time.NewTicker(time.Second)
 
@@ -90,16 +96,14 @@ func (col *Collector) collectSystemMetrics() {
 			recvdBytes := "n/a\n"
 			load := "n/a\n"
 			mem := "n/a\n"
+			sentBytesCounter := 0
+			recvdBytesCounter := 0
 
 			// Prepare various system metric collection commands.
 			cmdSent := exec.Command("iptables", "-t", "filter", "-nvx", "-L", "OUTPUT")
 			cmdRecvd := exec.Command("iptables", "-t", "filter", "-nvx", "-L", "INPUT")
 			cmdLoad := exec.Command("mpstat")
 			cmdMem := exec.Command("head", "-3", "/proc/meminfo")
-
-			// TODO: If zeno, add search for port 44001.
-			searchSent := "spt:33001"
-			searchRecvd := "dpt:33001"
 
 			// Obtain current timestamp.
 			now := time.Now().Unix()
@@ -135,34 +139,48 @@ func (col *Collector) collectSystemMetrics() {
 			outSentLines := strings.Split(strings.TrimSpace(outSent), "\n")
 			for i := range outSentLines {
 
-				if strings.Contains(outSentLines[i], searchSent) {
+				if bytesRegexp.MatchString(outSentLines[i]) {
 
 					// Split at one or more whitespace characters.
 					// The bytes value is the second one.
 					outSentParts := strings.Fields(outSentLines[i])
-					sentBytes = fmt.Sprintf("%d %s\n", now, outSentParts[1])
+
+					// Convert to integer.
+					sentBytesInc, err := strconv.Atoi(outSentParts[1])
+					if err != nil {
+						fmt.Printf("Extracting increase in OUTPUT bytes failed: %v\n", err)
+					}
+
+					// Increase temporary counter value by it.
+					sentBytesCounter += sentBytesInc
 				}
 			}
+
+			// Prepare final metrics file line.
+			sentBytes = fmt.Sprintf("%d %d\n", now, sentBytesCounter)
 
 			outRecvdLines := strings.Split(strings.TrimSpace(outRecvd), "\n")
 			for i := range outRecvdLines {
 
-				// If this is a pung client, we cannot look for
-				// incoming traffic to a specific port, but only
-				// for packets sent via connections established
-				// by this client.
-				if col.System == "pung" && col.TypeOfNode == "client" {
-					searchRecvd = "ESTABLISHED"
-				}
-
-				if strings.Contains(outRecvdLines[i], searchRecvd) {
+				if bytesRegexp.MatchString(outRecvdLines[i]) {
 
 					// Split at one or more whitespace characters.
 					// The bytes value is the second one.
 					outRecvdParts := strings.Fields(outRecvdLines[i])
-					recvdBytes = fmt.Sprintf("%d %s\n", now, outRecvdParts[1])
+
+					// Convert to integer.
+					recvdBytesInc, err := strconv.Atoi(outRecvdParts[1])
+					if err != nil {
+						fmt.Printf("Extracting increase in INPUT bytes failed: %v\n", err)
+					}
+
+					// Increase temporary counter value by it.
+					recvdBytesCounter += recvdBytesInc
 				}
 			}
+
+			// Prepare final metrics file line.
+			recvdBytes = fmt.Sprintf("%d %d\n", now, recvdBytesCounter)
 
 			// Extract the interesting load metrics.
 			outLoadLines := strings.Split(strings.TrimSpace(outLoad), "\n")
