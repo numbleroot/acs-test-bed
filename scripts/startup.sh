@@ -118,8 +118,10 @@ CLIENT_10_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}910"
 
 
 # Prepare FIFO pipe for system and collector IPC.
-mkfifo /tmp/collect
-chmod 0600 /tmp/collect
+mkfifo /tmp/collect01 /tmp/collect02 /tmp/collect03 /tmp/collect04 /tmp/collect05 \
+    /tmp/collect06 /tmp/collect07 /tmp/collect08 /tmp/collect09 /tmp/collect10
+chmod 0600 /tmp/collect01 /tmp/collect02 /tmp/collect03 /tmp/collect04 /tmp/collect05 \
+    /tmp/collect06 /tmp/collect07 /tmp/collect08 /tmp/collect09 /tmp/collect10
 
 # Prepare data paths for each client.
 mkdir -p ${CLIENT_01_PATH} ${CLIENT_02_PATH} ${CLIENT_03_PATH} ${CLIENT_04_PATH} ${CLIENT_05_PATH} \
@@ -396,7 +398,12 @@ iptables -Z -t filter -L OUTPUT
 
 
 # Run metrics collector sidecar in background.
-/root/collector -system ${EVAL_SYSTEM} -typeOfNode ${TYPE_OF_NODE} -pipe /tmp/collect -metricsPath /root/ &
+/root/collector -system ${EVAL_SYSTEM} -typeOfNode ${TYPE_OF_NODE} -metricsPath /root/ \
+    -client01Path ${CLIENT_01_PATH} -pipe01 /tmp/collect01 -client02Path ${CLIENT_02_PATH} -pipe02 /tmp/collect02 \
+    -client03Path ${CLIENT_03_PATH} -pipe03 /tmp/collect03 -client04Path ${CLIENT_04_PATH} -pipe04 /tmp/collect04 \
+    -client05Path ${CLIENT_05_PATH} -pipe05 /tmp/collect05 -client06Path ${CLIENT_06_PATH} -pipe06 /tmp/collect06 \
+    -client07Path ${CLIENT_07_PATH} -pipe07 /tmp/collect07 -client08Path ${CLIENT_08_PATH} -pipe08 /tmp/collect08 \
+    -client09Path ${CLIENT_09_PATH} -pipe09 /tmp/collect09 -client10Path ${CLIENT_10_PATH} -pipe10 /tmp/collect10 &
 
 
 if [ "${TYPE_OF_NODE}" == "server" ]; then
@@ -406,7 +413,7 @@ if [ "${TYPE_OF_NODE}" == "server" ]; then
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_01_PATH}/log.evaluation
 
         # Run zeno as mix.
-        /root/zeno -eval -killMixesInRound ${KILL_ZENO_MIXES_IN_ROUND} -metricsPipe /tmp/collect -mix -name ${CLIENT_01} \
+        /root/zeno -eval -killMixesInRound ${KILL_ZENO_MIXES_IN_ROUND} -metricsPipe /tmp/collect01 -mix -name ${CLIENT_01} \
             -partner ${CLIENT_01_PARTNER} -msgPublicAddr ${CLIENT_01_ADDR1} -msgLisAddr ${CLIENT_01_ADDR1} -pkiLisAddr ${CLIENT_01_ADDR2} \
             -pki ${OPERATOR_IP}:44001 -pkiCertPath /root/operator-cert.pem >> ${CLIENT_01_PATH}/log.evaluation
 
@@ -422,7 +429,7 @@ if [ "${TYPE_OF_NODE}" == "server" ]; then
         printf "\n" >> ${CLIENT_01_PATH}/log.evaluation
 
         # Run mix component of Vuvuzela.
-        /root/vuvuzela-mix -eval -metricsPipe /tmp/collect -addr ${CLIENT_01_ADDR1} -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
+        /root/vuvuzela-mix -eval -metricsPipe /tmp/collect01 -addr ${CLIENT_01_ADDR1} -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
             -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_01_PATH}/log.evaluation
 
     fi
@@ -432,7 +439,7 @@ else if [ "${TYPE_OF_NODE}" == "coordinator" ]; then
     printf "\n" >> ${CLIENT_01_PATH}/log.evaluation
 
     # Run coordinator component of Vuvuzela.
-    /root/vuvuzela-coordinator -eval -metricsPipe /tmp/collect -addr ${CLIENT_01_ADDR1} \
+    /root/vuvuzela-coordinator -eval -metricsPipe /tmp/collect01 -addr ${CLIENT_01_ADDR1} \
         -wait 10s -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_01_PATH}/log.evaluation
 
 else if [ "${TYPE_OF_NODE}" == "client" ]; then
@@ -442,52 +449,52 @@ else if [ "${TYPE_OF_NODE}" == "client" ]; then
         # Run ten zeno clients.
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_01_PATH}/log.evaluation        
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_01} -partner ${CLIENT_01_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect01 -client -name ${CLIENT_01} -partner ${CLIENT_01_PARTNER} \
             -msgPublicAddr ${CLIENT_01_ADDR1} -msgLisAddr ${CLIENT_01_ADDR1} -pkiLisAddr ${CLIENT_01_ADDR2} -pki ${OPERATOR_IP}:44001 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_01_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_02_PATH}/log.evaluation 
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_02} -partner ${CLIENT_02_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect02 -client -name ${CLIENT_02} -partner ${CLIENT_02_PARTNER} \
             -msgPublicAddr ${CLIENT_02_ADDR1} -msgLisAddr ${CLIENT_02_ADDR1} -pkiLisAddr ${CLIENT_02_ADDR2} -pki ${OPERATOR_IP}:44002 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_02_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_03_PATH}/log.evaluation 
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_03} -partner ${CLIENT_03_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect03 -client -name ${CLIENT_03} -partner ${CLIENT_03_PARTNER} \
             -msgPublicAddr ${CLIENT_03_ADDR1} -msgLisAddr ${CLIENT_03_ADDR1} -pkiLisAddr ${CLIENT_03_ADDR2} -pki ${OPERATOR_IP}:44003 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_03_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_04_PATH}/log.evaluation
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_04} -partner ${CLIENT_04_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect04 -client -name ${CLIENT_04} -partner ${CLIENT_04_PARTNER} \
             -msgPublicAddr ${CLIENT_04_ADDR1} -msgLisAddr ${CLIENT_04_ADDR1} -pkiLisAddr ${CLIENT_04_ADDR2} -pki ${OPERATOR_IP}:44004 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_04_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_05_PATH}/log.evaluation
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_05} -partner ${CLIENT_05_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect05 -client -name ${CLIENT_05} -partner ${CLIENT_05_PARTNER} \
             -msgPublicAddr ${CLIENT_05_ADDR1} -msgLisAddr ${CLIENT_05_ADDR1} -pkiLisAddr ${CLIENT_05_ADDR2} -pki ${OPERATOR_IP}:44005 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_05_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_06_PATH}/log.evaluation
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_06} -partner ${CLIENT_06_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect06 -client -name ${CLIENT_06} -partner ${CLIENT_06_PARTNER} \
             -msgPublicAddr ${CLIENT_06_ADDR1} -msgLisAddr ${CLIENT_06_ADDR1} -pkiLisAddr ${CLIENT_06_ADDR2} -pki ${OPERATOR_IP}:44006 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_06_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_07_PATH}/log.evaluation
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_07} -partner ${CLIENT_07_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect07 -client -name ${CLIENT_07} -partner ${CLIENT_07_PARTNER} \
             -msgPublicAddr ${CLIENT_07_ADDR1} -msgLisAddr ${CLIENT_07_ADDR1} -pkiLisAddr ${CLIENT_07_ADDR2} -pki ${OPERATOR_IP}:44007 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_07_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_08_PATH}/log.evaluation
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_08} -partner ${CLIENT_08_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect08 -client -name ${CLIENT_08} -partner ${CLIENT_08_PARTNER} \
             -msgPublicAddr ${CLIENT_08_ADDR1} -msgLisAddr ${CLIENT_08_ADDR1} -pkiLisAddr ${CLIENT_08_ADDR2} -pki ${OPERATOR_IP}:44008 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_08_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_09_PATH}/log.evaluation
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_09} -partner ${CLIENT_09_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect09 -client -name ${CLIENT_09} -partner ${CLIENT_09_PARTNER} \
             -msgPublicAddr ${CLIENT_09_ADDR1} -msgLisAddr ${CLIENT_09_ADDR1} -pkiLisAddr ${CLIENT_09_ADDR2} -pki ${OPERATOR_IP}:44009 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_09_PATH}/log.evaluation
 
         printf "Some zeno mixes will be terminated in round: '${KILL_ZENO_MIXES_IN_ROUND}'.\n\n" >> ${CLIENT_10_PATH}/log.evaluation
-        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -client -name ${CLIENT_10} -partner ${CLIENT_10_PARTNER} \
+        /root/zeno -eval -numMsgToRecv 25 -metricsPipe /tmp/collect10 -client -name ${CLIENT_10} -partner ${CLIENT_10_PARTNER} \
             -msgPublicAddr ${CLIENT_10_ADDR1} -msgLisAddr ${CLIENT_10_ADDR1} -pkiLisAddr ${CLIENT_10_ADDR2} -pki ${OPERATOR_IP}:44010 \
             -pkiCertPath /root/operator-cert.pem >> ${CLIENT_10_PATH}/log.evaluation
 
@@ -496,43 +503,43 @@ else if [ "${TYPE_OF_NODE}" == "client" ]; then
         # Run ten Pung clients.
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_01_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_01} -p ${CLIENT_01_PARTNER} -x ${CLIENT_01_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect01 -n ${CLIENT_01} -p ${CLIENT_01_PARTNER} -x ${CLIENT_01_PUNG_SHARED_SECRET} \
             -h ${CLIENT_01_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_01_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_02_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_02} -p ${CLIENT_02_PARTNER} -x ${CLIENT_02_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect02 -n ${CLIENT_02} -p ${CLIENT_02_PARTNER} -x ${CLIENT_02_PUNG_SHARED_SECRET} \
             -h ${CLIENT_02_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_02_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_03_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_03} -p ${CLIENT_03_PARTNER} -x ${CLIENT_03_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect03 -n ${CLIENT_03} -p ${CLIENT_03_PARTNER} -x ${CLIENT_03_PUNG_SHARED_SECRET} \
             -h ${CLIENT_03_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_03_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_04_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_04} -p ${CLIENT_04_PARTNER} -x ${CLIENT_04_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect04 -n ${CLIENT_04} -p ${CLIENT_04_PARTNER} -x ${CLIENT_04_PUNG_SHARED_SECRET} \
             -h ${CLIENT_04_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_04_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_05_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_05} -p ${CLIENT_05_PARTNER} -x ${CLIENT_05_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect05 -n ${CLIENT_05} -p ${CLIENT_05_PARTNER} -x ${CLIENT_05_PUNG_SHARED_SECRET} \
             -h ${CLIENT_05_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_05_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_06_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_06} -p ${CLIENT_06_PARTNER} -x ${CLIENT_06_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect06 -n ${CLIENT_06} -p ${CLIENT_06_PARTNER} -x ${CLIENT_06_PUNG_SHARED_SECRET} \
             -h ${CLIENT_06_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_06_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_07_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_07} -p ${CLIENT_07_PARTNER} -x ${CLIENT_07_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect07 -n ${CLIENT_07} -p ${CLIENT_07_PARTNER} -x ${CLIENT_07_PUNG_SHARED_SECRET} \
             -h ${CLIENT_07_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_07_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_08_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_08} -p ${CLIENT_08_PARTNER} -x ${CLIENT_08_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect08 -n ${CLIENT_08} -p ${CLIENT_08_PARTNER} -x ${CLIENT_08_PUNG_SHARED_SECRET} \
             -h ${CLIENT_08_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_08_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_09_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_09} -p ${CLIENT_09_PARTNER} -x ${CLIENT_09_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect09 -n ${CLIENT_09} -p ${CLIENT_09_PARTNER} -x ${CLIENT_09_PUNG_SHARED_SECRET} \
             -h ${CLIENT_09_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_09_PATH}/log.evaluation
 
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> ${CLIENT_10_PATH}/log.evaluation
-        /root/pung-client -e /tmp/collect -n ${CLIENT_10} -p ${CLIENT_10_PARTNER} -x ${CLIENT_10_PUNG_SHARED_SECRET} \
+        /root/pung-client -e /tmp/collect10 -n ${CLIENT_10} -p ${CLIENT_10_PARTNER} -x ${CLIENT_10_PUNG_SHARED_SECRET} \
             -h ${CLIENT_10_PUNG_SERVER_ADDR} -r 30 -k 1 -s 1 -t e -d 2 -b 0 >> ${CLIENT_10_PATH}/log.evaluation
 
     else if [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
@@ -540,43 +547,43 @@ else if [ "${TYPE_OF_NODE}" == "client" ]; then
         # Run ten client components of Vuvuzela.
 
         printf "\n" >> ${CLIENT_01_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect01 -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
             -peer ${CLIENT_01_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_01_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_02_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_02}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect02 -conf /root/vuvuzela-confs/${CLIENT_02}.conf \
             -peer ${CLIENT_02_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_02_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_03_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_03}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect03 -conf /root/vuvuzela-confs/${CLIENT_03}.conf \
             -peer ${CLIENT_03_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_03_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_04_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_04}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect04 -conf /root/vuvuzela-confs/${CLIENT_04}.conf \
             -peer ${CLIENT_04_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_04_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_05_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_05}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect05 -conf /root/vuvuzela-confs/${CLIENT_05}.conf \
             -peer ${CLIENT_05_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_05_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_06_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_06}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect06 -conf /root/vuvuzela-confs/${CLIENT_06}.conf \
             -peer ${CLIENT_06_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_06_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_07_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_07}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect07 -conf /root/vuvuzela-confs/${CLIENT_07}.conf \
             -peer ${CLIENT_07_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_07_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_08_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_08}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect08 -conf /root/vuvuzela-confs/${CLIENT_08}.conf \
             -peer ${CLIENT_08_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_08_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_09_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_09}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect09 -conf /root/vuvuzela-confs/${CLIENT_09}.conf \
             -peer ${CLIENT_09_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_09_PATH}/log.evaluation
 
         printf "\n" >> ${CLIENT_10_PATH}/log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect -conf /root/vuvuzela-confs/${CLIENT_10}.conf \
+        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect10 -conf /root/vuvuzela-confs/${CLIENT_10}.conf \
             -peer ${CLIENT_10_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> ${CLIENT_10_PATH}/log.evaluation
 
     fi
@@ -598,21 +605,21 @@ fi
 
 if ([ "${TYPE_OF_NODE}" == "server" ] || [ "${TYPE_OF_NODE}" == "coordinator" ]); then
 
-    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_01}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_01}/
     /usr/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${NAME_OF_NODE}_${LISTEN_IP}/
 
 else if [ "${TYPE_OF_NODE}" == "client" ]; then
 
-    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_01}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_02_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_02}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_03_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_03}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_04_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_04}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_05_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_05}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_06_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_06}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_07_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_07}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_08_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_08}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_09_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_09}.evaluation
-    /usr/bin/gsutil -m cp ${CLIENT_10_PATH}/log.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/log_${CLIENT_10}.evaluation
+    /usr/bin/gsutil -m cp ${CLIENT_01_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_01}/
+    /usr/bin/gsutil -m cp ${CLIENT_02_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_02}/
+    /usr/bin/gsutil -m cp ${CLIENT_03_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_03}/
+    /usr/bin/gsutil -m cp ${CLIENT_04_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_04}/
+    /usr/bin/gsutil -m cp ${CLIENT_05_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_05}/
+    /usr/bin/gsutil -m cp ${CLIENT_06_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_06}/
+    /usr/bin/gsutil -m cp ${CLIENT_07_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_07}/
+    /usr/bin/gsutil -m cp ${CLIENT_08_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_08}/
+    /usr/bin/gsutil -m cp ${CLIENT_09_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_09}/
+    /usr/bin/gsutil -m cp ${CLIENT_10_PATH}/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/${CLIENT_10}/
     /usr/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${NAME_OF_NODE}_${LISTEN_IP}/
 
 fi
