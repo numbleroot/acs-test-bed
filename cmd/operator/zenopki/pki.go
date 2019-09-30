@@ -217,6 +217,8 @@ func (pki *PKI) AcceptRegistrations() {
 
 	for {
 
+		fmt.Printf("[ZENO PKI] Waiting for next registration message.\n")
+
 		// Accept incoming new requests.
 		connWrite, err := pki.Lis.Accept()
 		if err != nil {
@@ -267,8 +269,12 @@ func (pki *PKI) Run(cert string, key string) {
 	// block for all epoch timers.
 	epochBrick := 5 * time.Second
 
+	fmt.Printf("[ZENO PKI] Waiting for start signal.\n")
+
 	// Wait for start signal from operator.
 	<-pki.EvalCtrlChan
+
+	fmt.Printf("[ZENO PKI] Start signal received!\n")
 
 	for {
 

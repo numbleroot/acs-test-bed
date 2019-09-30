@@ -72,7 +72,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client01",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_01"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_01_NAME"
 			},
 			{
 				"key": "partner01",
@@ -80,7 +80,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client02",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_02"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_02_NAME"
 			},
 			{
 				"key": "partner02",
@@ -88,7 +88,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client03",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_03"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_03_NAME"
 			},
 			{
 				"key": "partner03",
@@ -96,7 +96,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client04",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_04"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_04_NAME"
 			},
 			{
 				"key": "partner04",
@@ -104,7 +104,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client05",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_05"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_05_NAME"
 			},
 			{
 				"key": "partner05",
@@ -112,7 +112,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client06",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_06"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_06_NAME"
 			},
 			{
 				"key": "partner06",
@@ -120,7 +120,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client07",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_07"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_07_NAME"
 			},
 			{
 				"key": "partner07",
@@ -128,7 +128,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client08",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_08"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_08_NAME"
 			},
 			{
 				"key": "partner08",
@@ -136,7 +136,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client09",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_09"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_09_NAME"
 			},
 			{
 				"key": "partner09",
@@ -144,7 +144,7 @@ var tmplInstanceCreate = `{
 			},
 			{
 				"key": "client10",
-				"value": "ACS_EVAL_INSERT_META_CLIENT_10"
+				"value": "ACS_EVAL_INSERT_META_CLIENT_10_NAME"
 			},
 			{
 				"key": "partner10",
@@ -199,13 +199,13 @@ var tmplInstanceCreate = `{
 		{
 			"email": "ACS_EVAL_INSERT_SERVICE_ACCOUNT",
 			"scopes": [
-                "https://www.googleapis.com/auth/compute",
-                "https://www.googleapis.com/auth/servicecontrol",
-                "https://www.googleapis.com/auth/service.management",
-                "https://www.googleapis.com/auth/logging.write",
-                "https://www.googleapis.com/auth/monitoring.write",
-                "https://www.googleapis.com/auth/trace.append",
-                "https://www.googleapis.com/auth/devstorage.full_control"
+				"https://www.googleapis.com/auth/compute",
+				"https://www.googleapis.com/auth/servicecontrol",
+				"https://www.googleapis.com/auth/service.management",
+				"https://www.googleapis.com/auth/logging.write",
+				"https://www.googleapis.com/auth/monitoring.write",
+				"https://www.googleapis.com/auth/trace.append",
+				"https://www.googleapis.com/auth/devstorage.full_control"
 			]
 		}
 	]
@@ -225,16 +225,28 @@ var tmplInstancePublicIP = `
 // the characteristics from supplied worker struct.
 func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bool) {
 
-	lastClient := worker.ID * 10
-	firstClient := lastClient - 10
 	clientIDs := make(map[int]string)
 
-	for i := 1; i <= 10; i++ {
+	if worker.TypeOfNode == "client" {
 
-		if worker.TypeOfNode == "client" {
+		// Calculate start and end IDs for
+		// this client machine to handle.
+		lastClient := worker.ID * 10
+		firstClient := lastClient - 10
+
+		for i := 1; i <= 10; i++ {
 			clientIDs[i] = fmt.Sprintf("client-%05d", (firstClient + i))
-		} else {
-			clientIDs[i] = fmt.Sprintf("server-%05d", (firstClient + i))
+		}
+
+	} else {
+
+		// In case of servers, only one
+		// logical node will be spawned,
+		// the server itself.
+		clientIDs[1] = worker.Name
+
+		for i := 2; i <= 10; i++ {
+			clientIDs[i] = "irrelevant"
 		}
 	}
 
@@ -248,6 +260,7 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances", op.GCloudProject, worker.Zone)
 
 	// Prepare request body.
+
 	reqBody := strings.ReplaceAll(tmplInstanceCreate, "ACS_EVAL_INSERT_GCP_MACHINE_NAME", fmt.Sprintf("%s-%s", worker.Name, exp.ResultFolder))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ZONE", fmt.Sprintf("projects/%s/zones/%s", op.GCloudProject, worker.Zone))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MIN_CPU_PLATFORM", worker.MinCPUPlatform)
@@ -274,25 +287,25 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_TC_CONFIG", worker.NetTroubles)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_KILL_ZENO_MIXES_IN_ROUND", fmt.Sprintf("%d", worker.ZenoMixesKilled))
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_01", clientIDs[1])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_01_NAME", clientIDs[1])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_01_PARTNER", clientIDs[2])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_02", clientIDs[2])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_02_NAME", clientIDs[2])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_02_PARTNER", clientIDs[1])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_03", clientIDs[3])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_03_NAME", clientIDs[3])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_03_PARTNER", clientIDs[4])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_04", clientIDs[4])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_04_NAME", clientIDs[4])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_04_PARTNER", clientIDs[3])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_05", clientIDs[5])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_05_NAME", clientIDs[5])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_05_PARTNER", clientIDs[6])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_06", clientIDs[6])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_06_NAME", clientIDs[6])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_06_PARTNER", clientIDs[5])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_07", clientIDs[7])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_07_NAME", clientIDs[7])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_07_PARTNER", clientIDs[8])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_08", clientIDs[8])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_08_NAME", clientIDs[8])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_08_PARTNER", clientIDs[7])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_09", clientIDs[9])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_09_NAME", clientIDs[9])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_09_PARTNER", clientIDs[10])
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_10", clientIDs[10])
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_10_NAME", clientIDs[10])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_CLIENT_10_PARTNER", clientIDs[9])
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_STARTUP_SCRIPT", fmt.Sprintf("gs://%s/startup.sh", op.GCloudBucket))
 
@@ -320,6 +333,8 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 		os.Exit(1)
 	}
 	request.Header.Set(http.CanonicalHeaderKey("content-type"), "application/json")
+
+	exp.ProgressChan <- fmt.Sprintf("Request built and ready:\n%v\n.", reqBody)
 
 	// Send the request to GCP.
 	tried := 0
@@ -410,6 +425,7 @@ func (exp *Exp) ProgressWriter() {
 
 	for line := range exp.ProgressChan {
 		exp.Progress = append(exp.Progress, fmt.Sprintf("[%s] %s", time.Now().Format("2006-02-03 15:04:05"), line))
+		fmt.Printf(fmt.Sprintf("[%s] %s\n", time.Now().Format("2006-02-03 15:04:05"), line))
 	}
 }
 

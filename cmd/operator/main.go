@@ -91,7 +91,7 @@ func init() {
 func main() {
 
 	// Command-line options.
-	publicListenAddrFlag := flag.String("publicAddr", "0.0.0.0:443", "Specify HTTPS address for receiving experiment instructions.")
+	publicListenAddrFlag := flag.String("publicAddr", "0.0.0.0:20443", "Specify HTTPS address for receiving experiment instructions.")
 	internalListenAddrFlag := flag.String("internalAddr", "127.0.0.1:443", "Specify HTTPS address for administrating experiments.")
 	gcloudServiceAccFlag := flag.String("gcloudServiceAcc", "", "Supply the GCloud service account to use for the experiments.")
 	gcloudProjectFlag := flag.String("gcloudProject", "", "Supply the GCloud project ID to use for the experiments.")

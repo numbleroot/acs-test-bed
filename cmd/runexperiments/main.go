@@ -80,11 +80,12 @@ func (exp *Exp) PrettyPrint() {
 // CustomizedExp prepares a new experiment
 // ready to be sent to the operator that is
 // customized to the specified flags of this run.
-func CustomizedExp(expFile *ExpFile, applyNetTroubles bool, killZenoMixesInRound int) *Exp {
+func CustomizedExp(expFile *ExpFile, resultFolder string, applyNetTroubles bool, killZenoMixesInRound int) *Exp {
 
 	exp := &Exp{}
 
 	exp.System = expFile.System
+	exp.ResultFolder = resultFolder
 	exp.Servers = make([]Worker, len(expFile.Servers))
 	exp.Clients = make([]Worker, len(expFile.Clients))
 
@@ -267,7 +268,7 @@ func main() {
 
 	// Manipulate experiment data according
 	// to supplied flags.
-	reqExp := CustomizedExp(reqExpFile, *applyNetTroublesFlag, *killZenoMixesInRoundFlag)
+	reqExp := CustomizedExp(reqExpFile, resultFolder, *applyNetTroublesFlag, *killZenoMixesInRoundFlag)
 
 	// Prepare buffer of JSON payload to be
 	// attached to the HTTPS request.
