@@ -31,13 +31,11 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
 
-	fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Handling registration intent.\n", expID, workerName)
-
 	// Read address information from request.
 	regReq := &RegisterReq{}
 	err := req.ReadEntity(&regReq)
 	if err != nil {
-		fmt.Printf("\n[PUT /experiments/%s/workers/%s/register] Failed to extract payload containing address: %v.\n", expID, workerName, err)
+		fmt.Printf("[PUT /experiments/%s/workers/%s/register] Failed to extract payload containing address: %v.\n", expID, workerName, err)
 		resp.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -46,8 +44,6 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 
 	// Signal runner which worker intends to register.
 	op.InternalRegisterChan <- regReq
-
-	fmt.Printf("[PUT /experiments/%s/workers/%s/register] Registration successful.\n", expID, workerName)
 
 	// Respond to worker node.
 	resp.WriteHeader(http.StatusOK)
@@ -59,15 +55,10 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 // steps before calling this endpoint.
 func (op *Operator) HandlerPutReady(req *restful.Request, resp *restful.Response) {
 
-	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
-
-	fmt.Printf("\n[PUT /experiments/%s/workers/%s/ready] Handling ready signal.\n", expID, workerName)
 
 	// Signal runner which worker is ready.
 	op.InternalReadyChan <- workerName
-
-	fmt.Printf("[PUT /experiments/%s/workers/%s/ready] Worker marked as ready.\n", expID, workerName)
 
 	// Respond to worker node.
 	resp.WriteHeader(http.StatusOK)
@@ -78,15 +69,10 @@ func (op *Operator) HandlerPutReady(req *restful.Request, resp *restful.Response
 // designated for it in the running experiment.
 func (op *Operator) HandlerPutFinished(req *restful.Request, resp *restful.Response) {
 
-	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
-
-	fmt.Printf("\n[PUT /experiments/%s/workers/%s/finished] Handling finished signal.\n", expID, workerName)
 
 	// Signal runner which worker has finished.
 	op.InternalFinishedChan <- workerName
-
-	fmt.Printf("[PUT /experiments/%s/workers/%s/finished] Worker marked as finished.\n", expID, workerName)
 
 	resp.WriteHeader(http.StatusOK)
 }
@@ -98,13 +84,11 @@ func (op *Operator) HandlerPutFailed(req *restful.Request, resp *restful.Respons
 	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
 
-	fmt.Printf("\n[PUT /experiments/%s/workers/%s/failed] Handling failed signal.\n", expID, workerName)
-
 	// Read failure information from request.
 	failedReq := &FailedReq{}
 	err := req.ReadEntity(&failedReq)
 	if err != nil {
-		fmt.Printf("\n[PUT /experiments/%s/workers/%s/failed] Failed to extract payload containing error message: %v.\n", expID, workerName, err)
+		fmt.Printf("[PUT /experiments/%s/workers/%s/failed] Failed to extract payload containing error message: %v.\n", expID, workerName, err)
 		resp.WriteHeader(http.StatusInternalServerError)
 		return
 	}
@@ -113,8 +97,6 @@ func (op *Operator) HandlerPutFailed(req *restful.Request, resp *restful.Respons
 
 	// Signal runner which worker has failed.
 	op.InternalFailedChan <- failedReq
-
-	fmt.Printf("[PUT /experiments/%s/workers/%s/failed] Worker marked as failed.\n", expID, workerName)
 
 	resp.WriteHeader(http.StatusOK)
 }

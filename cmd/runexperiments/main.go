@@ -64,14 +64,14 @@ func (exp *Exp) PrettyPrint() {
 
 	fmt.Printf("---\n")
 	fmt.Printf("Experiment for system '%s' with ID '%s', created at '%s':\n", exp.System, exp.ID, exp.Created)
-	fmt.Printf("\tConcluded? '%v'\n", exp.Concluded)
-	fmt.Printf("\tResultFolder: '%s'\n", exp.ResultFolder)
-	fmt.Printf("\tServers: %d\n", len(exp.Servers))
-	fmt.Printf("\tClients: %d\n", len(exp.Clients))
+	fmt.Printf("  Concluded? '%v'\n", exp.Concluded)
+	fmt.Printf("  ResultFolder: '%s'\n", exp.ResultFolder)
+	fmt.Printf("  Servers: %d\n", len(exp.Servers))
+	fmt.Printf("  Clients: %d\n", len(exp.Clients))
 
-	fmt.Printf("\n\tPROGRESS:\n")
+	fmt.Printf("\nPROGRESS:\n")
 	for i := range exp.Progress {
-		fmt.Printf("\t\t%s\n", exp.Progress[i])
+		fmt.Printf("%s\n", exp.Progress[i])
 	}
 
 	fmt.Printf("---\n")
@@ -117,19 +117,17 @@ func CustomizedExp(expFile *ExpFile, resultFolder string, applyNetTroubles bool,
 
 	for i := range exp.Clients {
 
-		// Only if this run was set to apply the
-		// TC configurations that cause the network
-		// to simulate trouble and this node is in
-		// one of the zones selected to experience
-		// them, enable them.
 		if applyNetTroubles && expFile.ZonesNetTroublesIfUsed[exp.Clients[i].Zone] {
 			exp.Clients[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
 		} else {
 			exp.Clients[i].NetTroubles = "none"
 		}
 
-		// Disable for clients.
-		exp.Clients[i].ZenoMixesKilled = -1
+		if killZenoMixesInRound > 0 {
+			exp.Clients[i].ZenoMixesKilled = killZenoMixesInRound
+		} else {
+			exp.Clients[i].ZenoMixesKilled = -1
+		}
 	}
 
 	return exp
@@ -279,6 +277,14 @@ func main() {
 		os.Exit(1)
 	}
 
+	// Read OAuth token from gcloud.
+	outRaw, err := exec.Command("/opt/google-cloud-sdk/bin/gcloud", "auth", "print-access-token").CombinedOutput()
+	if err != nil {
+		fmt.Printf("Could not obtain OAuth2 access token (error: '%v'):\n%s\n", err, outRaw)
+		os.Exit(1)
+	}
+	accessToken := strings.TrimSpace(string(outRaw))
+
 	// Prepare HTTP JSON request to operator
 	// to launch a new experiment.
 	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("https://%s/public/experiments/new", *operatorAddrFlag), reqBodyBuf)
@@ -286,8 +292,9 @@ func main() {
 		fmt.Printf("Failed creating HTTPS API request for new experiment: %v\n", err)
 		os.Exit(1)
 	}
-	req.Header.Set(http.CanonicalHeaderKey("Authorization"), "UniverseOfLoopholes")
-	req.Header.Set(http.CanonicalHeaderKey("Content-Type"), "application/json")
+	req.Header.Set(http.CanonicalHeaderKey("authorization"), "UniverseOfLoopholes")
+	req.Header.Set(http.CanonicalHeaderKey("accesstoken"), accessToken)
+	req.Header.Set(http.CanonicalHeaderKey("content-type"), "application/json")
 
 	// Send experiment request.
 	resp, err := client.Do(req)
@@ -351,6 +358,7 @@ func main() {
 			expStatus.PrettyPrint()
 		}
 
+		fmt.Printf("Type 's' for 'status' or 't' for 'terminate' and press ENTER.\n")
 		input, _ = stdIn.ReadString('\n')
 	}
 
@@ -379,7 +387,7 @@ func main() {
 	fmt.Printf("\nDownloading results...")
 
 	// Execute command to download result files.
-	outRaw, err := exec.Command("/opt/google-cloud-sdk/bin/gsutil", "-m", "cp", "-r",
+	outRaw, err = exec.Command("/opt/google-cloud-sdk/bin/gsutil", "-m", "cp", "-r",
 		fmt.Sprintf("gs://%s/%s/", gcloudBucket, resultFolder), resultsPath).CombinedOutput()
 	if err != nil {
 		fmt.Printf("Downloading results from GCloud bucket failed (code: '%v'): '%s'", err, outRaw)

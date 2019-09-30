@@ -132,6 +132,11 @@ func (pki *PKI) BroadcastData(dataToSend string) {
 		data = "epoch;"
 	}
 
+	allNodes := make([]string, 0, len(pki.Nodes))
+	for i := range pki.Nodes {
+		allNodes = append(allNodes, fmt.Sprintf("%s@%s", pki.Nodes[i].Name, pki.Nodes[i].ContactAddr))
+	}
+
 	for n := range pki.Nodes {
 
 		node := pki.Nodes[n]
@@ -169,6 +174,8 @@ func (pki *PKI) HandleReq(connWrite net.Conn) {
 		fmt.Printf("[ZENO PKI] Failed decoding registration message from node: %v\n", err)
 		return
 	}
+
+	fmt.Printf("[ZENO PKI] Incoming registration from '%s'@'%s'.\n", reg.Name, reg.ContactAddr)
 
 	success := 1
 
@@ -216,8 +223,6 @@ func (pki *PKI) HandleReq(connWrite net.Conn) {
 func (pki *PKI) AcceptRegistrations() {
 
 	for {
-
-		fmt.Printf("[ZENO PKI] Waiting for next registration message.\n")
 
 		// Accept incoming new requests.
 		connWrite, err := pki.Lis.Accept()

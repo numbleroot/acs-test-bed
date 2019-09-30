@@ -38,7 +38,7 @@ func (op *Operator) PublicAuth(req *restful.Request, resp *restful.Response, cha
 // HandlerPutNew creates a new experiment, if possible.
 func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) {
 
-	fmt.Printf("\n[PUT /experiments/new] Handling new request from %s.\n", req.Request.RemoteAddr)
+	fmt.Printf("[PUT /experiments/new] Handling new request from %s.\n", req.Request.RemoteAddr)
 
 	op.Lock()
 	inProg := op.ExpInProgress
@@ -49,6 +49,11 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	if inProg != "" {
 		resp.WriteErrorString(http.StatusConflict, "An experiment is already being conducted at the moment.")
 		return
+	}
+
+	accessToken := req.HeaderParameter("accesstoken")
+	if accessToken != "" {
+		op.GCloudAccessToken = accessToken
 	}
 
 	exp := &Exp{}
@@ -112,7 +117,7 @@ func (op *Operator) HandlerGetExpStatus(req *restful.Request, resp *restful.Resp
 
 	expID := req.PathParameter("expID")
 
-	fmt.Printf("\n[GET /experiments/%s/status] Returning experiment status to %s.\n", expID, req.Request.RemoteAddr)
+	fmt.Printf("[GET /experiments/%s/status] Returning experiment status to %s.\n", expID, req.Request.RemoteAddr)
 
 	// If experiment exists, return its status.
 	exp, found := op.Exps[expID]
@@ -131,7 +136,7 @@ func (op *Operator) HandlerGetExpTerminate(req *restful.Request, resp *restful.R
 
 	expID := req.PathParameter("expID")
 
-	fmt.Printf("\n[GET /experiments/%s/terminate] Received signal from %s to terminate.\n", expID, req.Request.RemoteAddr)
+	fmt.Printf("[GET /experiments/%s/terminate] Received signal from %s to terminate.\n", expID, req.Request.RemoteAddr)
 
 	// If experiment exists, signal to terminate it.
 	_, found := op.Exps[expID]

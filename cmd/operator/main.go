@@ -18,9 +18,10 @@ import (
 type Operator struct {
 	sync.Mutex
 
-	GCloudServiceAcc string
-	GCloudProject    string
-	GCloudBucket     string
+	GCloudServiceAcc  string
+	GCloudProject     string
+	GCloudBucket      string
+	GCloudAccessToken string
 
 	TLSCertPath string
 	TLSKeyPath  string

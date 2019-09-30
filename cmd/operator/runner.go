@@ -227,12 +227,13 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 
 	clientIDs := make(map[int]string)
 
-	if worker.TypeOfNode == "client" {
+	// Calculate start and end IDs for
+	// this client machine to handle.
+	lastClient := worker.ID * 10
+	firstClient := lastClient - 10
+	totalClients := len(exp.Clients) * 10
 
-		// Calculate start and end IDs for
-		// this client machine to handle.
-		lastClient := worker.ID * 10
-		firstClient := lastClient - 10
+	if worker.TypeOfNode == "client" {
 
 		for i := 1; i <= 10; i++ {
 			clientIDs[i] = fmt.Sprintf("client-%05d", (firstClient + i))
@@ -248,10 +249,6 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 		for i := 2; i <= 10; i++ {
 			clientIDs[i] = "irrelevant"
 		}
-	}
-
-	for i := 1; i <= 10; i++ {
-		fmt.Printf("clientIDs[%d] = %s\n", i, clientIDs[i])
 	}
 
 	exp.ProgressChan <- fmt.Sprintf("Spawning %s.", worker.Name)
@@ -274,7 +271,7 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_EXP_ID", exp.ID)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_NAME_OF_NODE", worker.Name)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_EVAL_SYSTEM", exp.System)
-	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_NUM_CLIENTS", fmt.Sprintf("%d", len(exp.Clients)))
+	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_NUM_CLIENTS", fmt.Sprintf("%d", totalClients))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_RESULT_FOLDER", exp.ResultFolder)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_TYPE_OF_NODE", worker.TypeOfNode)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_META_BINARY_TO_PULL", worker.BinaryName)
@@ -332,9 +329,8 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 		exp.ProgressChan <- fmt.Sprintf("Failed creating HTTP API request to spawn %s: %v", worker.Name, err)
 		os.Exit(1)
 	}
+	request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", op.GCloudAccessToken))
 	request.Header.Set(http.CanonicalHeaderKey("content-type"), "application/json")
-
-	exp.ProgressChan <- fmt.Sprintf("Request built and ready:\n%v\n.", reqBody)
 
 	// Send the request to GCP.
 	tried := 0
@@ -342,21 +338,21 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 	for err != nil && tried < 10 {
 
 		tried++
-		exp.ProgressChan <- fmt.Sprintf("Create API request for %s failed (will try again): %v\n", worker.Name, err)
+		exp.ProgressChan <- fmt.Sprintf("Create API request for %s failed (will try again): %v", worker.Name, err)
 		time.Sleep(1 * time.Second)
 
 		resp, err = http.DefaultClient.Do(request)
 	}
 
 	if tried >= 10 {
-		exp.ProgressChan <- fmt.Sprintf("Create API request for %s failed permanently: %v\n", worker.Name, err)
+		exp.ProgressChan <- fmt.Sprintf("Create API request for %s failed permanently: %v", worker.Name, err)
 		os.Exit(1)
 	}
 
 	// Read the response.
 	outRaw, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		exp.ProgressChan <- fmt.Sprintf("Failed reading from instance create response body for %s: %v\n", worker.Name, err)
+		exp.ProgressChan <- fmt.Sprintf("Failed reading from instance create response body for %s: %v", worker.Name, err)
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
@@ -389,6 +385,7 @@ func (op *Operator) ShutdownInstance(wg *sync.WaitGroup, exp *Exp, worker *Worke
 		exp.ProgressChan <- fmt.Sprintf("Failed creating HTTP API request for %s: %v", worker.Name, err)
 		os.Exit(1)
 	}
+	request.Header.Set(http.CanonicalHeaderKey("authorization"), fmt.Sprintf("Bearer %s", op.GCloudAccessToken))
 
 	// Send the request to GCP.
 	resp, err := http.DefaultClient.Do(request)
@@ -542,6 +539,13 @@ func (op *Operator) RunExperiments() {
 				exp.ServersMap[workerReg.Worker].Status = "registered"
 				exp.ProgressChan <- fmt.Sprintf("Server %s at %s marked as registered.", workerReg.Worker, workerReg.Address)
 			}
+
+			status := "Servers status:\n"
+			for i := range exp.Servers {
+				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Servers[i].Name, exp.Servers[i].Address, exp.Servers[i].Status)
+			}
+
+			exp.ProgressChan <- status
 		}
 
 		if exp.System == "vuvuzela" {
@@ -578,6 +582,13 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Server %s failed with: %s", failedReq.Worker, failedReq.Reason)
 				}
 			}
+
+			status := "Servers status:\n"
+			for i := range exp.Servers {
+				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Servers[i].Name, exp.Servers[i].Address, exp.Servers[i].Status)
+			}
+
+			exp.ProgressChan <- status
 		}
 
 		// Verify all servers ready.
@@ -609,6 +620,13 @@ func (op *Operator) RunExperiments() {
 				exp.ClientsMap[workerReg.Worker].Status = "registered"
 				exp.ProgressChan <- fmt.Sprintf("Client %s marked as registered.", workerReg.Worker)
 			}
+
+			status := "Clients status:\n"
+			for i := range exp.Clients {
+				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Clients[i].Name, exp.Clients[i].Address, exp.Clients[i].Status)
+			}
+
+			exp.ProgressChan <- status
 		}
 
 		// Handle incoming ready or failed requests.
@@ -632,6 +650,13 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Client %s failed with: %s", failedReq.Worker, failedReq.Reason)
 				}
 			}
+
+			status := "Clients status:\n"
+			for i := range exp.Clients {
+				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Clients[i].Name, exp.Clients[i].Address, exp.Clients[i].Status)
+			}
+
+			exp.ProgressChan <- status
 		}
 
 		// Verify all clients ready.
@@ -661,6 +686,13 @@ func (op *Operator) RunExperiments() {
 				exp.ClientsMap[workerName].Status = "finished"
 				exp.ProgressChan <- fmt.Sprintf("Client %s marked as finished.", workerName)
 			}
+
+			status := "Clients status:\n"
+			for i := range exp.Clients {
+				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Clients[i].Name, exp.Clients[i].Address, exp.Clients[i].Status)
+			}
+
+			exp.ProgressChan <- status
 		}
 
 		// Verify all clients completed.
