@@ -358,7 +358,7 @@ func main() {
 			expStatus.PrettyPrint()
 		}
 
-		fmt.Printf("Type 's' for 'status' or 't' for 'terminate' and press ENTER.\n")
+		fmt.Printf("Type 's' for 'status' or 't' for 'terminate' and press ENTER...")
 		input, _ = stdIn.ReadString('\n')
 	}
 

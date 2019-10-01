@@ -1,5 +1,13 @@
 #!/usr/bin/env bash
 
+sleep 1
+
+# Make sure the application ports we are going to
+# use for any component of the ACS we are about to
+# evaluate are blocked off from "randomly binding"
+# applications (=> part of the reserved pool).
+sysctl -w net.ipv4.ip_local_reserved_ports=33001-33010,44001-44010
+
 sleep 15
 
 # Heavily increase limit on open file descriptors and
