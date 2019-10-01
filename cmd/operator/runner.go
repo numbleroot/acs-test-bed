@@ -258,7 +258,7 @@ func (op *Operator) SpawnInstance(exp *Exp, worker *Worker, publiclyReachable bo
 
 	// Prepare request body.
 
-	reqBody := strings.ReplaceAll(tmplInstanceCreate, "ACS_EVAL_INSERT_GCP_MACHINE_NAME", fmt.Sprintf("%s-%s", worker.Name, exp.ResultFolder))
+	reqBody := strings.ReplaceAll(tmplInstanceCreate, "ACS_EVAL_INSERT_GCP_MACHINE_NAME", worker.Name)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_ZONE", fmt.Sprintf("projects/%s/zones/%s", op.GCloudProject, worker.Zone))
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MIN_CPU_PLATFORM", worker.MinCPUPlatform)
 	reqBody = strings.ReplaceAll(reqBody, "ACS_EVAL_INSERT_MACHINE_TYPE", fmt.Sprintf("projects/%s/zones/%s/machineTypes/%s", op.GCloudProject,
@@ -376,8 +376,8 @@ func (op *Operator) ShutdownInstance(wg *sync.WaitGroup, exp *Exp, worker *Worke
 
 	exp.ProgressChan <- fmt.Sprintf("Deleting %s.", worker.Name)
 
-	instName := fmt.Sprintf("%s-%s", worker.Name, exp.ResultFolder)
-	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s", op.GCloudProject, worker.Zone, instName)
+	endpoint := fmt.Sprintf("https://www.googleapis.com/compute/v1/projects/%s/zones/%s/instances/%s",
+		op.GCloudProject, worker.Zone, worker.Name)
 
 	// Create HTTP DELETE request.
 	request, err := http.NewRequest(http.MethodDelete, endpoint, nil)
@@ -410,7 +410,7 @@ func (op *Operator) ShutdownInstance(wg *sync.WaitGroup, exp *Exp, worker *Worke
 	if strings.Contains(out, "RUNNING") || strings.Contains(out, "DONE") {
 		exp.ProgressChan <- fmt.Sprintf("Successfully deleted %s.", worker.Name)
 	} else {
-		exp.ProgressChan <- fmt.Sprintf("Failed deleting %s.", worker.Name)
+		exp.ProgressChan <- fmt.Sprintf("Failed deleting %s: '%s'", worker.Name, out)
 	}
 }
 
@@ -531,13 +531,20 @@ func (op *Operator) RunExperiments() {
 		// Handle incoming registration requests.
 		for range exp.Servers {
 
-			workerReg := <-op.InternalRegisterChan
+			select {
 
-			_, found := exp.ServersMap[workerReg.Worker]
-			if found {
-				exp.ServersMap[workerReg.Worker].Address = workerReg.Address
-				exp.ServersMap[workerReg.Worker].Status = "registered"
-				exp.ProgressChan <- fmt.Sprintf("Server %s at %s marked as registered.", workerReg.Worker, workerReg.Address)
+			case <-op.PublicTerminateChan:
+				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
+				goto END
+
+			case workerReg := <-op.InternalRegisterChan:
+
+				_, found := exp.ServersMap[workerReg.Worker]
+				if found {
+					exp.ServersMap[workerReg.Worker].Address = workerReg.Address
+					exp.ServersMap[workerReg.Worker].Status = "registered"
+					exp.ProgressChan <- fmt.Sprintf("Server %s at %s marked as registered.", workerReg.Worker, workerReg.Address)
+				}
 			}
 
 			status := "Servers status:\n"
@@ -565,6 +572,10 @@ func (op *Operator) RunExperiments() {
 		for range exp.Servers {
 
 			select {
+
+			case <-op.PublicTerminateChan:
+				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
+				goto END
 
 			case workerName := <-op.InternalReadyChan:
 
@@ -597,7 +608,7 @@ func (op *Operator) RunExperiments() {
 			if exp.Servers[i].Status != "ready" {
 				exp.ProgressChan <- fmt.Sprintf("At least one server (%s) failed to initialize, ending experiment %s.",
 					exp.Servers[i].Name, expID)
-				goto END
+				goto CONFIRM_END
 			}
 		}
 
@@ -605,7 +616,8 @@ func (op *Operator) RunExperiments() {
 
 		// Spawn all client machines.
 		for i := range exp.Clients {
-			go op.SpawnInstance(exp, exp.Clients[i], false)
+			// TODO: Change last parameter to false again.
+			go op.SpawnInstance(exp, exp.Clients[i], true)
 		}
 
 		exp.ProgressChan <- fmt.Sprintf("All %d clients instructed to spawn, waiting for registration requests.", len(exp.Clients))
@@ -613,12 +625,19 @@ func (op *Operator) RunExperiments() {
 		// Handle incoming client registration requests.
 		for range exp.Clients {
 
-			workerReg := <-op.InternalRegisterChan
+			select {
 
-			_, found := exp.ClientsMap[workerReg.Worker]
-			if found {
-				exp.ClientsMap[workerReg.Worker].Status = "registered"
-				exp.ProgressChan <- fmt.Sprintf("Client %s marked as registered.", workerReg.Worker)
+			case <-op.PublicTerminateChan:
+				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
+				goto END
+
+			case workerReg := <-op.InternalRegisterChan:
+
+				_, found := exp.ClientsMap[workerReg.Worker]
+				if found {
+					exp.ClientsMap[workerReg.Worker].Status = "registered"
+					exp.ProgressChan <- fmt.Sprintf("Client %s marked as registered.", workerReg.Worker)
+				}
 			}
 
 			status := "Clients status:\n"
@@ -633,6 +652,10 @@ func (op *Operator) RunExperiments() {
 		for range exp.Clients {
 
 			select {
+
+			case <-op.PublicTerminateChan:
+				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
+				goto END
 
 			case workerName := <-op.InternalReadyChan:
 
@@ -665,7 +688,7 @@ func (op *Operator) RunExperiments() {
 			if exp.Clients[i].Status != "ready" {
 				exp.ProgressChan <- fmt.Sprintf("At least one client (%s) failed to initialize, ending experiment %s.",
 					exp.Clients[i].Name, expID)
-				goto END
+				goto CONFIRM_END
 			}
 		}
 
@@ -679,12 +702,27 @@ func (op *Operator) RunExperiments() {
 		// Wait for all clients to signal completion.
 		for range exp.Clients {
 
-			workerName := <-op.InternalFinishedChan
+			select {
 
-			_, found := exp.ClientsMap[workerName]
-			if found {
-				exp.ClientsMap[workerName].Status = "finished"
-				exp.ProgressChan <- fmt.Sprintf("Client %s marked as finished.", workerName)
+			case <-op.PublicTerminateChan:
+				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
+				goto END
+
+			case workerName := <-op.InternalFinishedChan:
+
+				_, found := exp.ClientsMap[workerName]
+				if found {
+					exp.ClientsMap[workerName].Status = "finished"
+					exp.ProgressChan <- fmt.Sprintf("Client %s marked as finished.", workerName)
+				}
+
+			case failedReq := <-op.InternalFailedChan:
+
+				_, found := exp.ClientsMap[failedReq.Worker]
+				if found {
+					exp.ClientsMap[failedReq.Worker].Status = "failed"
+					exp.ProgressChan <- fmt.Sprintf("Client %s failed with: %s", failedReq.Worker, failedReq.Reason)
+				}
 			}
 
 			status := "Clients status:\n"
@@ -704,7 +742,8 @@ func (op *Operator) RunExperiments() {
 			}
 		}
 
-	END:
+	CONFIRM_END:
+
 		exp.ProgressChan <- fmt.Sprintf("Experiment %s reached end, awaiting shutdown confirmation.", expID)
 
 		// Wait for explicit shutdown confirmation.
@@ -712,6 +751,7 @@ func (op *Operator) RunExperiments() {
 
 		exp.ProgressChan <- fmt.Sprintf("Shutdown confirmation for experiment %s received.", expID)
 
+	END:
 		// Shut down all client machines.
 		wg := &sync.WaitGroup{}
 

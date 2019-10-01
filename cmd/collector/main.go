@@ -211,23 +211,23 @@ func (col *Collector) collectSystemMetrics() {
 	}
 }
 
-func (col *Collector) collectTimingMetrics(wg *sync.WaitGroup, pipePath string, clientPath string) {
+func (col *Collector) collectTimingMetrics(wg *sync.WaitGroup, pipePath string, client string) {
 
 	defer wg.Done()
 
 	// Attempt to create file for send times metric.
-	sendTimeFile, err := os.OpenFile(filepath.Join(clientPath, "send_unixnano.evaluation"),
+	sendTimeFile, err := os.OpenFile(filepath.Join(col.MetricsPath, fmt.Sprintf("%s_send_unixnano.evaluation", client)),
 		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
-		fmt.Printf("Unable to open or create 'send_unixnano.evaluation' in '%s': %v\n", clientPath, err)
+		fmt.Printf("Unable to open or create 'send_unixnano.evaluation' for '%s': %v\n", client, err)
 		os.Exit(1)
 	}
 
 	// Attempt to create file for receive times metric.
-	recvTimeFile, err := os.OpenFile(filepath.Join(clientPath, "recv_unixnano.evaluation"),
+	recvTimeFile, err := os.OpenFile(filepath.Join(col.MetricsPath, fmt.Sprintf("%s_recv_unixnano.evaluation", client)),
 		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
-		fmt.Printf("Unable to open or create 'recv_unixnano.evaluation' in '%s': %v\n", clientPath, err)
+		fmt.Printf("Unable to open or create 'recv_unixnano.evaluation' for '%s': %v\n", client, err)
 		os.Exit(1)
 	}
 
@@ -309,15 +309,15 @@ func (col *Collector) writeTimingMetrics(metricsChan chan string, sendTimeFile *
 	}
 }
 
-func (col *Collector) collectPoolSizesMetrics(wg *sync.WaitGroup, pipePath string, clientPath string) {
+func (col *Collector) collectPoolSizesMetrics(wg *sync.WaitGroup, pipePath string, client string) {
 
 	defer wg.Done()
 
 	// Attempt to create file for pool sizes metrics.
-	poolSizesFile, err := os.OpenFile(filepath.Join(clientPath, "pool-sizes_round.evaluation"),
+	poolSizesFile, err := os.OpenFile(filepath.Join(col.MetricsPath, fmt.Sprintf("%s_pool-sizes_round.evaluation", client)),
 		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
-		fmt.Printf("Unable to open or create 'pool-sizes_round.evaluation' in '%s': %v\n", clientPath, err)
+		fmt.Printf("Unable to open or create 'pool-sizes_round.evaluation' for '%s': %v\n", client, err)
 		os.Exit(1)
 	}
 
@@ -375,25 +375,25 @@ func main() {
 	systemFlag := flag.String("system", "", "Specify system that is being evaluated ('zeno', 'vuvuzela', or 'pung').")
 	typeOfNodeFlag := flag.String("typeOfNode", "", "Specify the type of node being evaluated ('client', 'server', 'coordinator').")
 	metricsPathFlag := flag.String("metricsPath", "./", "Specify the file system folder where the various metric files generated here should be placed.")
-	client01PathFlag := flag.String("client01Path", "./client-00001", "Specify file system folder in which to store metrics for client 01.")
+	client01Flag := flag.String("client01", "client-00001", "Specify the name of client 01.")
 	pipe01Flag := flag.String("pipe01", "/tmp/collect01", "Specify named pipe 01 to use for metrics IPC.")
-	client02PathFlag := flag.String("client02Path", "./client-00002", "Specify file system folder in which to store metrics for client 02.")
+	client02Flag := flag.String("client02", "client-00002", "Specify the name of client 02.")
 	pipe02Flag := flag.String("pipe02", "/tmp/collect02", "Specify named pipe 02 to use for metrics IPC.")
-	client03PathFlag := flag.String("client03Path", "./client-00003", "Specify file system folder in which to store metrics for client 03.")
+	client03Flag := flag.String("client03", "client-00003", "Specify the name of client 03.")
 	pipe03Flag := flag.String("pipe03", "/tmp/collect03", "Specify named pipe 03 to use for metrics IPC.")
-	client04PathFlag := flag.String("client04Path", "./client-00004", "Specify file system folder in which to store metrics for client 04.")
+	client04Flag := flag.String("client04", "client-00004", "Specify the name of client 04.")
 	pipe04Flag := flag.String("pipe04", "/tmp/collect04", "Specify named pipe 04 to use for metrics IPC.")
-	client05PathFlag := flag.String("client05Path", "./client-00005", "Specify file system folder in which to store metrics for client 05.")
+	client05Flag := flag.String("client05", "client-00005", "Specify the name of client 05.")
 	pipe05Flag := flag.String("pipe05", "/tmp/collect05", "Specify named pipe 05 to use for metrics IPC.")
-	client06PathFlag := flag.String("client06Path", "./client-00006", "Specify file system folder in which to store metrics for client 06.")
+	client06Flag := flag.String("client06", "client-00006", "Specify the name of client 06.")
 	pipe06Flag := flag.String("pipe06", "/tmp/collect06", "Specify named pipe 06 to use for metrics IPC.")
-	client07PathFlag := flag.String("client07Path", "./client-00007", "Specify file system folder in which to store metrics for client 07.")
+	client07Flag := flag.String("client07", "client-00007", "Specify the name of client 07.")
 	pipe07Flag := flag.String("pipe07", "/tmp/collect07", "Specify named pipe 07 to use for metrics IPC.")
-	client08PathFlag := flag.String("client08Path", "./client-00008", "Specify file system folder in which to store metrics for client 08.")
+	client08Flag := flag.String("client08", "client-00008", "Specify the name of client 08.")
 	pipe08Flag := flag.String("pipe08", "/tmp/collect08", "Specify named pipe 08 to use for metrics IPC.")
-	client09PathFlag := flag.String("client09Path", "./client-00009", "Specify file system folder in which to store metrics for client 09.")
+	client09Flag := flag.String("client09", "client-00009", "Specify the name of client 09.")
 	pipe09Flag := flag.String("pipe09", "/tmp/collect09", "Specify named pipe 09 to use for metrics IPC.")
-	client10PathFlag := flag.String("client10Path", "./client-00010", "Specify file system folder in which to store metrics for client 10.")
+	client10Flag := flag.String("client10", "client-00010", "Specify the name of client 10.")
 	pipe10Flag := flag.String("pipe10", "/tmp/collect10", "Specify named pipe 10 to use for metrics IPC.")
 	flag.Parse()
 
@@ -433,16 +433,16 @@ func main() {
 
 		// Spawn background processes writing timing
 		// values into metrics files.
-		go col.collectTimingMetrics(wg, *pipe01Flag, *client01PathFlag)
-		go col.collectTimingMetrics(wg, *pipe02Flag, *client02PathFlag)
-		go col.collectTimingMetrics(wg, *pipe03Flag, *client03PathFlag)
-		go col.collectTimingMetrics(wg, *pipe04Flag, *client04PathFlag)
-		go col.collectTimingMetrics(wg, *pipe05Flag, *client05PathFlag)
-		go col.collectTimingMetrics(wg, *pipe06Flag, *client06PathFlag)
-		go col.collectTimingMetrics(wg, *pipe07Flag, *client07PathFlag)
-		go col.collectTimingMetrics(wg, *pipe08Flag, *client08PathFlag)
-		go col.collectTimingMetrics(wg, *pipe09Flag, *client09PathFlag)
-		go col.collectTimingMetrics(wg, *pipe10Flag, *client10PathFlag)
+		go col.collectTimingMetrics(wg, *pipe01Flag, *client01Flag)
+		go col.collectTimingMetrics(wg, *pipe02Flag, *client02Flag)
+		go col.collectTimingMetrics(wg, *pipe03Flag, *client03Flag)
+		go col.collectTimingMetrics(wg, *pipe04Flag, *client04Flag)
+		go col.collectTimingMetrics(wg, *pipe05Flag, *client05Flag)
+		go col.collectTimingMetrics(wg, *pipe06Flag, *client06Flag)
+		go col.collectTimingMetrics(wg, *pipe07Flag, *client07Flag)
+		go col.collectTimingMetrics(wg, *pipe08Flag, *client08Flag)
+		go col.collectTimingMetrics(wg, *pipe09Flag, *client09Flag)
+		go col.collectTimingMetrics(wg, *pipe10Flag, *client10Flag)
 
 	} else {
 
@@ -450,7 +450,7 @@ func main() {
 
 		// Spawn background process writing message
 		// pool sizes to into metrics file.
-		go col.collectPoolSizesMetrics(wg, *pipe01Flag, *client01PathFlag)
+		go col.collectPoolSizesMetrics(wg, *pipe01Flag, *client01Flag)
 	}
 
 	// Wait for all metric collections

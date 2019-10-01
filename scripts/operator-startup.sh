@@ -20,5 +20,4 @@ GCLOUD_BUCKET=$(curl -s "http://metadata.google.internal/computeMetadata/v1/inst
 chmod 0700 /root/operator
 
 # Launch operator binary.
-/root/operator -publicAddr 0.0.0.0:20443 -internalAddr ${INTERNAL_IP}:443 -gcloudServiceAcc ${GCLOUD_SERVICE_ACC} \
-    -gcloudProject ${GCLOUD_PROJECT} -gcloudBucket ${GCLOUD_BUCKET} -certPath /root/operator-cert.pem -keyPath /root/operator-key.pem
+# /root/operator -publicAddr 0.0.0.0:20443 -internalAddr ${INTERNAL_IP}:443 -gcloudServiceAcc ${GCLOUD_SERVICE_ACC} -gcloudProject ${GCLOUD_PROJECT} -gcloudBucket ${GCLOUD_BUCKET} -certPath /root/operator-cert.pem -keyPath /root/operator-key.pem
