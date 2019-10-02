@@ -35,7 +35,7 @@ PUNG_SERVER_IP=$(curl -s "http://metadata.google.internal/computeMetadata/v1/ins
 TC_CONFIG=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/tcConfig" -H "Metadata-Flavor: Google")
 KILL_ZENO_MIXES_IN_ROUND=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/killZenoMixesInRound" -H "Metadata-Flavor: Google")
 
-PUNG_CLIENTS_PER_PROC=$(( NUM_CLIENTS / 5))
+PUNG_CLIENTS_PER_PROC=$(( NUM_CLIENTS / 10))
 printf "In case this is the Pung server machine, we will tell it to expect ${PUNG_CLIENTS_PER_PROC} messages per process.\n"
 
 
@@ -55,63 +55,63 @@ CLIENT_02=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance
 CLIENT_02_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner02" -H "Metadata-Flavor: Google")
 CLIENT_02_ADDR1="${LISTEN_IP}:33002"
 CLIENT_02_ADDR2="${LISTEN_IP}:44002"
-CLIENT_02_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33001"
+CLIENT_02_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33002"
 CLIENT_02_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}12"
 
 CLIENT_03=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/client03" -H "Metadata-Flavor: Google")
 CLIENT_03_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner03" -H "Metadata-Flavor: Google")
 CLIENT_03_ADDR1="${LISTEN_IP}:33003"
 CLIENT_03_ADDR2="${LISTEN_IP}:44003"
-CLIENT_03_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33002"
+CLIENT_03_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33003"
 CLIENT_03_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}34"
 
 CLIENT_04=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/client04" -H "Metadata-Flavor: Google")
 CLIENT_04_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner04" -H "Metadata-Flavor: Google")
 CLIENT_04_ADDR1="${LISTEN_IP}:33004"
 CLIENT_04_ADDR2="${LISTEN_IP}:44004"
-CLIENT_04_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33002"
+CLIENT_04_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33004"
 CLIENT_04_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}34"
 
 CLIENT_05=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/client05" -H "Metadata-Flavor: Google")
 CLIENT_05_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner05" -H "Metadata-Flavor: Google")
 CLIENT_05_ADDR1="${LISTEN_IP}:33005"
 CLIENT_05_ADDR2="${LISTEN_IP}:44005"
-CLIENT_05_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33003"
+CLIENT_05_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33005"
 CLIENT_05_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}56"
 
 CLIENT_06=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/client06" -H "Metadata-Flavor: Google")
 CLIENT_06_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner06" -H "Metadata-Flavor: Google")
 CLIENT_06_ADDR1="${LISTEN_IP}:33006"
 CLIENT_06_ADDR2="${LISTEN_IP}:44006"
-CLIENT_06_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33003"
+CLIENT_06_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33006"
 CLIENT_06_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}56"
 
 CLIENT_07=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/client07" -H "Metadata-Flavor: Google")
 CLIENT_07_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner07" -H "Metadata-Flavor: Google")
 CLIENT_07_ADDR1="${LISTEN_IP}:33007"
 CLIENT_07_ADDR2="${LISTEN_IP}:44007"
-CLIENT_07_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33004"
+CLIENT_07_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33007"
 CLIENT_07_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}78"
 
 CLIENT_08=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/client08" -H "Metadata-Flavor: Google")
 CLIENT_08_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner08" -H "Metadata-Flavor: Google")
 CLIENT_08_ADDR1="${LISTEN_IP}:33008"
 CLIENT_08_ADDR2="${LISTEN_IP}:44008"
-CLIENT_08_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33004"
+CLIENT_08_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33008"
 CLIENT_08_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}78"
 
 CLIENT_09=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/client09" -H "Metadata-Flavor: Google")
 CLIENT_09_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner09" -H "Metadata-Flavor: Google")
 CLIENT_09_ADDR1="${LISTEN_IP}:33009"
 CLIENT_09_ADDR2="${LISTEN_IP}:44009"
-CLIENT_09_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33005"
+CLIENT_09_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33009"
 CLIENT_09_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}910"
 
 CLIENT_10=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/client10" -H "Metadata-Flavor: Google")
 CLIENT_10_PARTNER=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/partner10" -H "Metadata-Flavor: Google")
 CLIENT_10_ADDR1="${LISTEN_IP}:33010"
 CLIENT_10_ADDR2="${LISTEN_IP}:44010"
-CLIENT_10_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33005"
+CLIENT_10_PUNG_SERVER_ADDR="${PUNG_SERVER_IP}:33010"
 CLIENT_10_PUNG_SHARED_SECRET="${NAME_OF_NODE}${LISTEN_IP}910"
 
 
@@ -423,7 +423,7 @@ if [ "${TYPE_OF_NODE}" == "server" ]; then
         printf "Pung server at: '${PUNG_SERVER_IP}', expecting ${PUNG_CLIENTS_PER_PROC} clients per process.\n\n" >> /root/${CLIENT_01}_log.evaluation
 
         # Run Pung's server.
-        /root/pung-server -e 30 -i ${LISTEN_IP} -s 33001 -n 5 -w 1 -p 0 -k 1 -t e -d 2 -b 0 -m ${PUNG_CLIENTS_PER_PROC} >> /root/${CLIENT_01}_log.evaluation
+        /root/pung-server -e 30 -i ${LISTEN_IP} -s 33001 -n 1 -w 10 -p 0 -k 1 -t e -d 2 -b 0 -m ${PUNG_CLIENTS_PER_PROC} >> /root/${CLIENT_01}_log.evaluation
 
     elif [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
 
