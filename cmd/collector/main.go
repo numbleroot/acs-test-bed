@@ -272,9 +272,11 @@ func (col *Collector) collectTimingMetrics(wg *sync.WaitGroup, pipePath string, 
 
 func (col *Collector) writeTimingMetrics(metricsChan chan string, sendTimeFile *os.File, recvTimeFile *os.File) {
 
-	// Receive timing values come in two parts,
-	// first the time for the subsequently
-	// transmitted message ID. Hold buffer.
+	// Timing values come in two parts.
+	// Send: first message, then time.
+	// Receive: first time, then message.
+	// We need buffers.
+	sentMsg := ""
 	recvTime := ""
 
 	for metric := range metricsChan {
@@ -284,9 +286,21 @@ func (col *Collector) writeTimingMetrics(metricsChan chan string, sendTimeFile *
 
 		if metricParts[0] == "send" {
 
-			// Write to file and sync to stable storage.
-			fmt.Fprint(sendTimeFile, metricParts[1])
-			_ = sendTimeFile.Sync()
+			if sentMsg == "" {
+
+				// Stash sent message until send time
+				// is received next.
+				sentMsg = strings.TrimSpace(metricParts[1])
+
+			} else {
+
+				// Write to file and sync to stable storage.
+				fmt.Fprintf(sendTimeFile, "%s %s\n", strings.TrimSpace(metricParts[1]), sentMsg)
+				_ = sendTimeFile.Sync()
+
+				// Reset buffer for send message.
+				sentMsg = ""
+			}
 
 		} else if metricParts[0] == "recv" {
 
