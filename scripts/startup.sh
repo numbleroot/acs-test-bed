@@ -34,9 +34,7 @@ BINARY_TO_PULL=$(curl -s "http://metadata.google.internal/computeMetadata/v1/ins
 PUNG_SERVER_IP=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/pungServerIP" -H "Metadata-Flavor: Google")
 TC_CONFIG=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/tcConfig" -H "Metadata-Flavor: Google")
 KILL_ZENO_MIXES_IN_ROUND=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/killZenoMixesInRound" -H "Metadata-Flavor: Google")
-
 PUNG_CLIENTS_PER_PROC=$(( NUM_CLIENTS / 10))
-printf "In case this is the Pung server machine, we will tell it to expect ${PUNG_CLIENTS_PER_PROC} messages per process.\n"
 
 
 # Prepare to evaluate up to ten clients in case
@@ -123,6 +121,7 @@ chmod 0600 /tmp/collect01 /tmp/collect02 /tmp/collect03 /tmp/collect04 /tmp/coll
 
 
 # Register with operator for current experiment.
+printf "Will call /experiments/${EXP_ID}/workers/${NAME_OF_NODE}/register as ${NAME_OF_NODE}@${LISTEN_IP}.\n"
 curl --cacert /root/operator-cert.pem --request PUT --header "content-type: application/json" --data-binary "{
     \"address\": \"${CLIENT_01_ADDR1}\"
 }" https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${NAME_OF_NODE}/register
@@ -135,7 +134,7 @@ curl --cacert /root/operator-cert.pem --request PUT --header "content-type: appl
 tried=0
 while ([ ! -e /root/${BINARY_TO_PULL} ] || [ ! -e /root/collector ]) && [ "${tried}" -lt 20 ]; do
 
-    printf "Failed to pull required files from GCloud bucket, sleeping 1 second\n"
+    printf "Failed to pull required files from GCloud bucket, sleeping 1 second...\n"
     ls -lah /root/
 
     sleep 1
@@ -149,9 +148,10 @@ done
 
 if [ "${tried}" -eq 20 ]; then
 
-    printf "Waited 20 seconds for required experiment files to be downloaded, no success, shutting down\n"
+    printf "Waited 20 seconds for required experiment files to be downloaded, no success, shutting down.\n"
 
     # Inform operator about failure to initialize.
+    printf "Will call /experiments/${EXP_ID}/workers/${NAME_OF_NODE}/failed as ${NAME_OF_NODE}@${LISTEN_IP}.\n"
     curl --cacert /root/operator-cert.pem --request PUT --header "content-type: application/json" --data-binary "{
         \"failure\": \"waited 20 seconds for required experiment files to be downloaded from Storage bucket, no success, shutting down\"
     }" https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${NAME_OF_NODE}/failed
@@ -163,7 +163,7 @@ if [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
     
     sleep 10
 
-    printf "This is a Vuvuzela experiment, pull 'gs://acs-eval/vuvuzela-confs/pki.conf' as well\n"
+    printf "This is a Vuvuzela experiment, pull 'gs://acs-eval/vuvuzela-confs/pki.conf' as well.\n"
     /usr/bin/gsutil cp gs://acs-eval/vuvuzela-confs/pki.conf /root/vuvuzela-confs/pki.conf
 
     while [ ! -e /root/vuvuzela-confs/pki.conf ]; do
@@ -272,6 +272,7 @@ fi
 sleep 5
 
 # Signal readiness of process to experiment script.
+printf "Will call /experiments/${EXP_ID}/workers/${NAME_OF_NODE}/ready as ${NAME_OF_NODE}@${LISTEN_IP}.\n"
 curl --cacert /root/operator-cert.pem --request PUT --header "content-type: application/json" \
     https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${NAME_OF_NODE}/ready
 
@@ -430,7 +431,7 @@ if [ "${TYPE_OF_NODE}" == "server" ]; then
         printf "\n" >> /root/${CLIENT_01}_log.evaluation
 
         # Run mix component of Vuvuzela.
-        /root/vuvuzela-mix -eval -metricsPipe /tmp/collect01 -addr ${CLIENT_01_ADDR1} -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
+        /root/vuvuzela-mix -metricsPipe /tmp/collect01 -addr ${CLIENT_01_ADDR1} -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
             -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_01}_log.evaluation
 
     fi
@@ -440,7 +441,7 @@ elif [ "${TYPE_OF_NODE}" == "coordinator" ]; then
     printf "\n" >> /root/${CLIENT_01}_log.evaluation
 
     # Run coordinator component of Vuvuzela.
-    /root/vuvuzela-coordinator -eval -metricsPipe /tmp/collect01 -addr ${CLIENT_01_ADDR1} \
+    /root/vuvuzela-coordinator -metricsPipe /tmp/collect01 -addr ${CLIENT_01_ADDR1} \
         -wait 10s -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_01}_log.evaluation
 
 elif [ "${TYPE_OF_NODE}" == "client" ]; then
@@ -568,52 +569,52 @@ elif [ "${TYPE_OF_NODE}" == "client" ]; then
         # Run ten client components of Vuvuzela.
 
         printf "\n" >> /root/${CLIENT_01}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect01 -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect01 -conf /root/vuvuzela-confs/${CLIENT_01}.conf \
             -peer ${CLIENT_01_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_01}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_02}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect02 -conf /root/vuvuzela-confs/${CLIENT_02}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect02 -conf /root/vuvuzela-confs/${CLIENT_02}.conf \
             -peer ${CLIENT_02_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_02}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_03}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect03 -conf /root/vuvuzela-confs/${CLIENT_03}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect03 -conf /root/vuvuzela-confs/${CLIENT_03}.conf \
             -peer ${CLIENT_03_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_03}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_04}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect04 -conf /root/vuvuzela-confs/${CLIENT_04}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect04 -conf /root/vuvuzela-confs/${CLIENT_04}.conf \
             -peer ${CLIENT_04_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_04}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_05}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect05 -conf /root/vuvuzela-confs/${CLIENT_05}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect05 -conf /root/vuvuzela-confs/${CLIENT_05}.conf \
             -peer ${CLIENT_05_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_05}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_06}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect06 -conf /root/vuvuzela-confs/${CLIENT_06}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect06 -conf /root/vuvuzela-confs/${CLIENT_06}.conf \
             -peer ${CLIENT_06_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_06}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_07}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect07 -conf /root/vuvuzela-confs/${CLIENT_07}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect07 -conf /root/vuvuzela-confs/${CLIENT_07}.conf \
             -peer ${CLIENT_07_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_07}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_08}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect08 -conf /root/vuvuzela-confs/${CLIENT_08}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect08 -conf /root/vuvuzela-confs/${CLIENT_08}.conf \
             -peer ${CLIENT_08_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_08}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_09}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect09 -conf /root/vuvuzela-confs/${CLIENT_09}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect09 -conf /root/vuvuzela-confs/${CLIENT_09}.conf \
             -peer ${CLIENT_09_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_09}_log.evaluation &
         PROCESS_IDS+=($!)
 
         printf "\n" >> /root/${CLIENT_10}_log.evaluation
-        /root/vuvuzela-client -eval -numMsgToRecv 25 -metricsPipe /tmp/collect10 -conf /root/vuvuzela-confs/${CLIENT_10}.conf \
+        /root/vuvuzela-client -numMsgToRecv 30 -metricsPipe /tmp/collect10 -conf /root/vuvuzela-confs/${CLIENT_10}.conf \
             -peer ${CLIENT_10_PARTNER} -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_10}_log.evaluation &
         PROCESS_IDS+=($!)
 
@@ -639,6 +640,7 @@ for PROCESS_ID in "${PROCESS_IDS[@]}"; do
 
         # If the process returned an error code
         # tell the operator about it.
+        printf "Will call /experiments/${EXP_ID}/workers/${NAME_OF_NODE}/failed as ${NAME_OF_NODE}@${LISTEN_IP}.\n"
         curl --cacert /root/operator-cert.pem --request PUT --header "content-type: application/json" --data-binary "{
             \"failure\": \"one or more client processes exited with an error code\"
         }" https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${NAME_OF_NODE}/failed
@@ -657,13 +659,18 @@ fi
 
 if ([ "${TYPE_OF_NODE}" == "server" ] || [ "${TYPE_OF_NODE}" == "coordinator" ]); then
 
+    printf "Uploading results as '${TYPE_OF_NODE}' to '${RESULT_FOLDER}' under '/servers/${NAME_OF_NODE}_${LISTEN_IP}'\n"
+
     /usr/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/servers/${NAME_OF_NODE}_${LISTEN_IP}/
 
 elif [ "${TYPE_OF_NODE}" == "client" ]; then
 
+    printf "Uploading results as '${TYPE_OF_NODE}' to '${RESULT_FOLDER}' under '/clients/${NAME_OF_NODE}_${LISTEN_IP}'\n"
+
     /usr/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/
 
     # Mark client as finished at operator.
+    printf "Will call /experiments/${EXP_ID}/workers/${NAME_OF_NODE}/finished as ${NAME_OF_NODE}@${LISTEN_IP}.\n"
     curl --cacert /root/operator-cert.pem --request PUT --header "content-type: application/json" \
         https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${NAME_OF_NODE}/finished
 
