@@ -43,7 +43,7 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 	regReq.Worker = workerName
 
 	// Signal runner which worker intends to register.
-	op.InternalRegisterChan <- regReq
+	op.Exps[expID].RegisterChan <- regReq
 
 	// Respond to worker node.
 	resp.WriteHeader(http.StatusOK)
@@ -55,10 +55,11 @@ func (op *Operator) HandlerPutRegister(req *restful.Request, resp *restful.Respo
 // steps before calling this endpoint.
 func (op *Operator) HandlerPutReady(req *restful.Request, resp *restful.Response) {
 
+	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
 
 	// Signal runner which worker is ready.
-	op.InternalReadyChan <- workerName
+	op.Exps[expID].ReadyChan <- workerName
 
 	// Respond to worker node.
 	resp.WriteHeader(http.StatusOK)
@@ -69,10 +70,11 @@ func (op *Operator) HandlerPutReady(req *restful.Request, resp *restful.Response
 // designated for it in the running experiment.
 func (op *Operator) HandlerPutFinished(req *restful.Request, resp *restful.Response) {
 
+	expID := req.PathParameter("expID")
 	workerName := req.PathParameter("worker")
 
 	// Signal runner which worker has finished.
-	op.InternalFinishedChan <- workerName
+	op.Exps[expID].FinishedChan <- workerName
 
 	resp.WriteHeader(http.StatusOK)
 }
@@ -96,7 +98,7 @@ func (op *Operator) HandlerPutFailed(req *restful.Request, resp *restful.Respons
 	failedReq.Worker = workerName
 
 	// Signal runner which worker has failed.
-	op.InternalFailedChan <- failedReq
+	op.Exps[expID].FailedChan <- failedReq
 
 	resp.WriteHeader(http.StatusOK)
 }

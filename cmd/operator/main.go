@@ -26,17 +26,11 @@ type Operator struct {
 	TLSCertPath string
 	TLSKeyPath  string
 
-	InternalListenAddr   string
-	InternalSrv          *restful.WebService
-	InternalRegisterChan chan *RegisterReq
-	InternalReadyChan    chan string
-	InternalFinishedChan chan string
-	InternalFailedChan   chan *FailedReq
-
-	PublicListenAddr    string
-	PublicSrv           *restful.WebService
-	PublicNewChan       chan string
-	PublicTerminateChan chan struct{}
+	InternalListenAddr string
+	InternalSrv        *restful.WebService
+	PublicListenAddr   string
+	PublicSrv          *restful.WebService
+	PublicNewChan      chan string
 
 	ExpInProgress string
 	Exps          map[string]*Exp
@@ -58,6 +52,12 @@ type Exp struct {
 	ServersMap   map[string]*Worker `json:"-"`
 	Clients      []*Worker          `json:"clients"`
 	ClientsMap   map[string]*Worker `json:"-"`
+
+	RegisterChan  chan *RegisterReq `json:"-"`
+	ReadyChan     chan string       `json:"-"`
+	FinishedChan  chan string       `json:"-"`
+	FailedChan    chan *FailedReq   `json:"-"`
+	TerminateChan chan struct{}     `json:"-"`
 }
 
 // Worker describes one compute instance
@@ -115,15 +115,9 @@ func main() {
 		TLSCertPath: *certPathFlag,
 		TLSKeyPath:  *keyPathFlag,
 
-		InternalListenAddr:   *internalListenAddrFlag,
-		InternalRegisterChan: make(chan *RegisterReq),
-		InternalReadyChan:    make(chan string),
-		InternalFinishedChan: make(chan string),
-		InternalFailedChan:   make(chan *FailedReq),
-
-		PublicListenAddr:    *publicListenAddrFlag,
-		PublicNewChan:       make(chan string),
-		PublicTerminateChan: make(chan struct{}),
+		InternalListenAddr: *internalListenAddrFlag,
+		PublicListenAddr:   *publicListenAddrFlag,
+		PublicNewChan:      make(chan string),
 
 		ExpInProgress: "",
 		Exps:          make(map[string]*Exp),

@@ -51,7 +51,7 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 		return
 	}
 
-	accessToken := req.HeaderParameter("accesstoken")
+	accessToken := req.HeaderParameter("AccessToken")
 	if accessToken != "" {
 		op.GCloudAccessToken = accessToken
 	}
@@ -86,6 +86,12 @@ func (op *Operator) HandlerPutNew(req *restful.Request, resp *restful.Response) 
 	exp.ServersMap = make(map[string]*Worker)
 	exp.Clients = make([]*Worker, len(expReq.Clients))
 	exp.ClientsMap = make(map[string]*Worker)
+
+	exp.RegisterChan = make(chan *RegisterReq)
+	exp.ReadyChan = make(chan string)
+	exp.FinishedChan = make(chan string)
+	exp.FailedChan = make(chan *FailedReq)
+	exp.TerminateChan = make(chan struct{})
 
 	for i := range expReq.Servers {
 		exp.Servers[i] = expReq.Servers[i]
@@ -138,10 +144,15 @@ func (op *Operator) HandlerGetExpTerminate(req *restful.Request, resp *restful.R
 
 	fmt.Printf("[GET /experiments/%s/terminate] Received signal from %s to terminate.\n", expID, req.Request.RemoteAddr)
 
+	accessToken := req.HeaderParameter("AccessToken")
+	if accessToken != "" {
+		op.GCloudAccessToken = accessToken
+	}
+
 	// If experiment exists, signal to terminate it.
 	_, found := op.Exps[expID]
 	if found {
-		op.PublicTerminateChan <- struct{}{}
+		op.Exps[expID].TerminateChan <- struct{}{}
 	}
 
 	resp.WriteHeader(http.StatusOK)

@@ -74,6 +74,16 @@ func (exp *Exp) PrettyPrint() {
 		fmt.Printf("%s\n", exp.Progress[i])
 	}
 
+	fmt.Printf("\nSERVERS:\n")
+	for i := range exp.Servers {
+		fmt.Printf("\t%s@%s: %s\n", exp.Servers[i].Name, exp.Servers[i].Address, exp.Servers[i].Status)
+	}
+
+	fmt.Printf("\nCLIENTS:\n")
+	for i := range exp.Clients {
+		fmt.Printf("\t%s@%s: %s\n", exp.Clients[i].Name, exp.Clients[i].Address, exp.Clients[i].Status)
+	}
+
 	fmt.Printf("---\n")
 }
 
@@ -292,9 +302,9 @@ func main() {
 		fmt.Printf("Failed creating HTTPS API request for new experiment: %v\n", err)
 		os.Exit(1)
 	}
-	req.Header.Set(http.CanonicalHeaderKey("authorization"), "UniverseOfLoopholes")
-	req.Header.Set(http.CanonicalHeaderKey("accesstoken"), accessToken)
-	req.Header.Set(http.CanonicalHeaderKey("content-type"), "application/json")
+	req.Header.Set(http.CanonicalHeaderKey("Authorization"), "UniverseOfLoopholes")
+	req.Header.Set(http.CanonicalHeaderKey("AccessToken"), accessToken)
+	req.Header.Set(http.CanonicalHeaderKey("Content-Type"), "application/json")
 
 	// Send experiment request.
 	resp, err := client.Do(req)
@@ -364,6 +374,14 @@ func main() {
 
 	fmt.Printf("\nWill instruct operator to terminate experiment...")
 
+	// Read OAuth token from gcloud.
+	outRaw, err = exec.Command("/opt/google-cloud-sdk/bin/gcloud", "auth", "print-access-token").CombinedOutput()
+	if err != nil {
+		fmt.Printf("Could not obtain OAuth2 access token (error: '%v'):\n%s\n", err, outRaw)
+		os.Exit(1)
+	}
+	accessToken = strings.TrimSpace(string(outRaw))
+
 	// Request termination of experiment.
 	req, err = http.NewRequest(http.MethodGet, fmt.Sprintf("https://%s/public/experiments/%s/terminate", *operatorAddrFlag, respExp.ID), nil)
 	if err != nil {
@@ -371,6 +389,7 @@ func main() {
 		os.Exit(1)
 	}
 	req.Header.Set(http.CanonicalHeaderKey("Authorization"), "UniverseOfLoopholes")
+	req.Header.Set(http.CanonicalHeaderKey("AccessToken"), accessToken)
 	req.Header.Set(http.CanonicalHeaderKey("Content-Type"), "application/json")
 
 	// Send termination request.

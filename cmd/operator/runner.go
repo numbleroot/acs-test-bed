@@ -433,7 +433,7 @@ func (exp *Exp) ProgressWriter() {
 func (exp *Exp) VuvuzelaProducePKI() error {
 
 	// Read preliminary PKI file into memory.
-	pki, err := ioutil.ReadFile("/root/vuvuzela-confs/pki.conf")
+	pki, err := ioutil.ReadFile("/root/vuvuzela-confs/pki_tmpl.conf")
 	if err != nil {
 		return err
 	}
@@ -533,11 +533,11 @@ func (op *Operator) RunExperiments() {
 
 			select {
 
-			case <-op.PublicTerminateChan:
+			case <-exp.TerminateChan:
 				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
 				goto END
 
-			case workerReg := <-op.InternalRegisterChan:
+			case workerReg := <-exp.RegisterChan:
 
 				_, found := exp.ServersMap[workerReg.Worker]
 				if found {
@@ -546,13 +546,6 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Server %s at %s marked as registered.", workerReg.Worker, workerReg.Address)
 				}
 			}
-
-			status := "Servers status:\n"
-			for i := range exp.Servers {
-				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Servers[i].Name, exp.Servers[i].Address, exp.Servers[i].Status)
-			}
-
-			exp.ProgressChan <- status
 		}
 
 		if exp.System == "vuvuzela" {
@@ -573,11 +566,11 @@ func (op *Operator) RunExperiments() {
 
 			select {
 
-			case <-op.PublicTerminateChan:
+			case <-exp.TerminateChan:
 				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
 				goto END
 
-			case workerName := <-op.InternalReadyChan:
+			case workerName := <-exp.ReadyChan:
 
 				_, found := exp.ServersMap[workerName]
 				if found {
@@ -585,7 +578,7 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Server %s marked as ready.", workerName)
 				}
 
-			case failedReq := <-op.InternalFailedChan:
+			case failedReq := <-exp.FailedChan:
 
 				_, found := exp.ServersMap[failedReq.Worker]
 				if found {
@@ -593,13 +586,6 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Server %s failed with: %s", failedReq.Worker, failedReq.Reason)
 				}
 			}
-
-			status := "Servers status:\n"
-			for i := range exp.Servers {
-				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Servers[i].Name, exp.Servers[i].Address, exp.Servers[i].Status)
-			}
-
-			exp.ProgressChan <- status
 		}
 
 		// Verify all servers ready.
@@ -627,11 +613,11 @@ func (op *Operator) RunExperiments() {
 
 			select {
 
-			case <-op.PublicTerminateChan:
+			case <-exp.TerminateChan:
 				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
 				goto END
 
-			case workerReg := <-op.InternalRegisterChan:
+			case workerReg := <-exp.RegisterChan:
 
 				_, found := exp.ClientsMap[workerReg.Worker]
 				if found {
@@ -639,13 +625,6 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Client %s marked as registered.", workerReg.Worker)
 				}
 			}
-
-			status := "Clients status:\n"
-			for i := range exp.Clients {
-				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Clients[i].Name, exp.Clients[i].Address, exp.Clients[i].Status)
-			}
-
-			exp.ProgressChan <- status
 		}
 
 		// Handle incoming ready or failed requests.
@@ -653,11 +632,11 @@ func (op *Operator) RunExperiments() {
 
 			select {
 
-			case <-op.PublicTerminateChan:
+			case <-exp.TerminateChan:
 				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
 				goto END
 
-			case workerName := <-op.InternalReadyChan:
+			case workerName := <-exp.ReadyChan:
 
 				_, found := exp.ClientsMap[workerName]
 				if found {
@@ -665,7 +644,7 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Client %s marked as ready.", workerName)
 				}
 
-			case failedReq := <-op.InternalFailedChan:
+			case failedReq := <-exp.FailedChan:
 
 				_, found := exp.ClientsMap[failedReq.Worker]
 				if found {
@@ -673,13 +652,6 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Client %s failed with: %s", failedReq.Worker, failedReq.Reason)
 				}
 			}
-
-			status := "Clients status:\n"
-			for i := range exp.Clients {
-				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Clients[i].Name, exp.Clients[i].Address, exp.Clients[i].Status)
-			}
-
-			exp.ProgressChan <- status
 		}
 
 		// Verify all clients ready.
@@ -704,11 +676,11 @@ func (op *Operator) RunExperiments() {
 
 			select {
 
-			case <-op.PublicTerminateChan:
+			case <-exp.TerminateChan:
 				exp.ProgressChan <- fmt.Sprintf("Terminating experiment %s", expID)
 				goto END
 
-			case workerName := <-op.InternalFinishedChan:
+			case workerName := <-exp.FinishedChan:
 
 				_, found := exp.ClientsMap[workerName]
 				if found {
@@ -716,7 +688,7 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Client %s marked as finished.", workerName)
 				}
 
-			case failedReq := <-op.InternalFailedChan:
+			case failedReq := <-exp.FailedChan:
 
 				_, found := exp.ClientsMap[failedReq.Worker]
 				if found {
@@ -724,13 +696,6 @@ func (op *Operator) RunExperiments() {
 					exp.ProgressChan <- fmt.Sprintf("Client %s failed with: %s", failedReq.Worker, failedReq.Reason)
 				}
 			}
-
-			status := "Clients status:\n"
-			for i := range exp.Clients {
-				status = fmt.Sprintf("%s\t%s@%s: %s\n", status, exp.Clients[i].Name, exp.Clients[i].Address, exp.Clients[i].Status)
-			}
-
-			exp.ProgressChan <- status
 		}
 
 		// Verify all clients completed.
@@ -747,7 +712,7 @@ func (op *Operator) RunExperiments() {
 		exp.ProgressChan <- fmt.Sprintf("Experiment %s reached end, awaiting shutdown confirmation.", expID)
 
 		// Wait for explicit shutdown confirmation.
-		<-op.PublicTerminateChan
+		<-exp.TerminateChan
 
 		exp.ProgressChan <- fmt.Sprintf("Shutdown confirmation for experiment %s received.", expID)
 
