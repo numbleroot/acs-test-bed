@@ -47,10 +47,12 @@ type Setting struct {
 }
 
 type Experiment struct {
-	ZenoClients0500 *Setting
-	ZenoClients1000 *Setting
-	PungClients0500 *Setting
-	PungClients1000 *Setting
+	ZenoClients0500     *Setting
+	ZenoClients1000     *Setting
+	VuvuzelaClients0500 *Setting
+	VuvuzelaClients1000 *Setting
+	PungClients0500     *Setting
+	PungClients1000     *Setting
 }
 
 func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
@@ -236,11 +238,29 @@ func main() {
 		}
 	}
 
+	foldersVuvuzelaClients0500, err := ioutil.ReadDir(filepath.Join(experimentPath, "vuvuzela", "clients-0500"))
+	if err != nil {
+
+		if !strings.Contains(err.Error(), "no such file or directory") {
+			fmt.Printf("Failed to retrieve all folders for Vuvuzela's 500 clients setting: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
+	foldersVuvuzelaClients1000, err := ioutil.ReadDir(filepath.Join(experimentPath, "vuvuzela", "clients-1000"))
+	if err != nil {
+
+		if !strings.Contains(err.Error(), "no such file or directory") {
+			fmt.Printf("Failed to retrieve all folders for Vuvuzela's 1000 clients setting: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
 	foldersPungClients0500, err := ioutil.ReadDir(filepath.Join(experimentPath, "pung", "clients-0500"))
 	if err != nil {
 
 		if !strings.Contains(err.Error(), "no such file or directory") {
-			fmt.Printf("Failed to retrieve all folders for pung's 500 clients setting: %v\n", err)
+			fmt.Printf("Failed to retrieve all folders for Pung's 500 clients setting: %v\n", err)
 			os.Exit(1)
 		}
 	}
@@ -249,16 +269,18 @@ func main() {
 	if err != nil {
 
 		if !strings.Contains(err.Error(), "no such file or directory") {
-			fmt.Printf("Failed to retrieve all folders for pung's 1000 clients setting: %v\n", err)
+			fmt.Printf("Failed to retrieve all folders for Pung's 1000 clients setting: %v\n", err)
 			os.Exit(1)
 		}
 	}
 
 	experiment := &Experiment{
-		ZenoClients0500: &Setting{Runs: make([]*Run, 0, len(foldersZenoClients0500))},
-		ZenoClients1000: &Setting{Runs: make([]*Run, 0, len(foldersZenoClients1000))},
-		PungClients0500: &Setting{Runs: make([]*Run, 0, len(foldersPungClients0500))},
-		PungClients1000: &Setting{Runs: make([]*Run, 0, len(foldersPungClients1000))},
+		ZenoClients0500:     &Setting{Runs: make([]*Run, 0, len(foldersZenoClients0500))},
+		ZenoClients1000:     &Setting{Runs: make([]*Run, 0, len(foldersZenoClients1000))},
+		VuvuzelaClients0500: &Setting{Runs: make([]*Run, 0, len(foldersVuvuzelaClients0500))},
+		VuvuzelaClients1000: &Setting{Runs: make([]*Run, 0, len(foldersVuvuzelaClients1000))},
+		PungClients0500:     &Setting{Runs: make([]*Run, 0, len(foldersPungClients0500))},
+		PungClients1000:     &Setting{Runs: make([]*Run, 0, len(foldersPungClients1000))},
 	}
 
 	// Append each run to internal structures.
@@ -266,28 +288,48 @@ func main() {
 	for i := range foldersZenoClients0500 {
 
 		if foldersZenoClients0500[i].IsDir() {
-			experiment.ZenoClients0500.AppendRun(filepath.Join(experimentPath, "zeno", "clients-0500", foldersZenoClients0500[i].Name()), numMsgsToCalc)
+			experiment.ZenoClients0500.AppendRun(filepath.Join(experimentPath, "zeno", "clients-0500",
+				foldersZenoClients0500[i].Name()), numMsgsToCalc)
 		}
 	}
 
 	for i := range foldersZenoClients1000 {
 
 		if foldersZenoClients1000[i].IsDir() {
-			experiment.ZenoClients1000.AppendRun(filepath.Join(experimentPath, "zeno", "clients-1000", foldersZenoClients1000[i].Name()), numMsgsToCalc)
+			experiment.ZenoClients1000.AppendRun(filepath.Join(experimentPath, "zeno", "clients-1000",
+				foldersZenoClients1000[i].Name()), numMsgsToCalc)
+		}
+	}
+
+	for i := range foldersVuvuzelaClients0500 {
+
+		if foldersVuvuzelaClients0500[i].IsDir() {
+			experiment.VuvuzelaClients0500.AppendRun(filepath.Join(experimentPath, "vuvuzela", "clients-0500",
+				foldersVuvuzelaClients0500[i].Name()), numMsgsToCalc)
+		}
+	}
+
+	for i := range foldersVuvuzelaClients1000 {
+
+		if foldersVuvuzelaClients1000[i].IsDir() {
+			experiment.VuvuzelaClients1000.AppendRun(filepath.Join(experimentPath, "vuvuzela", "clients-1000",
+				foldersVuvuzelaClients1000[i].Name()), numMsgsToCalc)
 		}
 	}
 
 	for i := range foldersPungClients0500 {
 
 		if foldersPungClients0500[i].IsDir() {
-			experiment.PungClients0500.AppendRun(filepath.Join(experimentPath, "pung", "clients-0500", foldersPungClients0500[i].Name()), numMsgsToCalc)
+			experiment.PungClients0500.AppendRun(filepath.Join(experimentPath, "pung", "clients-0500",
+				foldersPungClients0500[i].Name()), numMsgsToCalc)
 		}
 	}
 
 	for i := range foldersPungClients1000 {
 
 		if foldersPungClients1000[i].IsDir() {
-			experiment.PungClients1000.AppendRun(filepath.Join(experimentPath, "pung", "clients-1000", foldersPungClients1000[i].Name()), numMsgsToCalc)
+			experiment.PungClients1000.AppendRun(filepath.Join(experimentPath, "pung", "clients-1000",
+				foldersPungClients1000[i].Name()), numMsgsToCalc)
 		}
 	}
 
@@ -312,11 +354,29 @@ func main() {
 		}
 	}
 
+	if len(experiment.VuvuzelaClients0500.Runs) > 0 {
+
+		err = experiment.VuvuzelaClients0500.MetricsToFiles(filepath.Join(experimentPath, "vuvuzela", "clients-0500"))
+		if err != nil {
+			fmt.Printf("Failed to store calculated statistics for Vuvuzela's setting of 500 clients to files: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
+	if len(experiment.VuvuzelaClients1000.Runs) > 0 {
+
+		err = experiment.VuvuzelaClients1000.MetricsToFiles(filepath.Join(experimentPath, "vuvuzela", "clients-1000"))
+		if err != nil {
+			fmt.Printf("Failed to store calculated statistics for Vuvuzela's setting of 1000 clients to files: %v\n", err)
+			os.Exit(1)
+		}
+	}
+
 	if len(experiment.PungClients0500.Runs) > 0 {
 
 		err = experiment.PungClients0500.MetricsToFiles(filepath.Join(experimentPath, "pung", "clients-0500"))
 		if err != nil {
-			fmt.Printf("Failed to store calculated statistics for pung's setting of 500 clients to files: %v\n", err)
+			fmt.Printf("Failed to store calculated statistics for Pung's setting of 500 clients to files: %v\n", err)
 			os.Exit(1)
 		}
 	}
@@ -325,7 +385,7 @@ func main() {
 
 		err = experiment.PungClients1000.MetricsToFiles(filepath.Join(experimentPath, "pung", "clients-1000"))
 		if err != nil {
-			fmt.Printf("Failed to store calculated statistics for pung's setting of 1000 clients to files: %v\n", err)
+			fmt.Printf("Failed to store calculated statistics for Pung's setting of 1000 clients to files: %v\n", err)
 			os.Exit(1)
 		}
 	}

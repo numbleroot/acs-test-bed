@@ -19,7 +19,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			return err
 		}
 
-		if filepath.Base(path) == "send_unixnano.evaluation" {
+		if strings.HasSuffix(filepath.Base(path), "send_unixnano.evaluation") {
 
 			partner := ""
 
@@ -82,10 +82,12 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			}
 
 			// Find partner's receive time file.
-			candidates, err := filepath.Glob(fmt.Sprintf("%s/%s_*/recv_unixnano.evaluation", runClientsPath, partner))
+			candidates, err := filepath.Glob(fmt.Sprintf("%s/%s_recv_unixnano.evaluation", runClientsPath, partner))
 			if err != nil {
 				return err
 			}
+
+			fmt.Printf("candidates: '%#v'\n", strings.Join(candidates, ", "))
 
 			if len(candidates) != 1 {
 				return fmt.Errorf("client %s did not have unique conversation partner", path)
