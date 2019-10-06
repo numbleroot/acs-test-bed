@@ -426,6 +426,10 @@ if [ "${TYPE_OF_NODE}" == "server" ]; then
         # Run Pung's server.
         /root/pung-server -e 30 -i ${LISTEN_IP} -s 33001 -n 1 -w 10 -p 0 -k 1 -t e -d 2 -b 0 -m ${PUNG_CLIENTS_PER_PROC} >> /root/${CLIENT_01}_log.evaluation
 
+        # Force collector exit when Pung's server
+        # finished its operation.
+        echo "done\n" > /tmp/collect01
+
     elif [ "${EVAL_SYSTEM}" == "vuvuzela" ]; then
 
         printf "\n" >> /root/${CLIENT_01}_log.evaluation
@@ -669,9 +673,9 @@ elif [ "${TYPE_OF_NODE}" == "client" ]; then
 
     /usr/bin/gsutil -m cp /root/*.evaluation gs://acs-eval/${RESULT_FOLDER}/clients/${NAME_OF_NODE}_${LISTEN_IP}/
 
-    # Mark client as finished at operator.
-    printf "Will call /experiments/${EXP_ID}/workers/${NAME_OF_NODE}/finished as ${NAME_OF_NODE}@${LISTEN_IP}.\n"
-    curl --cacert /root/operator-cert.pem --request PUT --header "content-type: application/json" \
-        https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${NAME_OF_NODE}/finished
-
 fi
+
+# Mark client as finished at operator.
+printf "Will call /experiments/${EXP_ID}/workers/${NAME_OF_NODE}/finished as ${NAME_OF_NODE}@${LISTEN_IP}.\n"
+curl --cacert /root/operator-cert.pem --request PUT --header "content-type: application/json" \
+    https://${OPERATOR_IP}/internal/experiments/${EXP_ID}/workers/${NAME_OF_NODE}/finished

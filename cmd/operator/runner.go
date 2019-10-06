@@ -602,8 +602,7 @@ func (op *Operator) RunExperiments() {
 
 		// Spawn all client machines.
 		for i := range exp.Clients {
-			// TODO: Change last parameter to false again.
-			go op.SpawnInstance(exp, exp.Clients[i], true)
+			go op.SpawnInstance(exp, exp.Clients[i], false)
 		}
 
 		exp.ProgressChan <- fmt.Sprintf("All %d clients instructed to spawn, waiting for registration requests.", len(exp.Clients))
@@ -671,8 +670,8 @@ func (op *Operator) RunExperiments() {
 			zenoEvalCtrlChan <- struct{}{}
 		}
 
-		// Wait for all clients to signal completion.
-		for range exp.Clients {
+		// Wait for all nodes to signal completion.
+		for i := 0; i < (len(exp.Servers) + len(exp.Clients)); i++ {
 
 			select {
 
@@ -682,7 +681,13 @@ func (op *Operator) RunExperiments() {
 
 			case workerName := <-exp.FinishedChan:
 
-				_, found := exp.ClientsMap[workerName]
+				_, found := exp.ServersMap[workerName]
+				if found {
+					exp.ServersMap[workerName].Status = "finished"
+					exp.ProgressChan <- fmt.Sprintf("Server %s marked as finished.", workerName)
+				}
+
+				_, found = exp.ClientsMap[workerName]
 				if found {
 					exp.ClientsMap[workerName].Status = "finished"
 					exp.ProgressChan <- fmt.Sprintf("Client %s marked as finished.", workerName)
@@ -690,11 +695,26 @@ func (op *Operator) RunExperiments() {
 
 			case failedReq := <-exp.FailedChan:
 
-				_, found := exp.ClientsMap[failedReq.Worker]
+				_, found := exp.ServersMap[failedReq.Worker]
+				if found {
+					exp.ServersMap[failedReq.Worker].Status = "failed"
+					exp.ProgressChan <- fmt.Sprintf("Server %s failed with: %s", failedReq.Worker, failedReq.Reason)
+				}
+
+				_, found = exp.ClientsMap[failedReq.Worker]
 				if found {
 					exp.ClientsMap[failedReq.Worker].Status = "failed"
 					exp.ProgressChan <- fmt.Sprintf("Client %s failed with: %s", failedReq.Worker, failedReq.Reason)
 				}
+			}
+		}
+
+		// Verify all servers completed.
+		for i := range exp.Servers {
+
+			if exp.Servers[i].Status != "finished" {
+				exp.ProgressChan <- fmt.Sprintf("At least one server (%s) did not finish in experiment %s.",
+					exp.Servers[i].Name, expID)
 			}
 		}
 
