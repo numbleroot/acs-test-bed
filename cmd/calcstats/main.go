@@ -84,7 +84,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	fmt.Printf("Done adding clients latency for %s\n", runPath)
 
-	// Read into memory system metrics from clients.
+	// Read in memory system metrics from clients.
 	err = run.AddSentBytes(clientsPath, true)
 	if err != nil {
 		fmt.Printf("Ingesting clients sent mebibytes metrics failed: %v\n", err)
@@ -117,7 +117,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	fmt.Printf("Done adding clients mem load for %s\n", runPath)
 
-	// Read into memory system metrics from servers.
+	// Read in memory system metrics from servers.
 	err = run.AddSentBytes(serversPath, false)
 	if err != nil {
 		fmt.Printf("Ingesting servers sent mebibytes metrics failed: %v\n", err)
@@ -173,7 +173,7 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	fmt.Printf("Done writing bandwidth to files for %s\n", settingsPath)
+	fmt.Printf("Done writing bandwidth to file for %s\n", settingsPath)
 
 	// Write load data for clients and servers.
 	err = set.LoadToFiles(settingsPath)
@@ -181,7 +181,7 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	fmt.Printf("Done writing load to files for %s\n", settingsPath)
+	fmt.Printf("Done writing load to file for %s\n", settingsPath)
 
 	// Write message latencies for clients.
 	err = set.LatenciesToFile(settingsPath)
@@ -189,7 +189,15 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	fmt.Printf("Done writing latencies to files for %s\n", settingsPath)
+	fmt.Printf("Done writing latencies to file for %s\n", settingsPath)
+
+	// Write total experiment times for clients.
+	err = set.TotalExpTimesToFile(settingsPath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Done writing total experiment times to file for %s\n", settingsPath)
 
 	// Write messages-per-mix data for mix nodes
 	// in a zeno evaluation.
@@ -198,7 +206,7 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	fmt.Printf("Done writing messages per mix to files for %s\n", settingsPath)
+	fmt.Printf("Done writing messages per mix on zeno to file for %s\n", settingsPath)
 
 	return nil
 }

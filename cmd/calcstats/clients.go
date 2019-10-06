@@ -220,7 +220,9 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 
 func (set *Setting) LatenciesToFile(path string) error {
 
-	clientsLatenciesFile, err := os.OpenFile(filepath.Join(path, "transmission-latencies_seconds_all-values-in-time-window.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsLatenciesFile, err := os.OpenFile(filepath.Join(path,
+		"transmission-latencies_seconds_all-values-in-time-window.data"),
+		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -245,6 +247,27 @@ func (set *Setting) LatenciesToFile(path string) error {
 	}
 
 	fmt.Fprintf(clientsLatenciesFile, "\n")
+
+	return nil
+}
+
+func (set *Setting) TotalExpTimesToFile(path string) error {
+
+	clientsTotalExpTimesFile, err := os.OpenFile(filepath.Join(path,
+		"total-experiment-times_seconds.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	if err != nil {
+		return err
+	}
+	defer clientsTotalExpTimesFile.Close()
+	defer clientsTotalExpTimesFile.Sync()
+
+	allTotals := make([]string, len(set.Runs))
+
+	for i := range set.Runs {
+		allTotals[i] = fmt.Sprintf("%d", ((set.Runs[i].TimestampHighest - set.Runs[i].TimestampLowest) + 2))
+	}
+
+	fmt.Fprintf(clientsTotalExpTimesFile, "%s\n", strings.Join(allTotals, ","))
 
 	return nil
 }
