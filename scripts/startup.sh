@@ -446,7 +446,7 @@ elif [ "${TYPE_OF_NODE}" == "coordinator" ]; then
 
     # Run coordinator component of Vuvuzela.
     /root/vuvuzela-coordinator -metricsPipe /tmp/collect01 -addr ${CLIENT_01_ADDR1} \
-        -wait 10s -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_01}_log.evaluation
+        -wait 20s -pki /root/vuvuzela-confs/pki.conf >> /root/${CLIENT_01}_log.evaluation
 
 elif [ "${TYPE_OF_NODE}" == "client" ]; then
 

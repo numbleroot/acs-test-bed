@@ -33,10 +33,11 @@ type Exp struct {
 // ExpFile represents the in-file representation
 // of an experiment.
 type ExpFile struct {
-	System                 string          `json:"system"`
-	ZonesNetTroublesIfUsed map[string]bool `json:"zonesNetTroublesIfUsed"`
-	Servers                []Worker        `json:"servers"`
-	Clients                []Worker        `json:"clients"`
+	System                       string          `json:"system"`
+	ServerZoneNetTroublesIfUsed  string          `json:"serverZoneNetTroublesIfUsed"`
+	ClientZonesNetTroublesIfUsed map[string]bool `json:"clientZonesNetTroublesIfUsed"`
+	Servers                      []Worker        `json:"servers"`
+	Clients                      []Worker        `json:"clients"`
 }
 
 // Worker describes one compute instance
@@ -90,7 +91,7 @@ func (exp *Exp) PrettyPrint() {
 // CustomizedExp prepares a new experiment
 // ready to be sent to the operator that is
 // customized to the specified flags of this run.
-func CustomizedExp(expFile *ExpFile, resultFolder string, applyNetTroubles bool, killZenoMixesInRound int) *Exp {
+func CustomizedExp(expFile *ExpFile, resultFolder string, applyHighDelay bool, applyHighLoss bool, killZenoMixesInRound int) *Exp {
 
 	exp := &Exp{}
 
@@ -107,10 +108,18 @@ func CustomizedExp(expFile *ExpFile, resultFolder string, applyNetTroubles bool,
 		// Only if this run was set to apply the
 		// TC configurations that cause the network
 		// to simulate trouble and this node is in
-		// one of the zones selected to experience
-		// them, enable them.
-		if applyNetTroubles && expFile.ZonesNetTroublesIfUsed[exp.Servers[i].Zone] {
-			exp.Servers[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		// the zone selected to experience them,
+		// enable them.
+		if (applyHighDelay || applyHighLoss) && (expFile.ServerZoneNetTroublesIfUsed == exp.Servers[i].Zone) {
+
+			if applyHighDelay && applyHighLoss {
+				exp.Servers[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 3% 25%"
+			} else if applyHighDelay && !applyHighLoss {
+				exp.Servers[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 1% 25%"
+			} else if !applyHighDelay && applyHighLoss {
+				exp.Servers[i].NetTroubles = "netem delay 100ms 50ms distribution normal loss 3% 25%"
+			}
+
 		} else {
 			exp.Servers[i].NetTroubles = "none"
 		}
@@ -127,8 +136,16 @@ func CustomizedExp(expFile *ExpFile, resultFolder string, applyNetTroubles bool,
 
 	for i := range exp.Clients {
 
-		if applyNetTroubles && expFile.ZonesNetTroublesIfUsed[exp.Clients[i].Zone] {
-			exp.Clients[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 2% 25% corrupt 1%"
+		if (applyHighDelay || applyHighLoss) && expFile.ClientZonesNetTroublesIfUsed[exp.Clients[i].Zone] {
+
+			if applyHighDelay && applyHighLoss {
+				exp.Clients[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 3% 25%"
+			} else if applyHighDelay && !applyHighLoss {
+				exp.Clients[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 1% 25%"
+			} else if !applyHighDelay && applyHighLoss {
+				exp.Clients[i].NetTroubles = "netem delay 100ms 50ms distribution normal loss 3% 25%"
+			}
+
 		} else {
 			exp.Clients[i].NetTroubles = "none"
 		}
@@ -162,7 +179,8 @@ func main() {
 	certFileFlag := flag.String("certFile", "./operator-cert.pem", "Specify the file system location of the self-signed TLS certificate of the operator.")
 	resultsPathFlag := flag.String("resultsPath", "./results/", "Specify the file system location of the top-level results directory to create a new results folder under.")
 	gcloudBucketFlag := flag.String("gcloudBucket", "", "Supply the GCloud Storage Bucket to use for the experiments.")
-	applyNetTroublesFlag := flag.Bool("applyNetTroubles", false, "Append this flag to emulate a network trouble in 3 out of all zones.")
+	applyHighDelayFlag := flag.Bool("applyHighDelay", false, "Append this flag to emulate high packet delay and medium packet loss in select zones (both for combined effect).")
+	applyHighLossFlag := flag.Bool("applyHighLoss", false, "Append this flag to emulate medium packet delay and high packet loss in select zones (both for combined effect).")
 	killZenoMixesInRoundFlag := flag.Int("killZenoMixesInRound", -1, "If specific mix nodes in all but one zeno cascade are supposed to crash, specify the round in which that shall happen.")
 	flag.Parse()
 
@@ -276,7 +294,7 @@ func main() {
 
 	// Manipulate experiment data according
 	// to supplied flags.
-	reqExp := CustomizedExp(reqExpFile, resultFolder, *applyNetTroublesFlag, *killZenoMixesInRoundFlag)
+	reqExp := CustomizedExp(reqExpFile, resultFolder, *applyHighDelayFlag, *applyHighLossFlag, *killZenoMixesInRoundFlag)
 
 	// Prepare buffer of JSON payload to be
 	// attached to the HTTPS request.
@@ -423,7 +441,7 @@ func main() {
 
 	fmt.Printf(" done!\n")
 
-	if !*applyNetTroublesFlag {
+	if !*applyHighDelayFlag && !*applyHighLossFlag {
 
 		if killZenoMixesInRound == -1 {
 			fmt.Printf("\nEvaluation run %s for 01_tc-off_proc-off completed\n", resultFolder)
@@ -431,12 +449,11 @@ func main() {
 			fmt.Printf("\nEvaluation run %s for 03_tc-off_proc-on completed\n", resultFolder)
 		}
 
+	} else if *applyHighDelayFlag && !*applyHighLossFlag {
+		fmt.Printf("\nEvaluation run %s for 02_tc1-on_proc-off completed\n", resultFolder)
+	} else if !*applyHighDelayFlag && *applyHighLossFlag {
+		fmt.Printf("\nEvaluation run %s for 02_tc2-on_proc-off completed\n", resultFolder)
 	} else {
-
-		if killZenoMixesInRound == -1 {
-			fmt.Printf("\nEvaluation run %s for 02_tc-on_proc-off completed\n", resultFolder)
-		} else {
-			fmt.Printf("\nEvaluation run %s for 04_tc-on_proc-on completed\n", resultFolder)
-		}
+		fmt.Printf("\nEvaluation run %s for 04_tc3-on_proc-on completed\n", resultFolder)
 	}
 }

@@ -14,10 +14,11 @@ import (
 // Exp contains all information relevant
 // for monitoring an experiment.
 type Exp struct {
-	System                 string          `json:"system"`
-	ZonesNetTroublesIfUsed map[string]bool `json:"zonesNetTroublesIfUsed"`
-	Servers                []Worker        `json:"servers"`
-	Clients                []Worker        `json:"clients"`
+	System                       string          `json:"system"`
+	ServerZoneNetTroublesIfUsed  string          `json:"serverZoneNetTroublesIfUsed"`
+	ClientZonesNetTroublesIfUsed map[string]bool `json:"clientZonesNetTroublesIfUsed"`
+	Servers                      []Worker        `json:"servers"`
+	Clients                      []Worker        `json:"clients"`
 }
 
 // Worker describes one compute instance
@@ -94,24 +95,41 @@ func shuffleZones() {
 	}
 }
 
-func pickZone(zoneIdx int, gcloudZonesLowStorage map[string]int) (string, int) {
+func pickZone(zoneIdx int, gcloudZonesLowStorage map[string]int, serverNetTroublesZone string) (string, int) {
 
 	// Pick next zone from randomized zones array.
 	zone := GCloudZones[zoneIdx]
 
-	// In case the storage quota for this zone has
-	// been reached, pick the next zone.
-	for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
+	if serverNetTroublesZone == "" {
 
-		// Increment counter. If we traversed zones array
-		// once, shuffle it again and reset index.
-		zoneIdx++
-		if zoneIdx == len(GCloudZones) {
-			shuffleZones()
-			zoneIdx = 0
+		// In case the storage quota for this zone has
+		// been reached, pick the next zone.
+		for gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone] {
+
+			// Increment counter. If we traversed zones array
+			// once, shuffle it again and reset index.
+			zoneIdx++
+			if zoneIdx == len(GCloudZones) {
+				shuffleZones()
+				zoneIdx = 0
+			}
+
+			zone = GCloudZones[zoneIdx]
 		}
 
-		zone = GCloudZones[zoneIdx]
+	} else {
+
+		for (gcloudZonesLowStorage[zone] > GCloudZonesLowStorage[zone]) ||
+			(zone == serverNetTroublesZone) {
+
+			zoneIdx++
+			if zoneIdx == len(GCloudZones) {
+				shuffleZones()
+				zoneIdx = 0
+			}
+
+			zone = GCloudZones[zoneIdx]
+		}
 	}
 
 	// Increment local map counter if this is a zone
@@ -186,30 +204,33 @@ func main() {
 	// Prepare structures for each system.
 
 	zenoExp := &Exp{
-		System:                 "zeno",
-		ZonesNetTroublesIfUsed: netTroubleZones,
-		Servers:                make([]Worker, (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))),
-		Clients:                make([]Worker, numClientsToGen),
+		System:                       "zeno",
+		ServerZoneNetTroublesIfUsed:  GCloudZones[0],
+		ClientZonesNetTroublesIfUsed: netTroubleZones,
+		Servers:                      make([]Worker, (numZenoCascades * ((2 * numVuvuzelaMixesToGen) - 1))),
+		Clients:                      make([]Worker, numClientsToGen),
 	}
 
 	vuvuzelaExp := &Exp{
-		System:                 "vuvuzela",
-		ZonesNetTroublesIfUsed: netTroubleZones,
-		Servers:                make([]Worker, numVuvuzelaMixesToGen),
-		Clients:                make([]Worker, numClientsToGen),
+		System:                       "vuvuzela",
+		ServerZoneNetTroublesIfUsed:  GCloudZones[0],
+		ClientZonesNetTroublesIfUsed: netTroubleZones,
+		Servers:                      make([]Worker, numVuvuzelaMixesToGen),
+		Clients:                      make([]Worker, numClientsToGen),
 	}
 
 	pungExp := &Exp{
-		System:                 "pung",
-		ZonesNetTroublesIfUsed: netTroubleZones,
-		Servers:                make([]Worker, 1),
-		Clients:                make([]Worker, numClientsToGen),
+		System:                       "pung",
+		ServerZoneNetTroublesIfUsed:  GCloudZones[0],
+		ClientZonesNetTroublesIfUsed: netTroubleZones,
+		Servers:                      make([]Worker, 1),
+		Clients:                      make([]Worker, numClientsToGen),
 	}
 
 	for i := range zenoExp.Servers {
 
 		zone := ""
-		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage)
+		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage, zenoExp.ServerZoneNetTroublesIfUsed)
 
 		zenoExp.Servers[i] = Worker{
 			ID:             (i + 1),
@@ -228,7 +249,7 @@ func main() {
 	for i := range zenoExp.Clients {
 
 		zone := ""
-		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage)
+		zone, zoneIdx = pickZone(zoneIdx, gcloudZonesLowStorage, "")
 
 		zenoExp.Clients[i] = Worker{
 			ID:             (i + 1),
@@ -248,6 +269,7 @@ func main() {
 	for i := range vuvuzelaExp.Servers {
 
 		if i == 0 {
+			vuvuzelaExp.Servers[i].Zone = vuvuzelaExp.ServerZoneNetTroublesIfUsed
 			vuvuzelaExp.Servers[i].TypeOfNode = "coordinator"
 			vuvuzelaExp.Servers[i].BinaryName = "vuvuzela-coordinator"
 		} else {
@@ -257,8 +279,13 @@ func main() {
 
 	copy(pungExp.Servers, zenoExp.Servers[:1])
 	for i := range pungExp.Servers {
+		pungExp.Servers[i].Zone = pungExp.ServerZoneNetTroublesIfUsed
 		pungExp.Servers[i].MachineType = "n1-highmem-16"
 		pungExp.Servers[i].BinaryName = "pung-server"
+	}
+
+	for i := 0; i < numZenoCascades; i++ {
+		zenoExp.Servers[i].Zone = zenoExp.ServerZoneNetTroublesIfUsed
 	}
 
 	copy(vuvuzelaExp.Clients, zenoExp.Clients)

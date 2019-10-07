@@ -319,7 +319,7 @@ func (pki *PKI) Run(cert string, key string) {
 		// Third time period: regular epoch execution
 		// minus the time it takes for the subsequent
 		// cascade matrix election to complete.
-		pki.EpochTicker = time.NewTicker(500 * epochBrick)
+		pki.EpochTicker = time.NewTicker(1000 * epochBrick)
 
 		// Regular epoch finished.
 		<-pki.EpochTicker.C
