@@ -14,7 +14,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"strings"
-	"time"
 )
 
 // Exp contains all experiment information
@@ -91,12 +90,12 @@ func (exp *Exp) PrettyPrint() {
 // CustomizedExp prepares a new experiment
 // ready to be sent to the operator that is
 // customized to the specified flags of this run.
-func CustomizedExp(expFile *ExpFile, resultFolder string, applyHighDelay bool, applyHighLoss bool, killZenoMixesInRound int) *Exp {
+func CustomizedExp(expFile *ExpFile, gcsResultsPath string, applyHighDelay bool, applyHighLoss bool, killZenoMixesInRound int) *Exp {
 
 	exp := &Exp{}
 
 	exp.System = expFile.System
-	exp.ResultFolder = resultFolder
+	exp.ResultFolder = gcsResultsPath
 	exp.Servers = make([]Worker, len(expFile.Servers))
 	exp.Clients = make([]Worker, len(expFile.Clients))
 
@@ -177,21 +176,20 @@ func main() {
 	configsPathFlag := flag.String("configsPath", "./gcloud-configs/", "Specify the file system location of the configurations folder for the compute instances.")
 	operatorAddrFlag := flag.String("operatorAddr", "127.0.0.1:443", "Supply the address at which the TLS API of the operator is reachable.")
 	certFileFlag := flag.String("certFile", "./operator-cert.pem", "Specify the file system location of the self-signed TLS certificate of the operator.")
-	resultsPathFlag := flag.String("resultsPath", "./results/", "Specify the file system location of the top-level results directory to create a new results folder under.")
-	gcloudBucketFlag := flag.String("gcloudBucket", "", "Supply the GCloud Storage Bucket to use for the experiments.")
+	gcsResultsPathFlag := flag.String("gcsResultsPath", "", "Specify the GCS file system location to store the result files.")
 	applyHighDelayFlag := flag.Bool("applyHighDelay", false, "Append this flag to emulate high packet delay and medium packet loss in select zones (both for combined effect).")
 	applyHighLossFlag := flag.Bool("applyHighLoss", false, "Append this flag to emulate medium packet delay and high packet loss in select zones (both for combined effect).")
 	killZenoMixesInRoundFlag := flag.Int("killZenoMixesInRound", -1, "If specific mix nodes in all but one zeno cascade are supposed to crash, specify the round in which that shall happen.")
 	flag.Parse()
 
 	// Enforce arguments to be set.
-	if *systemFlag == "" || *gcloudBucketFlag == "" {
-		fmt.Printf("Missing arguments, please provide values for all flags: '-system' and '-gcloudBucket'.\n")
+	if *systemFlag == "" || *gcsResultsPathFlag == "" {
+		fmt.Printf("Missing arguments, please provide values for all flags: '-system' and '-gcsResultsPath'.\n")
 		os.Exit(1)
 	}
 
 	system := strings.ToLower(*systemFlag)
-	gcloudBucket := *gcloudBucketFlag
+	gcsResultsPath := *gcsResultsPathFlag
 	killZenoMixesInRound := *killZenoMixesInRoundFlag
 
 	// System flag has to be one of three values.
@@ -200,17 +198,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	// Create name of results folder for this evaluation
-	// run based on current time and system name.
-	resultFolder := fmt.Sprintf("%s-%s", time.Now().Format("2006-01-02-15-04-05"), system)
-
-	// Prepare local results folder.
-	resultsPath, err := filepath.Abs(*resultsPathFlag)
-	if err != nil {
-		fmt.Printf("Provided results path '%s' could not be converted to absolute path: %v\n", *resultsPathFlag, err)
-		os.Exit(1)
-	}
-
+	var err error
 	var configsFile string
 
 	if system == "zeno" {
@@ -294,7 +282,7 @@ func main() {
 
 	// Manipulate experiment data according
 	// to supplied flags.
-	reqExp := CustomizedExp(reqExpFile, resultFolder, *applyHighDelayFlag, *applyHighLossFlag, *killZenoMixesInRoundFlag)
+	reqExp := CustomizedExp(reqExpFile, gcsResultsPath, *applyHighDelayFlag, *applyHighLossFlag, *killZenoMixesInRoundFlag)
 
 	// Prepare buffer of JSON payload to be
 	// attached to the HTTPS request.
@@ -419,41 +407,19 @@ func main() {
 
 	fmt.Printf(" done!\n")
 
-	// Download all files from GCloud bucket
-	// to prepared local experiment folder.
-	fmt.Printf("\nDownloading results...")
-
-	// Execute command to download result files.
-	outRaw, err = exec.Command("/opt/google-cloud-sdk/bin/gsutil", "-m", "cp", "-r",
-		fmt.Sprintf("gs://%s/%s/", gcloudBucket, resultFolder), resultsPath).CombinedOutput()
-	if err != nil {
-		fmt.Printf("Downloading results from GCloud bucket failed (code: '%v'): '%s'", err, outRaw)
-		os.Exit(1)
-	}
-
-	// Also copy machine configuration files
-	// into created results folder.
-	outRaw, err = exec.Command("cp", configsFile, fmt.Sprintf("%s/%s/", resultsPath, resultFolder)).CombinedOutput()
-	if err != nil {
-		fmt.Printf("Copying gcloud config file to results folder failed (code: '%v'): '%s'", err, outRaw)
-		os.Exit(1)
-	}
-
-	fmt.Printf(" done!\n")
-
 	if !*applyHighDelayFlag && !*applyHighLossFlag {
 
 		if killZenoMixesInRound == -1 {
-			fmt.Printf("\nEvaluation run %s for 01_tc-off_proc-off completed\n", resultFolder)
+			fmt.Printf("\nEvaluation run '%s' for 01_tc-off_proc-off completed\n", gcsResultsPath)
 		} else {
-			fmt.Printf("\nEvaluation run %s for 03_tc-off_proc-on completed\n", resultFolder)
+			fmt.Printf("\nEvaluation run '%s' for 03_tc-off_proc-on completed\n", gcsResultsPath)
 		}
 
 	} else if *applyHighDelayFlag && !*applyHighLossFlag {
-		fmt.Printf("\nEvaluation run %s for 02_tc1-on_proc-off completed\n", resultFolder)
+		fmt.Printf("\nEvaluation run '%s' for 02_tc1-on_proc-off completed\n", gcsResultsPath)
 	} else if !*applyHighDelayFlag && *applyHighLossFlag {
-		fmt.Printf("\nEvaluation run %s for 02_tc2-on_proc-off completed\n", resultFolder)
+		fmt.Printf("\nEvaluation run '%s' for 02_tc2-on_proc-off completed\n", gcsResultsPath)
 	} else {
-		fmt.Printf("\nEvaluation run %s for 04_tc3-on_proc-on completed\n", resultFolder)
+		fmt.Printf("\nEvaluation run '%s' for 04_tc3-on_proc-on completed\n", gcsResultsPath)
 	}
 }

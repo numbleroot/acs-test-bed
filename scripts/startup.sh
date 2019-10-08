@@ -1,5 +1,35 @@
 #!/usr/bin/env bash
 
+
+warn_maintenance() {
+
+    while :
+    do
+
+        # Query maintenance warning status for this instance.
+        MAINTENANCE_STATUS=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/maintenance-event" -H "Metadata-Flavor: Google")
+        MAINTENANCE_OPERATOR_IP=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/operatorIP" -H "Metadata-Flavor: Google")
+        MAINTENANCE_EXP_ID=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/expID" -H "Metadata-Flavor: Google")
+        MAINTENANCE_NAME_OF_NODE=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/attributes/nameOfNode" -H "Metadata-Flavor: Google")
+        MAINTENANCE_LISTEN_IP=$(curl -s "http://metadata.google.internal/computeMetadata/v1/instance/network-interfaces/0/ip" -H "Metadata-Flavor: Google")
+
+        if [ "${MAINTENANCE_STATUS}" != "NONE" ]; then
+
+            printf "GOOGLE WILL SHUT DOWN THIS INSTANCE FOR MAINTENANCE SOON! CALLING OPERATOR\n"
+            printf "Will call /experiments/${MAINTENANCE_EXP_ID}/workers/${MAINTENANCE_NAME_OF_NODE}/failed as ${MAINTENANCE_NAME_OF_NODE}@${MAINTENANCE_LISTEN_IP}.\n"
+
+            # Inform operator about maintenance if necessary.
+            curl --cacert /root/operator-cert.pem --request PUT --header "content-type: application/json" --data-binary "{
+                \"failure\": \"Google has scheduled maintenance for instance ${MAINTENANCE_NAME_OF_NODE}, will shut down\"
+            }" https://${MAINTENANCE_OPERATOR_IP}/internal/experiments/${MAINTENANCE_EXP_ID}/workers/${MAINTENANCE_NAME_OF_NODE}/failed
+        fi
+
+        sleep 3
+
+    done
+}
+
+
 sleep 1
 
 # Make sure the application ports we are going to
@@ -7,6 +37,9 @@ sleep 1
 # evaluate are blocked off from "randomly binding"
 # applications (=> part of the reserved pool).
 sysctl -w net.ipv4.ip_local_reserved_ports=33001-33010,44001-44010
+
+# Monitor maintenance events in background.
+warn_maintenance &
 
 sleep 15
 
