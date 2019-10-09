@@ -112,11 +112,11 @@ func CustomizedExp(expFile *ExpFile, gcsResultsPath string, applyHighDelay bool,
 		if (applyHighDelay || applyHighLoss) && (expFile.ServerZoneNetTroublesIfUsed == exp.Servers[i].Zone) {
 
 			if applyHighDelay && applyHighLoss {
-				exp.Servers[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 3% 25%"
+				exp.Servers[i].NetTroubles = "netem delay 100ms 25ms distribution normal loss 2% 25%"
 			} else if applyHighDelay && !applyHighLoss {
-				exp.Servers[i].NetTroubles = "netem delay 400ms 100ms distribution normal loss 1% 25%"
+				exp.Servers[i].NetTroubles = "netem delay 100ms 25ms distribution normal"
 			} else if !applyHighDelay && applyHighLoss {
-				exp.Servers[i].NetTroubles = "netem delay 100ms 50ms distribution normal loss 3% 25%"
+				exp.Servers[i].NetTroubles = "netem loss 2% 25%"
 			}
 
 		} else {

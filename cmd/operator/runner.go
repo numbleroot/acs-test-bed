@@ -187,7 +187,7 @@ var tmplInstanceCreate = `{
 	"labels": {},
 	"scheduling": {
 		"preemptible": false,
-		"onHostMaintenance": "TERMINATE",
+		"onHostMaintenance": "MIGRATE",
 		"automaticRestart": false,
 		"nodeAffinities": []
 	},

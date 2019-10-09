@@ -118,6 +118,7 @@ venv.bak/
 .mypy_cache/
 
 # Project-specific.
+paper-results/
 gcloud-configs/
 gcloud-configs_*/
 calcstats
