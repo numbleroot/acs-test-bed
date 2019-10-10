@@ -16,7 +16,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 	err := filepath.Walk(runClientsPath, func(path string, info os.FileInfo, err error) error {
 
 		if err != nil {
-			return err
+			return fmt.Errorf("path: '%s', err: %v", path, err)
 		}
 
 		if strings.HasSuffix(filepath.Base(path), "send_unixnano.evaluation") {
@@ -26,7 +26,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			// Ingest supplied send times file.
 			content, err := ioutil.ReadFile(path)
 			if err != nil {
-				return err
+				return fmt.Errorf("path: '%s', err: %v", path, err)
 			}
 			content = bytes.TrimSpace(content)
 
@@ -44,7 +44,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				// Convert first element to timestamp.
 				timestamp, err := strconv.ParseInt(metric[0], 10, 64)
 				if err != nil {
-					return err
+					return fmt.Errorf("path: '%s', err: %v", path, err)
 				}
 
 				// Extract name of partner node.
@@ -55,7 +55,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				// Convert third element to message ID.
 				msgID, err := strconv.ParseInt(metric[2], 10, 64)
 				if err != nil {
-					return err
+					return fmt.Errorf("path: '%s', err: %v", path, err)
 				}
 
 				// Append to temporary state object.
@@ -70,39 +70,61 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				return clientMsgLatencies[i].MsgID < clientMsgLatencies[j].MsgID
 			})
 
-			// Reslice list of messages to capture messages [#3, ...).
-			clientMsgLatencies = clientMsgLatencies[2:]
+			clientStart := -1
+			clientEnd := -1
 
-			// Ensure we have enough values available.
-			for i := 0; int64(i) < numMsgsToCalc; i++ {
+			for i := range clientMsgLatencies {
 
-				if clientMsgLatencies[i].MsgID != int64((i + 3)) {
-					return fmt.Errorf("%s does not have consecutive metrics (idx %d => msgID %d)", path, (i + 3), clientMsgLatencies[i].MsgID)
+				if clientMsgLatencies[i].MsgID < 3 {
+					continue
+				}
+
+				if clientStart == -1 {
+					clientStart = i
+				}
+
+				if clientMsgLatencies[i].MsgID >= (numMsgsToCalc + 3) {
+					clientEnd = i
+					break
 				}
 			}
 
-			// Find partner's receive time file.
-			candidates, err := filepath.Glob(fmt.Sprintf("%s/%s_recv_unixnano.evaluation", runClientsPath, partner))
-			if err != nil {
-				return err
+			if clientStart == -1 || clientEnd == -1 {
+				return fmt.Errorf("did not find adequate latency bounds on sender (start=%d, end=%d, path: '%s')",
+					clientStart, clientEnd, path)
 			}
 
-			fmt.Printf("candidates: '%#v'\n", strings.Join(candidates, ", "))
+			// Reslice to found bounds.
+			clientMsgLatencies = clientMsgLatencies[clientStart:clientEnd]
+
+			if int64(len(clientMsgLatencies)) != numMsgsToCalc {
+				return fmt.Errorf("too few latency metrics in clientMsgLatencies (want %d, saw %d, path: '%s')",
+					numMsgsToCalc, len(clientMsgLatencies), path)
+			}
+
+			// Find partner's receive time file.
+			partnerFilePath := fmt.Sprintf("%s/*/%s_recv_unixnano.evaluation", runClientsPath, partner)
+			candidates, err := filepath.Glob(partnerFilePath)
+			if err != nil {
+				return fmt.Errorf("path: '%s', err: %v", path, err)
+			}
 
 			if len(candidates) != 1 {
 				return fmt.Errorf("client %s did not have unique conversation partner", path)
 			}
 
+			fmt.Printf("partner: '%s'\n", candidates[0])
+
 			// Ingest partner's receive times file.
 			content, err = ioutil.ReadFile(candidates[0])
 			if err != nil {
-				return err
+				return fmt.Errorf("path: '%s', err: %v", path, err)
 			}
 			content = bytes.TrimSpace(content)
 			lines = strings.Split(string(content), "\n")
 
 			// Track all partner's message IDs.
-			partnersLatencies := make([]*MetricLatency, len(lines))
+			partnersMsgLatencies := make([]*MetricLatency, len(lines))
 
 			for i := range lines {
 
@@ -112,78 +134,81 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				// Convert first element to timestamp.
 				timestamp, err := strconv.ParseInt(metric[0], 10, 64)
 				if err != nil {
-					return err
+					return fmt.Errorf("path: '%s', err: %v", path, err)
 				}
 
 				// Convert third element to message ID.
 				msgID, err := strconv.ParseInt(metric[2], 10, 64)
 				if err != nil {
-					return err
+					return fmt.Errorf("path: '%s', err: %v", path, err)
 				}
 
-				partnersLatencies[i] = &MetricLatency{
+				partnersMsgLatencies[i] = &MetricLatency{
 					MsgID:            msgID,
 					ReceiveTimestamp: timestamp,
 				}
 			}
 
 			// Sort slice of partner's receive message IDs.
-			sort.Slice(partnersLatencies, func(i, j int) bool {
-				return partnersLatencies[i].MsgID < partnersLatencies[j].MsgID
+			sort.Slice(partnersMsgLatencies, func(i, j int) bool {
+				return partnersMsgLatencies[i].MsgID < partnersMsgLatencies[j].MsgID
 			})
 
-			// Reslice list of messages to capture messages [#3, ...).
-			partnersLatencies = partnersLatencies[2:]
+			partnerStart := -1
+			partnerEnd := -1
 
-			// Ensure we see enough shared metrics between
-			// sending node and receiving.
-			idxLastCommonMsg := -1
-			for i := range clientMsgLatencies {
+			for i := range partnersMsgLatencies {
 
-				if i < len(partnersLatencies) {
+				if partnersMsgLatencies[i].MsgID < 3 {
+					continue
+				}
 
-					if clientMsgLatencies[i].MsgID == partnersLatencies[i].MsgID {
-						idxLastCommonMsg = i
-					}
+				if partnerStart == -1 {
+					partnerStart = i
+				}
+
+				if partnersMsgLatencies[i].MsgID >= (numMsgsToCalc + 3) {
+					partnerEnd = i
+					break
 				}
 			}
 
-			if int64(idxLastCommonMsg) < (numMsgsToCalc - 1) {
-				return fmt.Errorf("%s and %s only share %d metrics for messages (%d wanted)", path, partner, idxLastCommonMsg, numMsgsToCalc)
+			if partnerStart == -1 || partnerEnd == -1 {
+				return fmt.Errorf("did not find adequate latency bounds on recipient (start=%d, end=%d, path: '%s')",
+					partnerStart, partnerEnd, path)
+			}
+
+			// Reslice to found bounds.
+			partnersMsgLatencies = partnersMsgLatencies[partnerStart:partnerEnd]
+
+			if int64(len(partnersMsgLatencies)) != numMsgsToCalc {
+				return fmt.Errorf("too few latency metrics in partnersMsgLatencies (want %d, saw %d, path: '%s')",
+					numMsgsToCalc, len(partnersMsgLatencies), path)
 			}
 
 			msgLatencies := make([]*MetricLatency, 0, len(clientMsgLatencies))
 
 			for i := range clientMsgLatencies {
 
-				if i < len(partnersLatencies) {
+				// Calculate this message's end-to-end latency in seconds.
+				latencyNano := partnersMsgLatencies[i].ReceiveTimestamp - clientMsgLatencies[i].SendTimestamp
+				latencySec := float64(latencyNano) / float64(1000000000)
 
-					// Calculate this message's end-to-end latency in seconds.
-					latencyNano := partnersLatencies[i].ReceiveTimestamp - clientMsgLatencies[i].SendTimestamp
+				if latencyNano <= int64(0) {
 
-					/*
-						if latencyNano <= int64(0) {
-
-							// TODO: Potentially do something in case negative and
-							//       "overly" positive latencies are not balancing
-							//       each other out. Right now, I assume they do
-							//       due to symmetry of communication partners and
-							//       my larger data set.
-
-							fmt.Printf("Incorrect latency: %d (ID: %d, %d => %d, %s)\n", latencyNano, clientMsgLatencies[i].MsgID,
-								clientMsgLatencies[i].SendTimestamp, partnersLatencies[i].ReceiveTimestamp, path)
-							continue
-						}
-					*/
-
-					// Append to struct capturing all useful latency metrics.
-					msgLatencies = append(msgLatencies, &MetricLatency{
-						MsgID:            clientMsgLatencies[i].MsgID,
-						SendTimestamp:    clientMsgLatencies[i].SendTimestamp,
-						ReceiveTimestamp: partnersLatencies[i].ReceiveTimestamp,
-						Latency:          float64(latencyNano) / float64(1000000000),
-					})
+					// Negative latencies should not be possible.
+					return fmt.Errorf("incorrect latency: %dns (%.5fs) (ID: %d, %d => %d, %s)", latencyNano, latencySec,
+						clientMsgLatencies[i].MsgID, clientMsgLatencies[i].SendTimestamp,
+						partnersMsgLatencies[i].ReceiveTimestamp, path)
 				}
+
+				// Append to struct capturing all useful latency metrics.
+				msgLatencies = append(msgLatencies, &MetricLatency{
+					MsgID:            clientMsgLatencies[i].MsgID,
+					SendTimestamp:    clientMsgLatencies[i].SendTimestamp,
+					ReceiveTimestamp: partnersMsgLatencies[i].ReceiveTimestamp,
+					Latency:          latencySec,
+				})
 			}
 
 			// Reslice to desired size.
