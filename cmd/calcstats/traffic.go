@@ -10,7 +10,12 @@ import (
 	"strings"
 )
 
-func (run *Run) AddSentBytes(runNodesPath string, isClientMetric bool) error {
+// AddHighestSentBytes appends the node-individual
+// highest outgoing traffic volume measurement.
+// Respective values lie within the timestamp boundaries
+// of interest of this run, are reduced by the warm-up
+// offset, and MiB-normalized.
+func (run *Run) AddHighestSentBytes(runNodesPath string, isClientMetric bool) error {
 
 	err := filepath.Walk(runNodesPath, func(path string, info os.FileInfo, err error) error {
 
@@ -68,16 +73,29 @@ func (run *Run) AddSentBytes(runNodesPath string, isClientMetric bool) error {
 				lastValue = value
 			}
 
+			// Ensure there are actually traffic values tracked
+			// on outgoing connections from this node.
+			if lastValue == 0 {
+				return fmt.Errorf("outgoing traffic volume non-existent (reduceBy=%d, lastValue=%d, highestValue=%d, path: '%s')",
+					reduceBy, lastValue, highestValue, path)
+			}
+
+			// If we did not see a value for the highest timestamp,
+			// set it to the last seen value instead.
 			if highestValue == 0 {
 				highestValue = lastValue
 			}
 
-			// Append as reduced and MiB-normalized highest
-			// value to run-global sent bytes slice.
+			// Calculate MiB-normalized highest outgoing traffic
+			// volume value that is offset by what the warm-up
+			// phase of the ACS produced in outgoing traffic.
+			highestSentMiB := float64((highestValue - reduceBy)) / (1024.0 * 1024.0)
+
+			// Append value to run-global sent bytes slice.
 			if isClientMetric {
-				run.ClientsSentMiBytesHighest = append(run.ClientsSentMiBytesHighest, (float64((highestValue - reduceBy)) / (1024.0 * 1024.0)))
+				run.ClientsSentMiBytesHighest = append(run.ClientsSentMiBytesHighest, highestSentMiB)
 			} else {
-				run.ServersSentMiBytesHighest = append(run.ServersSentMiBytesHighest, (float64((highestValue - reduceBy)) / (1024.0 * 1024.0)))
+				run.ServersSentMiBytesHighest = append(run.ServersSentMiBytesHighest, highestSentMiB)
 			}
 		}
 
@@ -87,7 +105,12 @@ func (run *Run) AddSentBytes(runNodesPath string, isClientMetric bool) error {
 	return err
 }
 
-func (run *Run) AddRecvdBytes(runNodesPath string, isClientMetric bool) error {
+// AddHighestRecvdBytes appends the node-individual
+// highest incoming traffic volume measurement.
+// Respective values lie within the timestamp boundaries
+// of interest of this run, are reduced by the warm-up
+// offset, and MiB-normalized.
+func (run *Run) AddHighestRecvdBytes(runNodesPath string, isClientMetric bool) error {
 
 	err := filepath.Walk(runNodesPath, func(path string, info os.FileInfo, err error) error {
 
@@ -145,16 +168,29 @@ func (run *Run) AddRecvdBytes(runNodesPath string, isClientMetric bool) error {
 				lastValue = value
 			}
 
+			// Ensure there are actually traffic values tracked
+			// on incoming connections to this node.
+			if lastValue == 0 {
+				return fmt.Errorf("incoming traffic volume non-existent (reduceBy=%d, lastValue=%d, highestValue=%d, path: '%s')",
+					reduceBy, lastValue, highestValue, path)
+			}
+
+			// If we did not see a value for the highest timestamp,
+			// set it to the last seen value instead.
 			if highestValue == 0 {
 				highestValue = lastValue
 			}
 
-			// Append as reduced and MiB-normalized highest
-			// value to run-global sent bytes slice.
+			// Calculate MiB-normalized highest incoming traffic
+			// volume value that is offset by what the warm-up
+			// phase of the ACS produced in incoming traffic.
+			highestRecvdMiB := float64((highestValue - reduceBy)) / (1024.0 * 1024.0)
+
+			// Append value to run-global sent bytes slice.
 			if isClientMetric {
-				run.ClientsRecvdMiBytesHighest = append(run.ClientsRecvdMiBytesHighest, (float64((highestValue - reduceBy)) / (1024.0 * 1024.0)))
+				run.ClientsRecvdMiBytesHighest = append(run.ClientsRecvdMiBytesHighest, highestRecvdMiB)
 			} else {
-				run.ServersRecvdMiBytesHighest = append(run.ServersRecvdMiBytesHighest, (float64((highestValue - reduceBy)) / (1024.0 * 1024.0)))
+				run.ServersRecvdMiBytesHighest = append(run.ServersRecvdMiBytesHighest, highestRecvdMiB)
 			}
 		}
 
@@ -164,56 +200,82 @@ func (run *Run) AddRecvdBytes(runNodesPath string, isClientMetric bool) error {
 	return err
 }
 
+// TrafficToFiles calculates the per-client and per-server
+// highest traffic volume average across all runs of this
+// setting and writes each value out to its respective file.
 func (set *Setting) TrafficToFiles(path string) error {
 
-	// Calculate bandwidth average for clients.
-	var clientsBandwidthAvg float64
-
+	clientsBandwidthAvg := float64(-1.0)
 	allMetricsSum := float64(0.0)
-	numMetrics := float64(len(set.Runs))
+	numMetrics := float64(0.0)
 
+	// Add up the highest outgoing and incoming
+	// traffic values for all clients and runs.
 	for i := range set.Runs {
 
 		for j := range set.Runs[i].ClientsSentMiBytesHighest {
-			allMetricsSum = allMetricsSum + (set.Runs[i].ClientsSentMiBytesHighest[j] + set.Runs[i].ClientsRecvdMiBytesHighest[j])
+			allMetricsSum = allMetricsSum + set.Runs[i].ClientsSentMiBytesHighest[j]
 		}
+
+		for k := range set.Runs[i].ClientsRecvdMiBytesHighest {
+			allMetricsSum = allMetricsSum + set.Runs[i].ClientsRecvdMiBytesHighest[k]
+		}
+
+		numMetrics = numMetrics + set.Runs[i].NumClients
 	}
 
-	clientsBandwidthAvg = float64(allMetricsSum / numMetrics)
+	// Divide the total traffic volume for all clients
+	// across all runs by the total number of clients
+	// across all runs.
+	clientsBandwidthAvg = allMetricsSum / numMetrics
 
-	clientsBandwidthAvgFile, err := os.OpenFile(filepath.Join(path, "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsBandwidthAvgFile, err := os.OpenFile(
+		filepath.Join(path, "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
 	defer clientsBandwidthAvgFile.Close()
 	defer clientsBandwidthAvgFile.Sync()
 
-	// Write values to files for clients.
+	// Write value to file for clients.
 	fmt.Fprintf(clientsBandwidthAvgFile, "%.5f\n", clientsBandwidthAvg)
 
-	// Calculate bandwidth average for servers.
-	var serversBandwidthAvg float64
+	// Do the same accordingly on server side.
+	serversBandwidthAvg := float64(-1.0)
+	allMetricsSum = float64(0.0)
+	numMetrics = float64(0.0)
 
-	allMetricsSum = 0.0
-	numMetrics = float64(len(set.Runs))
-
+	// Add up the highest outgoing and incoming
+	// traffic values for all servers and runs.
 	for i := range set.Runs {
 
 		for j := range set.Runs[i].ServersSentMiBytesHighest {
-			allMetricsSum = allMetricsSum + (set.Runs[i].ServersSentMiBytesHighest[j] + set.Runs[i].ServersRecvdMiBytesHighest[j])
+			allMetricsSum = allMetricsSum + set.Runs[i].ServersSentMiBytesHighest[j]
 		}
+
+		for k := range set.Runs[i].ServersRecvdMiBytesHighest {
+			allMetricsSum = allMetricsSum + set.Runs[i].ServersRecvdMiBytesHighest[k]
+		}
+
+		numMetrics = numMetrics + set.Runs[i].NumServers
 	}
 
-	serversBandwidthAvg = float64(allMetricsSum / numMetrics)
+	// Divide the total traffic volume for all servers
+	// across all runs by the total number of servers
+	// across all runs.
+	serversBandwidthAvg = allMetricsSum / numMetrics
 
-	serversBandwidthAvgFile, err := os.OpenFile(filepath.Join(path, "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	serversBandwidthAvgFile, err := os.OpenFile(
+		filepath.Join(path, "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
 	defer serversBandwidthAvgFile.Close()
 	defer serversBandwidthAvgFile.Sync()
 
-	// Write values to files for servers.
+	// Write value to file for servers.
 	fmt.Fprintf(serversBandwidthAvgFile, "%.5f\n", serversBandwidthAvg)
 
 	return nil

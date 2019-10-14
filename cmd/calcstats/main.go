@@ -36,6 +36,8 @@ type MetricLatency struct {
 // in seconds, respectively, between which all
 // other metrics are caputed.
 type Run struct {
+	NumServers                 float64
+	NumClients                 float64
 	TimestampLowest            int64
 	TimestampHighest           int64
 	Latencies                  [][]*MetricLatency
@@ -75,11 +77,13 @@ type Experiment struct {
 // AppendRun reads in all metric files for one
 // complete run of a system and appends the data
 // as a new run to the internal state.
-func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
+func (set *Setting) AppendRun(runPath string, numServers float64, numClients float64, numMsgsToCalc int64) {
 
 	// Prepare space for a Run with the anticipated
 	// maximum possible number of metrics per category.
 	run := &Run{
+		NumServers:                 numServers,
+		NumClients:                 numClients,
 		TimestampLowest:            (1 << 63) - 1,
 		TimestampHighest:           0,
 		Latencies:                  make([][]*MetricLatency, 0, 3000),
@@ -109,7 +113,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	// Read in highest value for number of outgoing
 	// bytes on each client.
-	err = run.AddSentBytes(clientsPath, true)
+	err = run.AddHighestSentBytes(clientsPath, true)
 	if err != nil {
 		fmt.Printf("Ingesting clients sent mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
@@ -119,7 +123,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	// Read in highest value for number of incoming
 	// bytes on each client.
-	err = run.AddRecvdBytes(clientsPath, true)
+	err = run.AddHighestRecvdBytes(clientsPath, true)
 	if err != nil {
 		fmt.Printf("Ingesting client received mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
@@ -143,8 +147,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	fmt.Printf("Done adding clients mem load for '%s'\n", runPath)
 
-	// Read in memory system metrics from servers.
-	err = run.AddSentBytes(serversPath, false)
+	err = run.AddHighestSentBytes(serversPath, false)
 	if err != nil {
 		fmt.Printf("Ingesting servers sent mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
@@ -152,7 +155,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
 	fmt.Printf("Done adding servers sent bytes for '%s'\n", runPath)
 
-	err = run.AddRecvdBytes(serversPath, false)
+	err = run.AddHighestRecvdBytes(serversPath, false)
 	if err != nil {
 		fmt.Printf("Ingesting servers received mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
@@ -353,7 +356,7 @@ func main() {
 
 		if foldersZenoClients1000[i].IsDir() {
 			experiment.ZenoClients1000.AppendRun(filepath.Join(experimentPath, "zeno", "clients-1000",
-				foldersZenoClients1000[i].Name()), numMsgsToCalc)
+				foldersZenoClients1000[i].Name()), 21, 1000, numMsgsToCalc)
 		}
 	}
 
@@ -361,7 +364,7 @@ func main() {
 
 		if foldersZenoClients2000[i].IsDir() {
 			experiment.ZenoClients2000.AppendRun(filepath.Join(experimentPath, "zeno", "clients-2000",
-				foldersZenoClients2000[i].Name()), numMsgsToCalc)
+				foldersZenoClients2000[i].Name()), 21, 2000, numMsgsToCalc)
 		}
 	}
 
@@ -369,7 +372,7 @@ func main() {
 
 		if foldersZenoClients3000[i].IsDir() {
 			experiment.ZenoClients3000.AppendRun(filepath.Join(experimentPath, "zeno", "clients-3000",
-				foldersZenoClients3000[i].Name()), numMsgsToCalc)
+				foldersZenoClients3000[i].Name()), 21, 3000, numMsgsToCalc)
 		}
 	}
 
@@ -377,7 +380,7 @@ func main() {
 
 		if foldersVuvuzelaClients1000[i].IsDir() {
 			experiment.VuvuzelaClients1000.AppendRun(filepath.Join(experimentPath, "vuvuzela", "clients-1000",
-				foldersVuvuzelaClients1000[i].Name()), numMsgsToCalc)
+				foldersVuvuzelaClients1000[i].Name()), 4, 1000, numMsgsToCalc)
 		}
 	}
 
@@ -385,7 +388,7 @@ func main() {
 
 		if foldersVuvuzelaClients2000[i].IsDir() {
 			experiment.VuvuzelaClients2000.AppendRun(filepath.Join(experimentPath, "vuvuzela", "clients-2000",
-				foldersVuvuzelaClients2000[i].Name()), numMsgsToCalc)
+				foldersVuvuzelaClients2000[i].Name()), 4, 2000, numMsgsToCalc)
 		}
 	}
 
@@ -393,7 +396,7 @@ func main() {
 
 		if foldersVuvuzelaClients3000[i].IsDir() {
 			experiment.VuvuzelaClients3000.AppendRun(filepath.Join(experimentPath, "vuvuzela", "clients-3000",
-				foldersVuvuzelaClients3000[i].Name()), numMsgsToCalc)
+				foldersVuvuzelaClients3000[i].Name()), 4, 3000, numMsgsToCalc)
 		}
 	}
 
@@ -401,7 +404,7 @@ func main() {
 
 		if foldersPungClients1000[i].IsDir() {
 			experiment.PungClients1000.AppendRun(filepath.Join(experimentPath, "pung", "clients-1000",
-				foldersPungClients1000[i].Name()), numMsgsToCalc)
+				foldersPungClients1000[i].Name()), 1, 1000, numMsgsToCalc)
 		}
 	}
 
@@ -409,7 +412,7 @@ func main() {
 
 		if foldersPungClients2000[i].IsDir() {
 			experiment.PungClients2000.AppendRun(filepath.Join(experimentPath, "pung", "clients-2000",
-				foldersPungClients2000[i].Name()), numMsgsToCalc)
+				foldersPungClients2000[i].Name()), 1, 2000, numMsgsToCalc)
 		}
 	}
 
@@ -417,7 +420,7 @@ func main() {
 
 		if foldersPungClients3000[i].IsDir() {
 			experiment.PungClients3000.AppendRun(filepath.Join(experimentPath, "pung", "clients-3000",
-				foldersPungClients3000[i].Name()), numMsgsToCalc)
+				foldersPungClients3000[i].Name()), 1, 3000, numMsgsToCalc)
 		}
 	}
 

@@ -260,10 +260,17 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 	return err
 }
 
+// LatenciesToFile writes out all client-measured
+// end-to-end transmission latencies in seconds
+// across all runs of this setting into a file.
+// For numMsgsToCalc=20 in the 3000 client setting
+// repeated for 3 runs, this results in
+//     20 * 3000 * 3 = 180,000
+// values being written.
 func (set *Setting) LatenciesToFile(path string) error {
 
-	clientsLatenciesFile, err := os.OpenFile(filepath.Join(path,
-		"transmission-latencies_seconds_all-values-in-time-window.data"),
+	clientsLatenciesFile, err := os.OpenFile(
+		filepath.Join(path, "transmission-latencies_seconds_all-values-in-time-window.data"),
 		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
@@ -271,6 +278,7 @@ func (set *Setting) LatenciesToFile(path string) error {
 	defer clientsLatenciesFile.Close()
 	defer clientsLatenciesFile.Sync()
 
+	// Begin file with the first e2e latency.
 	fmt.Fprintf(clientsLatenciesFile, "%.5f", set.Runs[0].Latencies[0][0].Latency)
 
 	for i := range set.Runs {
@@ -279,10 +287,14 @@ func (set *Setting) LatenciesToFile(path string) error {
 
 			for k := range set.Runs[i].Latencies[j] {
 
+				// Skip over the first latency metric of the first
+				// client of the first run, because we have already
+				// written it out.
 				if i == 0 && j == 0 && k == 0 {
 					continue
 				}
 
+				// Write out all remaining latency measurements.
 				fmt.Fprintf(clientsLatenciesFile, ",%.5f", set.Runs[i].Latencies[j][k].Latency)
 			}
 		}
@@ -293,10 +305,14 @@ func (set *Setting) LatenciesToFile(path string) error {
 	return nil
 }
 
+// TotalExpTimesToFile writes out the total
+// running time in seconds for each run of
+// this second to a file.
 func (set *Setting) TotalExpTimesToFile(path string) error {
 
-	clientsTotalExpTimesFile, err := os.OpenFile(filepath.Join(path,
-		"total-experiment-times_seconds.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsTotalExpTimesFile, err := os.OpenFile(
+		filepath.Join(path, "total-experiment-times_seconds.data"),
+		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -305,10 +321,13 @@ func (set *Setting) TotalExpTimesToFile(path string) error {
 
 	allTotals := make([]string, len(set.Runs))
 
+	// Calculate this run's total running time and
+	// append it to the slice collecting all of them.
 	for i := range set.Runs {
 		allTotals[i] = fmt.Sprintf("%d", ((set.Runs[i].TimestampHighest - set.Runs[i].TimestampLowest) + 2))
 	}
 
+	// Write out the running time slice.
 	fmt.Fprintf(clientsTotalExpTimesFile, "%s\n", strings.Join(allTotals, ","))
 
 	return nil
