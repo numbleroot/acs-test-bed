@@ -11,6 +11,14 @@ import (
 	"strings"
 )
 
+// AddLatency ingests and prepares end-to-end
+// transmission latency metrics taken on clients
+// for one particular run.
+// Based on the send timestamps of the sending node,
+// the associated receive timestamps taken by the
+// receiving node are extracted. We ensure that we
+// see enough consecutive message transmissions
+// taking place to satisfy argument numMsgsToCalc.
 func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 
 	err := filepath.Walk(runClientsPath, func(path string, info os.FileInfo, err error) error {
@@ -73,6 +81,10 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			clientStart := -1
 			clientEnd := -1
 
+			// Set start and end slice indexes for sender
+			// timestamps according to number of messages
+			// to calculate for, but offset by initial three
+			// values to account for warm-up.
 			for i := range clientMsgLatencies {
 
 				if clientMsgLatencies[i].MsgID < 3 {
@@ -89,6 +101,8 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				}
 			}
 
+			// If any of the slice criteria could not
+			// be met, return with an error.
 			if clientStart == -1 || clientEnd == -1 {
 				return fmt.Errorf("did not find adequate latency bounds on sender (start=%d, end=%d, path: '%s')",
 					clientStart, clientEnd, path)
@@ -110,7 +124,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			}
 
 			if len(candidates) != 1 {
-				return fmt.Errorf("client %s did not have unique conversation partner", path)
+				return fmt.Errorf("client at '%s' did not have unique conversation partner", path)
 			}
 
 			fmt.Printf("partner: '%s'\n", candidates[0])
@@ -157,6 +171,10 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			partnerStart := -1
 			partnerEnd := -1
 
+			// Set start and end slice indexes for recipient
+			// timestamps according to number of messages
+			// to calculate for, but offset by initial three
+			// values to account for warm-up.
 			for i := range partnersMsgLatencies {
 
 				if partnersMsgLatencies[i].MsgID < 3 {
@@ -173,6 +191,8 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				}
 			}
 
+			// If any of the slice criteria could not
+			// be met, return with an error.
 			if partnerStart == -1 || partnerEnd == -1 {
 				return fmt.Errorf("did not find adequate latency bounds on recipient (start=%d, end=%d, path: '%s')",
 					partnerStart, partnerEnd, path)
@@ -197,7 +217,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				if latencyNano <= int64(0) {
 
 					// Negative latencies should not be possible.
-					return fmt.Errorf("incorrect latency: %dns (%.5fs) (ID: %d, %d => %d, %s)", latencyNano, latencySec,
+					return fmt.Errorf("incorrect latency: %dns (%.5fs) (ID: %d, %d => %d, '%s')", latencyNano, latencySec,
 						clientMsgLatencies[i].MsgID, clientMsgLatencies[i].SendTimestamp,
 						partnersMsgLatencies[i].ReceiveTimestamp, path)
 				}
@@ -210,9 +230,6 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 					Latency:          latencySec,
 				})
 			}
-
-			// Reslice to desired size.
-			msgLatencies = msgLatencies[:numMsgsToCalc]
 
 			for i := range msgLatencies {
 

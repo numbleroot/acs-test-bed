@@ -19,6 +19,10 @@ type MetricsFloat64 struct {
 	Values    []float64
 }
 
+// MetricLatency captures one message
+// transmitted between two clients, with
+// an end-to-end transmission latency in
+// seconds.
 type MetricLatency struct {
 	MsgID            int64
 	SendTimestamp    int64
@@ -26,14 +30,19 @@ type MetricLatency struct {
 	Latency          float64
 }
 
+// Run constitutes the collection of metrics
+// gathered in one evaluation run. The two
+// timestamp values are lower and upper bounds
+// in seconds, respectively, between which all
+// other metrics are caputed.
 type Run struct {
 	TimestampLowest            int64
 	TimestampHighest           int64
+	Latencies                  [][]*MetricLatency
 	ClientsSentMiBytesHighest  []float64
 	ClientsRecvdMiBytesHighest []float64
 	ClientsCPULoad             []float64
 	ClientsMemLoad             []float64
-	Latencies                  [][]*MetricLatency
 	ServersSentMiBytesHighest  []float64
 	ServersRecvdMiBytesHighest []float64
 	ServersCPULoad             []float64
@@ -42,10 +51,15 @@ type Run struct {
 	MsgsPerMix                 [][]int64
 }
 
+// Setting is a helper struct to allow
+// defining functions on a slice of Runs.
 type Setting struct {
 	Runs []*Run
 }
 
+// Experiment collects all metrics for
+// all ACS under evaluation across all
+// repetition runs carried out.
 type Experiment struct {
 	ZenoClients1000     *Setting
 	ZenoClients2000     *Setting
@@ -58,19 +72,25 @@ type Experiment struct {
 	PungClients3000     *Setting
 }
 
+// AppendRun reads in all metric files for one
+// complete run of a system and appends the data
+// as a new run to the internal state.
 func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 
+	// Prepare space for a Run with the anticipated
+	// maximum possible number of metrics per category.
 	run := &Run{
 		TimestampLowest:            (1 << 63) - 1,
 		TimestampHighest:           0,
-		ClientsSentMiBytesHighest:  make([]float64, 0, 1000),
-		ClientsRecvdMiBytesHighest: make([]float64, 0, 1000),
-		ClientsCPULoad:             make([]float64, 0, 50000),
-		ClientsMemLoad:             make([]float64, 0, 50000),
-		ServersSentMiBytesHighest:  make([]float64, 0, 50),
-		ServersRecvdMiBytesHighest: make([]float64, 0, 50),
-		ServersCPULoad:             make([]float64, 0, 50000),
-		ServersMemLoad:             make([]float64, 0, 50000),
+		Latencies:                  make([][]*MetricLatency, 0, 3000),
+		ClientsSentMiBytesHighest:  make([]float64, 0, 3000),
+		ClientsRecvdMiBytesHighest: make([]float64, 0, 3000),
+		ClientsCPULoad:             make([]float64, 0, 75000),
+		ClientsMemLoad:             make([]float64, 0, 75000),
+		ServersSentMiBytesHighest:  make([]float64, 0, 25),
+		ServersRecvdMiBytesHighest: make([]float64, 0, 25),
+		ServersCPULoad:             make([]float64, 0, 1000),
+		ServersMemLoad:             make([]float64, 0, 1000),
 	}
 
 	clientsPath := filepath.Join(runPath, "clients")
@@ -85,24 +105,27 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding clients latency for %s\n", runPath)
+	fmt.Printf("Done adding clients latency for '%s'\n", runPath)
 
-	// Read in memory system metrics from clients.
+	// Read in highest value for number of outgoing
+	// bytes on each client.
 	err = run.AddSentBytes(clientsPath, true)
 	if err != nil {
 		fmt.Printf("Ingesting clients sent mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding clients sent bytes for %s\n", runPath)
+	fmt.Printf("Done adding clients sent bytes for '%s'\n", runPath)
 
+	// Read in highest value for number of incoming
+	// bytes on each client.
 	err = run.AddRecvdBytes(clientsPath, true)
 	if err != nil {
 		fmt.Printf("Ingesting client received mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding clients received bytes for %s\n", runPath)
+	fmt.Printf("Done adding clients received bytes for '%s'\n", runPath)
 
 	err = run.AddCPULoad(clientsPath, true)
 	if err != nil {
@@ -110,7 +133,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding clients CPU load for %s\n", runPath)
+	fmt.Printf("Done adding clients CPU load for '%s'\n", runPath)
 
 	err = run.AddMemLoad(clientsPath, true)
 	if err != nil {
@@ -118,7 +141,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding clients mem load for %s\n", runPath)
+	fmt.Printf("Done adding clients mem load for '%s'\n", runPath)
 
 	// Read in memory system metrics from servers.
 	err = run.AddSentBytes(serversPath, false)
@@ -127,7 +150,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers sent bytes for %s\n", runPath)
+	fmt.Printf("Done adding servers sent bytes for '%s'\n", runPath)
 
 	err = run.AddRecvdBytes(serversPath, false)
 	if err != nil {
@@ -135,7 +158,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers received bytes for %s\n", runPath)
+	fmt.Printf("Done adding servers received bytes for '%s'\n", runPath)
 
 	err = run.AddCPULoad(serversPath, false)
 	if err != nil {
@@ -143,7 +166,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers CPU load for %s\n", runPath)
+	fmt.Printf("Done adding servers CPU load for '%s'\n", runPath)
 
 	err = run.AddMemLoad(serversPath, false)
 	if err != nil {
@@ -151,7 +174,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers mem load for %s\n", runPath)
+	fmt.Printf("Done adding servers mem load for '%s'\n", runPath)
 
 	// If this is zeno being evaluated, also read
 	// in metrics about the number of messages in
@@ -162,7 +185,7 @@ func (set *Setting) AppendRun(runPath string, numMsgsToCalc int64) {
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers messages per mix for %s\n\n", runPath)
+	fmt.Printf("Done adding servers messages per mix for '%s'\n\n", runPath)
 
 	// Append newly created run to all runs.
 	set.Runs = append(set.Runs, run)
@@ -218,7 +241,7 @@ func main() {
 
 	// Expect command-line arguments.
 	experimentPathFlag := flag.String("experimentPath", "", "Specify the file system location of the directory containing the metric files for one experiment.")
-	numMsgsToCalcFlag := flag.Int("numMsgsToCalc", 25, "Calculate statistics for this number of measured messages.")
+	numMsgsToCalcFlag := flag.Int("numMsgsToCalc", 20, "Calculate statistics for this number of measured messages.")
 	flag.Parse()
 
 	numMsgsToCalc := int64(*numMsgsToCalcFlag)
