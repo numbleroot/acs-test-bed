@@ -9,16 +9,6 @@ import (
 	"strings"
 )
 
-type MetricsInt64 struct {
-	Timestamp int64
-	Values    []int64
-}
-
-type MetricsFloat64 struct {
-	Timestamp int64
-	Values    []float64
-}
-
 // MetricLatency captures one message
 // transmitted between two clients, with
 // an end-to-end transmission latency in
@@ -194,6 +184,10 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 	set.Runs = append(set.Runs, run)
 }
 
+// MetricsToFiles calls the appropriate functions
+// for each metric to write out the gathered
+// measurements into all respective files for
+// subsequent visualization.
 func (set *Setting) MetricsToFiles(settingsPath string) error {
 
 	// Write traffic data for clients and servers.

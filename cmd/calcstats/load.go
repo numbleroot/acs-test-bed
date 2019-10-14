@@ -10,6 +10,9 @@ import (
 	"strings"
 )
 
+// AddCPULoad traverses the supplied run's directory
+// and extracts the "busy CPU" percentage for each
+// second within the time interval of interest.
 func (run *Run) AddCPULoad(runNodesPath string, isClientMetric bool) error {
 
 	err := filepath.Walk(runNodesPath, func(path string, info os.FileInfo, err error) error {
@@ -45,7 +48,7 @@ func (run *Run) AddCPULoad(runNodesPath string, isClientMetric bool) error {
 				}
 
 				// Exclude metric for further consideration in
-				// case it lies outside our zone of interest.
+				// case it lies outside our interval of interest.
 				if (timestamp < run.TimestampLowest) || (timestamp > run.TimestampHighest) {
 					continue
 				}
@@ -57,7 +60,7 @@ func (run *Run) AddCPULoad(runNodesPath string, isClientMetric bool) error {
 				}
 
 				// Calculate difference ("busy" load metric).
-				loadBusy := 100.0 - loadIdle
+				loadBusy := float64(100.0) - loadIdle
 
 				// Append to corresponding slice of values.
 				if isClientMetric {
@@ -146,7 +149,9 @@ func (run *Run) AddMemLoad(runNodesPath string, isClientMetric bool) error {
 
 func (set *Setting) LoadToFiles(path string) error {
 
-	clientsCPULoadFile, err := os.OpenFile(filepath.Join(path, "cpu_percentage-busy_all-values-in-time-window_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsCPULoadFile, err := os.OpenFile(
+		filepath.Join(path, "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -169,26 +174,9 @@ func (set *Setting) LoadToFiles(path string) error {
 
 	fmt.Fprintf(clientsCPULoadFile, "\n")
 
-	/*
-		// Calculate average memory usage for clients.
-		var clientsMemLoadAvg float64
-
-		allMetricsSum := float64(0.0)
-		numMetrics := float64(0.0)
-
-		for i := range set.Runs {
-
-			for j := range set.Runs[i].ClientsMemLoad {
-				allMetricsSum = allMetricsSum + set.Runs[i].ClientsMemLoad[j]
-			}
-
-			numMetrics = numMetrics + float64(len(set.Runs[i].ClientsMemLoad))
-		}
-
-		clientsMemLoadAvg = float64(allMetricsSum / numMetrics)
-	*/
-
-	clientsMemLoadFile, err := os.OpenFile(filepath.Join(path, "memory_kilobytes-used_all-values-in-time-window_clients.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	clientsMemLoadFile, err := os.OpenFile(
+		filepath.Join(path, "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -211,12 +199,9 @@ func (set *Setting) LoadToFiles(path string) error {
 
 	fmt.Fprintf(clientsMemLoadFile, "\n")
 
-	/*
-		// Write values to files for clients.
-		fmt.Fprintf(clientsMemLoadFile, "%.5f\n", clientsMemLoadAvg)
-	*/
-
-	serversCPULoadFile, err := os.OpenFile(filepath.Join(path, "cpu_percentage-busy_all-values-in-time-window_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	serversCPULoadFile, err := os.OpenFile(
+		filepath.Join(path, "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -239,26 +224,9 @@ func (set *Setting) LoadToFiles(path string) error {
 
 	fmt.Fprintf(serversCPULoadFile, "\n")
 
-	/*
-		// Calculate average memory usage for servers.
-		var serversMemLoadAvg float64
-
-		allMetricsSum = float64(0.0)
-		numMetrics = float64(0.0)
-
-		for i := range set.Runs {
-
-			for j := range set.Runs[i].ServersMemLoad {
-				allMetricsSum = allMetricsSum + set.Runs[i].ServersMemLoad[j]
-			}
-
-			numMetrics = numMetrics + float64(len(set.Runs[i].ServersMemLoad))
-		}
-
-		serversMemLoadAvg = float64(allMetricsSum / numMetrics)
-	*/
-
-	serversMemLoadFile, err := os.OpenFile(filepath.Join(path, "memory_kilobytes-used_all-values-in-time-window_servers.data"), (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
+	serversMemLoadFile, err := os.OpenFile(
+		filepath.Join(path, "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
 	}
@@ -280,11 +248,6 @@ func (set *Setting) LoadToFiles(path string) error {
 	}
 
 	fmt.Fprintf(serversMemLoadFile, "\n")
-
-	/*
-		// Write values to files for servers.
-		fmt.Fprintf(serversMemLoadFile, "%.5f\n", serversMemLoadAvg)
-	*/
 
 	return nil
 }
