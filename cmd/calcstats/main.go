@@ -30,6 +30,7 @@ type Run struct {
 	NumClients                 float64
 	TimestampLowest            int64
 	TimestampHighest           int64
+	NegativeLatenciesCnt       int64
 	Latencies                  [][]*MetricLatency
 	ClientsSentMiBytesHighest  []float64
 	ClientsRecvdMiBytesHighest []float64
@@ -76,6 +77,7 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 		NumClients:                 numClients,
 		TimestampLowest:            (1 << 63) - 1,
 		TimestampHighest:           0,
+		NegativeLatenciesCnt:       0,
 		Latencies:                  make([][]*MetricLatency, 0, 3000),
 		ClientsSentMiBytesHighest:  make([]float64, 0, 3000),
 		ClientsRecvdMiBytesHighest: make([]float64, 0, 3000),
@@ -183,7 +185,8 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers messages per mix for '%s'\n\n", runPath)
+	fmt.Printf("Done adding servers messages per mix for '%s'\n", runPath)
+	fmt.Printf("In this run: %d/%d latencies negative (impossible)\n\n", run.NegativeLatenciesCnt, (int64(len(run.Latencies)) * numMsgsToCalc))
 
 	// Append newly created run to all runs.
 	set.Runs = append(set.Runs, run)

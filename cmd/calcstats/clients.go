@@ -215,9 +215,10 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				if latencyNano <= int64(0) {
 
 					// Negative latencies should not be possible.
-					fmt.Printf("\n[!!! CAUTION !!!] IMPOSSIBLE LATENCY: %dns (%.5fs) (ID: %d, %d => %d, '%s')\n\n", latencyNano, latencySec,
+					fmt.Printf("\n[!!! CAUTION !!!] IMPOSSIBLE LATENCY: %dns (%.5fs) (ID: %d, %d => %d, '%s')\n", latencyNano, latencySec,
 						clientMsgLatencies[i].MsgID, clientMsgLatencies[i].SendTimestamp,
 						partnersMsgLatencies[i].ReceiveTimestamp, path)
+					run.NegativeLatenciesCnt++
 				}
 
 				// Append to struct capturing all useful latency metrics.
