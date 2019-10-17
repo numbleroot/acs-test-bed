@@ -77,6 +77,9 @@ func (run *Run) AddCPULoad(runNodesPath string, isClientMetric bool) error {
 	return err
 }
 
+// AddMemLoad traverses the supplied run's directory
+// and extracts the used RAM share in Megabytes for
+// each second within the time interval of interest.
 func (run *Run) AddMemLoad(runNodesPath string, isClientMetric bool) error {
 
 	err := filepath.Walk(runNodesPath, func(path string, info os.FileInfo, err error) error {
@@ -112,7 +115,7 @@ func (run *Run) AddMemLoad(runNodesPath string, isClientMetric bool) error {
 				}
 
 				// Exclude metric for further consideration in
-				// case it lies outside our zone of interest.
+				// case it lies outside our interval of interest.
 				if (timestamp < run.TimestampLowest) || (timestamp > run.TimestampHighest) {
 					continue
 				}
@@ -132,11 +135,13 @@ func (run *Run) AddMemLoad(runNodesPath string, isClientMetric bool) error {
 				// Calculate difference ("used" memory metric).
 				memUsed := memTotal - memAvail
 
-				// Append to corresponding slice of values.
+				// Append to corresponding slice of values,
+				// in MB-normalized for clients and GB-normalized
+				// on side of servers.
 				if isClientMetric {
-					run.ClientsMemLoad = append(run.ClientsMemLoad, memUsed)
+					run.ClientsMemLoad = append(run.ClientsMemLoad, (memUsed / float64(1000)))
 				} else {
-					run.ServersMemLoad = append(run.ServersMemLoad, memUsed)
+					run.ServersMemLoad = append(run.ServersMemLoad, (memUsed / float64(1000000)))
 				}
 			}
 		}
@@ -147,6 +152,8 @@ func (run *Run) AddMemLoad(runNodesPath string, isClientMetric bool) error {
 	return err
 }
 
+// LoadToFiles writes all prepared load metrics
+// for clients and servers into respective files.
 func (set *Setting) LoadToFiles(path string) error {
 
 	clientsCPULoadFile, err := os.OpenFile(
@@ -158,16 +165,21 @@ func (set *Setting) LoadToFiles(path string) error {
 	defer clientsCPULoadFile.Close()
 	defer clientsCPULoadFile.Sync()
 
+	// Write first CPU load value of first
+	// run to file for clients.
 	fmt.Fprintf(clientsCPULoadFile, "%.5f", set.Runs[0].ClientsCPULoad[0])
 
 	for i := range set.Runs {
 
 		for j := range set.Runs[i].ClientsCPULoad {
 
+			// Do not write the first value of
+			// the first run again.
 			if i == 0 && j == 0 {
 				continue
 			}
 
+			// Write all other values to file.
 			fmt.Fprintf(clientsCPULoadFile, ",%.5f", set.Runs[i].ClientsCPULoad[j])
 		}
 	}
@@ -175,7 +187,7 @@ func (set *Setting) LoadToFiles(path string) error {
 	fmt.Fprintf(clientsCPULoadFile, "\n")
 
 	clientsMemLoadFile, err := os.OpenFile(
-		filepath.Join(path, "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+		filepath.Join(path, "memory_megabytes-used_all-values-in-time-window_clients.data"),
 		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err
@@ -183,6 +195,8 @@ func (set *Setting) LoadToFiles(path string) error {
 	defer clientsMemLoadFile.Close()
 	defer clientsMemLoadFile.Sync()
 
+	// Write first RAM load value of first
+	// run to file for clients.
 	fmt.Fprintf(clientsMemLoadFile, "%.5f", set.Runs[0].ClientsMemLoad[0])
 
 	for i := range set.Runs {
@@ -193,6 +207,7 @@ func (set *Setting) LoadToFiles(path string) error {
 				continue
 			}
 
+			// Write all remaining values.
 			fmt.Fprintf(clientsMemLoadFile, ",%.5f", set.Runs[i].ClientsMemLoad[j])
 		}
 	}
@@ -208,6 +223,7 @@ func (set *Setting) LoadToFiles(path string) error {
 	defer serversCPULoadFile.Close()
 	defer serversCPULoadFile.Sync()
 
+	// Proceed similarly server-side.
 	fmt.Fprintf(serversCPULoadFile, "%.5f", set.Runs[0].ServersCPULoad[0])
 
 	for i := range set.Runs {
@@ -225,7 +241,7 @@ func (set *Setting) LoadToFiles(path string) error {
 	fmt.Fprintf(serversCPULoadFile, "\n")
 
 	serversMemLoadFile, err := os.OpenFile(
-		filepath.Join(path, "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+		filepath.Join(path, "memory_gigabytes-used_all-values-in-time-window_servers.data"),
 		(os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 	if err != nil {
 		return err

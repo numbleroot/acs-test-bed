@@ -104,15 +104,15 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			// If any of the slice criteria could not
 			// be met, return with an error.
 			if clientStart == -1 || clientEnd == -1 {
-				return fmt.Errorf("did not find adequate latency bounds on sender (start=%d, end=%d, path: '%s')",
-					clientStart, clientEnd, path)
+				return fmt.Errorf("not enough latency measurements or inadequate bounds on sender (start=%d, end=%d, want=%d, path: '%s')",
+					clientStart, clientEnd, numMsgsToCalc, path)
 			}
 
 			// Reslice to found bounds.
 			clientMsgLatencies = clientMsgLatencies[clientStart:clientEnd]
 
 			if int64(len(clientMsgLatencies)) != numMsgsToCalc {
-				return fmt.Errorf("too few latency metrics in clientMsgLatencies (want %d, saw %d, path: '%s')",
+				return fmt.Errorf("too few latency metrics in clientMsgLatencies (want=%d, saw=%d, path: '%s')",
 					numMsgsToCalc, len(clientMsgLatencies), path)
 			}
 
@@ -126,8 +126,6 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			if len(candidates) != 1 {
 				return fmt.Errorf("client at '%s' did not have unique conversation partner", path)
 			}
-
-			fmt.Printf("partner: '%s'\n", candidates[0])
 
 			// Ingest partner's receive times file.
 			content, err = ioutil.ReadFile(candidates[0])
@@ -194,15 +192,15 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 			// If any of the slice criteria could not
 			// be met, return with an error.
 			if partnerStart == -1 || partnerEnd == -1 {
-				return fmt.Errorf("did not find adequate latency bounds on recipient (start=%d, end=%d, path: '%s')",
-					partnerStart, partnerEnd, path)
+				return fmt.Errorf("not enough latency measurements or inadequate bounds on recipient (start=%d, end=%d, want=%d, path: '%s')",
+					partnerStart, partnerEnd, numMsgsToCalc, path)
 			}
 
 			// Reslice to found bounds.
 			partnersMsgLatencies = partnersMsgLatencies[partnerStart:partnerEnd]
 
 			if int64(len(partnersMsgLatencies)) != numMsgsToCalc {
-				return fmt.Errorf("too few latency metrics in partnersMsgLatencies (want %d, saw %d, path: '%s')",
+				return fmt.Errorf("too few latency metrics in partnersMsgLatencies (want=%d, saw=%d, path: '%s')",
 					numMsgsToCalc, len(partnersMsgLatencies), path)
 			}
 
@@ -217,7 +215,7 @@ func (run *Run) AddLatency(runClientsPath string, numMsgsToCalc int64) error {
 				if latencyNano <= int64(0) {
 
 					// Negative latencies should not be possible.
-					return fmt.Errorf("incorrect latency: %dns (%.5fs) (ID: %d, %d => %d, '%s')", latencyNano, latencySec,
+					fmt.Printf("\n[!!! CAUTION !!!] IMPOSSIBLE LATENCY: %dns (%.5fs) (ID: %d, %d => %d, '%s')\n\n", latencyNano, latencySec,
 						clientMsgLatencies[i].MsgID, clientMsgLatencies[i].SendTimestamp,
 						partnersMsgLatencies[i].ReceiveTimestamp, path)
 				}

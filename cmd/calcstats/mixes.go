@@ -10,6 +10,10 @@ import (
 	"strings"
 )
 
+// AddMsgsPerMix ingests the metric files
+// tracking the number of messages per pool
+// on each server that is instructed to
+// expose this metric.
 func (run *Run) AddMsgsPerMix(runServersPath string) error {
 
 	err := filepath.Walk(runServersPath, func(path string, info os.FileInfo, err error) error {
@@ -18,14 +22,14 @@ func (run *Run) AddMsgsPerMix(runServersPath string) error {
 			return err
 		}
 
-		if filepath.Base(path) == "pool-sizes_round.evaluation" {
+		if strings.HasSuffix(filepath.Base(path), "pool-sizes_round.evaluation") {
 
 			// Extract this mix' name.
 			name := ""
 			pathParts := strings.Split(path, "/")
 			for i := range pathParts {
 
-				if strings.HasPrefix(pathParts[i], "mixnet-") {
+				if strings.HasPrefix(pathParts[i], "server-") {
 					name = strings.Split(pathParts[i], "_")[0]
 				}
 			}
@@ -84,13 +88,17 @@ func (run *Run) AddMsgsPerMix(runServersPath string) error {
 	return err
 }
 
+// MsgsPerMixToFile writes out the total number
+// of messages in each round on each mix to its
+// appropriate file (zeno-only, currently).
 func (set *Setting) MsgsPerMixToFile(path string) error {
 
 	if strings.Contains(path, "/zeno/") {
 
 		for i := range set.Runs {
 
-			runPlotPath := filepath.Join(path, (fmt.Sprintf("run-%02d", (i + 1))), "message-count-per-mix_first-to-last-round.data")
+			runPlotPath := filepath.Join(path, (fmt.Sprintf("run-%02d", (i + 1))),
+				"message-count-per-server_first-to-last-round.data")
 
 			msgsPerMixFile, err := os.OpenFile(runPlotPath, (os.O_WRONLY | os.O_CREATE | os.O_TRUNC | os.O_APPEND), 0644)
 			if err != nil {
