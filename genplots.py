@@ -30,32 +30,6 @@ plt.rcParams.update({
 metrics = {
     "01": {
         "zeno": {
-            "0500": {
-                "Bandwidth": {
-                    "Clients": {
-                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
-                    },
-                    "Servers": {
-                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
-                    },
-                },
-                "Load": {
-                    "Clients": {
-                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
-                    },
-                    "Servers": {
-                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
-                    },
-                },
-                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "transmission-latencies_seconds_all-values-in-time-window.data"),
-                "MessagesPerMix": {
-                    "Run01": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "run-01", "message-count-per-mix_first-to-last-round.data"),
-                    "Run02": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "run-02", "message-count-per-mix_first-to-last-round.data"),
-                    "Run03": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-0500", "run-03", "message-count-per-mix_first-to-last-round.data"),
-                },
-            },
             "1000": {
                 "Bandwidth": {
                     "Clients": {
@@ -68,43 +42,77 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
                 "MessagesPerMix": {
-                    "Run01": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "run-01", "message-count-per-mix_first-to-last-round.data"),
-                    "Run02": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "run-02", "message-count-per-mix_first-to-last-round.data"),
-                    "Run03": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "run-03", "message-count-per-mix_first-to-last-round.data"),
+                    "Run01": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "run-03", "message-count-per-server_first-to-last-round.data"),
                 },
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-1000", "total-experiment-times_seconds.data"),
             },
-        },
-        "pung": {
-            "0500": {
+            "2000": {
                 "Bandwidth": {
                     "Clients": {
-                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
                     },
                     "Servers": {
-                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
                     },
                 },
                 "Load": {
                     "Clients": {
-                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
                     },
                     "Servers": {
-                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
                     },
                 },
-                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-0500", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "MessagesPerMix": {
+                    "Run01": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "run-03", "message-count-per-server_first-to-last-round.data"),
+                },
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-2000", "total-experiment-times_seconds.data"),
             },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "MessagesPerMix": {
+                    "Run01": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "run-03", "message-count-per-server_first-to-last-round.data"),
+                },
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "zeno", "clients-3000", "total-experiment-times_seconds.data"),
+            },
+        },
+        "pung": {
             "1000": {
                 "Bandwidth": {
                     "Clients": {
@@ -117,185 +125,657 @@ metrics = {
                 "Load": {
                     "Clients": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
                     },
                     "Servers": {
                         "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
                     },
                 },
                 "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-1000", "total-experiment-times_seconds.data"),
             },
-        },
-    },
-    "02": {
-        "zeno": {
-            "0500": {
+            "2000": {
                 "Bandwidth": {
                     "Clients": {
-                        "Avg": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
                     },
                     "Servers": {
-                        "Avg": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
                     },
                 },
                 "Load": {
                     "Clients": {
-                        "CPU": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
                     },
                     "Servers": {
-                        "CPU": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
                     },
                 },
-                "Latencies": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "transmission-latencies_seconds_all-values-in-time-window.data"),
-                "MessagesPerMix": {
-                    "Run01": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "run-01", "message-count-per-mix_first-to-last-round.data"),
-                    "Run02": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "run-02", "message-count-per-mix_first-to-last-round.data"),
-                    "Run03": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-0500", "run-03", "message-count-per-mix_first-to-last-round.data"),
-                },
+                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-2000", "total-experiment-times_seconds.data"),
             },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "pung", "clients-3000", "total-experiment-times_seconds.data"),
+            },
+        },
+        "vuvuzela": {
             "1000": {
                 "Bandwidth": {
                     "Clients": {
-                        "Avg": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
                     },
                     "Servers": {
-                        "Avg": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
                     },
                 },
                 "Load": {
                     "Clients": {
-                        "CPU": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
                     },
                     "Servers": {
-                        "CPU": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
                     },
                 },
-                "Latencies": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
-                "MessagesPerMix": {
-                    "Run01": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "run-01", "message-count-per-mix_first-to-last-round.data"),
-                    "Run02": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "run-02", "message-count-per-mix_first-to-last-round.data"),
-                    "Run03": os.path.join(sys.argv[1], "02_tc-on_proc-off", "zeno", "clients-1000", "run-03", "message-count-per-mix_first-to-last-round.data"),
+                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-1000", "total-experiment-times_seconds.data"),
+            },
+            "2000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
                 },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-2000", "total-experiment-times_seconds.data"),
+            },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "01_tc-off_proc-off", "vuvuzela", "clients-3000", "total-experiment-times_seconds.data"),
+            },
+        },
+    },
+    "02a": {
+        "zeno": {
+            "1000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "MessagesPerMix": {
+                    "Run01": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "run-03", "message-count-per-server_first-to-last-round.data"),
+                },
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-1000", "total-experiment-times_seconds.data"),
+            },
+            "2000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "MessagesPerMix": {
+                    "Run01": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "run-03", "message-count-per-server_first-to-last-round.data"),
+                },
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-2000", "total-experiment-times_seconds.data"),
+            },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "MessagesPerMix": {
+                    "Run01": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "run-03", "message-count-per-server_first-to-last-round.data"),
+                },
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "zeno", "clients-3000", "total-experiment-times_seconds.data"),
+            },
+        },
+        "pung": {
+            "1000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-1000", "total-experiment-times_seconds.data"),
+            },
+            "2000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-2000", "total-experiment-times_seconds.data"),
+            },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "pung", "clients-3000", "total-experiment-times_seconds.data"),
+            },
+        },
+        "vuvuzela": {
+            "1000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-1000", "total-experiment-times_seconds.data"),
+            },
+            "2000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-2000", "total-experiment-times_seconds.data"),
+            },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc1-on_proc-off", "vuvuzela", "clients-3000", "total-experiment-times_seconds.data"),
+            },
+        },
+    },
+    "02b": {
+        "zeno": {
+            "1000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "MessagesPerMix": {
+                    "Run01": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "run-03", "message-count-per-server_first-to-last-round.data"),
+                },
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-1000", "total-experiment-times_seconds.data"),
+            },
+            "2000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "MessagesPerMix": {
+                    "Run01": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "run-03", "message-count-per-server_first-to-last-round.data"),
+                },
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-2000", "total-experiment-times_seconds.data"),
+            },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "MessagesPerMix": {
+                    "Run01": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "run-03", "message-count-per-server_first-to-last-round.data"),
+                },
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "zeno", "clients-3000", "total-experiment-times_seconds.data"),
+            },
+        },
+        "pung": {
+            "1000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-1000", "total-experiment-times_seconds.data"),
+            },
+            "2000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-2000", "total-experiment-times_seconds.data"),
+            },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "pung", "clients-3000", "total-experiment-times_seconds.data"),
+            },
+        },
+        "vuvuzela": {
+            "1000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-1000", "total-experiment-times_seconds.data"),
+            },
+            "2000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-2000", "total-experiment-times_seconds.data"),
+            },
+            "3000": {
+                "Bandwidth": {
+                    "Clients": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "Avg": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                    },
+                },
+                "Load": {
+                    "Clients": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
+                    },
+                    "Servers": {
+                        "CPU": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
+                    },
+                },
+                "Latencies": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "TotalExpTime": os.path.join(sys.argv[1], "02_tc2-on_proc-off", "vuvuzela", "clients-3000", "total-experiment-times_seconds.data"),
             },
         },
     },
     "03": {
         "zeno": {
-            "0500": {
-                "Bandwidth": {
-                    "Clients": {
-                        "Avg": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
-                    },
-                    "Servers": {
-                        "Avg": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
-                    },
-                },
-                "Load": {
-                    "Clients": {
-                        "CPU": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
-                    },
-                    "Servers": {
-                        "CPU": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
-                    },
-                },
-                "Latencies": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "transmission-latencies_seconds_all-values-in-time-window.data"),
-                "MessagesPerMix": {
-                    "Run01": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "run-01", "message-count-per-mix_first-to-last-round.data"),
-                    "Run02": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "run-02", "message-count-per-mix_first-to-last-round.data"),
-                    "Run03": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-0500", "run-03", "message-count-per-mix_first-to-last-round.data"),
-                },
-            },
             "1000": {
                 "Bandwidth": {
                     "Clients": {
-                        "Avg": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                        "Avg": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
                     },
                     "Servers": {
-                        "Avg": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                        "Avg": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
                     },
                 },
                 "Load": {
                     "Clients": {
-                        "CPU": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+                        "CPU": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
                     },
                     "Servers": {
-                        "CPU": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+                        "CPU": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
                     },
                 },
-                "Latencies": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "Latencies": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
                 "MessagesPerMix": {
-                    "Run01": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "run-01", "message-count-per-mix_first-to-last-round.data"),
-                    "Run02": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "run-02", "message-count-per-mix_first-to-last-round.data"),
-                    "Run03": os.path.join(sys.argv[1], "03_tc-off_proc-on", "zeno", "clients-1000", "run-03", "message-count-per-mix_first-to-last-round.data"),
+                    "Run01": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "run-03", "message-count-per-server_first-to-last-round.data"),
                 },
+                "TotalExpTime": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-1000", "total-experiment-times_seconds.data"),
             },
-        },
-    },
-    "04": {
-        "zeno": {
-            "0500": {
+            "2000": {
                 "Bandwidth": {
                     "Clients": {
-                        "Avg": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                        "Avg": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
                     },
                     "Servers": {
-                        "Avg": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                        "Avg": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
                     },
                 },
                 "Load": {
                     "Clients": {
-                        "CPU": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+                        "CPU": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
                     },
                     "Servers": {
-                        "CPU": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+                        "CPU": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
                     },
                 },
-                "Latencies": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "Latencies": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "transmission-latencies_seconds_all-values-in-time-window.data"),
                 "MessagesPerMix": {
-                    "Run01": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "run-01", "message-count-per-mix_first-to-last-round.data"),
-                    "Run02": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "run-02", "message-count-per-mix_first-to-last-round.data"),
-                    "Run03": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-0500", "run-03", "message-count-per-mix_first-to-last-round.data"),
+                    "Run01": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "run-03", "message-count-per-server_first-to-last-round.data"),
                 },
+                "TotalExpTime": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-2000", "total-experiment-times_seconds.data"),
             },
-            "1000": {
+            "3000": {
                 "Bandwidth": {
                     "Clients": {
-                        "Avg": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
+                        "Avg": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_clients.data"),
                     },
                     "Servers": {
-                        "Avg": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
+                        "Avg": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "traffic-volume_mebibytes_highest-at-end-of-time-window_servers.data"),
                     },
                 },
                 "Load": {
                     "Clients": {
-                        "CPU": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
-                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_clients.data"),
+                        "CPU": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_clients.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "memory_megabytes-used_all-values-in-time-window_clients.data"),
                     },
                     "Servers": {
-                        "CPU": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
-                        "Mem": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "memory_kilobytes-used_all-values-in-time-window_servers.data"),
+                        "CPU": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "cpu_percentage-busy_all-values-in-time-window_servers.data"),
+                        "Mem": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "memory_gigabytes-used_all-values-in-time-window_servers.data"),
                     },
                 },
-                "Latencies": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "transmission-latencies_seconds_all-values-in-time-window.data"),
+                "Latencies": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "transmission-latencies_seconds_all-values-in-time-window.data"),
                 "MessagesPerMix": {
-                    "Run01": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "run-01", "message-count-per-mix_first-to-last-round.data"),
-                    "Run02": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "run-02", "message-count-per-mix_first-to-last-round.data"),
-                    "Run03": os.path.join(sys.argv[1], "04_tc-on_proc-on", "zeno", "clients-1000", "run-03", "message-count-per-mix_first-to-last-round.data"),
+                    "Run01": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "run-01", "message-count-per-server_first-to-last-round.data"),
+                    "Run02": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "run-02", "message-count-per-server_first-to-last-round.data"),
+                    "Run03": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "run-03", "message-count-per-server_first-to-last-round.data"),
                 },
+                "TotalExpTime": os.path.join(sys.argv[1], "03_tc3-on_proc-on", "zeno", "clients-3000", "total-experiment-times_seconds.data"),
             },
         },
-    },
+    },        
 }
 
 
@@ -305,71 +785,19 @@ def compileTrafficClients():
 
     # Ingest and prepare data.
 
-    set01_zeno_0500_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["01"]["zeno"]["0500"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set01_zeno_0500_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set01_zeno_0500_Bandwidth_Clients_Avg = set01_zeno_0500_Bandwidth_Clients_AvgAll / 500.0
+    set02a_zeno_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_zeno_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
 
-    set01_zeno_1000_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["01"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set01_zeno_1000_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set01_zeno_1000_Bandwidth_Clients_Avg = set01_zeno_1000_Bandwidth_Clients_AvgAll / 1000.0
+    set02a_vuvuzela_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["vuvuzela"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_vuvuzela_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
 
-    set01_pung_0500_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["01"]["pung"]["0500"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set01_pung_0500_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set01_pung_0500_Bandwidth_Clients_Avg = set01_pung_0500_Bandwidth_Clients_AvgAll / 500.0
+    set02a_pung_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["pung"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_pung_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
 
-    set01_pung_1000_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["01"]["pung"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set01_pung_1000_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set01_pung_1000_Bandwidth_Clients_Avg = set01_pung_1000_Bandwidth_Clients_AvgAll / 1000.0
-
-    set02_zeno_0500_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["02"]["zeno"]["0500"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set02_zeno_0500_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set02_zeno_0500_Bandwidth_Clients_Avg = set02_zeno_0500_Bandwidth_Clients_AvgAll / 500.0
-
-    set02_zeno_1000_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["02"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set02_zeno_1000_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set02_zeno_1000_Bandwidth_Clients_Avg = set02_zeno_1000_Bandwidth_Clients_AvgAll / 1000.0
-
-    set03_zeno_0500_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["03"]["zeno"]["0500"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set03_zeno_0500_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set03_zeno_0500_Bandwidth_Clients_Avg = set03_zeno_0500_Bandwidth_Clients_AvgAll / 500.0
-
-    set03_zeno_1000_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["03"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set03_zeno_1000_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set03_zeno_1000_Bandwidth_Clients_Avg = set03_zeno_1000_Bandwidth_Clients_AvgAll / 1000.0
-
-    set04_zeno_0500_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["04"]["zeno"]["0500"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set04_zeno_0500_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set04_zeno_0500_Bandwidth_Clients_Avg = set04_zeno_0500_Bandwidth_Clients_AvgAll / 500.0
-
-    set04_zeno_1000_Bandwidth_Clients_AvgAll = 0.0
-    with open(metrics["04"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
-        set04_zeno_1000_Bandwidth_Clients_AvgAll = float(
-            dataFile.read().strip())
-    set04_zeno_1000_Bandwidth_Clients_Avg = set04_zeno_1000_Bandwidth_Clients_AvgAll / 1000.0
-
-    bandwidthAvg = [set01_zeno_0500_Bandwidth_Clients_Avg, set02_zeno_0500_Bandwidth_Clients_Avg,
-                    set03_zeno_0500_Bandwidth_Clients_Avg, set04_zeno_0500_Bandwidth_Clients_Avg,
-                    set01_pung_0500_Bandwidth_Clients_Avg, set01_zeno_1000_Bandwidth_Clients_Avg,
-                    set02_zeno_1000_Bandwidth_Clients_Avg, set03_zeno_1000_Bandwidth_Clients_Avg,
-                    set04_zeno_1000_Bandwidth_Clients_Avg, set01_pung_1000_Bandwidth_Clients_Avg]
+    bandwidthAvg = [set02a_zeno_1000_Bandwidth_Clients_Avg, set02a_vuvuzela_1000_Bandwidth_Clients_Avg, set02a_pung_1000_Bandwidth_Clients_Avg]
 
     # Draw plots.
 
@@ -380,41 +808,37 @@ def compileTrafficClients():
 
     # Draw all bars.
 
-    ax.bar(1, set01_zeno_0500_Bandwidth_Clients_Avg, width, label='zeno (tc off, no failures)', edgecolor='black', color='gold', hatch='/')
-    ax.bar(2, set02_zeno_0500_Bandwidth_Clients_Avg, width, label='zeno (tc on, no failures)', edgecolor='black', color='gold', hatch='x')
-    ax.bar(3, set03_zeno_0500_Bandwidth_Clients_Avg, width, label='zeno (tc off, mix failure)', edgecolor='black', color='gold', hatch='o')
-    ax.bar(4, set04_zeno_0500_Bandwidth_Clients_Avg, width, label='zeno (tc on, mix failure)', edgecolor='black', color='gold', hatch='+')
-    ax.bar(5, set01_pung_0500_Bandwidth_Clients_Avg, width, label='pung (tc off, no failures)', edgecolor='black', color='steelblue', hatch='\\')
-    ax.bar(7, set01_zeno_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='/')
-    ax.bar(8, set02_zeno_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='x')
-    ax.bar(9, set03_zeno_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='o')
-    ax.bar(10, set04_zeno_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='+')
-    ax.bar(11, set01_pung_1000_Bandwidth_Clients_Avg, width, edgecolor='black', color='steelblue', hatch='\\')
+    ax.bar(1, set02a_zeno_1000_Bandwidth_Clients_Avg, width, label='zeno', edgecolor='black', color='gold', hatch='/')
+    ax.bar(2, set02a_vuvuzela_1000_Bandwidth_Clients_Avg, width, label='vuvuzela', edgecolor='black', color='olive', hatch='+')
+    ax.bar(3, set02a_pung_1000_Bandwidth_Clients_Avg, width, label='pung', edgecolor='black', color='steelblue', hatch='x')
 
     labels = ["%.2f" % avg for avg in bandwidthAvg]
 
     for bar, label in zip(ax.patches, labels):
-        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() * 1.05), label, ha='center', va='bottom')
+        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() * 1.075), label, ha='center', va='bottom')
 
     # Show a light horizontal grid.
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
     # Limit x and y axes and configure ticks and labels.
-    ax.set_xlim([0, 12])
+    ax.set_xlim([0, 4])
     ax.set_ylim([0, y_max])
-    ax.set_xticks((3, 9))
-    ax.set_xticklabels(('500 clients', '1,000 clients'))
+    ax.set_xticks([2])
+    ax.set_xticklabels(['1,000 clients'])
 
     # Add a legend.
     ax.legend(loc='upper left')
 
     plt.yscale('symlog')
     plt.tight_layout()
+
+    ax.set_title("Average Highest Traffic Volume on Clients (high delay, no failures)")
     plt.xlabel("Number of clients")
     plt.ylabel("Traffic volume (MiB) [log.]")
 
     plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pgf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pdf"), bbox_inches='tight')
 
 
 def compileTrafficServers():
@@ -423,107 +847,41 @@ def compileTrafficServers():
 
     # Ingest and prepare data.
 
-    set01_zeno_0500_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["01"]["zeno"]["0500"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set01_zeno_0500_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-    set01_zeno_0500_Bandwidth_Servers_Avg = set01_zeno_0500_Bandwidth_Servers_AvgAll / 21.0
+    set02a_zeno_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_zeno_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02a_zeno_1000_Bandwidth_Servers_AvgAll = set02a_zeno_1000_Bandwidth_Servers_Avg * 21.0
 
-    set01_zeno_1000_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["01"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set01_zeno_1000_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-    set01_zeno_1000_Bandwidth_Servers_Avg = set01_zeno_1000_Bandwidth_Servers_AvgAll / 21.0
+    set02a_vuvuzela_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["vuvuzela"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_vuvuzela_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02a_vuvuzela_1000_Bandwidth_Servers_AvgAll = set02a_vuvuzela_1000_Bandwidth_Servers_Avg * 4.0
 
-    set01_pung_0500_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["01"]["pung"]["0500"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set01_pung_0500_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
+    set02a_pung_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["pung"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_pung_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
 
-    set01_pung_1000_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["01"]["pung"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set01_pung_1000_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-
-    set02_zeno_0500_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["02"]["zeno"]["0500"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set02_zeno_0500_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-    set02_zeno_0500_Bandwidth_Servers_Avg = set02_zeno_0500_Bandwidth_Servers_AvgAll / 21.0
-
-    set02_zeno_1000_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["02"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set02_zeno_1000_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-    set02_zeno_1000_Bandwidth_Servers_Avg = set02_zeno_1000_Bandwidth_Servers_AvgAll / 21.0
-
-    set03_zeno_0500_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["03"]["zeno"]["0500"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set03_zeno_0500_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-    set03_zeno_0500_Bandwidth_Servers_Avg = set03_zeno_0500_Bandwidth_Servers_AvgAll / 21.0
-
-    set03_zeno_1000_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["03"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set03_zeno_1000_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-    set03_zeno_1000_Bandwidth_Servers_Avg = set03_zeno_1000_Bandwidth_Servers_AvgAll / 21.0
-
-    set04_zeno_0500_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["04"]["zeno"]["0500"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set04_zeno_0500_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-    set04_zeno_0500_Bandwidth_Servers_Avg = set04_zeno_0500_Bandwidth_Servers_AvgAll / 21.0
-
-    set04_zeno_1000_Bandwidth_Servers_AvgAll = 0.0
-    with open(metrics["04"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
-        set04_zeno_1000_Bandwidth_Servers_AvgAll = float(
-            dataFile.read().strip())
-    set04_zeno_1000_Bandwidth_Servers_Avg = set04_zeno_1000_Bandwidth_Servers_AvgAll / 21.0
-
-    bandwidthAvg = [set01_zeno_0500_Bandwidth_Servers_AvgAll, set02_zeno_0500_Bandwidth_Servers_AvgAll,
-                    set03_zeno_0500_Bandwidth_Servers_AvgAll, set04_zeno_0500_Bandwidth_Servers_AvgAll,
-                    set01_pung_0500_Bandwidth_Servers_AvgAll, set01_zeno_1000_Bandwidth_Servers_AvgAll,
-                    set02_zeno_1000_Bandwidth_Servers_AvgAll, set03_zeno_1000_Bandwidth_Servers_AvgAll,
-                    set04_zeno_1000_Bandwidth_Servers_AvgAll, set01_pung_1000_Bandwidth_Servers_AvgAll]
+    bandwidthAvg = [set02a_zeno_1000_Bandwidth_Servers_AvgAll,
+                    set02a_vuvuzela_1000_Bandwidth_Servers_AvgAll,
+                    set02a_pung_1000_Bandwidth_Servers_Avg]
 
     # Draw plots.
 
     width = 1.0
-    barWidth = (1.0 / 12.0)
-    y_max = np.ceil((max(bandwidthAvg) + 1000.0))
+    barWidth = (1.0 / 4.0)
+    y_max = np.ceil((max(bandwidthAvg) + 5000.0))
 
     _, ax = plt.subplots()
 
     # Draw all bars and corresponding average lines.
 
-    ax.bar(1, set01_zeno_0500_Bandwidth_Servers_AvgAll, width, label='zeno (tc off, no failures)', edgecolor='black', color='gold', hatch='/')
-    plt.axhline(y=set01_zeno_0500_Bandwidth_Servers_Avg, xmin=(0.5 * barWidth), xmax=(1.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(1, set02a_zeno_1000_Bandwidth_Servers_AvgAll, width, label='zeno', edgecolor='black', color='gold', hatch='/')
+    plt.axhline(y=set02a_zeno_1000_Bandwidth_Servers_Avg, xmin=(0.5 * barWidth), xmax=(1.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(2, set02_zeno_0500_Bandwidth_Servers_AvgAll, width, label='zeno (tc on, no failures)', edgecolor='black', color='gold', hatch='x')
-    plt.axhline(y=set02_zeno_0500_Bandwidth_Servers_Avg, xmin=(1.5 * barWidth), xmax=(2.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(2, set02a_vuvuzela_1000_Bandwidth_Servers_AvgAll, width, label='vuvuzela', edgecolor='black', color='olive', hatch='+')
+    plt.axhline(y=set02a_vuvuzela_1000_Bandwidth_Servers_Avg, xmin=(1.5 * barWidth), xmax=(2.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(3, set03_zeno_0500_Bandwidth_Servers_AvgAll, width, label='zeno (tc off, mix failure)', edgecolor='black', color='gold', hatch='o')
-    plt.axhline(y=set03_zeno_0500_Bandwidth_Servers_Avg, xmin=(2.5 * barWidth), xmax=(3.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
-
-    ax.bar(4, set04_zeno_0500_Bandwidth_Servers_AvgAll, width, label='zeno (tc on, mix failure)', edgecolor='black', color='gold', hatch='+')
-    plt.axhline(y=set04_zeno_0500_Bandwidth_Servers_Avg, xmin=(3.5 * barWidth), xmax=(4.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
-
-    ax.bar(5, set01_pung_0500_Bandwidth_Servers_AvgAll, width, label='pung (tc off, no failures)', edgecolor='black', color='steelblue', hatch='\\')
-
-    ax.bar(7, set01_zeno_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='/')
-    plt.axhline(y=set01_zeno_1000_Bandwidth_Servers_Avg, xmin=(6.5 * barWidth), xmax=(7.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
-
-    ax.bar(8, set02_zeno_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='x')
-    plt.axhline(y=set02_zeno_1000_Bandwidth_Servers_Avg, xmin=(7.5 * barWidth), xmax=(8.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
-
-    ax.bar(9, set03_zeno_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='o')
-    plt.axhline(y=set03_zeno_1000_Bandwidth_Servers_Avg, xmin=(8.5 * barWidth), xmax=(9.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
-
-    ax.bar(10, set04_zeno_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='+')
-    plt.axhline(y=set04_zeno_1000_Bandwidth_Servers_Avg, xmin=(9.5 * barWidth), xmax=(10.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
-
-    ax.bar(11, set01_pung_1000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='steelblue', hatch='\\')
+    ax.bar(3, set02a_pung_1000_Bandwidth_Servers_Avg, width, label='pung', edgecolor='black', color='steelblue', hatch='x')
     
     labels = ['{:,.0f}'.format(avg) for avg in bandwidthAvg]
 
@@ -535,20 +893,22 @@ def compileTrafficServers():
     ax.set_axisbelow(True)
 
     # Limit x and y axes and configure ticks and labels.
-    ax.set_xlim([0, 12])
+    ax.set_xlim([0, 4])
     ax.set_ylim([0, y_max])
-    ax.set_xticks((3, 9))
-    ax.set_xticklabels(('500 clients', '1,000 clients'))
+    ax.set_xticks([2])
+    ax.set_xticklabels(['1,000 clients'])
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     # Add a legend.
     ax.legend(loc='upper left')
 
+    ax.set_title("Average Highest Traffic Volume on Servers (medium delay, no failures)")
     plt.tight_layout()
     plt.xlabel("Number of clients")
     plt.ylabel("Traffic volume (MiB)")
 
     plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pgf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pdf"), bbox_inches='tight')
 
 
 def compileLoadCPUClients():
@@ -719,70 +1079,70 @@ def compileLoadMemClients():
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_zeno_0500_Load_Mem.append((float(item) / 1000.0))
+                set01_zeno_0500_Load_Mem.append(float(item))
 
     set01_pung_0500_Load_Mem = []
     with open(metrics["01"]["pung"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_pung_0500_Load_Mem.append((float(item) / 1000.0))
+                set01_pung_0500_Load_Mem.append(float(item))
 
     set01_zeno_1000_Load_Mem = []
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_zeno_1000_Load_Mem.append((float(item) / 1000.0))
+                set01_zeno_1000_Load_Mem.append(float(item))
 
     set01_pung_1000_Load_Mem = []
     with open(metrics["01"]["pung"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_pung_1000_Load_Mem.append((float(item) / 1000.0))
+                set01_pung_1000_Load_Mem.append(float(item))
 
     set02_zeno_0500_Load_Mem = []
     with open(metrics["02"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set02_zeno_0500_Load_Mem.append((float(item) / 1000.0))
+                set02_zeno_0500_Load_Mem.append(float(item))
 
     set02_zeno_1000_Load_Mem = []
     with open(metrics["02"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set02_zeno_1000_Load_Mem.append((float(item) / 1000.0))
+                set02_zeno_1000_Load_Mem.append(float(item))
 
     set03_zeno_0500_Load_Mem = []
     with open(metrics["03"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set03_zeno_0500_Load_Mem.append((float(item) / 1000.0))
+                set03_zeno_0500_Load_Mem.append(float(item))
 
     set03_zeno_1000_Load_Mem = []
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set03_zeno_1000_Load_Mem.append((float(item) / 1000.0))
+                set03_zeno_1000_Load_Mem.append(float(item))
 
     set04_zeno_0500_Load_Mem = []
     with open(metrics["04"]["zeno"]["0500"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set04_zeno_0500_Load_Mem.append((float(item) / 1000.0))
+                set04_zeno_0500_Load_Mem.append(float(item))
 
     set04_zeno_1000_Load_Mem = []
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set04_zeno_1000_Load_Mem.append((float(item) / 1000.0))
+                set04_zeno_1000_Load_Mem.append(float(item))
     
     # Draw plots.
 
@@ -1047,70 +1407,70 @@ def compileLoadMemServers():
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_zeno_0500_Load_Mem.append((float(item) / 1000000.0))
+                set01_zeno_0500_Load_Mem.append(float(item))
 
     set01_pung_0500_Load_Mem = []
     with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_pung_0500_Load_Mem.append((float(item) / 1000000.0))
+                set01_pung_0500_Load_Mem.append(float(item))
 
     set01_zeno_1000_Load_Mem = []
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_zeno_1000_Load_Mem.append((float(item) / 1000000.0))
+                set01_zeno_1000_Load_Mem.append(float(item))
 
     set01_pung_1000_Load_Mem = []
     with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_pung_1000_Load_Mem.append((float(item) / 1000000.0))
+                set01_pung_1000_Load_Mem.append(float(item))
 
     set02_zeno_0500_Load_Mem = []
     with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set02_zeno_0500_Load_Mem.append((float(item) / 1000000.0))
+                set02_zeno_0500_Load_Mem.append(float(item))
 
     set02_zeno_1000_Load_Mem = []
     with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set02_zeno_1000_Load_Mem.append((float(item) / 1000000.0))
+                set02_zeno_1000_Load_Mem.append(float(item))
 
     set03_zeno_0500_Load_Mem = []
     with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set03_zeno_0500_Load_Mem.append((float(item) / 1000000.0))
+                set03_zeno_0500_Load_Mem.append(float(item))
 
     set03_zeno_1000_Load_Mem = []
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set03_zeno_1000_Load_Mem.append((float(item) / 1000000.0))
+                set03_zeno_1000_Load_Mem.append(float(item))
 
     set04_zeno_0500_Load_Mem = []
     with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set04_zeno_0500_Load_Mem.append((float(item) / 1000000.0))
+                set04_zeno_0500_Load_Mem.append(float(item))
 
     set04_zeno_1000_Load_Mem = []
     with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set04_zeno_1000_Load_Mem.append((float(item) / 1000000.0))
+                set04_zeno_1000_Load_Mem.append(float(item))
 
     # Draw plots.
 
@@ -1211,138 +1571,77 @@ def compileLatencies():
 
     # Ingest data.
 
-    set01_zeno_0500_Latencies = []
-    with open(metrics["01"]["zeno"]["0500"]["Latencies"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set01_zeno_0500_Latencies.append(float(item))
+    x_max = 0.0
 
-    set01_zeno_1000_Latencies = []
-    with open(metrics["01"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
+    set02a_zeno_1000_Latencies = []
+    with open(metrics["02a"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set01_zeno_1000_Latencies.append(float(item))
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_zeno_1000_Latencies.append(float(item))
+    
+    set02a_vuvuzela_1000_Latencies = []
+    with open(metrics["02a"]["vuvuzela"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_vuvuzela_1000_Latencies.append(float(item))
 
-    set02_zeno_0500_Latencies = []
-    with open(metrics["02"]["zeno"]["0500"]["Latencies"], newline='') as dataFile:
+    set02a_pung_1000_Latencies = []
+    with open(metrics["02a"]["pung"]["1000"]["Latencies"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set02_zeno_0500_Latencies.append(float(item))
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_pung_1000_Latencies.append(float(item))
+    
 
-    set02_zeno_1000_Latencies = []
-    with open(metrics["02"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set02_zeno_1000_Latencies.append(float(item))
-
-    set03_zeno_0500_Latencies = []
-    with open(metrics["03"]["zeno"]["0500"]["Latencies"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set03_zeno_0500_Latencies.append(float(item))
-
-    set03_zeno_1000_Latencies = []
-    with open(metrics["03"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set03_zeno_1000_Latencies.append(float(item))
-
-    set04_zeno_0500_Latencies = []
-    with open(metrics["04"]["zeno"]["0500"]["Latencies"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set04_zeno_0500_Latencies.append(float(item))
-
-    set04_zeno_1000_Latencies = []
-    with open(metrics["04"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set04_zeno_1000_Latencies.append(float(item))
-
-    set01_pung_0500_Latencies = []
-    with open(metrics["01"]["pung"]["0500"]["Latencies"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set01_pung_0500_Latencies.append(float(item))
-
-    set01_pung_1000_Latencies = []
-    with open(metrics["01"]["pung"]["1000"]["Latencies"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set01_pung_1000_Latencies.append(float(item))
+    print("x_max=", x_max)
+    x_max = np.ceil(x_max) + 10.0
+    print("x_max=", x_max)
 
     # Prepare CDF arrays.
 
-    set01_zeno_0500_Latencies = np.sort(set01_zeno_0500_Latencies)
-    set01_zeno_0500_CDF = np.array(range(len(set01_zeno_0500_Latencies))) / float(len(set01_zeno_0500_Latencies))
+    set02a_zeno_1000_Latencies = np.sort(set02a_zeno_1000_Latencies)
+    set02a_zeno_1000_CDF = np.array(range(len(set02a_zeno_1000_Latencies))) / float(len(set02a_zeno_1000_Latencies))
 
-    set01_zeno_1000_Latencies = np.sort(set01_zeno_1000_Latencies)
-    set01_zeno_1000_CDF = np.array(range(len(set01_zeno_1000_Latencies))) / float(len(set01_zeno_1000_Latencies))
+    set02a_vuvuzela_1000_Latencies = np.sort(set02a_vuvuzela_1000_Latencies)
+    set02a_vuvuzela_1000_CDF = np.array(range(len(set02a_vuvuzela_1000_Latencies))) / float(len(set02a_vuvuzela_1000_Latencies))
 
-    set02_zeno_0500_Latencies = np.sort(set02_zeno_0500_Latencies)
-    set02_zeno_0500_CDF = np.array(range(len(set02_zeno_0500_Latencies))) / float(len(set02_zeno_0500_Latencies))
-
-    set02_zeno_1000_Latencies = np.sort(set02_zeno_1000_Latencies)
-    set02_zeno_1000_CDF = np.array(range(len(set02_zeno_1000_Latencies))) / float(len(set02_zeno_1000_Latencies))
-
-    set03_zeno_0500_Latencies = np.sort(set03_zeno_0500_Latencies)
-    set03_zeno_0500_CDF = np.array(range(len(set03_zeno_0500_Latencies))) / float(len(set03_zeno_0500_Latencies))
-
-    set03_zeno_1000_Latencies = np.sort(set03_zeno_1000_Latencies)
-    set03_zeno_1000_CDF = np.array(range(len(set03_zeno_1000_Latencies))) / float(len(set03_zeno_1000_Latencies))
-
-    set04_zeno_0500_Latencies = np.sort(set04_zeno_0500_Latencies)
-    set04_zeno_0500_CDF = np.array(range(len(set04_zeno_0500_Latencies))) / float(len(set04_zeno_0500_Latencies))
-
-    set04_zeno_1000_Latencies = np.sort(set04_zeno_1000_Latencies)
-    set04_zeno_1000_CDF = np.array(range(len(set04_zeno_1000_Latencies))) / float(len(set04_zeno_1000_Latencies))
-
-    set01_pung_0500_Latencies = np.sort(set01_pung_0500_Latencies)
-    set01_pung_0500_CDF = np.array(range(len(set01_pung_0500_Latencies))) / float(len(set01_pung_0500_Latencies))
-
-    set01_pung_1000_Latencies = np.sort(set01_pung_1000_Latencies)
-    set01_pung_1000_CDF = np.array(range(len(set01_pung_1000_Latencies))) / float(len(set01_pung_1000_Latencies))
+    set02a_pung_1000_Latencies = np.sort(set02a_pung_1000_Latencies)
+    set02a_pung_1000_CDF = np.array(range(len(set02a_pung_1000_Latencies))) / float(len(set02a_pung_1000_Latencies))
 
     # Draw plots.
 
-    _, ax = plt.subplots(figsize=(9, 5))
+    _, ax = plt.subplots()
     
-    ax.plot(set01_pung_0500_Latencies, set01_pung_0500_CDF, label='pung, 500 clients (tc off, no failures)')
-    ax.plot(set01_pung_1000_Latencies, set01_pung_1000_CDF, label='pung, 1,000 clients (tc off, no failures)')
-    ax.plot(set02_zeno_1000_Latencies, set02_zeno_1000_CDF, label='zeno, 1,000 clients (tc on, no failures)')
-    ax.plot(set02_zeno_0500_Latencies, set02_zeno_0500_CDF, label='zeno, 500 clients (tc on, no failures)')
-    ax.plot(set01_zeno_0500_Latencies, set01_zeno_0500_CDF, label='zeno, 500 clients (tc off, no failures)')
-    ax.plot(set04_zeno_1000_Latencies, set04_zeno_1000_CDF, label='zeno, 1,000 clients (tc on, mix failure)')
-    ax.plot(set01_zeno_1000_Latencies, set01_zeno_1000_CDF, label='zeno, 1,000 clients (tc off, no failures)')
-    ax.plot(set03_zeno_1000_Latencies, set03_zeno_1000_CDF, label='zeno, 1,000 clients (tc off, mix failure)')
-    ax.plot(set04_zeno_0500_Latencies, set04_zeno_0500_CDF, label='zeno, 500 clients (tc on, mix failure)')
-    ax.plot(set03_zeno_0500_Latencies, set03_zeno_0500_CDF, label='zeno, 500 clients (tc off, mix failure)')
+    ax.plot(set02a_pung_1000_Latencies, set02a_pung_1000_CDF, label='pung')
+    ax.plot(set02a_zeno_1000_Latencies, set02a_zeno_1000_CDF, label='zeno')
+    ax.plot(set02a_vuvuzela_1000_Latencies, set02a_vuvuzela_1000_CDF, label='vuvuzela')
 
     ax.xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
+    ax.set_xlim([0.0, x_max])
     ax.set_ylim([0.0, 1.0])
     ax.set_yticks((0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0))
 
     # Add a legend.
     ax.legend(loc='lower right')
 
+    ax.set_title("CDFs of End-to-End Transmission Latencies on Clients (delay, no failures)")
     plt.tight_layout()
     plt.xlabel("End-to-end transmission latency (seconds)")
     plt.ylabel("Fraction of messages transmitted")
 
     plt.savefig(os.path.join(sys.argv[1], "e2e-transmission-latencies.pgf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "e2e-transmission-latencies.pdf"), bbox_inches='tight')
 
 
 def compileMessagesPerMix():
@@ -1355,7 +1654,7 @@ def compileMessagesPerMix():
 
             for run in {"Run01", "Run02", "Run03"}:
 
-                outputFile = os.path.join(os.path.dirname(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "message-count-per-mix_first-to-last-round.pgf")
+                outputFile = os.path.join(os.path.dirname(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "message-count-per-server_first-to-last-round.pgf")
 
                 labels = []
                 data = []
@@ -1404,14 +1703,14 @@ compileTrafficClients()
 compileTrafficServers()
 
 # Build load usage figures.
-compileLoadCPUClients()
-compileLoadCPUServers()
-compileLoadMemClients()
-compileLoadMemServers()
+# compileLoadCPUClients()
+# compileLoadCPUServers()
+# compileLoadMemClients()
+# compileLoadMemServers()
 
 # Build message latencies figure.
 compileLatencies()
 
 # Build figures describing the number of
 # messages in each mix server over rounds.
-compileMessagesPerMix()
+# compileMessagesPerMix()
