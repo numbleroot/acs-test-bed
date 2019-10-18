@@ -785,6 +785,21 @@ def compileTrafficClients():
 
     # Ingest and prepare data.
 
+    # 1000 clients.
+
+    set01_zeno_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_zeno_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+    set01_vuvuzela_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["vuvuzela"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_vuvuzela_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+    set01_pung_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["pung"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_pung_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
     set02a_zeno_1000_Bandwidth_Clients_Avg = 0.0
     with open(metrics["02a"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
         set02a_zeno_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
@@ -797,35 +812,208 @@ def compileTrafficClients():
     with open(metrics["02a"]["pung"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
         set02a_pung_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
 
-    bandwidthAvg = [set02a_zeno_1000_Bandwidth_Clients_Avg, set02a_vuvuzela_1000_Bandwidth_Clients_Avg, set02a_pung_1000_Bandwidth_Clients_Avg]
+
+    set02b_zeno_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_zeno_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+    set02b_vuvuzela_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["vuvuzela"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_vuvuzela_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+    set02b_pung_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["pung"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_pung_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    set03_zeno_1000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["03"]["zeno"]["1000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set03_zeno_1000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    # 2000 clients.
+
+    set01_zeno_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["zeno"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_zeno_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set01_vuvuzela_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["vuvuzela"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_vuvuzela_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set01_pung_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["pung"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_pung_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    set02a_zeno_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["zeno"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_zeno_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set02a_vuvuzela_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["vuvuzela"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_vuvuzela_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set02a_pung_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["pung"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_pung_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    set02b_zeno_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["zeno"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_zeno_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set02b_vuvuzela_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["vuvuzela"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_vuvuzela_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set02b_pung_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["pung"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_pung_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    set03_zeno_2000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["03"]["zeno"]["2000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set03_zeno_2000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    # 3000 clients.
+
+    set01_zeno_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["zeno"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_zeno_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set01_vuvuzela_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["vuvuzela"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_vuvuzela_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set01_pung_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["01"]["pung"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set01_pung_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    set02a_zeno_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["zeno"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_zeno_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set02a_vuvuzela_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["vuvuzela"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_vuvuzela_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set02a_pung_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02a"]["pung"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02a_pung_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    set02b_zeno_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["zeno"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_zeno_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set02b_vuvuzela_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["vuvuzela"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_vuvuzela_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+    
+    set02b_pung_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["02b"]["pung"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set02b_pung_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    set03_zeno_3000_Bandwidth_Clients_Avg = 0.0
+    with open(metrics["03"]["zeno"]["3000"]["Bandwidth"]["Clients"]["Avg"], 'r') as dataFile:
+        set03_zeno_3000_Bandwidth_Clients_Avg = float(dataFile.read().strip())
+
+
+    bandwidthAvg = [
+        set01_zeno_1000_Bandwidth_Clients_Avg,
+        set02a_zeno_1000_Bandwidth_Clients_Avg,
+        set02b_zeno_1000_Bandwidth_Clients_Avg,
+        set03_zeno_1000_Bandwidth_Clients_Avg,
+        set01_vuvuzela_1000_Bandwidth_Clients_Avg,
+        set02a_vuvuzela_1000_Bandwidth_Clients_Avg,
+        set02b_vuvuzela_1000_Bandwidth_Clients_Avg,
+        set01_pung_1000_Bandwidth_Clients_Avg,
+        set02a_pung_1000_Bandwidth_Clients_Avg,
+        set02b_pung_1000_Bandwidth_Clients_Avg,
+
+        set01_zeno_2000_Bandwidth_Clients_Avg,
+        set02a_zeno_2000_Bandwidth_Clients_Avg,
+        set02b_zeno_2000_Bandwidth_Clients_Avg,
+        set03_zeno_2000_Bandwidth_Clients_Avg,
+        set01_vuvuzela_2000_Bandwidth_Clients_Avg,
+        set02a_vuvuzela_2000_Bandwidth_Clients_Avg,
+        set02b_vuvuzela_2000_Bandwidth_Clients_Avg,
+        set01_pung_2000_Bandwidth_Clients_Avg,
+        set02a_pung_2000_Bandwidth_Clients_Avg,
+        set02b_pung_2000_Bandwidth_Clients_Avg,
+
+        set01_zeno_3000_Bandwidth_Clients_Avg,
+        set02a_zeno_3000_Bandwidth_Clients_Avg,
+        set02b_zeno_3000_Bandwidth_Clients_Avg,
+        set03_zeno_3000_Bandwidth_Clients_Avg,
+        set01_vuvuzela_3000_Bandwidth_Clients_Avg,
+        set02a_vuvuzela_3000_Bandwidth_Clients_Avg,
+        set02b_vuvuzela_3000_Bandwidth_Clients_Avg,
+        set01_pung_3000_Bandwidth_Clients_Avg,
+        set02a_pung_3000_Bandwidth_Clients_Avg,
+        set02b_pung_3000_Bandwidth_Clients_Avg
+    ]
 
     # Draw plots.
 
     width = 1.0
     y_max = np.ceil((max(bandwidthAvg) + 10.0))
 
-    _, ax = plt.subplots()
+    _, ax = plt.subplots(figsize=(14, 5))
 
     # Draw all bars.
 
-    ax.bar(1, set02a_zeno_1000_Bandwidth_Clients_Avg, width, label='zeno', edgecolor='black', color='gold', hatch='/')
-    ax.bar(2, set02a_vuvuzela_1000_Bandwidth_Clients_Avg, width, label='vuvuzela', edgecolor='black', color='olive', hatch='+')
-    ax.bar(3, set02a_pung_1000_Bandwidth_Clients_Avg, width, label='pung', edgecolor='black', color='steelblue', hatch='x')
+    ax.bar(1, set01_zeno_1000_Bandwidth_Clients_Avg, width, label='zeno (no impediments)', edgecolor='black', color='gold', hatch='/')
+    ax.bar(2, set02a_zeno_1000_Bandwidth_Clients_Avg, width, label='zeno (high delay, no failures)', edgecolor='black', color='gold', hatch='//')
+    ax.bar(3, set02b_zeno_1000_Bandwidth_Clients_Avg, width, label='zeno (high loss, no failures)', edgecolor='black', color='gold', hatch='+')
+    ax.bar(4, set03_zeno_1000_Bandwidth_Clients_Avg, width, label='zeno (high network troubles, failures)', edgecolor='black', color='gold', hatch='.')
+    ax.bar(5, set01_vuvuzela_1000_Bandwidth_Clients_Avg, width, label='vuvuzela (no impediments)', edgecolor='black', color='darkseagreen', hatch='\\')
+    ax.bar(6, set02a_vuvuzela_1000_Bandwidth_Clients_Avg, width, label='vuvuzela (high delay, no failures)', edgecolor='black', color='darkseagreen', hatch='\\\\')
+    ax.bar(7, set02b_vuvuzela_1000_Bandwidth_Clients_Avg, width, label='vuvuzela (high loss, no failures)', edgecolor='black', color='darkseagreen', hatch='-')
+    ax.bar(8, set01_pung_1000_Bandwidth_Clients_Avg, width, label='pung (no impediments)', edgecolor='black', color='steelblue', hatch='x')
+    ax.bar(9, set02a_pung_1000_Bandwidth_Clients_Avg, width, label='pung (high delay, no failures)', edgecolor='black', color='steelblue', hatch='o')
+    ax.bar(10, set02b_pung_1000_Bandwidth_Clients_Avg, width, label='pung (high loss, no failures)', edgecolor='black', color='steelblue', hatch='*')
+
+    ax.bar(12, set01_zeno_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='/')
+    ax.bar(13, set02a_zeno_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='//')
+    ax.bar(14, set02b_zeno_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='+')
+    ax.bar(15, set03_zeno_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='.')
+    ax.bar(16, set01_vuvuzela_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='darkseagreen', hatch='\\')
+    ax.bar(17, set02a_vuvuzela_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='darkseagreen', hatch='\\\\')
+    ax.bar(18, set02b_vuvuzela_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='darkseagreen', hatch='-')
+    ax.bar(19, set01_pung_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='steelblue', hatch='x')
+    ax.bar(20, set02a_pung_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='steelblue', hatch='o')
+    ax.bar(21, set02b_pung_2000_Bandwidth_Clients_Avg, width, edgecolor='black', color='steelblue', hatch='*')
+
+    ax.bar(23, set01_zeno_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='/')
+    ax.bar(24, set02a_zeno_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='//')
+    ax.bar(25, set02b_zeno_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='+')
+    ax.bar(26, set03_zeno_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='gold', hatch='.')
+    ax.bar(27, set01_vuvuzela_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='darkseagreen', hatch='\\')
+    ax.bar(28, set02a_vuvuzela_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='darkseagreen', hatch='\\\\')
+    ax.bar(29, set02b_vuvuzela_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='darkseagreen', hatch='-')
+    ax.bar(30, set01_pung_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='steelblue', hatch='x')
+    ax.bar(31, set02a_pung_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='steelblue', hatch='o')
+    ax.bar(32, set02b_pung_3000_Bandwidth_Clients_Avg, width, edgecolor='black', color='steelblue', hatch='*')
 
     labels = ["%.2f" % avg for avg in bandwidthAvg]
 
     for bar, label in zip(ax.patches, labels):
-        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() * 1.075), label, ha='center', va='bottom')
+        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() * 1.08), label, ha='center', va='bottom')
 
     # Show a light horizontal grid.
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
     # Limit x and y axes and configure ticks and labels.
-    ax.set_xlim([0, 4])
+    ax.set_xlim([0, 33])
     ax.set_ylim([0, y_max])
-    ax.set_xticks([2])
-    ax.set_xticklabels(['1,000 clients'])
+    ax.set_xticks((5.5, 16.5, 27.5))
+    ax.set_xticklabels(('1,000 clients', '2,000 clients', '3,000 clients'))
 
     # Add a legend.
     ax.legend(loc='upper left')
@@ -833,12 +1021,13 @@ def compileTrafficClients():
     plt.yscale('symlog')
     plt.tight_layout()
 
-    ax.set_title("Average Highest Traffic Volume on Clients (high delay, no failures)")
+    ax.set_title("Average Highest Traffic Volume on Clients")
     plt.xlabel("Number of clients")
     plt.ylabel("Traffic volume (MiB) [log.]")
 
-    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pgf"), bbox_inches='tight')
+    # plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pgf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pdf"), bbox_inches='tight')
+
 
 
 def compileTrafficServers():
@@ -846,6 +1035,23 @@ def compileTrafficServers():
     global metrics
 
     # Ingest and prepare data.
+
+    # 1000 clients.
+
+    set01_zeno_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_zeno_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set01_zeno_1000_Bandwidth_Servers_AvgAll = set01_zeno_1000_Bandwidth_Servers_Avg * 21.0
+
+    set01_vuvuzela_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["vuvuzela"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_vuvuzela_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set01_vuvuzela_1000_Bandwidth_Servers_AvgAll = set01_vuvuzela_1000_Bandwidth_Servers_Avg * 4.0
+
+    set01_pung_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["pung"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_pung_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+
 
     set02a_zeno_1000_Bandwidth_Servers_Avg = 0.0
     with open(metrics["02a"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
@@ -861,27 +1067,238 @@ def compileTrafficServers():
     with open(metrics["02a"]["pung"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
         set02a_pung_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
 
-    bandwidthAvg = [set02a_zeno_1000_Bandwidth_Servers_AvgAll,
-                    set02a_vuvuzela_1000_Bandwidth_Servers_AvgAll,
-                    set02a_pung_1000_Bandwidth_Servers_Avg]
+
+    set02b_zeno_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_zeno_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02b_zeno_1000_Bandwidth_Servers_AvgAll = set02b_zeno_1000_Bandwidth_Servers_Avg * 21.0
+
+    set02b_vuvuzela_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["vuvuzela"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_vuvuzela_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02b_vuvuzela_1000_Bandwidth_Servers_AvgAll = set02b_vuvuzela_1000_Bandwidth_Servers_Avg * 4.0
+
+    set02b_pung_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["pung"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_pung_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+
+
+    set03_zeno_1000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["03"]["zeno"]["1000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set03_zeno_1000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set03_zeno_1000_Bandwidth_Servers_AvgAll = set03_zeno_1000_Bandwidth_Servers_Avg * 21.0
+
+
+    # 2000 clients.
+
+    set01_zeno_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["zeno"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_zeno_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set01_zeno_2000_Bandwidth_Servers_AvgAll = set01_zeno_2000_Bandwidth_Servers_Avg * 21.0
+    
+    set01_vuvuzela_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["vuvuzela"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_vuvuzela_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set01_vuvuzela_2000_Bandwidth_Servers_AvgAll = set01_vuvuzela_2000_Bandwidth_Servers_Avg * 4.0
+    
+    set01_pung_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["pung"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_pung_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+
+
+    set02a_zeno_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["zeno"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_zeno_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02a_zeno_2000_Bandwidth_Servers_AvgAll = set02a_zeno_2000_Bandwidth_Servers_Avg * 21.0
+    
+    set02a_vuvuzela_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["vuvuzela"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_vuvuzela_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02a_vuvuzela_2000_Bandwidth_Servers_AvgAll = set02a_vuvuzela_2000_Bandwidth_Servers_Avg * 4.0
+    
+    set02a_pung_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["pung"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_pung_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+
+
+    set02b_zeno_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["zeno"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_zeno_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02b_zeno_2000_Bandwidth_Servers_AvgAll = set02b_zeno_2000_Bandwidth_Servers_Avg * 21.0
+    
+    set02b_vuvuzela_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["vuvuzela"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_vuvuzela_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02b_vuvuzela_2000_Bandwidth_Servers_AvgAll = set02b_vuvuzela_2000_Bandwidth_Servers_Avg * 4.0
+    
+    set02b_pung_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["pung"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_pung_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+
+
+    set03_zeno_2000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["03"]["zeno"]["2000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set03_zeno_2000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set03_zeno_2000_Bandwidth_Servers_AvgAll = set03_zeno_2000_Bandwidth_Servers_Avg * 21.0
+
+
+    # 3000 clients.
+
+    set01_zeno_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["zeno"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_zeno_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set01_zeno_3000_Bandwidth_Servers_AvgAll = set01_zeno_3000_Bandwidth_Servers_Avg * 21.0
+    
+    set01_vuvuzela_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["vuvuzela"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_vuvuzela_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set01_vuvuzela_3000_Bandwidth_Servers_AvgAll = set01_vuvuzela_3000_Bandwidth_Servers_Avg * 4.0
+    
+    set01_pung_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["01"]["pung"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set01_pung_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+
+
+    set02a_zeno_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["zeno"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_zeno_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02a_zeno_3000_Bandwidth_Servers_AvgAll = set02a_zeno_3000_Bandwidth_Servers_Avg * 21.0
+    
+    set02a_vuvuzela_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["vuvuzela"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_vuvuzela_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02a_vuvuzela_3000_Bandwidth_Servers_AvgAll = set02a_vuvuzela_3000_Bandwidth_Servers_Avg * 4.0
+    
+    set02a_pung_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02a"]["pung"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02a_pung_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+
+
+    set02b_zeno_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["zeno"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_zeno_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02b_zeno_3000_Bandwidth_Servers_AvgAll = set02b_zeno_3000_Bandwidth_Servers_Avg * 21.0
+    
+    set02b_vuvuzela_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["vuvuzela"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_vuvuzela_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set02b_vuvuzela_3000_Bandwidth_Servers_AvgAll = set02b_vuvuzela_3000_Bandwidth_Servers_Avg * 4.0
+    
+    set02b_pung_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["02b"]["pung"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set02b_pung_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+
+
+    set03_zeno_3000_Bandwidth_Servers_Avg = 0.0
+    with open(metrics["03"]["zeno"]["3000"]["Bandwidth"]["Servers"]["Avg"], 'r') as dataFile:
+        set03_zeno_3000_Bandwidth_Servers_Avg = float(dataFile.read().strip())
+    set03_zeno_3000_Bandwidth_Servers_AvgAll = set03_zeno_3000_Bandwidth_Servers_Avg * 21.0
+
+
+    bandwidthAvg = [
+        set01_zeno_1000_Bandwidth_Servers_AvgAll,
+        set02a_zeno_1000_Bandwidth_Servers_AvgAll,
+        set02b_zeno_1000_Bandwidth_Servers_AvgAll,
+        set03_zeno_1000_Bandwidth_Servers_AvgAll,
+        set01_vuvuzela_1000_Bandwidth_Servers_AvgAll,
+        set02a_vuvuzela_1000_Bandwidth_Servers_AvgAll,
+        set02b_vuvuzela_1000_Bandwidth_Servers_AvgAll,
+        set01_pung_1000_Bandwidth_Servers_Avg,
+        set02a_pung_1000_Bandwidth_Servers_Avg,
+        set02b_pung_1000_Bandwidth_Servers_Avg,
+
+        set01_zeno_2000_Bandwidth_Servers_AvgAll,
+        set02a_zeno_2000_Bandwidth_Servers_AvgAll,
+        set02b_zeno_2000_Bandwidth_Servers_AvgAll,
+        set03_zeno_2000_Bandwidth_Servers_AvgAll,
+        set01_vuvuzela_2000_Bandwidth_Servers_AvgAll,
+        set02a_vuvuzela_2000_Bandwidth_Servers_AvgAll,
+        set02b_vuvuzela_2000_Bandwidth_Servers_AvgAll,
+        set01_pung_2000_Bandwidth_Servers_Avg,
+        set02a_pung_2000_Bandwidth_Servers_Avg,
+        set02b_pung_2000_Bandwidth_Servers_Avg,
+
+        set01_zeno_3000_Bandwidth_Servers_AvgAll,
+        set02a_zeno_3000_Bandwidth_Servers_AvgAll,
+        set02b_zeno_3000_Bandwidth_Servers_AvgAll,
+        set03_zeno_3000_Bandwidth_Servers_AvgAll,
+        set01_vuvuzela_3000_Bandwidth_Servers_AvgAll,
+        set02a_vuvuzela_3000_Bandwidth_Servers_AvgAll,
+        set02b_vuvuzela_3000_Bandwidth_Servers_AvgAll,
+        set01_pung_3000_Bandwidth_Servers_Avg,
+        set02a_pung_3000_Bandwidth_Servers_Avg,
+        set02b_pung_3000_Bandwidth_Servers_Avg
+    ]
 
     # Draw plots.
 
     width = 1.0
-    barWidth = (1.0 / 4.0)
+    barWidth = (1.0 / 33.0)
     y_max = np.ceil((max(bandwidthAvg) + 5000.0))
 
-    _, ax = plt.subplots()
+    _, ax = plt.subplots(figsize=(14, 5))
 
     # Draw all bars and corresponding average lines.
 
-    ax.bar(1, set02a_zeno_1000_Bandwidth_Servers_AvgAll, width, label='zeno', edgecolor='black', color='gold', hatch='/')
-    plt.axhline(y=set02a_zeno_1000_Bandwidth_Servers_Avg, xmin=(0.5 * barWidth), xmax=(1.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(1, set01_zeno_1000_Bandwidth_Servers_AvgAll, width, label='zeno (no impediments)', edgecolor='black', color='gold', hatch='/')
+    plt.axhline(y=set01_zeno_1000_Bandwidth_Servers_Avg, xmin=(0.5 * barWidth), xmax=(1.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(2, set02a_zeno_1000_Bandwidth_Servers_AvgAll, width, label='zeno (high delay, no failures)', edgecolor='black', color='gold', hatch='//')
+    plt.axhline(y=set02a_zeno_1000_Bandwidth_Servers_Avg, xmin=(1.5 * barWidth), xmax=(2.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(3, set02b_zeno_1000_Bandwidth_Servers_AvgAll, width, label='zeno (high loss, no failures)', edgecolor='black', color='gold', hatch='+')
+    plt.axhline(y=set02b_zeno_1000_Bandwidth_Servers_Avg, xmin=(2.5 * barWidth), xmax=(3.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(4, set03_zeno_1000_Bandwidth_Servers_AvgAll, width, label='zeno (high network troubles, failures)', edgecolor='black', color='gold', hatch='.')
+    plt.axhline(y=set03_zeno_1000_Bandwidth_Servers_Avg, xmin=(3.5 * barWidth), xmax=(4.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    
+    ax.bar(5, set01_vuvuzela_1000_Bandwidth_Servers_AvgAll, width, label='vuvuzela (no impediments)', edgecolor='black', color='darkseagreen', hatch='\\')
+    plt.axhline(y=set01_vuvuzela_1000_Bandwidth_Servers_Avg, xmin=(4.5 * barWidth), xmax=(5.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(6, set02a_vuvuzela_1000_Bandwidth_Servers_AvgAll, width, label='vuvuzela (high delay, no failures)', edgecolor='black', color='darkseagreen', hatch='\\\\')
+    plt.axhline(y=set02a_vuvuzela_1000_Bandwidth_Servers_Avg, xmin=(5.5 * barWidth), xmax=(6.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(7, set02b_vuvuzela_1000_Bandwidth_Servers_AvgAll, width, label='vuvuzela (high loss, no failures)', edgecolor='black', color='darkseagreen', hatch='-')
+    plt.axhline(y=set02b_vuvuzela_1000_Bandwidth_Servers_Avg, xmin=(6.5 * barWidth), xmax=(7.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
 
-    ax.bar(2, set02a_vuvuzela_1000_Bandwidth_Servers_AvgAll, width, label='vuvuzela', edgecolor='black', color='olive', hatch='+')
-    plt.axhline(y=set02a_vuvuzela_1000_Bandwidth_Servers_Avg, xmin=(1.5 * barWidth), xmax=(2.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(8, set01_pung_1000_Bandwidth_Servers_Avg, width, label='pung (no impediments)', edgecolor='black', color='steelblue', hatch='x')
+    ax.bar(9, set02a_pung_1000_Bandwidth_Servers_Avg, width, label='pung (high delay, no failures)', edgecolor='black', color='steelblue', hatch='o')
+    ax.bar(10, set02b_pung_1000_Bandwidth_Servers_Avg, width, label='pung (high loss, no failures)', edgecolor='black', color='steelblue', hatch='*')
 
-    ax.bar(3, set02a_pung_1000_Bandwidth_Servers_Avg, width, label='pung', edgecolor='black', color='steelblue', hatch='x')
+    ax.bar(12, set01_zeno_2000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='/')
+    plt.axhline(y=set01_zeno_2000_Bandwidth_Servers_Avg, xmin=(11.5 * barWidth), xmax=(12.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(13, set02a_zeno_2000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='//')
+    plt.axhline(y=set02a_zeno_2000_Bandwidth_Servers_Avg, xmin=(12.5 * barWidth), xmax=(13.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(14, set02b_zeno_2000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='+')
+    plt.axhline(y=set02b_zeno_2000_Bandwidth_Servers_Avg, xmin=(13.5 * barWidth), xmax=(14.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(15, set03_zeno_2000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='.')
+    plt.axhline(y=set03_zeno_2000_Bandwidth_Servers_Avg, xmin=(14.5 * barWidth), xmax=(15.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+
+    ax.bar(16, set01_vuvuzela_2000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='darkseagreen', hatch='\\')
+    plt.axhline(y=set01_vuvuzela_2000_Bandwidth_Servers_Avg, xmin=(15.5 * barWidth), xmax=(16.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(17, set02a_vuvuzela_2000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='darkseagreen', hatch='\\\\')
+    plt.axhline(y=set02a_vuvuzela_2000_Bandwidth_Servers_Avg, xmin=(16.5 * barWidth), xmax=(17.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(18, set02b_vuvuzela_2000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='darkseagreen', hatch='-')
+    plt.axhline(y=set02b_vuvuzela_2000_Bandwidth_Servers_Avg, xmin=(17.5 * barWidth), xmax=(18.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+
+    ax.bar(19, set01_pung_2000_Bandwidth_Servers_Avg, width, edgecolor='black', color='steelblue', hatch='x')
+    ax.bar(20, set02a_pung_2000_Bandwidth_Servers_Avg, width, edgecolor='black', color='steelblue', hatch='o')
+    ax.bar(21, set02b_pung_2000_Bandwidth_Servers_Avg, width, edgecolor='black', color='steelblue', hatch='*')
+
+    ax.bar(23, set01_zeno_3000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='/')
+    plt.axhline(y=set01_zeno_3000_Bandwidth_Servers_Avg, xmin=(22.5 * barWidth), xmax=(23.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(24, set02a_zeno_3000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='//')
+    plt.axhline(y=set02a_zeno_3000_Bandwidth_Servers_Avg, xmin=(23.5 * barWidth), xmax=(24.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(25, set02b_zeno_3000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='+')
+    plt.axhline(y=set02b_zeno_3000_Bandwidth_Servers_Avg, xmin=(24.5 * barWidth), xmax=(25.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(26, set03_zeno_3000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='gold', hatch='.')
+    plt.axhline(y=set03_zeno_3000_Bandwidth_Servers_Avg, xmin=(25.5 * barWidth), xmax=(26.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+
+    ax.bar(27, set01_vuvuzela_3000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='darkseagreen', hatch='\\')
+    plt.axhline(y=set01_vuvuzela_3000_Bandwidth_Servers_Avg, xmin=(26.5 * barWidth), xmax=(27.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(28, set02a_vuvuzela_3000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='darkseagreen', hatch='\\\\')
+    plt.axhline(y=set02a_vuvuzela_3000_Bandwidth_Servers_Avg, xmin=(27.5 * barWidth), xmax=(28.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+    ax.bar(29, set02b_vuvuzela_3000_Bandwidth_Servers_AvgAll, width, edgecolor='black', color='darkseagreen', hatch='-')
+    plt.axhline(y=set02b_vuvuzela_3000_Bandwidth_Servers_Avg, xmin=(28.5 * barWidth), xmax=(29.5 * barWidth), linewidth=1.5, linestyle='--', color='crimson')
+
+    ax.bar(30, set01_pung_3000_Bandwidth_Servers_Avg, width, edgecolor='black', color='steelblue', hatch='x')
+    ax.bar(31, set02a_pung_3000_Bandwidth_Servers_Avg, width, edgecolor='black', color='steelblue', hatch='o')
+    ax.bar(32, set02b_pung_3000_Bandwidth_Servers_Avg, width, edgecolor='black', color='steelblue', hatch='*')
     
     labels = ['{:,.0f}'.format(avg) for avg in bandwidthAvg]
 
@@ -893,21 +1310,21 @@ def compileTrafficServers():
     ax.set_axisbelow(True)
 
     # Limit x and y axes and configure ticks and labels.
-    ax.set_xlim([0, 4])
+    ax.set_xlim([0, 33])
     ax.set_ylim([0, y_max])
-    ax.set_xticks([2])
-    ax.set_xticklabels(['1,000 clients'])
+    ax.set_xticks((5.5, 16.5, 27.5))
+    ax.set_xticklabels(('1,000 clients', '2,000 clients', '3,000 clients'))
     ax.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
 
     # Add a legend.
     ax.legend(loc='upper left')
 
-    ax.set_title("Average Highest Traffic Volume on Servers (medium delay, no failures)")
+    ax.set_title("Average Highest Traffic Volume on Servers")
     plt.tight_layout()
     plt.xlabel("Number of clients")
     plt.ylabel("Traffic volume (MiB)")
 
-    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pgf"), bbox_inches='tight')
+    # plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pgf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pdf"), bbox_inches='tight')
 
 
@@ -1709,7 +2126,7 @@ compileTrafficServers()
 # compileLoadMemServers()
 
 # Build message latencies figure.
-compileLatencies()
+# compileLatencies()
 
 # Build figures describing the number of
 # messages in each mix server over rounds.
