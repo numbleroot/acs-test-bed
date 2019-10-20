@@ -1003,7 +1003,7 @@ def compileTrafficClients():
     labels = ["%.2f" % avg for avg in bandwidthAvg]
 
     for bar, label in zip(ax.patches, labels):
-        ax.text((bar.get_x() + (bar.get_width() / 2)), (bar.get_height() * 1.08), label, ha='center', va='bottom')
+        ax.text((bar.get_x() + (bar.get_width() / 2)), ((bar.get_height() * 1.07) + 0.05), label, ha='center', va='bottom')
 
     # Show a light horizontal grid.
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
@@ -1986,15 +1986,53 @@ def compileLatencies():
 
     global metrics
 
-    # Ingest data.
-
+    x_min = 100.0
     x_max = 0.0
 
+    # Ingest data.
+
+    # 1000 clients.
+
+    set01_zeno_1000_Latencies = []
+    with open(metrics["01"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_zeno_1000_Latencies.append(float(item))
+    
+    set01_vuvuzela_1000_Latencies = []
+    with open(metrics["01"]["vuvuzela"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_vuvuzela_1000_Latencies.append(float(item))
+    
+    set01_pung_1000_Latencies = []
+    with open(metrics["01"]["pung"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_pung_1000_Latencies.append(float(item))
+    
     set02a_zeno_1000_Latencies = []
     with open(metrics["02a"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
                 if float(item) > x_max:
                     x_max = float(item)
                 set02a_zeno_1000_Latencies.append(float(item))
@@ -2004,114 +2042,476 @@ def compileLatencies():
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
                 if float(item) > x_max:
                     x_max = float(item)
                 set02a_vuvuzela_1000_Latencies.append(float(item))
-
+    
     set02a_pung_1000_Latencies = []
     with open(metrics["02a"]["pung"]["1000"]["Latencies"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
                 if float(item) > x_max:
                     x_max = float(item)
                 set02a_pung_1000_Latencies.append(float(item))
     
+    set02b_zeno_1000_Latencies = []
+    with open(metrics["02b"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_zeno_1000_Latencies.append(float(item))
+    
+    set02b_vuvuzela_1000_Latencies = []
+    with open(metrics["02b"]["vuvuzela"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_vuvuzela_1000_Latencies.append(float(item))
+    
+    set02b_pung_1000_Latencies = []
+    with open(metrics["02b"]["pung"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_pung_1000_Latencies.append(float(item))
+    
+    set03_zeno_1000_Latencies = []
+    with open(metrics["03"]["zeno"]["1000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set03_zeno_1000_Latencies.append(float(item))
+    
 
-    print("x_max=", x_max)
-    x_max = np.ceil(x_max) + 10.0
-    print("x_max=", x_max)
+    # 2000 clients.
+
+    set01_zeno_2000_Latencies = []
+    with open(metrics["01"]["zeno"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_zeno_2000_Latencies.append(float(item))
+    
+    set01_vuvuzela_2000_Latencies = []
+    with open(metrics["01"]["vuvuzela"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_vuvuzela_2000_Latencies.append(float(item))
+    
+    set01_pung_2000_Latencies = []
+    with open(metrics["01"]["pung"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_pung_2000_Latencies.append(float(item))
+    
+    set02a_zeno_2000_Latencies = []
+    with open(metrics["02a"]["zeno"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_zeno_2000_Latencies.append(float(item))
+    
+    set02a_vuvuzela_2000_Latencies = []
+    with open(metrics["02a"]["vuvuzela"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_vuvuzela_2000_Latencies.append(float(item))
+    
+    set02a_pung_2000_Latencies = []
+    with open(metrics["02a"]["pung"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_pung_2000_Latencies.append(float(item))
+    
+    set02b_zeno_2000_Latencies = []
+    with open(metrics["02b"]["zeno"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_zeno_2000_Latencies.append(float(item))
+    
+    set02b_vuvuzela_2000_Latencies = []
+    with open(metrics["02b"]["vuvuzela"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_vuvuzela_2000_Latencies.append(float(item))
+    
+    set02b_pung_2000_Latencies = []
+    with open(metrics["02b"]["pung"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_pung_2000_Latencies.append(float(item))
+    
+    set03_zeno_2000_Latencies = []
+    with open(metrics["03"]["zeno"]["2000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set03_zeno_2000_Latencies.append(float(item))
+    
+
+    # 3000 clients.
+
+    set01_zeno_3000_Latencies = []
+    with open(metrics["01"]["zeno"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_zeno_3000_Latencies.append(float(item))
+    
+    set01_vuvuzela_3000_Latencies = []
+    with open(metrics["01"]["vuvuzela"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_vuvuzela_3000_Latencies.append(float(item))
+    
+    set01_pung_3000_Latencies = []
+    with open(metrics["01"]["pung"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set01_pung_3000_Latencies.append(float(item))
+    
+    set02a_zeno_3000_Latencies = []
+    with open(metrics["02a"]["zeno"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_zeno_3000_Latencies.append(float(item))
+    
+    set02a_vuvuzela_3000_Latencies = []
+    with open(metrics["02a"]["vuvuzela"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_vuvuzela_3000_Latencies.append(float(item))
+    
+    set02a_pung_3000_Latencies = []
+    with open(metrics["02a"]["pung"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02a_pung_3000_Latencies.append(float(item))
+    
+    set02b_zeno_3000_Latencies = []
+    with open(metrics["02b"]["zeno"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_zeno_3000_Latencies.append(float(item))
+    
+    set02b_vuvuzela_3000_Latencies = []
+    with open(metrics["02b"]["vuvuzela"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_vuvuzela_3000_Latencies.append(float(item))
+    
+    set02b_pung_3000_Latencies = []
+    with open(metrics["02b"]["pung"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set02b_pung_3000_Latencies.append(float(item))
+    
+    set03_zeno_3000_Latencies = []
+    with open(metrics["03"]["zeno"]["3000"]["Latencies"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                if float(item) < x_min:
+                    x_min = float(item)
+                if float(item) > x_max:
+                    x_max = float(item)
+                set03_zeno_3000_Latencies.append(float(item))
+
 
     # Prepare CDF arrays.
 
+    # 1000 clients.
+
+    set01_zeno_1000_Latencies = np.sort(set01_zeno_1000_Latencies)
+    set01_zeno_1000_CDF = np.array(range(len(set01_zeno_1000_Latencies))) / float(len(set01_zeno_1000_Latencies))
+    set01_vuvuzela_1000_Latencies = np.sort(set01_vuvuzela_1000_Latencies)
+    set01_vuvuzela_1000_CDF = np.array(range(len(set01_vuvuzela_1000_Latencies))) / float(len(set01_vuvuzela_1000_Latencies))
+    set01_pung_1000_Latencies = np.sort(set01_pung_1000_Latencies)
+    set01_pung_1000_CDF = np.array(range(len(set01_pung_1000_Latencies))) / float(len(set01_pung_1000_Latencies))
+
     set02a_zeno_1000_Latencies = np.sort(set02a_zeno_1000_Latencies)
     set02a_zeno_1000_CDF = np.array(range(len(set02a_zeno_1000_Latencies))) / float(len(set02a_zeno_1000_Latencies))
-
     set02a_vuvuzela_1000_Latencies = np.sort(set02a_vuvuzela_1000_Latencies)
     set02a_vuvuzela_1000_CDF = np.array(range(len(set02a_vuvuzela_1000_Latencies))) / float(len(set02a_vuvuzela_1000_Latencies))
-
     set02a_pung_1000_Latencies = np.sort(set02a_pung_1000_Latencies)
     set02a_pung_1000_CDF = np.array(range(len(set02a_pung_1000_Latencies))) / float(len(set02a_pung_1000_Latencies))
 
+    set02b_zeno_1000_Latencies = np.sort(set02b_zeno_1000_Latencies)
+    set02b_zeno_1000_CDF = np.array(range(len(set02b_zeno_1000_Latencies))) / float(len(set02b_zeno_1000_Latencies))
+    set02b_vuvuzela_1000_Latencies = np.sort(set02b_vuvuzela_1000_Latencies)
+    set02b_vuvuzela_1000_CDF = np.array(range(len(set02b_vuvuzela_1000_Latencies))) / float(len(set02b_vuvuzela_1000_Latencies))
+    set02b_pung_1000_Latencies = np.sort(set02b_pung_1000_Latencies)
+    set02b_pung_1000_CDF = np.array(range(len(set02b_pung_1000_Latencies))) / float(len(set02b_pung_1000_Latencies))
+
+    set03_zeno_1000_Latencies = np.sort(set03_zeno_1000_Latencies)
+    set03_zeno_1000_CDF = np.array(range(len(set03_zeno_1000_Latencies))) / float(len(set03_zeno_1000_Latencies))
+
+    # 2000 clients.
+
+    set01_zeno_2000_Latencies = np.sort(set01_zeno_2000_Latencies)
+    set01_zeno_2000_CDF = np.array(range(len(set01_zeno_2000_Latencies))) / float(len(set01_zeno_2000_Latencies))
+    set01_vuvuzela_2000_Latencies = np.sort(set01_vuvuzela_2000_Latencies)
+    set01_vuvuzela_2000_CDF = np.array(range(len(set01_vuvuzela_2000_Latencies))) / float(len(set01_vuvuzela_2000_Latencies))
+    set01_pung_2000_Latencies = np.sort(set01_pung_2000_Latencies)
+    set01_pung_2000_CDF = np.array(range(len(set01_pung_2000_Latencies))) / float(len(set01_pung_2000_Latencies))
+
+    set02a_zeno_2000_Latencies = np.sort(set02a_zeno_2000_Latencies)
+    set02a_zeno_2000_CDF = np.array(range(len(set02a_zeno_2000_Latencies))) / float(len(set02a_zeno_2000_Latencies))
+    set02a_vuvuzela_2000_Latencies = np.sort(set02a_vuvuzela_2000_Latencies)
+    set02a_vuvuzela_2000_CDF = np.array(range(len(set02a_vuvuzela_2000_Latencies))) / float(len(set02a_vuvuzela_2000_Latencies))
+    set02a_pung_2000_Latencies = np.sort(set02a_pung_2000_Latencies)
+    set02a_pung_2000_CDF = np.array(range(len(set02a_pung_2000_Latencies))) / float(len(set02a_pung_2000_Latencies))
+
+    set02b_zeno_2000_Latencies = np.sort(set02b_zeno_2000_Latencies)
+    set02b_zeno_2000_CDF = np.array(range(len(set02b_zeno_2000_Latencies))) / float(len(set02b_zeno_2000_Latencies))
+    set02b_vuvuzela_2000_Latencies = np.sort(set02b_vuvuzela_2000_Latencies)
+    set02b_vuvuzela_2000_CDF = np.array(range(len(set02b_vuvuzela_2000_Latencies))) / float(len(set02b_vuvuzela_2000_Latencies))
+    set02b_pung_2000_Latencies = np.sort(set02b_pung_2000_Latencies)
+    set02b_pung_2000_CDF = np.array(range(len(set02b_pung_2000_Latencies))) / float(len(set02b_pung_2000_Latencies))
+
+    set03_zeno_2000_Latencies = np.sort(set03_zeno_2000_Latencies)
+    set03_zeno_2000_CDF = np.array(range(len(set03_zeno_2000_Latencies))) / float(len(set03_zeno_2000_Latencies))
+
+    # 3000 clients.
+
+    set01_zeno_3000_Latencies = np.sort(set01_zeno_3000_Latencies)
+    set01_zeno_3000_CDF = np.array(range(len(set01_zeno_3000_Latencies))) / float(len(set01_zeno_3000_Latencies))
+    set01_vuvuzela_3000_Latencies = np.sort(set01_vuvuzela_3000_Latencies)
+    set01_vuvuzela_3000_CDF = np.array(range(len(set01_vuvuzela_3000_Latencies))) / float(len(set01_vuvuzela_3000_Latencies))
+    set01_pung_3000_Latencies = np.sort(set01_pung_3000_Latencies)
+    set01_pung_3000_CDF = np.array(range(len(set01_pung_3000_Latencies))) / float(len(set01_pung_3000_Latencies))
+
+    set02a_zeno_3000_Latencies = np.sort(set02a_zeno_3000_Latencies)
+    set02a_zeno_3000_CDF = np.array(range(len(set02a_zeno_3000_Latencies))) / float(len(set02a_zeno_3000_Latencies))
+    set02a_vuvuzela_3000_Latencies = np.sort(set02a_vuvuzela_3000_Latencies)
+    set02a_vuvuzela_3000_CDF = np.array(range(len(set02a_vuvuzela_3000_Latencies))) / float(len(set02a_vuvuzela_3000_Latencies))
+    set02a_pung_3000_Latencies = np.sort(set02a_pung_3000_Latencies)
+    set02a_pung_3000_CDF = np.array(range(len(set02a_pung_3000_Latencies))) / float(len(set02a_pung_3000_Latencies))
+
+    set02b_zeno_3000_Latencies = np.sort(set02b_zeno_3000_Latencies)
+    set02b_zeno_3000_CDF = np.array(range(len(set02b_zeno_3000_Latencies))) / float(len(set02b_zeno_3000_Latencies))
+    set02b_vuvuzela_3000_Latencies = np.sort(set02b_vuvuzela_3000_Latencies)
+    set02b_vuvuzela_3000_CDF = np.array(range(len(set02b_vuvuzela_3000_Latencies))) / float(len(set02b_vuvuzela_3000_Latencies))
+    set02b_pung_3000_Latencies = np.sort(set02b_pung_3000_Latencies)
+    set02b_pung_3000_CDF = np.array(range(len(set02b_pung_3000_Latencies))) / float(len(set02b_pung_3000_Latencies))
+
+    set03_zeno_3000_Latencies = np.sort(set03_zeno_3000_Latencies)
+    set03_zeno_3000_CDF = np.array(range(len(set03_zeno_3000_Latencies))) / float(len(set03_zeno_3000_Latencies))
+
+
     # Draw plots.
 
-    _, ax = plt.subplots()
-    
-    ax.plot(set02a_pung_1000_Latencies, set02a_pung_1000_CDF, label='pung')
-    ax.plot(set02a_zeno_1000_Latencies, set02a_zeno_1000_CDF, label='zeno')
-    ax.plot(set02a_vuvuzela_1000_Latencies, set02a_vuvuzela_1000_CDF, label='vuvuzela')
+    fig, axes = plt.subplots(3, figsize=(10, 12))
 
-    ax.xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
-    ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
-    ax.set_axisbelow(True)
+    # 1000 clients.
 
-    ax.set_xlim([0.0, x_max])
-    ax.set_ylim([0.0, 1.0])
-    ax.set_yticks((0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0))
+    pung1, = axes[0].plot(set01_pung_1000_Latencies, set01_pung_1000_CDF, label='Pung (no impediments)', color='steelblue')
+    pung2, = axes[0].plot(set02a_pung_1000_Latencies, set02a_pung_1000_CDF, label='Pung (high delay, no failures)', color='dodgerblue')
+    pung3, = axes[0].plot(set02b_pung_1000_Latencies, set02b_pung_1000_CDF, label='Pung (high loss, no failures)', color='skyblue')
 
-    # Add a legend.
-    ax.legend(loc='lower right')
+    zeno1, = axes[0].plot(set01_zeno_1000_Latencies, set01_zeno_1000_CDF, label='zeno (no impediments)', color='gold')
+    zeno2, = axes[0].plot(set02a_zeno_1000_Latencies, set02a_zeno_1000_CDF, label='zeno (high delay, no failures)', color='khaki')
+    zeno3, = axes[0].plot(set02b_zeno_1000_Latencies, set02b_zeno_1000_CDF, label='zeno (high loss, no failures)', color='sandybrown')
+    zeno4, = axes[0].plot(set03_zeno_1000_Latencies, set03_zeno_1000_CDF, label='zeno (high network troubles, failures)', color='orange')
 
-    ax.set_title("CDFs of End-to-End Transmission Latencies on Clients (delay, no failures)")
-    plt.tight_layout()
-    plt.xlabel("End-to-end transmission latency (seconds)")
-    plt.ylabel("Fraction of messages transmitted")
+    vuvuzela1, = axes[0].plot(set01_vuvuzela_1000_Latencies, set01_vuvuzela_1000_CDF, label='Vuvuzela (no impediments)', color='darkseagreen')
+    vuvuzela2, = axes[0].plot(set02a_vuvuzela_1000_Latencies, set02a_vuvuzela_1000_CDF, label='Vuvuzela (high delay, no failures)', color='limegreen')
+    vuvuzela3, = axes[0].plot(set02b_vuvuzela_1000_Latencies, set02b_vuvuzela_1000_CDF, label='Vuvuzela (high loss, no failures)', color='olive')
 
-    plt.savefig(os.path.join(sys.argv[1], "e2e-transmission-latencies.pgf"), bbox_inches='tight')
+    # 2000 clients.
+
+    axes[1].plot(set01_pung_2000_Latencies, set01_pung_2000_CDF, color='steelblue')
+    axes[1].plot(set02a_pung_2000_Latencies, set02a_pung_2000_CDF, color='dodgerblue')
+    axes[1].plot(set02b_pung_2000_Latencies, set02b_pung_2000_CDF, color='skyblue')
+
+    axes[1].plot(set01_zeno_2000_Latencies, set01_zeno_2000_CDF, color='gold')
+    axes[1].plot(set02a_zeno_2000_Latencies, set02a_zeno_2000_CDF, color='khaki')
+    axes[1].plot(set02b_zeno_2000_Latencies, set02b_zeno_2000_CDF, color='sandybrown')
+    axes[1].plot(set03_zeno_2000_Latencies, set03_zeno_2000_CDF, color='orange')
+
+    axes[1].plot(set01_vuvuzela_2000_Latencies, set01_vuvuzela_2000_CDF, color='darkseagreen')
+    axes[1].plot(set02a_vuvuzela_2000_Latencies, set02a_vuvuzela_2000_CDF, color='limegreen')
+    axes[1].plot(set02b_vuvuzela_2000_Latencies, set02b_vuvuzela_2000_CDF, color='olive')
+
+    # 3000 clients.
+
+    axes[2].plot(set01_pung_3000_Latencies, set01_pung_3000_CDF, color='steelblue')
+    axes[2].plot(set02a_pung_3000_Latencies, set02a_pung_3000_CDF, color='dodgerblue')
+    axes[2].plot(set02b_pung_3000_Latencies, set02b_pung_3000_CDF, color='skyblue')
+
+    axes[2].plot(set01_zeno_3000_Latencies, set01_zeno_3000_CDF, color='gold')
+    axes[2].plot(set02a_zeno_3000_Latencies, set02a_zeno_3000_CDF, color='khaki')
+    axes[2].plot(set02b_zeno_3000_Latencies, set02b_zeno_3000_CDF, color='sandybrown')
+    axes[2].plot(set03_zeno_3000_Latencies, set03_zeno_3000_CDF, color='orange')
+
+    axes[2].plot(set01_vuvuzela_3000_Latencies, set01_vuvuzela_3000_CDF, color='darkseagreen')
+    axes[2].plot(set02a_vuvuzela_3000_Latencies, set02a_vuvuzela_3000_CDF, color='limegreen')
+    axes[2].plot(set02b_vuvuzela_3000_Latencies, set02b_vuvuzela_3000_CDF, color='olive')
+
+
+    axes[0].xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    axes[0].yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    axes[0].set_axisbelow(True)
+
+    axes[1].xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    axes[1].yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    axes[1].set_axisbelow(True)
+
+    axes[2].xaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    axes[2].yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
+    axes[2].set_axisbelow(True)
+
+    axes[0].set_xlim([x_min, x_max])
+    axes[0].set_ylim([0.0, 1.0])
+    axes[0].set_yticks((0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0))
+
+    axes[1].set_xlim([x_min, x_max])
+    axes[1].set_ylim([0.0, 1.0])
+    axes[1].set_yticks((0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0))
+
+    axes[2].set_xlim([x_min, x_max])
+    axes[2].set_ylim([0.0, 1.0])
+    axes[2].set_yticks((0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0))
+
+    axes[0].set_title("1,000 clients")
+    axes[1].set_title("2,000 clients")
+    axes[2].set_title("3,000 clients")
+    fig.suptitle(t="CDFs of End-to-End Transmission Latencies on Clients", y=1.02, fontsize=16)
+
+    axes[0].set_xlabel("End-to-end transmission latency (seconds)")
+    axes[0].set_ylabel("Fraction of messages transmitted")
+    axes[1].set_xlabel("End-to-end transmission latency (seconds)")
+    axes[1].set_ylabel("Fraction of messages transmitted")
+    axes[2].set_xlabel("End-to-end transmission latency (seconds)")
+    axes[2].set_ylabel("Fraction of messages transmitted")
+
+    # Add legends.
+    box = axes[2].get_position()
+    pung_legend = fig.legend(handles=[pung1, pung2, pung3], loc="upper left", bbox_to_anchor=((box.x0 - 0.071), 0.), bbox_transform=plt.gcf().transFigure)
+    zeno_legend = fig.legend(handles=[zeno1, zeno2, zeno3, zeno4], loc="upper center", bbox_to_anchor=((box.width / 2.0) + box.x0, 0.), bbox_transform=plt.gcf().transFigure)
+    fig.gca().add_artist(pung_legend)
+    fig.gca().add_artist(zeno_legend)
+    fig.legend(handles=[vuvuzela1, vuvuzela2, vuvuzela3], loc="upper right", bbox_to_anchor=((box.x1 + 0.091), 0.), bbox_transform=plt.gcf().transFigure)
+
+    fig.set_tight_layout(True)
+    plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
+
+    # plt.savefig(os.path.join(sys.argv[1], "e2e-transmission-latencies.pgf"), bbox_inches='tight')
     plt.savefig(os.path.join(sys.argv[1], "e2e-transmission-latencies.pdf"), bbox_inches='tight')
 
 
-def compileMessagesPerMix():
-
-    global metrics
-
-    for setting in metrics:
-
-        for numClients in {"0500", "1000"}:
-
-            for run in {"Run01", "Run02", "Run03"}:
-
-                outputFile = os.path.join(os.path.dirname(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run]), "message-count-per-server_first-to-last-round.pgf")
-
-                labels = []
-                data = []
-                with open(metrics[setting]["zeno"][numClients]["MessagesPerMix"][run], newline='') as dataFile:
-                    reader = csv.reader(dataFile, delimiter=',')
-                    for idx, row in enumerate(reader):
-                        if idx == 0:
-                            labels = row
-                        else:
-                            data.append(list(map(int, row)))
-
-                flat_data = [count for mix in data for count in mix]
-                y_max = np.ceil(max(flat_data) * 1.07)
-
-                x_max = len(data[0])
-                for msgCounts in data:
-                    if len(msgCounts) > x_max:
-                        x_max = len(msgCounts)
-
-                _, ax = plt.subplots()
-
-                ax.set_xlim([0, x_max])
-                ax.set_ylim([0, y_max])
-
-                for idx, msgCounts in enumerate(data):
-                    plt.plot(msgCounts, "-", label=labels[idx], markersize=2.0, color=np.random.rand(3,))
-
-                boxOfPlot = ax.get_position()
-                ax.set_position([boxOfPlot.x0, boxOfPlot.y0, (boxOfPlot.width * 0.8), boxOfPlot.height])
-                ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize='small')
-
-                ax.get_yaxis().set_major_formatter(matplotlib.ticker.FuncFormatter(lambda x, p: format(int(x), ',')))
-
-                plt.grid()
-                plt.tight_layout()
-
-                plt.xlabel("Round number")
-                plt.ylabel("Message count")
-
-                plt.savefig(outputFile, bbox_inches='tight')
 
 # Create all figures.
 
@@ -2126,8 +2526,4 @@ compileTrafficServers()
 # compileLoadMemServers()
 
 # Build message latencies figure.
-# compileLatencies()
-
-# Build figures describing the number of
-# messages in each mix server over rounds.
-# compileMessagesPerMix()
+compileLatencies()

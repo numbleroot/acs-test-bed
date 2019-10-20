@@ -106,8 +106,6 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 			runPath, int(run.NumClients), len(run.Latencies))
 	}
 
-	fmt.Printf("Done adding clients latency for '%s'\n", runPath)
-
 	// Read in highest value for number of outgoing
 	// bytes on each client.
 	err = run.AddHighestSentBytes(clientsPath, true)
@@ -115,8 +113,6 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 		fmt.Printf("Ingesting clients sent mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
-
-	fmt.Printf("Done adding clients sent bytes for '%s'\n", runPath)
 
 	// Read in highest value for number of incoming
 	// bytes on each client.
@@ -126,15 +122,11 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding clients received bytes for '%s'\n", runPath)
-
 	err = run.AddCPULoad(clientsPath, true)
 	if err != nil {
 		fmt.Printf("Ingesting clients CPU load metrics failed: %v\n", err)
 		os.Exit(1)
 	}
-
-	fmt.Printf("Done adding clients CPU load for '%s'\n", runPath)
 
 	err = run.AddMemLoad(clientsPath, true)
 	if err != nil {
@@ -142,15 +134,11 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding clients mem load for '%s'\n", runPath)
-
 	err = run.AddHighestSentBytes(serversPath, false)
 	if err != nil {
 		fmt.Printf("Ingesting servers sent mebibytes metrics failed: %v\n", err)
 		os.Exit(1)
 	}
-
-	fmt.Printf("Done adding servers sent bytes for '%s'\n", runPath)
 
 	err = run.AddHighestRecvdBytes(serversPath, false)
 	if err != nil {
@@ -158,23 +146,17 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers received bytes for '%s'\n", runPath)
-
 	err = run.AddCPULoad(serversPath, false)
 	if err != nil {
 		fmt.Printf("Ingesting servers CPU load metrics failed: %v\n", err)
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers CPU load for '%s'\n", runPath)
-
 	err = run.AddMemLoad(serversPath, false)
 	if err != nil {
 		fmt.Printf("Ingesting servers memory load metrics failed: %v\n", err)
 		os.Exit(1)
 	}
-
-	fmt.Printf("Done adding servers mem load for '%s'\n", runPath)
 
 	// If this is zeno being evaluated, also read
 	// in metrics about the number of messages in
@@ -185,8 +167,7 @@ func (set *Setting) AppendRun(runPath string, numServers float64, numClients flo
 		os.Exit(1)
 	}
 
-	fmt.Printf("Done adding servers messages per mix for '%s'\n", runPath)
-	fmt.Printf("In this run: %d/%d latencies negative (impossible)\n\n", run.NegativeLatenciesCnt, (int64(len(run.Latencies)) * numMsgsToCalc))
+	fmt.Printf("Run '%s': %d/%d latencies negative\n", runPath, run.NegativeLatenciesCnt, (int64(len(run.Latencies)) * numMsgsToCalc))
 
 	// Append newly created run to all runs.
 	set.Runs = append(set.Runs, run)
@@ -204,15 +185,11 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	fmt.Printf("Done writing bandwidth to file for %s\n", settingsPath)
-
 	// Write load data for clients and servers.
 	err = set.LoadToFiles(settingsPath)
 	if err != nil {
 		return err
 	}
-
-	fmt.Printf("Done writing load to file for %s\n", settingsPath)
 
 	// Write message latencies for clients.
 	err = set.LatenciesToFile(settingsPath)
@@ -220,15 +197,11 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 		return err
 	}
 
-	fmt.Printf("Done writing latencies to file for %s\n", settingsPath)
-
 	// Write total experiment times for clients.
 	err = set.TotalExpTimesToFile(settingsPath)
 	if err != nil {
 		return err
 	}
-
-	fmt.Printf("Done writing total experiment times to file for %s\n", settingsPath)
 
 	// Write messages-per-mix data for mix nodes
 	// in a zeno evaluation.
@@ -236,8 +209,6 @@ func (set *Setting) MetricsToFiles(settingsPath string) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Printf("Done writing messages per mix on zeno to file for %s\n\n", settingsPath)
 
 	return nil
 }
