@@ -1650,8 +1650,8 @@ def compileLoadCPUClients():
     ax.set_xlim([0, 33])
     ax.set_xticks((5.5, 16.5, 27.5))
     ax.set_xticklabels(('1,000 clients', '2,000 clients', '3,000 clients'))
-    # ax.set_ylim([0.0, 50.0])
-    # ax.set_yticks([0, 10, 20, 30, 40, 50, 50])
+    ax.set_ylim([0.0, 20.0])
+    ax.set_yticks([0, 5, 10, 15, 20])
 
     # Add a legend.
     ax.legend([
@@ -1677,8 +1677,9 @@ def compileLoadCPUClients():
         'pung (high delay, no failures)',
         'pung (high loss, no failures)'
     ],
-    loc='upper left')
-    ax.set_title("Computational Load per Physical Node (10 Logical Clients)")
+    loc='upper center',
+    ncol=3)
+    ax.set_title("Computational Load per Physical Client (10 Logical Clients)")
 
     plt.tight_layout()
     plt.xlabel("Number of clients")
@@ -1724,14 +1725,14 @@ def compileLoadMemClients():
         for row in reader:
             for item in row:
                 set02a_zeno_1000_Load_Mem.append(float(item))
-    
+
     set02a_vuvuzela_1000_Load_Mem = []
     with open(metrics["02a"]["vuvuzela"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
                 set02a_vuvuzela_1000_Load_Mem.append(float(item))
-    
+
     set02a_pung_1000_Load_Mem = []
     with open(metrics["02a"]["pung"]["1000"]["Load"]["Clients"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
@@ -2034,8 +2035,8 @@ def compileLoadMemClients():
     ax.set_xlim([0, 33])
     ax.set_xticks((5.5, 16.5, 27.5))
     ax.set_xticklabels(('1,000 clients', '2,000 clients', '3,000 clients'))
-    # ax.set_ylim([0.0, 50.0])
-    # ax.set_yticks([0, 10, 20, 30, 40, 50, 50])
+    ax.set_ylim([500.0, 3000.0])
+    ax.set_yticks([500, 1000, 1500, 2000, 2500, 3000])
 
     # Add a legend.
     ax.legend([
@@ -2061,8 +2062,9 @@ def compileLoadMemClients():
         'pung (high delay, no failures)',
         'pung (high loss, no failures)'
     ],
-    loc='upper left')
-    ax.set_title("Memory Load per Physical Node (10 Logical Clients)")
+    loc='upper center',
+    ncol=3)
+    ax.set_title("Memory Load per Physical Client (10 Logical Clients)")
 
     plt.tight_layout()
     plt.xlabel("Number of clients")
@@ -2078,19 +2080,7 @@ def compileLoadCPUServers():
 
     # Ingest data.
 
-    set01_zeno_0500_Load_CPU = []
-    with open(metrics["01"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set01_zeno_0500_Load_CPU.append(float(item))
-
-    set01_pung_0500_Load_CPU = []
-    with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set01_pung_0500_Load_CPU.append(float(item))
+    # 1000 clients.
 
     set01_zeno_1000_Load_CPU = []
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
@@ -2098,7 +2088,14 @@ def compileLoadCPUServers():
         for row in reader:
             for item in row:
                 set01_zeno_1000_Load_CPU.append(float(item))
-
+    
+    set01_vuvuzela_1000_Load_CPU = []
+    with open(metrics["01"]["vuvuzela"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_vuvuzela_1000_Load_CPU.append(float(item))
+    
     set01_pung_1000_Load_CPU = []
     with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
@@ -2106,26 +2103,50 @@ def compileLoadCPUServers():
             for item in row:
                 set01_pung_1000_Load_CPU.append(float(item))
 
-    set02_zeno_0500_Load_CPU = []
-    with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set02_zeno_0500_Load_CPU.append(float(item))
 
-    set02_zeno_1000_Load_CPU = []
-    with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+    set02a_zeno_1000_Load_CPU = []
+    with open(metrics["02a"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set02_zeno_1000_Load_CPU.append(float(item))
+                set02a_zeno_1000_Load_CPU.append(float(item))
+    
+    set02a_vuvuzela_1000_Load_CPU = []
+    with open(metrics["02a"]["vuvuzela"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_vuvuzela_1000_Load_CPU.append(float(item))
+    
+    set02a_pung_1000_Load_CPU = []
+    with open(metrics["02a"]["pung"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_pung_1000_Load_CPU.append(float(item))
 
-    set03_zeno_0500_Load_CPU = []
-    with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+
+    set02b_zeno_1000_Load_CPU = []
+    with open(metrics["02b"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set03_zeno_0500_Load_CPU.append(float(item))
+                set02b_zeno_1000_Load_CPU.append(float(item))
+    
+    set02b_vuvuzela_1000_Load_CPU = []
+    with open(metrics["02b"]["vuvuzela"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_vuvuzela_1000_Load_CPU.append(float(item))
+    
+    set02b_pung_1000_Load_CPU = []
+    with open(metrics["02b"]["pung"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_pung_1000_Load_CPU.append(float(item))
+
 
     set03_zeno_1000_Load_CPU = []
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
@@ -2134,99 +2155,284 @@ def compileLoadCPUServers():
             for item in row:
                 set03_zeno_1000_Load_CPU.append(float(item))
 
-    set04_zeno_0500_Load_CPU = []
-    with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set04_zeno_0500_Load_CPU.append(float(item))
 
-    set04_zeno_1000_Load_CPU = []
-    with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+    # 2000 clients.
+
+    set01_zeno_2000_Load_CPU = []
+    with open(metrics["01"]["zeno"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set04_zeno_1000_Load_CPU.append(float(item))
+                set01_zeno_2000_Load_CPU.append(float(item))
+    
+    set01_vuvuzela_2000_Load_CPU = []
+    with open(metrics["01"]["vuvuzela"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_vuvuzela_2000_Load_CPU.append(float(item))
+    
+    set01_pung_2000_Load_CPU = []
+    with open(metrics["01"]["pung"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_pung_2000_Load_CPU.append(float(item))
+
+
+    set02a_zeno_2000_Load_CPU = []
+    with open(metrics["02a"]["zeno"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_zeno_2000_Load_CPU.append(float(item))
+    
+    set02a_vuvuzela_2000_Load_CPU = []
+    with open(metrics["02a"]["vuvuzela"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_vuvuzela_2000_Load_CPU.append(float(item))
+    
+    set02a_pung_2000_Load_CPU = []
+    with open(metrics["02a"]["pung"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_pung_2000_Load_CPU.append(float(item))
+
+
+    set02b_zeno_2000_Load_CPU = []
+    with open(metrics["02b"]["zeno"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_zeno_2000_Load_CPU.append(float(item))
+    
+    set02b_vuvuzela_2000_Load_CPU = []
+    with open(metrics["02b"]["vuvuzela"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_vuvuzela_2000_Load_CPU.append(float(item))
+    
+    set02b_pung_2000_Load_CPU = []
+    with open(metrics["02b"]["pung"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_pung_2000_Load_CPU.append(float(item))
+
+
+    set03_zeno_2000_Load_CPU = []
+    with open(metrics["03"]["zeno"]["2000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set03_zeno_2000_Load_CPU.append(float(item))
+
+
+    # 3000 clients.
+
+    set01_zeno_3000_Load_CPU = []
+    with open(metrics["01"]["zeno"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_zeno_3000_Load_CPU.append(float(item))
+    
+    set01_vuvuzela_3000_Load_CPU = []
+    with open(metrics["01"]["vuvuzela"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_vuvuzela_3000_Load_CPU.append(float(item))
+    
+    set01_pung_3000_Load_CPU = []
+    with open(metrics["01"]["pung"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_pung_3000_Load_CPU.append(float(item))
+
+
+    set02a_zeno_3000_Load_CPU = []
+    with open(metrics["02a"]["zeno"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_zeno_3000_Load_CPU.append(float(item))
+    
+    set02a_vuvuzela_3000_Load_CPU = []
+    with open(metrics["02a"]["vuvuzela"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_vuvuzela_3000_Load_CPU.append(float(item))
+    
+    set02a_pung_3000_Load_CPU = []
+    with open(metrics["02a"]["pung"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_pung_3000_Load_CPU.append(float(item))
+
+
+    set02b_zeno_3000_Load_CPU = []
+    with open(metrics["02b"]["zeno"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_zeno_3000_Load_CPU.append(float(item))
+    
+    set02b_vuvuzela_3000_Load_CPU = []
+    with open(metrics["02b"]["vuvuzela"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_vuvuzela_3000_Load_CPU.append(float(item))
+    
+    set02b_pung_3000_Load_CPU = []
+    with open(metrics["02b"]["pung"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_pung_3000_Load_CPU.append(float(item))
+
+
+    set03_zeno_3000_Load_CPU = []
+    with open(metrics["03"]["zeno"]["3000"]["Load"]["Servers"]["CPU"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set03_zeno_3000_Load_CPU.append(float(item))
 
     # Draw plots.
 
     width = 0.9
 
-    _, ax = plt.subplots()
+    _, ax = plt.subplots(figsize=(14, 5))
 
-    set01_zeno01 = ax.boxplot(set01_zeno_0500_Load_CPU, positions=[1], widths=width, patch_artist=True, whis='range')
-    set02_zeno01 = ax.boxplot(set02_zeno_0500_Load_CPU, positions=[2], widths=width, patch_artist=True, whis='range')
-    set03_zeno01 = ax.boxplot(set03_zeno_0500_Load_CPU, positions=[3], widths=width, patch_artist=True, whis='range')
-    set04_zeno01 = ax.boxplot(set04_zeno_0500_Load_CPU, positions=[4], widths=width, patch_artist=True, whis='range')
-    set01_pung01 = ax.boxplot(set01_pung_0500_Load_CPU, positions=[5], widths=width, patch_artist=True, whis='range')
-    set01_zeno03 = ax.boxplot(set01_zeno_1000_Load_CPU, positions=[7], widths=width, patch_artist=True, whis='range')
-    set02_zeno03 = ax.boxplot(set02_zeno_1000_Load_CPU, positions=[8], widths=width, patch_artist=True, whis='range')
-    set03_zeno03 = ax.boxplot(set03_zeno_1000_Load_CPU, positions=[9], widths=width, patch_artist=True, whis='range')
-    set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_CPU, positions=[10], widths=width, patch_artist=True, whis='range')
-    set01_pung03 = ax.boxplot(set01_pung_1000_Load_CPU, positions=[11], widths=width, patch_artist=True, whis='range')
+    set01_zeno1 = ax.boxplot(set01_zeno_1000_Load_CPU, positions=[1], widths=width, patch_artist=True, whis='range')
+    set02a_zeno1 = ax.boxplot(set02a_zeno_1000_Load_CPU, positions=[2], widths=width, patch_artist=True, whis='range')
+    set02b_zeno1 = ax.boxplot(set02b_zeno_1000_Load_CPU, positions=[3], widths=width, patch_artist=True, whis='range')
+    set03_zeno1 = ax.boxplot(set03_zeno_1000_Load_CPU, positions=[4], widths=width, patch_artist=True, whis='range')
+    set01_vuvuzela1 = ax.boxplot(set01_vuvuzela_1000_Load_CPU, positions=[5], widths=width, patch_artist=True, whis='range')
+    set02a_vuvuzela1 = ax.boxplot(set02a_vuvuzela_1000_Load_CPU, positions=[6], widths=width, patch_artist=True, whis='range')
+    set02b_vuvuzela1 = ax.boxplot(set02b_vuvuzela_1000_Load_CPU, positions=[7], widths=width, patch_artist=True, whis='range')
+    set01_pung1 = ax.boxplot(set01_pung_1000_Load_CPU, positions=[8], widths=width, patch_artist=True, whis='range')
+    set02a_pung1 = ax.boxplot(set02a_pung_1000_Load_CPU, positions=[9], widths=width, patch_artist=True, whis='range')
+    set02b_pung1 = ax.boxplot(set02b_pung_1000_Load_CPU, positions=[10], widths=width, patch_artist=True, whis='range')
+
+    set01_zeno2 = ax.boxplot(set01_zeno_2000_Load_CPU, positions=[12], widths=width, patch_artist=True, whis='range')
+    set02a_zeno2 = ax.boxplot(set02a_zeno_2000_Load_CPU, positions=[13], widths=width, patch_artist=True, whis='range')
+    set02b_zeno2 = ax.boxplot(set02b_zeno_2000_Load_CPU, positions=[14], widths=width, patch_artist=True, whis='range')
+    set03_zeno2 = ax.boxplot(set03_zeno_2000_Load_CPU, positions=[15], widths=width, patch_artist=True, whis='range')
+    set01_vuvuzela2 = ax.boxplot(set01_vuvuzela_2000_Load_CPU, positions=[16], widths=width, patch_artist=True, whis='range')
+    set02a_vuvuzela2 = ax.boxplot(set02a_vuvuzela_2000_Load_CPU, positions=[17], widths=width, patch_artist=True, whis='range')
+    set02b_vuvuzela2 = ax.boxplot(set02b_vuvuzela_2000_Load_CPU, positions=[18], widths=width, patch_artist=True, whis='range')
+    set01_pung2 = ax.boxplot(set01_pung_2000_Load_CPU, positions=[19], widths=width, patch_artist=True, whis='range')
+    set02a_pung2 = ax.boxplot(set02a_pung_2000_Load_CPU, positions=[20], widths=width, patch_artist=True, whis='range')
+    set02b_pung2 = ax.boxplot(set02b_pung_2000_Load_CPU, positions=[21], widths=width, patch_artist=True, whis='range')
+
+    set01_zeno3 = ax.boxplot(set01_zeno_3000_Load_CPU, positions=[23], widths=width, patch_artist=True, whis='range')
+    set02a_zeno3 = ax.boxplot(set02a_zeno_3000_Load_CPU, positions=[24], widths=width, patch_artist=True, whis='range')
+    set02b_zeno3 = ax.boxplot(set02b_zeno_3000_Load_CPU, positions=[25], widths=width, patch_artist=True, whis='range')
+    set03_zeno3 = ax.boxplot(set03_zeno_3000_Load_CPU, positions=[26], widths=width, patch_artist=True, whis='range')
+    set01_vuvuzela3 = ax.boxplot(set01_vuvuzela_3000_Load_CPU, positions=[27], widths=width, patch_artist=True, whis='range')
+    set02a_vuvuzela3 = ax.boxplot(set02a_vuvuzela_3000_Load_CPU, positions=[28], widths=width, patch_artist=True, whis='range')
+    set02b_vuvuzela3 = ax.boxplot(set02b_vuvuzela_3000_Load_CPU, positions=[29], widths=width, patch_artist=True, whis='range')
+    set01_pung3 = ax.boxplot(set01_pung_3000_Load_CPU, positions=[30], widths=width, patch_artist=True, whis='range')
+    set02a_pung3 = ax.boxplot(set02a_pung_3000_Load_CPU, positions=[31], widths=width, patch_artist=True, whis='range')
+    set02b_pung3 = ax.boxplot(set02b_pung_3000_Load_CPU, positions=[32], widths=width, patch_artist=True, whis='range')
+
 
     # Color boxplots.
 
-    setp(set01_zeno01['boxes'], color='black')
-    setp(set01_zeno01['boxes'], facecolor='gold')
-    setp(set01_zeno01['boxes'], hatch='/')
+    setp(set01_zeno1['boxes'], color='black'); setp(set01_zeno2['boxes'], color='black'); setp(set01_zeno3['boxes'], color='black')
+    setp(set01_zeno1['boxes'], facecolor='gold'); setp(set01_zeno2['boxes'], facecolor='gold'); setp(set01_zeno3['boxes'], facecolor='gold')
+    setp(set01_zeno1['boxes'], hatch='/'); setp(set01_zeno2['boxes'], hatch='/'); setp(set01_zeno3['boxes'], hatch='/')
 
-    setp(set02_zeno01['boxes'], color='black')
-    setp(set02_zeno01['boxes'], facecolor='gold')
-    setp(set02_zeno01['boxes'], hatch='x')
+    setp(set02a_zeno1['boxes'], color='black'); setp(set02a_zeno2['boxes'], color='black'); setp(set02a_zeno3['boxes'], color='black')
+    setp(set02a_zeno1['boxes'], facecolor='gold'); setp(set02a_zeno2['boxes'], facecolor='gold'); setp(set02a_zeno3['boxes'], facecolor='gold')
+    setp(set02a_zeno1['boxes'], hatch='//'); setp(set02a_zeno2['boxes'], hatch='//'); setp(set02a_zeno3['boxes'], hatch='//')
 
-    setp(set03_zeno01['boxes'], color='black')
-    setp(set03_zeno01['boxes'], facecolor='gold')
-    setp(set03_zeno01['boxes'], hatch='o')
+    setp(set02b_zeno1['boxes'], color='black'); setp(set02b_zeno2['boxes'], color='black'); setp(set02b_zeno3['boxes'], color='black')
+    setp(set02b_zeno1['boxes'], facecolor='gold'); setp(set02b_zeno2['boxes'], facecolor='gold'); setp(set02b_zeno3['boxes'], facecolor='gold')
+    setp(set02b_zeno1['boxes'], hatch='+'); setp(set02b_zeno2['boxes'], hatch='+'); setp(set02b_zeno3['boxes'], hatch='+')
 
-    setp(set04_zeno01['boxes'], color='black')
-    setp(set04_zeno01['boxes'], facecolor='gold')
-    setp(set04_zeno01['boxes'], hatch='+')
+    setp(set03_zeno1['boxes'], color='black'); setp(set03_zeno2['boxes'], color='black'); setp(set03_zeno3['boxes'], color='black')
+    setp(set03_zeno1['boxes'], facecolor='gold'); setp(set03_zeno2['boxes'], facecolor='gold'); setp(set03_zeno3['boxes'], facecolor='gold')
+    setp(set03_zeno1['boxes'], hatch='.'); setp(set03_zeno2['boxes'], hatch='.'); setp(set03_zeno3['boxes'], hatch='.')
 
-    setp(set01_pung01['boxes'], color='black')
-    setp(set01_pung01['boxes'], facecolor='steelblue')
-    setp(set01_pung01['boxes'], hatch='\\')
+    setp(set01_vuvuzela1['boxes'], color='black'); setp(set01_vuvuzela2['boxes'], color='black'); setp(set01_vuvuzela3['boxes'], color='black')
+    setp(set01_vuvuzela1['boxes'], facecolor='darkseagreen'); setp(set01_vuvuzela2['boxes'], facecolor='darkseagreen'); setp(set01_vuvuzela3['boxes'], facecolor='darkseagreen')
+    setp(set01_vuvuzela1['boxes'], hatch='\\'); setp(set01_vuvuzela2['boxes'], hatch='\\'); setp(set01_vuvuzela3['boxes'], hatch='\\')
 
-    setp(set01_zeno03['boxes'], color='black')
-    setp(set01_zeno03['boxes'], facecolor='gold')
-    setp(set01_zeno03['boxes'], hatch='/')
+    setp(set02a_vuvuzela1['boxes'], color='black'); setp(set02a_vuvuzela2['boxes'], color='black'); setp(set02a_vuvuzela3['boxes'], color='black')
+    setp(set02a_vuvuzela1['boxes'], facecolor='darkseagreen'); setp(set02a_vuvuzela2['boxes'], facecolor='darkseagreen'); setp(set02a_vuvuzela3['boxes'], facecolor='darkseagreen')
+    setp(set02a_vuvuzela1['boxes'], hatch='\\\\'); setp(set02a_vuvuzela2['boxes'], hatch='\\\\'); setp(set02a_vuvuzela3['boxes'], hatch='\\\\')
 
-    setp(set02_zeno03['boxes'], color='black')
-    setp(set02_zeno03['boxes'], facecolor='gold')
-    setp(set02_zeno03['boxes'], hatch='x')
+    setp(set02b_vuvuzela1['boxes'], color='black'); setp(set02b_vuvuzela2['boxes'], color='black'); setp(set02b_vuvuzela3['boxes'], color='black')
+    setp(set02b_vuvuzela1['boxes'], facecolor='darkseagreen'); setp(set02b_vuvuzela2['boxes'], facecolor='darkseagreen'); setp(set02b_vuvuzela3['boxes'], facecolor='darkseagreen')
+    setp(set02b_vuvuzela1['boxes'], hatch='-'); setp(set02b_vuvuzela2['boxes'], hatch='-'); setp(set02b_vuvuzela3['boxes'], hatch='-')
 
-    setp(set03_zeno03['boxes'], color='black')
-    setp(set03_zeno03['boxes'], facecolor='gold')
-    setp(set03_zeno03['boxes'], hatch='o')
+    setp(set01_pung1['boxes'], color='black'); setp(set01_pung2['boxes'], color='black'); setp(set01_pung3['boxes'], color='black')
+    setp(set01_pung1['boxes'], facecolor='steelblue'); setp(set01_pung2['boxes'], facecolor='steelblue'); setp(set01_pung3['boxes'], facecolor='steelblue')
+    setp(set01_pung1['boxes'], hatch='x'); setp(set01_pung2['boxes'], hatch='x'); setp(set01_pung3['boxes'], hatch='x')
 
-    setp(set04_zeno03['boxes'], color='black')
-    setp(set04_zeno03['boxes'], facecolor='gold')
-    setp(set04_zeno03['boxes'], hatch='+')
+    setp(set02a_pung1['boxes'], color='black'); setp(set02a_pung2['boxes'], color='black'); setp(set02a_pung3['boxes'], color='black')
+    setp(set02a_pung1['boxes'], facecolor='steelblue'); setp(set02a_pung2['boxes'], facecolor='steelblue'); setp(set02a_pung3['boxes'], facecolor='steelblue')
+    setp(set02a_pung1['boxes'], hatch='o'); setp(set02a_pung2['boxes'], hatch='o'); setp(set02a_pung3['boxes'], hatch='o')
 
-    setp(set01_pung03['boxes'], color='black')
-    setp(set01_pung03['boxes'], facecolor='steelblue')
-    setp(set01_pung03['boxes'], hatch='\\')
+    setp(set02b_pung1['boxes'], color='black'); setp(set02b_pung2['boxes'], color='black'); setp(set02b_pung3['boxes'], color='black')
+    setp(set02b_pung1['boxes'], facecolor='steelblue'); setp(set02b_pung2['boxes'], facecolor='steelblue'); setp(set02b_pung3['boxes'], facecolor='steelblue')
+    setp(set02b_pung1['boxes'], hatch='*'); setp(set02b_pung2['boxes'], hatch='*'); setp(set02b_pung3['boxes'], hatch='*')
+
 
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
-    ax.set_xlim([0, 12])
-    ax.set_ylim([0.0, 50.0])
-    ax.set_xticks((3, 9))
-    ax.set_yticks([0, 10, 20, 30, 40, 50])
-    ax.set_xticklabels(('500 clients', '1,000 clients'))
+    ax.set_xlim([0, 33])
+    ax.set_xticks((5.5, 16.5, 27.5))
+    ax.set_xticklabels(('1,000 clients', '2,000 clients', '3,000 clients'))
+    ax.set_ylim([0.0, 120.0])
+    ax.set_yticks([0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100])
 
     # Add a legend.
-    ax.legend([set01_zeno01['boxes'][0], set02_zeno01['boxes'][0], set03_zeno01['boxes'][0],
-        set04_zeno01['boxes'][0], set01_pung01['boxes'][0]], ['zeno (tc off, no failures)',
-        'zeno (tc on, no failures)', 'zeno (tc off, mix failure)', 'zeno (tc on, mix failure)',
-        'pung (tc off, no failures)'], loc='upper left')
+    ax.legend([
+        set01_zeno1['boxes'][0],
+        set02a_zeno1['boxes'][0],
+        set02b_zeno1['boxes'][0],
+        set03_zeno1['boxes'][0],
+        set01_vuvuzela1['boxes'][0],
+        set02a_vuvuzela1['boxes'][0],
+        set02b_vuvuzela1['boxes'][0],
+        set01_pung1['boxes'][0],
+        set02a_pung1['boxes'][0],
+        set02b_pung1['boxes'][0]
+    ], [
+        'zeno (no impediments)',
+        'zeno (high delay, no failures)',
+        'zeno (high loss, no failures)',
+        'zeno (high network troubles, failures)',
+        'vuvuzela (no impediments)',
+        'vuvuzela (high delay, no failures)',
+        'vuvuzela (high loss, no failures)',
+        'pung (no impediments)',
+        'pung (high delay, no failures)',
+        'pung (high loss, no failures)'
+    ],
+    loc='upper center',
+    ncol=3)
+    ax.set_title("Computational Load per Server")
 
     plt.tight_layout()
     plt.xlabel("Number of clients")
     plt.ylabel("Busy CPU (percentage)")
 
-    plt.savefig(os.path.join(sys.argv[1], "cpu-busy_servers.pgf"), bbox_inches='tight')
+    # plt.savefig(os.path.join(sys.argv[1], "cpu-busy_servers.pgf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "cpu-busy_servers.pdf"), bbox_inches='tight')
 
 
 def compileLoadMemServers():
@@ -2235,19 +2441,7 @@ def compileLoadMemServers():
 
     # Ingest data.
 
-    set01_zeno_0500_Load_Mem = []
-    with open(metrics["01"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set01_zeno_0500_Load_Mem.append(float(item))
-
-    set01_pung_0500_Load_Mem = []
-    with open(metrics["01"]["pung"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set01_pung_0500_Load_Mem.append(float(item))
+    # 1000 clients.
 
     set01_zeno_1000_Load_Mem = []
     with open(metrics["01"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -2255,7 +2449,14 @@ def compileLoadMemServers():
         for row in reader:
             for item in row:
                 set01_zeno_1000_Load_Mem.append(float(item))
-
+    
+    set01_vuvuzela_1000_Load_Mem = []
+    with open(metrics["01"]["vuvuzela"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_vuvuzela_1000_Load_Mem.append(float(item))
+    
     set01_pung_1000_Load_Mem = []
     with open(metrics["01"]["pung"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
@@ -2263,26 +2464,50 @@ def compileLoadMemServers():
             for item in row:
                 set01_pung_1000_Load_Mem.append(float(item))
 
-    set02_zeno_0500_Load_Mem = []
-    with open(metrics["02"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set02_zeno_0500_Load_Mem.append(float(item))
 
-    set02_zeno_1000_Load_Mem = []
-    with open(metrics["02"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+    set02a_zeno_1000_Load_Mem = []
+    with open(metrics["02a"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set02_zeno_1000_Load_Mem.append(float(item))
+                set02a_zeno_1000_Load_Mem.append(float(item))
 
-    set03_zeno_0500_Load_Mem = []
-    with open(metrics["03"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+    set02a_vuvuzela_1000_Load_Mem = []
+    with open(metrics["02a"]["vuvuzela"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set03_zeno_0500_Load_Mem.append(float(item))
+                set02a_vuvuzela_1000_Load_Mem.append(float(item))
+
+    set02a_pung_1000_Load_Mem = []
+    with open(metrics["02a"]["pung"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_pung_1000_Load_Mem.append(float(item))
+
+
+    set02b_zeno_1000_Load_Mem = []
+    with open(metrics["02b"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_zeno_1000_Load_Mem.append(float(item))
+    
+    set02b_vuvuzela_1000_Load_Mem = []
+    with open(metrics["02b"]["vuvuzela"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_vuvuzela_1000_Load_Mem.append(float(item))
+    
+    set02b_pung_1000_Load_Mem = []
+    with open(metrics["02b"]["pung"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_pung_1000_Load_Mem.append(float(item))
+
 
     set03_zeno_1000_Load_Mem = []
     with open(metrics["03"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
@@ -2291,41 +2516,211 @@ def compileLoadMemServers():
             for item in row:
                 set03_zeno_1000_Load_Mem.append(float(item))
 
-    set04_zeno_0500_Load_Mem = []
-    with open(metrics["04"]["zeno"]["0500"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
-        reader = csv.reader(dataFile, delimiter=',')
-        for row in reader:
-            for item in row:
-                set04_zeno_0500_Load_Mem.append(float(item))
 
-    set04_zeno_1000_Load_Mem = []
-    with open(metrics["04"]["zeno"]["1000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+    # 2000 clients.
+
+    set01_zeno_2000_Load_Mem = []
+    with open(metrics["01"]["zeno"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
         reader = csv.reader(dataFile, delimiter=',')
         for row in reader:
             for item in row:
-                set04_zeno_1000_Load_Mem.append(float(item))
+                set01_zeno_2000_Load_Mem.append(float(item))
+    
+    set01_vuvuzela_2000_Load_Mem = []
+    with open(metrics["01"]["vuvuzela"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_vuvuzela_2000_Load_Mem.append(float(item))
+    
+    set01_pung_2000_Load_Mem = []
+    with open(metrics["01"]["pung"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_pung_2000_Load_Mem.append(float(item))
+
+
+    set02a_zeno_2000_Load_Mem = []
+    with open(metrics["02a"]["zeno"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_zeno_2000_Load_Mem.append(float(item))
+    
+    set02a_vuvuzela_2000_Load_Mem = []
+    with open(metrics["02a"]["vuvuzela"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_vuvuzela_2000_Load_Mem.append(float(item))
+    
+    set02a_pung_2000_Load_Mem = []
+    with open(metrics["02a"]["pung"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_pung_2000_Load_Mem.append(float(item))
+
+
+    set02b_zeno_2000_Load_Mem = []
+    with open(metrics["02b"]["zeno"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_zeno_2000_Load_Mem.append(float(item))
+    
+    set02b_vuvuzela_2000_Load_Mem = []
+    with open(metrics["02b"]["vuvuzela"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_vuvuzela_2000_Load_Mem.append(float(item))
+    
+    set02b_pung_2000_Load_Mem = []
+    with open(metrics["02b"]["pung"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_pung_2000_Load_Mem.append(float(item))
+
+
+    set03_zeno_2000_Load_Mem = []
+    with open(metrics["03"]["zeno"]["2000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set03_zeno_2000_Load_Mem.append(float(item))
+
+
+    # 3000 clients.
+
+    set01_zeno_3000_Load_Mem = []
+    with open(metrics["01"]["zeno"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_zeno_3000_Load_Mem.append(float(item))
+    
+    set01_vuvuzela_3000_Load_Mem = []
+    with open(metrics["01"]["vuvuzela"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_vuvuzela_3000_Load_Mem.append(float(item))
+    
+    set01_pung_3000_Load_Mem = []
+    with open(metrics["01"]["pung"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set01_pung_3000_Load_Mem.append(float(item))
+
+
+    set02a_zeno_3000_Load_Mem = []
+    with open(metrics["02a"]["zeno"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_zeno_3000_Load_Mem.append(float(item))
+    
+    set02a_vuvuzela_3000_Load_Mem = []
+    with open(metrics["02a"]["vuvuzela"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_vuvuzela_3000_Load_Mem.append(float(item))
+    
+    set02a_pung_3000_Load_Mem = []
+    with open(metrics["02a"]["pung"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02a_pung_3000_Load_Mem.append(float(item))
+
+
+    set02b_zeno_3000_Load_Mem = []
+    with open(metrics["02b"]["zeno"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_zeno_3000_Load_Mem.append(float(item))
+    
+    set02b_vuvuzela_3000_Load_Mem = []
+    with open(metrics["02b"]["vuvuzela"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_vuvuzela_3000_Load_Mem.append(float(item))
+    
+    set02b_pung_3000_Load_Mem = []
+    with open(metrics["02b"]["pung"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set02b_pung_3000_Load_Mem.append(float(item))
+
+
+    set03_zeno_3000_Load_Mem = []
+    with open(metrics["03"]["zeno"]["3000"]["Load"]["Servers"]["Mem"], newline='') as dataFile:
+        reader = csv.reader(dataFile, delimiter=',')
+        for row in reader:
+            for item in row:
+                set03_zeno_3000_Load_Mem.append(float(item))
+
 
     # Draw plots.
 
     width = 0.9
 
-    _, ax = plt.subplots()
+    _, ax = plt.subplots(figsize=(14, 5))
 
-    set01_zeno01 = ax.boxplot(set01_zeno_0500_Load_Mem, positions=[1], widths=width, patch_artist=True, whis='range')
-    set02_zeno01 = ax.boxplot(set02_zeno_0500_Load_Mem, positions=[2], widths=width, patch_artist=True, whis='range')
-    set03_zeno01 = ax.boxplot(set03_zeno_0500_Load_Mem, positions=[3], widths=width, patch_artist=True, whis='range')
-    set04_zeno01 = ax.boxplot(set04_zeno_0500_Load_Mem, positions=[4], widths=width, patch_artist=True, whis='range')
-    set01_pung01 = ax.boxplot(set01_pung_0500_Load_Mem, positions=[5], widths=width, patch_artist=True, whis='range')
-    set01_zeno03 = ax.boxplot(set01_zeno_1000_Load_Mem, positions=[7], widths=width, patch_artist=True, whis='range')
-    set02_zeno03 = ax.boxplot(set02_zeno_1000_Load_Mem, positions=[8], widths=width, patch_artist=True, whis='range')
-    set03_zeno03 = ax.boxplot(set03_zeno_1000_Load_Mem, positions=[9], widths=width, patch_artist=True, whis='range')
-    set04_zeno03 = ax.boxplot(set04_zeno_1000_Load_Mem, positions=[10], widths=width, patch_artist=True, whis='range')
-    set01_pung03 = ax.boxplot(set01_pung_1000_Load_Mem, positions=[11], widths=width, patch_artist=True, whis='range')
+    set01_zeno1 = ax.boxplot(set01_zeno_1000_Load_Mem, positions=[1], widths=width, patch_artist=True, whis='range')
+    set02a_zeno1 = ax.boxplot(set02a_zeno_1000_Load_Mem, positions=[2], widths=width, patch_artist=True, whis='range')
+    set02b_zeno1 = ax.boxplot(set02b_zeno_1000_Load_Mem, positions=[3], widths=width, patch_artist=True, whis='range')
+    set03_zeno1 = ax.boxplot(set03_zeno_1000_Load_Mem, positions=[4], widths=width, patch_artist=True, whis='range')
+    set01_vuvuzela1 = ax.boxplot(set01_vuvuzela_1000_Load_Mem, positions=[5], widths=width, patch_artist=True, whis='range')
+    set02a_vuvuzela1 = ax.boxplot(set02a_vuvuzela_1000_Load_Mem, positions=[6], widths=width, patch_artist=True, whis='range')
+    set02b_vuvuzela1 = ax.boxplot(set02b_vuvuzela_1000_Load_Mem, positions=[7], widths=width, patch_artist=True, whis='range')
+    set01_pung1 = ax.boxplot(set01_pung_1000_Load_Mem, positions=[8], widths=width, patch_artist=True, whis='range')
+    set02a_pung1 = ax.boxplot(set02a_pung_1000_Load_Mem, positions=[9], widths=width, patch_artist=True, whis='range')
+    set02b_pung1 = ax.boxplot(set02b_pung_1000_Load_Mem, positions=[10], widths=width, patch_artist=True, whis='range')
+
+    set01_zeno2 = ax.boxplot(set01_zeno_2000_Load_Mem, positions=[12], widths=width, patch_artist=True, whis='range')
+    set02a_zeno2 = ax.boxplot(set02a_zeno_2000_Load_Mem, positions=[13], widths=width, patch_artist=True, whis='range')
+    set02b_zeno2 = ax.boxplot(set02b_zeno_2000_Load_Mem, positions=[14], widths=width, patch_artist=True, whis='range')
+    set03_zeno2 = ax.boxplot(set03_zeno_2000_Load_Mem, positions=[15], widths=width, patch_artist=True, whis='range')
+    set01_vuvuzela2 = ax.boxplot(set01_vuvuzela_2000_Load_Mem, positions=[16], widths=width, patch_artist=True, whis='range')
+    set02a_vuvuzela2 = ax.boxplot(set02a_vuvuzela_2000_Load_Mem, positions=[17], widths=width, patch_artist=True, whis='range')
+    set02b_vuvuzela2 = ax.boxplot(set02b_vuvuzela_2000_Load_Mem, positions=[18], widths=width, patch_artist=True, whis='range')
+    set01_pung2 = ax.boxplot(set01_pung_2000_Load_Mem, positions=[19], widths=width, patch_artist=True, whis='range')
+    set02a_pung2 = ax.boxplot(set02a_pung_2000_Load_Mem, positions=[20], widths=width, patch_artist=True, whis='range')
+    set02b_pung2 = ax.boxplot(set02b_pung_2000_Load_Mem, positions=[21], widths=width, patch_artist=True, whis='range')
+
+    set01_zeno3 = ax.boxplot(set01_zeno_3000_Load_Mem, positions=[23], widths=width, patch_artist=True, whis='range')
+    set02a_zeno3 = ax.boxplot(set02a_zeno_3000_Load_Mem, positions=[24], widths=width, patch_artist=True, whis='range')
+    set02b_zeno3 = ax.boxplot(set02b_zeno_3000_Load_Mem, positions=[25], widths=width, patch_artist=True, whis='range')
+    set03_zeno3 = ax.boxplot(set03_zeno_3000_Load_Mem, positions=[26], widths=width, patch_artist=True, whis='range')
+    set01_vuvuzela3 = ax.boxplot(set01_vuvuzela_3000_Load_Mem, positions=[27], widths=width, patch_artist=True, whis='range')
+    set02a_vuvuzela3 = ax.boxplot(set02a_vuvuzela_3000_Load_Mem, positions=[28], widths=width, patch_artist=True, whis='range')
+    set02b_vuvuzela3 = ax.boxplot(set02b_vuvuzela_3000_Load_Mem, positions=[29], widths=width, patch_artist=True, whis='range')
+    set01_pung3 = ax.boxplot(set01_pung_3000_Load_Mem, positions=[30], widths=width, patch_artist=True, whis='range')
+    set02a_pung3 = ax.boxplot(set02a_pung_3000_Load_Mem, positions=[31], widths=width, patch_artist=True, whis='range')
+    set02b_pung3 = ax.boxplot(set02b_pung_3000_Load_Mem, positions=[32], widths=width, patch_artist=True, whis='range')
+
 
     # Log values for text mention.
     
     print("Servers:\n")
-    for scenData in [set01_zeno01, set02_zeno01, set03_zeno01, set04_zeno01, set01_pung01, set01_zeno03, set02_zeno03, set03_zeno03, set04_zeno03, set01_pung03]:
+    for scenData in [set01_zeno1, set02a_zeno1, set02b_zeno1, set03_zeno1,
+                     set01_vuvuzela1, set02a_vuvuzela1, set02b_vuvuzela1,
+                     set01_pung1, set02a_pung1, set02b_pung1,
+                     set01_zeno2, set02a_zeno2, set02b_zeno2, set03_zeno2,
+                     set01_vuvuzela2, set02a_vuvuzela2, set02b_vuvuzela2,
+                     set01_pung2, set02a_pung2, set02b_pung2,
+                     set01_zeno3, set02a_zeno3, set02b_zeno3, set03_zeno3,
+                     set01_vuvuzela3, set02a_vuvuzela3, set02b_vuvuzela3,
+                     set01_pung3, set02a_pung3, set02b_pung3]:
 
         for whis in scenData['whiskers']:
             print("whis=", whis.get_ydata()[1])
@@ -2334,68 +2729,94 @@ def compileLoadMemServers():
             print(" med=", med.get_ydata()[1])
         
         print("")
-    
+
+
     # Color boxplots.
 
-    setp(set01_zeno01['boxes'], color='black')
-    setp(set01_zeno01['boxes'], facecolor='gold')
-    setp(set01_zeno01['boxes'], hatch='/')
+    setp(set01_zeno1['boxes'], color='black'); setp(set01_zeno2['boxes'], color='black'); setp(set01_zeno3['boxes'], color='black')
+    setp(set01_zeno1['boxes'], facecolor='gold'); setp(set01_zeno2['boxes'], facecolor='gold'); setp(set01_zeno3['boxes'], facecolor='gold')
+    setp(set01_zeno1['boxes'], hatch='/'); setp(set01_zeno2['boxes'], hatch='/'); setp(set01_zeno3['boxes'], hatch='/')
 
-    setp(set02_zeno01['boxes'], color='black')
-    setp(set02_zeno01['boxes'], facecolor='gold')
-    setp(set02_zeno01['boxes'], hatch='x')
+    setp(set02a_zeno1['boxes'], color='black'); setp(set02a_zeno2['boxes'], color='black'); setp(set02a_zeno3['boxes'], color='black')
+    setp(set02a_zeno1['boxes'], facecolor='gold'); setp(set02a_zeno2['boxes'], facecolor='gold'); setp(set02a_zeno3['boxes'], facecolor='gold')
+    setp(set02a_zeno1['boxes'], hatch='//'); setp(set02a_zeno2['boxes'], hatch='//'); setp(set02a_zeno3['boxes'], hatch='//')
 
-    setp(set03_zeno01['boxes'], color='black')
-    setp(set03_zeno01['boxes'], facecolor='gold')
-    setp(set03_zeno01['boxes'], hatch='o')
+    setp(set02b_zeno1['boxes'], color='black'); setp(set02b_zeno2['boxes'], color='black'); setp(set02b_zeno3['boxes'], color='black')
+    setp(set02b_zeno1['boxes'], facecolor='gold'); setp(set02b_zeno2['boxes'], facecolor='gold'); setp(set02b_zeno3['boxes'], facecolor='gold')
+    setp(set02b_zeno1['boxes'], hatch='+'); setp(set02b_zeno2['boxes'], hatch='+'); setp(set02b_zeno3['boxes'], hatch='+')
 
-    setp(set04_zeno01['boxes'], color='black')
-    setp(set04_zeno01['boxes'], facecolor='gold')
-    setp(set04_zeno01['boxes'], hatch='+')
+    setp(set03_zeno1['boxes'], color='black'); setp(set03_zeno2['boxes'], color='black'); setp(set03_zeno3['boxes'], color='black')
+    setp(set03_zeno1['boxes'], facecolor='gold'); setp(set03_zeno2['boxes'], facecolor='gold'); setp(set03_zeno3['boxes'], facecolor='gold')
+    setp(set03_zeno1['boxes'], hatch='.'); setp(set03_zeno2['boxes'], hatch='.'); setp(set03_zeno3['boxes'], hatch='.')
 
-    setp(set01_pung01['boxes'], color='black')
-    setp(set01_pung01['boxes'], facecolor='steelblue')
-    setp(set01_pung01['boxes'], hatch='\\')
+    setp(set01_vuvuzela1['boxes'], color='black'); setp(set01_vuvuzela2['boxes'], color='black'); setp(set01_vuvuzela3['boxes'], color='black')
+    setp(set01_vuvuzela1['boxes'], facecolor='darkseagreen'); setp(set01_vuvuzela2['boxes'], facecolor='darkseagreen'); setp(set01_vuvuzela3['boxes'], facecolor='darkseagreen')
+    setp(set01_vuvuzela1['boxes'], hatch='\\'); setp(set01_vuvuzela2['boxes'], hatch='\\'); setp(set01_vuvuzela3['boxes'], hatch='\\')
 
-    setp(set01_zeno03['boxes'], color='black')
-    setp(set01_zeno03['boxes'], facecolor='gold')
-    setp(set01_zeno03['boxes'], hatch='/')
+    setp(set02a_vuvuzela1['boxes'], color='black'); setp(set02a_vuvuzela2['boxes'], color='black'); setp(set02a_vuvuzela3['boxes'], color='black')
+    setp(set02a_vuvuzela1['boxes'], facecolor='darkseagreen'); setp(set02a_vuvuzela2['boxes'], facecolor='darkseagreen'); setp(set02a_vuvuzela3['boxes'], facecolor='darkseagreen')
+    setp(set02a_vuvuzela1['boxes'], hatch='\\\\'); setp(set02a_vuvuzela2['boxes'], hatch='\\\\'); setp(set02a_vuvuzela3['boxes'], hatch='\\\\')
 
-    setp(set02_zeno03['boxes'], color='black')
-    setp(set02_zeno03['boxes'], facecolor='gold')
-    setp(set02_zeno03['boxes'], hatch='x')
+    setp(set02b_vuvuzela1['boxes'], color='black'); setp(set02b_vuvuzela2['boxes'], color='black'); setp(set02b_vuvuzela3['boxes'], color='black')
+    setp(set02b_vuvuzela1['boxes'], facecolor='darkseagreen'); setp(set02b_vuvuzela2['boxes'], facecolor='darkseagreen'); setp(set02b_vuvuzela3['boxes'], facecolor='darkseagreen')
+    setp(set02b_vuvuzela1['boxes'], hatch='-'); setp(set02b_vuvuzela2['boxes'], hatch='-'); setp(set02b_vuvuzela3['boxes'], hatch='-')
 
-    setp(set03_zeno03['boxes'], color='black')
-    setp(set03_zeno03['boxes'], facecolor='gold')
-    setp(set03_zeno03['boxes'], hatch='o')
+    setp(set01_pung1['boxes'], color='black'); setp(set01_pung2['boxes'], color='black'); setp(set01_pung3['boxes'], color='black')
+    setp(set01_pung1['boxes'], facecolor='steelblue'); setp(set01_pung2['boxes'], facecolor='steelblue'); setp(set01_pung3['boxes'], facecolor='steelblue')
+    setp(set01_pung1['boxes'], hatch='x'); setp(set01_pung2['boxes'], hatch='x'); setp(set01_pung3['boxes'], hatch='x')
 
-    setp(set04_zeno03['boxes'], color='black')
-    setp(set04_zeno03['boxes'], facecolor='gold')
-    setp(set04_zeno03['boxes'], hatch='+')
+    setp(set02a_pung1['boxes'], color='black'); setp(set02a_pung2['boxes'], color='black'); setp(set02a_pung3['boxes'], color='black')
+    setp(set02a_pung1['boxes'], facecolor='steelblue'); setp(set02a_pung2['boxes'], facecolor='steelblue'); setp(set02a_pung3['boxes'], facecolor='steelblue')
+    setp(set02a_pung1['boxes'], hatch='o'); setp(set02a_pung2['boxes'], hatch='o'); setp(set02a_pung3['boxes'], hatch='o')
 
-    setp(set01_pung03['boxes'], color='black')
-    setp(set01_pung03['boxes'], facecolor='steelblue')
-    setp(set01_pung03['boxes'], hatch='\\')
+    setp(set02b_pung1['boxes'], color='black'); setp(set02b_pung2['boxes'], color='black'); setp(set02b_pung3['boxes'], color='black')
+    setp(set02b_pung1['boxes'], facecolor='steelblue'); setp(set02b_pung2['boxes'], facecolor='steelblue'); setp(set02b_pung3['boxes'], facecolor='steelblue')
+    setp(set02b_pung1['boxes'], hatch='*'); setp(set02b_pung2['boxes'], hatch='*'); setp(set02b_pung3['boxes'], hatch='*')
+
 
     ax.yaxis.grid(True, linestyle='-', which='major', color='lightgrey', alpha=0.5)
     ax.set_axisbelow(True)
 
-    ax.set_xlim([0, 12])
-    ax.set_xticks((3, 9))
-    ax.set_xticklabels(('500 clients', '1,000 clients'))
-    ax.set_yticks([0, 2, 4, 6, 8, 10, 12, 14, 16, 18])
+    ax.set_xlim([0, 33])
+    ax.set_xticks((5.5, 16.5, 27.5))
+    ax.set_xticklabels(('1,000 clients', '2,000 clients', '3,000 clients'))
+    ax.set_ylim([0.0, 50.0])
+    ax.set_yticks([0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50])
 
     # Add a legend.
-    ax.legend([set01_zeno01['boxes'][0], set02_zeno01['boxes'][0], set03_zeno01['boxes'][0],
-        set04_zeno01['boxes'][0], set01_pung01['boxes'][0]], ['zeno (tc off, no failures)',
-        'zeno (tc on, no failures)', 'zeno (tc off, mix failure)', 'zeno (tc on, mix failure)',
-        'pung (tc off, no failures)'], loc='upper left')
+    ax.legend([
+        set01_zeno1['boxes'][0],
+        set02a_zeno1['boxes'][0],
+        set02b_zeno1['boxes'][0],
+        set03_zeno1['boxes'][0],
+        set01_vuvuzela1['boxes'][0],
+        set02a_vuvuzela1['boxes'][0],
+        set02b_vuvuzela1['boxes'][0],
+        set01_pung1['boxes'][0],
+        set02a_pung1['boxes'][0],
+        set02b_pung1['boxes'][0]
+    ], [
+        'zeno (no impediments)',
+        'zeno (high delay, no failures)',
+        'zeno (high loss, no failures)',
+        'zeno (high network troubles, failures)',
+        'vuvuzela (no impediments)',
+        'vuvuzela (high delay, no failures)',
+        'vuvuzela (high loss, no failures)',
+        'pung (no impediments)',
+        'pung (high delay, no failures)',
+        'pung (high loss, no failures)'
+    ],
+    loc='upper center',
+    ncol=3)
+    ax.set_title("Memory Load per Server")
 
     plt.tight_layout()
     plt.xlabel("Number of clients")
     plt.ylabel("Used memory (GB)")
 
-    plt.savefig(os.path.join(sys.argv[1], "memory-used_servers.pgf"), bbox_inches='tight')
+    # plt.savefig(os.path.join(sys.argv[1], "memory-used_servers.pgf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "memory-used_servers.pdf"), bbox_inches='tight')
 
 
 def compileLatencies():
@@ -2932,14 +3353,14 @@ def compileLatencies():
 # Create all figures.
 
 # Build bandwidth figures.
-# compileTrafficClients()
-# compileTrafficServers()
+compileTrafficClients()
+compileTrafficServers()
 
 # Build load usage figures.
 compileLoadCPUClients()
-# compileLoadCPUServers()
+compileLoadCPUServers()
 compileLoadMemClients()
-# compileLoadMemServers()
+compileLoadMemServers()
 
 # Build message latencies figure.
-# compileLatencies()
+compileLatencies()
