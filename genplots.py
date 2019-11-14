@@ -21,8 +21,6 @@ plt.rcParams.update({
         "\\usepackage{amsmath}",
         "\\usepackage{amssymb}",
         "\\usepackage{amsthm}",
-        "\\usepackage{paratype}",
-        "\\usepackage{FiraMono}",
     ]
 })
 
@@ -1025,8 +1023,7 @@ def compileTrafficClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Traffic volume (MiB) [log.]")
 
-    # plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pgf"), bbox_inches='tight')
-    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_clients.pgf"), bbox_inches='tight')
 
 
 
@@ -1323,8 +1320,7 @@ def compileTrafficServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Traffic volume (MiB)")
 
-    # plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pgf"), bbox_inches='tight')
-    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "traffic-volume_servers.pgf"), bbox_inches='tight')
 
 
 def compileLoadCPUClients():
@@ -1685,8 +1681,7 @@ def compileLoadCPUClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Busy CPU (percentage)")
 
-    # plt.savefig(os.path.join(sys.argv[1], "cpu-busy_clients.pgf"), bbox_inches='tight')
-    plt.savefig(os.path.join(sys.argv[1], "cpu-busy_clients.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "cpu-busy_clients.pgf"), bbox_inches='tight')
 
 
 def compileLoadMemClients():
@@ -2070,8 +2065,7 @@ def compileLoadMemClients():
     plt.xlabel("Number of clients")
     plt.ylabel("Used memory (MB)")
 
-    # plt.savefig(os.path.join(sys.argv[1], "memory-used_clients.pgf"), bbox_inches='tight')
-    plt.savefig(os.path.join(sys.argv[1], "memory-used_clients.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "memory-used_clients.pgf"), bbox_inches='tight')
 
 
 def compileLoadCPUServers():
@@ -2431,8 +2425,7 @@ def compileLoadCPUServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Busy CPU (percentage)")
 
-    # plt.savefig(os.path.join(sys.argv[1], "cpu-busy_servers.pgf"), bbox_inches='tight')
-    plt.savefig(os.path.join(sys.argv[1], "cpu-busy_servers.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "cpu-busy_servers.pgf"), bbox_inches='tight')
 
 
 def compileLoadMemServers():
@@ -2815,8 +2808,7 @@ def compileLoadMemServers():
     plt.xlabel("Number of clients")
     plt.ylabel("Used memory (GB)")
 
-    # plt.savefig(os.path.join(sys.argv[1], "memory-used_servers.pgf"), bbox_inches='tight')
-    plt.savefig(os.path.join(sys.argv[1], "memory-used_servers.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "memory-used_servers.pgf"), bbox_inches='tight')
 
 
 def compileLatencies():
@@ -3345,8 +3337,7 @@ def compileLatencies():
     fig.set_tight_layout(True)
     plt.tight_layout(pad=0.4, w_pad=0.5, h_pad=1.0)
 
-    # plt.savefig(os.path.join(sys.argv[1], "e2e-transmission-latencies.pgf"), bbox_inches='tight')
-    plt.savefig(os.path.join(sys.argv[1], "e2e-transmission-latencies.pdf"), bbox_inches='tight')
+    plt.savefig(os.path.join(sys.argv[1], "e2e-transmission-latencies.pgf"), bbox_inches='tight')
 
 
 

@@ -119,8 +119,6 @@ venv.bak/
 
 # Project-specific.
 gcloud-configs_*/
-paper-results/
-results/
 calcstats
 collector
 genconfigs
