@@ -1,8 +1,13 @@
-# Test Bed for Evaluating Planet-Scale ACS on Public Clouds
+# Test Bed for Planet-Scale ACS Experiments on Public Clouds
 
-Test bed for planet-scale ACS experiments on public clouds. Proposed and developed as part of my Master Thesis. Among others, utilized to evaluate our resilient mix-net proposal [zeno](https://github.com/numbleroot/zeno).
+Test bed for planet-scale ACS experiments on public clouds. We developed this to evaluate our fault-tolerant mix-net
+prototype [zeno](https://github.com/numbleroot/zeno) and to compare it against state-of-the-art competitors
+[Vuvuzela](https://github.com/vuvuzela/vuvuzela) and [Pung](https://github.com/pung-project/pung). Please see
+[numbleroot/acs-eval-2019](https://github.com/numbleroot/acs-eval-2019) for forks of Vuvuzela and Pung with minor
+adjustments for evaluation purposes, deployed experiment configurations, and obtained measurements.
 
-Folders `cmd` and `scripts` contain executables and scripts required to conduct experiments. Folder `results` contains all measurements gathered and presented in my Master Thesis for reproducibility. File `genplots.py` contains Python code to visualize the results.
+Folders `cmd` and `scripts` contain executables and scripts required to conduct the experiments. File `genplots.py`
+contains Python code to visualize the results.
 
 
 ## Setup
@@ -40,7 +45,8 @@ Run:
 $ make collector
 ```
 
-Deploy the generated executable as a sidecar to the ACS under evaluation on each node of the deployment. Use the following to inspect available flags of the executable:
+Deploy the generated executable as a sidecar to the ACS under evaluation on each deployed node. Use the following
+to inspect available flags of the executable:
 ```
 $ ./collector -help
 ```
