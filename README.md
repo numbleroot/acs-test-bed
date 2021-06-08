@@ -1,18 +1,27 @@
 # Test Bed for Planet-Scale ACS Experiments on Public Clouds
 
-Test bed for planet-scale ACS experiments on public clouds. We developed this to evaluate our fault-tolerant mix-net
-prototype [zeno](https://github.com/numbleroot/zeno) and to compare it against state-of-the-art competitors
-[Vuvuzela](https://github.com/vuvuzela/vuvuzela) and [Pung](https://github.com/pung-project/pung). Please see
-[numbleroot/acs-eval-2019](https://github.com/numbleroot/acs-eval-2019) for forks of Vuvuzela and Pung with minor
-adjustments for evaluation purposes, deployed experiment configurations, and obtained measurements.
+**[PUBLICATION FORTHCOMING]**
 
-Folders `cmd` and `scripts` contain executables and scripts required to conduct the experiments. File `genplots.py`
-contains Python code to visualize the results.
+Test bed for planet-scale ACS experiments on public clouds. We developed this to evaluate our
+fault-tolerant mixnet prototype FTMix and compare it against state-of-the-art competitors
+[Vuvuzela](https://github.com/vuvuzela/vuvuzela) and [Pung](https://github.com/pung-project/pung).
+Please see [numbleroot/acs-eval-2019](https://github.com/numbleroot/acs-eval-2019) for forks
+of Vuvuzela and Pung with minor adjustments for evaluation purposes, deployed experiment
+configurations, and obtained measurements.
+
+Folders `cmd` and `scripts` contain executables and scripts required to conduct the experiments.
+
+**Mind:** At the time of our experiments, our prototype fault-tolerant mixnet was still called
+*zeno*. We renamed it to *FTMix* (**f**ault-**t**olerant **mix**net) afterwards to make its
+purpose immediately clear through its name. In order not to create inconsistencies in the data
+sets, however, we have not replaced 'zeno' with 'FTMix' in any of the instrumentation code files.
+Please keep that in mind when you look at these files.
 
 
 ## Setup
 
-Clone the repository and change into the newly created directory. We assume you have a working Go installation.
+Clone the repository and change into the newly created directory. We assume you have a working
+Go installation.
 
 ### Generate Configuration Files
 
@@ -45,8 +54,8 @@ Run:
 $ make collector
 ```
 
-Deploy the generated executable as a sidecar to the ACS under evaluation on each deployed node. Use the following
-to inspect available flags of the executable:
+Deploy the generated executable as a sidecar to the ACS under evaluation on each deployed
+node. Use the following to inspect available flags of the executable:
 ```
 $ ./collector -help
 ```
