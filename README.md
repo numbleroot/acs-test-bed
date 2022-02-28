@@ -1,21 +1,23 @@
 # Test Bed for Planet-Scale ACS Experiments on Public Clouds
 
-**[PUBLICATION FORTHCOMING]**
+Related publication: ["Strong Anonymity is not Enough: Introducing Fault Tolerance to Planet-Scale Anonymous Communication Systems"](https://dl.acm.org/doi/10.1145/3465481.3469189).
 
 Test bed for planet-scale ACS experiments on public clouds. We developed this to evaluate our
-fault-tolerant mixnet prototype FTMix and compare it against state-of-the-art competitors
-[Vuvuzela](https://github.com/vuvuzela/vuvuzela) and [Pung](https://github.com/pung-project/pung).
-Please see [numbleroot/acs-eval-2019](https://github.com/numbleroot/acs-eval-2019) for forks
-of Vuvuzela and Pung with minor adjustments for evaluation purposes, deployed experiment
-configurations, and obtained measurements.
+fault-tolerant mixnet proof-of-concept [FTMix](https://github.com/numbleroot/zeno) (formerly *zeno*)
+and compare it against state-of-the-art competitors [Vuvuzela](https://github.com/vuvuzela/vuvuzela)
+and [Pung](https://github.com/pung-project/pung). Please see
+[numbleroot/acs-eval-2019](https://github.com/numbleroot/acs-eval-2019) for forks of Vuvuzela
+and Pung with minor adjustments for evaluation purposes, deployed experiment configurations,
+and obtained measurements.
 
 Folders `cmd` and `scripts` contain executables and scripts required to conduct the experiments.
 
-**Mind:** At the time of our experiments, our prototype fault-tolerant mixnet was still called
-*zeno*. We renamed it to *FTMix* (**f**ault-**t**olerant **mix**net) afterwards to make its
-purpose immediately clear through its name. In order not to create inconsistencies in the data
-sets, however, we have not replaced 'zeno' with 'FTMix' in any of the instrumentation code files.
-Please keep that in mind when you look at these files.
+**Mind:** At the time of our experiments, [our proof-of-concept fault-tolerant mixnet was still
+called *zeno*](https://github.com/numbleroot/zeno#note-on-name-and-scope-of-repository). We renamed
+it to *FTMix* (**f**ault-**t**olerant **mix**net) due to scope change and to make its purpose
+immediately clear through its name. In order not to create inconsistencies in the data sets, however,
+we have not replaced 'zeno' with 'FTMix' in any of the instrumentation code files. Please keep that
+in mind when you look at these files.
 
 
 ## Setup
